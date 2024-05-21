@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.Profile
 
-@Database(entities = [Budget::class, Profile::class], version = 1, exportSchema = false)
+@Database(entities = [Budget::class, Profile::class], version = 2, exportSchema = false)
 abstract class BudgetDatabase : RoomDatabase() {
 
     abstract fun getBudgetDao(): BudgetDao

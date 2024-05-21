@@ -140,7 +140,7 @@ class BudgetEntryFragment : Fragment() {
                 bankName = bankName,
                 amount = amountToInsert,
                 purpose = purpose,
-                creditOrDebit = debitOrCredit.toBoolean()
+                creditOrDebit = debitOrCredit
             )
         )
         profileViewModel.updateCurrentBalance(revisedBalance = revisedCurrentBalance.toFloat())
