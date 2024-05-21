@@ -19,4 +19,8 @@ class ProfileViewModel @Inject constructor(
     fun insertProfileData(profile: Profile) = viewModelScope.launch {
         profileRepository.insertProfileData(profile)
     }
+
+    fun updateCurrentBalance(revisedBalance: Float) = viewModelScope.launch {
+        profileRepository.updateCurrentBalance(revisedBalance)
+    }
 }

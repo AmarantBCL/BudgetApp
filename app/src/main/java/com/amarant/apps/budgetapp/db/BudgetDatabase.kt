@@ -10,6 +10,4 @@ abstract class BudgetDatabase : RoomDatabase() {
 
     abstract fun getBudgetDao(): BudgetDao
     abstract fun getProfileDao(): ProfileDao
-
-
 }
