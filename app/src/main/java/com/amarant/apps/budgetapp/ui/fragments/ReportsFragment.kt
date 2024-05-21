@@ -13,7 +13,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportsFragment : Fragment() {
+class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private var _binding: FragmentReportsBinding? = null
     private val binding: FragmentReportsBinding
@@ -42,8 +42,14 @@ class ReportsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onClick(position: Int) {
+        val currentBudgetItem = reportsAdapter.differ.currentList[position]
+        val bottomSheet = UpdateBudgetBottomSheetFragment(currentBudgetItem)
+        bottomSheet.show(requireActivity().supportFragmentManager, "UpdateBudget")
+    }
+
     private fun initializeRecyclerView() {
-        reportsAdapter = ReportsAdapter()
+        reportsAdapter = ReportsAdapter(this)
         binding.rcvReports.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reportsAdapter

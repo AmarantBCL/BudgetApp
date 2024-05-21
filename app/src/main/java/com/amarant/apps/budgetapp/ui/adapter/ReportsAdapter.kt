@@ -12,7 +12,9 @@ import com.amarant.apps.budgetapp.databinding.ItemBudgetBinding
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 
-class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.MyViewHolder>() {
+class ReportsAdapter(
+    val listener: MyOnClickListener
+) : RecyclerView.Adapter<ReportsAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(ItemBudgetBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -39,7 +41,15 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.MyViewHolder>() {
         return differ.currentList.size
     }
 
-    inner class MyViewHolder(val binding: ItemBudgetBinding): RecyclerView.ViewHolder(binding.root)
+    inner class MyViewHolder(val binding: ItemBudgetBinding): RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnLongClickListener {
+                val position = adapterPosition
+                listener.onClick(position)
+                true
+            }
+        }
+    }
 
     private val differCallback = object : DiffUtil.ItemCallback<Budget>() {
         override fun areItemsTheSame(oldItem: Budget, newItem: Budget): Boolean {
@@ -52,4 +62,9 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.MyViewHolder>() {
     }
 
     val differ = AsyncListDiffer(this, differCallback)
+
+    interface MyOnClickListener {
+
+        fun onClick(position: Int)
+    }
 }
