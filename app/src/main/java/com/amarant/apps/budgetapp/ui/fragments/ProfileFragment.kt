@@ -55,8 +55,6 @@ class ProfileFragment : Fragment() {
                     bitmap = ImageDecoder.decodeBitmap(source)
                 }
                 saveImageToInternalStorage("profile", bitmap)
-                Log.d("WTF", "registerForActivityResult")
-
             }
         }
 
@@ -91,7 +89,6 @@ class ProfileFragment : Fragment() {
                                 .into(binding.profileImage)
                         }
                     }
-                    Log.e("WTF", "setImageInLiveData")
                     binding.bankName.setText(profile!![0].bankName)
                     binding.initialBalance.setText(profile!![0].initialBalance.toString())
                     binding.currentBalance.setText(profile!![0].currentBalance.toString())
@@ -112,6 +109,13 @@ class ProfileFragment : Fragment() {
                 binding.materialCheckBox.isChecked
             )
         }
+        binding.updateCurrentBalance.setOnClickListener {
+            val currentBalance = binding.currentBalance.text.toString().trim()
+            val revisedBalance = currentBalance.toFloat()
+            profileViewModel.updateCurrentBalance(revisedBalance)
+            Snackbar.make(binding.profileConstrain, "Current balance updated to: $revisedBalance", Snackbar.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+        }
     }
 
     private fun submitData(
@@ -121,7 +125,7 @@ class ProfileFragment : Fragment() {
         initialBalance: String,
         checked: Boolean
     ) {
-        if (profileName.isNullOrBlank() || profileEmail.isNullOrBlank() || bankName.isNullOrBlank() || initialBalance.isNullOrBlank()) {
+        if (profileName.isBlank() || profileEmail.isBlank() || bankName.isBlank() || initialBalance.isBlank()) {
             Snackbar.make(
                 binding.profileConstrain,
                 "The fields must not be empty",
@@ -175,13 +179,11 @@ class ProfileFragment : Fragment() {
         return try {
             requireContext().openFileOutput("$fileName.jpg", MODE_PRIVATE).use { outputStream ->
                 if (bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)) {
-                    Log.e("WTF", "Could not save Bitmap")
-//                    throw IOException("Could not save Bitmap")
                     Glide.with(requireContext()).load(bitmap).circleCrop()
                         .into(binding.profileImage)
+                    throw IOException("Could not save Bitmap")
                 }
             }
-            Log.e("WTF", "saveImageToInternalStorage")
             true
         } catch (e: IOException) {
             e.printStackTrace()
