@@ -65,6 +65,10 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
             attachToRecyclerView(binding.rcvReports)
         }
         getAllEntries()
+        binding.statistics.setOnClickListener {
+            val bottomSheet = StatisticsBottomSheetFragment()
+            bottomSheet.show(requireActivity().supportFragmentManager, "StatisticsBottomSheet")
+        }
     }
 
     override fun onDestroyView() {
@@ -75,7 +79,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     override fun onClick(position: Int) {
         val currentBudgetItem = reportsAdapter.differ.currentList[position]
         val bottomSheet = UpdateBudgetBottomSheetFragment(currentBudgetItem)
-        bottomSheet.show(requireActivity().supportFragmentManager, "UpdateBudget")
+        bottomSheet.show(requireActivity().supportFragmentManager, "UpdateBudgetBottomSheet")
     }
 
     private fun initializeRecyclerView() {

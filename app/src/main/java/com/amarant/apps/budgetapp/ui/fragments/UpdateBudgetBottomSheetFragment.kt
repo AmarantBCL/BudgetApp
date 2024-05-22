@@ -27,13 +27,13 @@ class UpdateBudgetBottomSheetFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.update_budget_bottom_sheet, container, false)
+    ): View {
+        _binding = UpdateBudgetBottomSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = UpdateBudgetBottomSheetBinding.bind(view)
         binding.updateAmount.setText(currentBudgetItem.amount.toString())
         binding.updatePurpose.setText(currentBudgetItem.purpose)
         binding.updateBudgetEntry.setOnClickListener {

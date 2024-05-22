@@ -22,4 +22,10 @@ interface BudgetDao {
 
     @Delete
     suspend fun deleteEntry(budget: Budget)
+
+    @Query("SELECT SUM(amount) FROM budget WHERE creditOrDebit = 'Credit'")
+    fun getTotalCredit(): LiveData<Float>
+
+    @Query("SELECT SUM(amount) FROM budget WHERE creditOrDebit = 'Debit'")
+    fun getTotalSpending(): LiveData<Float>
 }

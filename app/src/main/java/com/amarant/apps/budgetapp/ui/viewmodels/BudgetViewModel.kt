@@ -15,6 +15,8 @@ class BudgetViewModel @Inject constructor(
 ) : ViewModel() {
 
     val allBudgetEntries: LiveData<List<Budget>> = budgetRepository.getAllBudgetEntries()
+    val totalCredit: LiveData<Float> = budgetRepository.getTotalCredit()
+    val totalSpending: LiveData<Float> = budgetRepository.getTotalSpending()
 
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
