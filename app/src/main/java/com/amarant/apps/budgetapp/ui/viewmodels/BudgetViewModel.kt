@@ -1,12 +1,14 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.repository.BudgetRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +20,9 @@ class BudgetViewModel @Inject constructor(
     val totalCredit: LiveData<Float> = budgetRepository.getTotalCredit()
     val totalSpending: LiveData<Float> = budgetRepository.getTotalSpending()
 
+    var _dateRangeBudgetEntries: MutableLiveData<List<Budget>> = MutableLiveData()
+    val dateRandeBudgetEntries: LiveData<List<Budget>> = _dateRangeBudgetEntries
+
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
     }
@@ -28,5 +33,10 @@ class BudgetViewModel @Inject constructor(
 
     fun deleteEntry(budget: Budget) = viewModelScope.launch {
         budgetRepository.deleteEntry(budget)
+    }
+
+    fun getReportsBetweenDates(startDate: Long, endDate: Long) = viewModelScope.launch {
+        val response = budgetRepository.getBudgetEntriesBetweenDates(startDate, endDate)
+        _dateRangeBudgetEntries.postValue(response)
     }
 }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.util.UtilityFunctions
+import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
+import com.amarant.apps.budgetapp.util.UtilityFunctions.getEndDate
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Calendar
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
@@ -24,6 +30,8 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private val budgetViewModel: BudgetViewModel by viewModels()
     private lateinit var reportsAdapter: ReportsAdapter
+    private val dateRangeArray = arrayOf("Select Date Range", "1 Week", "1 Month", "6 Months", "Show All")
+    private lateinit var startDate: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +44,10 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.title = "Spending Reports"
+        startDate = setStartDate()
         initializeRecyclerView()
+        setSpinnerValues()
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -69,6 +80,20 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
             val bottomSheet = StatisticsBottomSheetFragment()
             bottomSheet.show(requireActivity().supportFragmentManager, "StatisticsBottomSheet")
         }
+        binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when(parent?.getItemAtPosition(position)) {
+                    "1 Week" -> getReportsBetweenDates(startDate, getEndDate(7))
+                    "1 Month" -> getReportsBetweenDates(startDate, getEndDate(30))
+                    "6 Months" -> getReportsBetweenDates(startDate, getEndDate(180))
+                    "Show All" -> getAllEntries()
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -92,6 +117,26 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private fun getAllEntries() {
         budgetViewModel.allBudgetEntries.observe(viewLifecycleOwner) {
+            reportsAdapter.differ.submitList(it)
+        }
+    }
+
+    private fun setStartDate(): String {
+        val dateInMillies = Calendar.getInstance().timeInMillis
+        return dateMillisToString(dateInMillies)
+    }
+
+    private fun setSpinnerValues() {
+        val arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dateRangeArray)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.dateRangeReportSpinner.adapter = arrayAdapter
+    }
+
+    private fun getReportsBetweenDates(startDate: String, endDate: String) {
+        val start = UtilityFunctions.dateStringToMillis(endDate)
+        val end = UtilityFunctions.dateStringToMillis(startDate)
+        budgetViewModel.getReportsBetweenDates(start, end)
+        budgetViewModel.dateRandeBudgetEntries.observe(viewLifecycleOwner) {
             reportsAdapter.differ.submitList(it)
         }
     }
