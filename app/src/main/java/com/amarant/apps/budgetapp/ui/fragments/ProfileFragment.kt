@@ -25,6 +25,7 @@ import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_PROFILE_EXISTENCE_KEY
 import com.amarant.apps.budgetapp.util.InternalStoragePhoto
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,20 +40,22 @@ class ProfileFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentProfileBinding == null")
 
     private val profileViewModel: ProfileViewModel by viewModels()
-    private lateinit var filePath: Uri
+    private var filePath: Uri? = null
     private lateinit var bitmap: Bitmap
     private lateinit var myPref: SharedPreferences
 
-    private val takePhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
-        result?.let {
-            filePath = it
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val source = ImageDecoder.createSource(requireContext().contentResolver!!, filePath)
-                bitmap = ImageDecoder.decodeBitmap(source)
+    private val takePhoto =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+            result?.let {
+                filePath = it
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    val source =
+                        ImageDecoder.createSource(requireContext().contentResolver!!, it)
+                    bitmap = ImageDecoder.decodeBitmap(source)
+                }
+                saveImageToInternalStorage("profile", bitmap)
             }
-            saveImageToInternalStorage("profile", bitmap)
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,7 +83,8 @@ class ProfileFragment : Fragment() {
                     val listOfImage = loadImageFromInternalStorage()
                     for (i in listOfImage) {
                         if (i.name.contains("profile")) {
-                            Glide.with(requireContext()).load(i.bitmap).circleCrop().into(binding.profileImage)
+                            Glide.with(requireContext()).load(i.bitmap).circleCrop()
+                                .into(binding.profileImage)
                         }
                     }
                     binding.bankName.setText(profile!![0].bankName)
@@ -96,10 +100,10 @@ class ProfileFragment : Fragment() {
         }
         binding.submitProfile.setOnClickListener {
             submitData(
-                binding.profileName.text.toString(),
-                binding.profileEmail.text.toString(),
-                binding.bankName.text.toString(),
-                binding.initialBalance.text.toString(),
+                binding.profileName.text.toString().trim(),
+                binding.profileEmail.text.toString().trim(),
+                binding.bankName.text.toString().trim(),
+                binding.initialBalance.text.toString().trim(),
                 binding.materialCheckBox.isChecked
             )
         }
@@ -112,6 +116,22 @@ class ProfileFragment : Fragment() {
         initialBalance: String,
         checked: Boolean
     ) {
+        if (profileName.isNullOrBlank() || profileEmail.isNullOrBlank() || bankName.isNullOrBlank() || initialBalance.isNullOrBlank()) {
+            Snackbar.make(
+                binding.profileConstrain,
+                "The fields must not be empty",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
+        if (filePath == null) {
+            Snackbar.make(
+                binding.profileConstrain,
+                "Select the profile picture",
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
         profileViewModel.insertProfileData(
             Profile(
                 name = profileName,
