@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
+import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,6 +18,8 @@ class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding: FragmentCalendarBinding
         get() = _binding ?: throw RuntimeException("FragmentCalendarBinding == null")
+
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +38,11 @@ class CalendarFragment : Fragment() {
             val selectedDate = "$day/${month + 1}/$year"
             val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(selectedDate)
             findNavController().navigate(action)
+        }
+        profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                findNavController().navigate(R.id.action_global_profileFragment)
+            }
         }
     }
 

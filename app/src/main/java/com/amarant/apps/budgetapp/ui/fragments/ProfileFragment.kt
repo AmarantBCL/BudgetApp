@@ -8,6 +8,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +55,8 @@ class ProfileFragment : Fragment() {
                     bitmap = ImageDecoder.decodeBitmap(source)
                 }
                 saveImageToInternalStorage("profile", bitmap)
+                Log.d("WTF", "registerForActivityResult")
+
             }
         }
 
@@ -68,6 +71,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.title = "Profile"
         myPref = requireContext().getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE)
         if (myPref.contains(PREFERENCE_PROFILE_EXISTENCE_KEY)) {
             changeViewVisibilityPostRegistration()
@@ -87,6 +91,7 @@ class ProfileFragment : Fragment() {
                                 .into(binding.profileImage)
                         }
                     }
+                    Log.e("WTF", "setImageInLiveData")
                     binding.bankName.setText(profile!![0].bankName)
                     binding.initialBalance.setText(profile!![0].initialBalance.toString())
                     binding.currentBalance.setText(profile!![0].currentBalance.toString())
@@ -170,9 +175,13 @@ class ProfileFragment : Fragment() {
         return try {
             requireContext().openFileOutput("$fileName.jpg", MODE_PRIVATE).use { outputStream ->
                 if (bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)) {
-                    throw IOException("Could not save Bitmap")
+                    Log.e("WTF", "Could not save Bitmap")
+//                    throw IOException("Could not save Bitmap")
+                    Glide.with(requireContext()).load(bitmap).circleCrop()
+                        .into(binding.profileImage)
                 }
             }
+            Log.e("WTF", "saveImageToInternalStorage")
             true
         } catch (e: IOException) {
             e.printStackTrace()

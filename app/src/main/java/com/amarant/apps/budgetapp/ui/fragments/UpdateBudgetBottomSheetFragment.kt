@@ -37,8 +37,8 @@ class UpdateBudgetBottomSheetFragment(
         binding.updateAmount.setText(currentBudgetItem.amount.toString())
         binding.updatePurpose.setText(currentBudgetItem.purpose)
         binding.updateBudgetEntry.setOnClickListener {
-            val updatedAmount = binding.updateAmount.text.toString()
-            val updatedPurpose = binding.updatePurpose.text.toString()
+            val updatedAmount = binding.updateAmount.text.toString().trim()
+            val updatedPurpose = binding.updatePurpose.text.toString().trim()
             budgetViewModel.updateBudget(
                 updatedAmount.toFloat(),
                 updatedPurpose,

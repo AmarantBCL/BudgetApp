@@ -14,7 +14,7 @@ interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertBudget(budget: Budget)
 
-    @Query("SELECT * FROM budget ORDER BY id DESC")
+    @Query("SELECT * FROM budget ORDER BY date DESC")
     fun getAllData(): LiveData<List<Budget>>
 
     @Query("UPDATE budget SET amount = :amount, purpose = :purpose WHERE id = :id")

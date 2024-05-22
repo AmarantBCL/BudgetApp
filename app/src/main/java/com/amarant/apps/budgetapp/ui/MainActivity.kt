@@ -27,11 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         checkProfileData()
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
         navController = navHostFragment.findNavController()
-
         binding.bottomNavBar.setupWithNavController(navController)
     }
 

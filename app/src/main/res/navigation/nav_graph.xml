@@ -10,15 +10,13 @@
         android:label="CalendarFragment" >
         <action
             android:id="@+id/action_calendarFragment_to_budgetEntryFragment"
-            app:destination="@id/budgetEntryFragment" />
+            app:destination="@id/budgetEntryFragment"
+            app:popUpTo="@id/calendarFragment" />
     </fragment>
     <fragment
         android:id="@+id/budgetEntryFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetEntryFragment"
         android:label="BudgetEntryFragment" >
-        <action
-            android:id="@+id/action_budgetEntryFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
         <argument
             android:name="selectedDate"
             app:argType="string"
