@@ -162,11 +162,10 @@ class BudgetEntryFragment : Fragment() {
         )
         profileViewModel.updateCurrentBalance(revisedBalance = revisedCurrentBalance.toFloat())
         val snackbar = Snackbar.make(binding.budgetEntryConstraint, "Entry added", Snackbar.LENGTH_SHORT)
-        snackbar.setAction("Remove") {
+        snackbar.setAction("Hide") {
             snackbar.dismiss()
         }
         snackbar.show()
-//        findNavController().navigate(R.id.action_budgetEntryFragment_to_calendarFragment)
         findNavController().popBackStack()
     }
 

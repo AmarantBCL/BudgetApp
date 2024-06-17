@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,9 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getEndDate
+import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfMonth
+import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfPreviousWeek
+import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfWeek
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +35,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private val budgetViewModel: BudgetViewModel by viewModels()
     private lateinit var reportsAdapter: ReportsAdapter
-    private val dateRangeArray = arrayOf("Select Date Range", "1 Week", "1 Month", "6 Months", "Show All")
+    private val dateRangeArray = arrayOf("Select Date Range", "1 Week", "2 Weeks", "1 Month", "Show All")
     private lateinit var startDate: String
 
     override fun onCreateView(
@@ -84,10 +88,10 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(parent?.getItemAtPosition(position)) {
-                    "1 Week" -> getReportsBetweenDates(startDate, getEndDate(7))
-                    "1 Month" -> getReportsBetweenDates(startDate, getEndDate(30))
-                    "6 Months" -> getReportsBetweenDates(startDate, getEndDate(180))
-                    "Show All" -> getAllEntries()
+                    "1 Week" -> getReportsForSelectedPeriod("1 Week")//getReportsBetweenDates(startDate, getEndDate(7))
+                    "2 Weeks" -> getReportsForSelectedPeriod("2 Weeks")//getReportsBetweenDates(startDate, getEndDate(30))
+                    "1 Month" -> getReportsForSelectedPeriod("1 Month")//getReportsBetweenDates(startDate, getEndDate(180))
+                    else -> getAllEntries()
                 }
             }
 
@@ -140,5 +144,19 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         budgetViewModel.dateRandeBudgetEntries.observe(viewLifecycleOwner) {
             reportsAdapter.differ.submitList(it)
         }
+    }
+
+    private fun getReportsForSelectedPeriod(period: String) {
+        val start = when(period) {
+            "1 Week" -> getStartOfWeek()
+            "2 Weeks" -> getStartOfPreviousWeek()
+            "1 Month" -> getStartOfMonth()
+            else -> {
+                getAllEntries()
+                return
+            }
+        }
+        val end = UtilityFunctions.dateStringToMillis(startDate)
+        getReportsBetweenDates(dateMillisToString(end), dateMillisToString(start))
     }
 }
