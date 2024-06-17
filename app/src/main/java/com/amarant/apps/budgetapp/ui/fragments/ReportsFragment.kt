@@ -88,9 +88,9 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(parent?.getItemAtPosition(position)) {
-                    "1 Week" -> getReportsForSelectedPeriod("1 Week")//getReportsBetweenDates(startDate, getEndDate(7))
-                    "2 Weeks" -> getReportsForSelectedPeriod("2 Weeks")//getReportsBetweenDates(startDate, getEndDate(30))
-                    "1 Month" -> getReportsForSelectedPeriod("1 Month")//getReportsBetweenDates(startDate, getEndDate(180))
+                    "1 Week" -> getReportsForSelectedPeriod("1 Week")
+                    "2 Weeks" -> getReportsForSelectedPeriod("2 Weeks")
+                    "1 Month" -> getReportsForSelectedPeriod("1 Month")
                     else -> getAllEntries()
                 }
             }
