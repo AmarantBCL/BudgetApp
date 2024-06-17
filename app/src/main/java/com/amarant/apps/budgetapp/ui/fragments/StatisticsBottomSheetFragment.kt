@@ -20,6 +20,13 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val budgetViewModel: BudgetViewModel by viewModels()
 
+    private lateinit var period: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        period = requireArguments().getString(KEY_PERIOD) ?: "Show All"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,11 +38,32 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        budgetViewModel.totalCredit.observe(viewLifecycleOwner) {
-            binding.totalCredit.text = it.toString()
+        budgetViewModel.calculateTotalCredit(period).observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.totalCredit.text = "0.0"
+            } else {
+                binding.totalCredit.text = it.toString()
+            }
         }
-        budgetViewModel.totalSpending.observe(viewLifecycleOwner) {
-            binding.totalSpending.text = (-1 * it).toString()
+        budgetViewModel.calculateTotalSpending(period).observe(viewLifecycleOwner) {
+            if (it == null) {
+                binding.totalSpending.text = "0.0"
+            } else {
+                binding.totalSpending.text = (-1 * it).toString()
+            }
+        }
+    }
+
+    companion object {
+
+        private const val KEY_PERIOD = "period"
+
+        fun newInstance(period: String): StatisticsBottomSheetFragment {
+            return StatisticsBottomSheetFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_PERIOD, period)
+                }
+            }
         }
     }
 }

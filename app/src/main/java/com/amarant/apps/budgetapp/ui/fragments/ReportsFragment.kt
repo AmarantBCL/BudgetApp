@@ -37,6 +37,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     private lateinit var reportsAdapter: ReportsAdapter
     private val dateRangeArray = arrayOf("Select Date Range", "1 Week", "2 Weeks", "1 Month", "Show All")
     private lateinit var startDate: String
+    private var period = "Show All"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +83,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         }
         getAllEntries()
         binding.statistics.setOnClickListener {
-            val bottomSheet = StatisticsBottomSheetFragment()
+            val bottomSheet = StatisticsBottomSheetFragment.newInstance(period)
             bottomSheet.show(requireActivity().supportFragmentManager, "StatisticsBottomSheet")
         }
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -93,12 +94,14 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
                     "1 Month" -> getReportsForSelectedPeriod("1 Month")
                     else -> getAllEntries()
                 }
+                period = parent?.getItemAtPosition(position) as String
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
         }
+        binding.dateRangeReportSpinner.setSelection(0)
     }
 
     override fun onDestroyView() {
