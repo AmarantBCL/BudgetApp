@@ -47,14 +47,12 @@ class BudgetViewModel @Inject constructor(
     fun calculateTotalSpending(period: String): LiveData<Float> {
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod()
-        Log.d("WTF", "period: $period | start: ${dateMillisToString(start)} & end: ${dateMillisToString(end)}")
         return budgetRepository.getTotalSpendingForPeriod(start, end)
     }
 
     fun calculateTotalCredit(period: String): LiveData<Float> {
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod()
-        Log.d("WTF", "period: $period | start: ${dateMillisToString(start)} & end: ${dateMillisToString(end)}")
         return budgetRepository.getTotalCreditForPeriod(start, end)
     }
 

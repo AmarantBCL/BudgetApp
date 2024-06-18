@@ -30,8 +30,10 @@ object UtilityFunctions {
         val calendar = Calendar.getInstance()
         calendar.firstDayOfWeek = Calendar.MONDAY
         val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val diff = (Calendar.MONDAY - currentDayOfWeek + 7) % 7
-        calendar.add(Calendar.DAY_OF_MONTH, -diff)
+        val diff = (currentDayOfWeek - calendar.firstDayOfWeek + 7) % 7
+        if (diff != 0) {
+            calendar.add(Calendar.DAY_OF_MONTH, -diff)
+        }
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
