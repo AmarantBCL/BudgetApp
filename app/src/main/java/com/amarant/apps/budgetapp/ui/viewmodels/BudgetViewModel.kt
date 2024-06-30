@@ -58,6 +58,8 @@ class BudgetViewModel @Inject constructor(
 
     private fun calculateStartPeriod(period: String): Long {
         val start = when(period) {
+            "Today" -> UtilityFunctions.getToday()
+            "Yesterday" -> UtilityFunctions.getYesterday()
             "1 Week" -> UtilityFunctions.getStartOfWeek()
             "2 Weeks" -> UtilityFunctions.getStartOfPreviousWeek()
             "1 Month" -> UtilityFunctions.getStartOfMonth()

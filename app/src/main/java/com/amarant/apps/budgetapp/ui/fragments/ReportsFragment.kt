@@ -21,6 +21,8 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.getEndDate
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfMonth
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfPreviousWeek
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfWeek
+import com.amarant.apps.budgetapp.util.UtilityFunctions.getToday
+import com.amarant.apps.budgetapp.util.UtilityFunctions.getYesterday
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +37,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private val budgetViewModel: BudgetViewModel by viewModels()
     private lateinit var reportsAdapter: ReportsAdapter
-    private val dateRangeArray = arrayOf("Select Date Range", "1 Week", "2 Weeks", "1 Month", "Show All")
+    private val dateRangeArray = arrayOf("Select Date Range", "Today", "Yesterday", "1 Week", "2 Weeks", "1 Month", "Show All")
     private lateinit var startDate: String
     private var period = "Show All"
 
@@ -89,6 +91,8 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(parent?.getItemAtPosition(position)) {
+                    "Today" -> getReportsForSelectedPeriod("Today")
+                    "Yesterday" -> getReportsForSelectedPeriod("Yesterday")
                     "1 Week" -> getReportsForSelectedPeriod("1 Week")
                     "2 Weeks" -> getReportsForSelectedPeriod("2 Weeks")
                     "1 Month" -> getReportsForSelectedPeriod("1 Month")
@@ -151,6 +155,8 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private fun getReportsForSelectedPeriod(period: String) {
         val start = when(period) {
+            "Today" -> getToday()
+            "Yesterday" -> getYesterday()
             "1 Week" -> getStartOfWeek()
             "2 Weeks" -> getStartOfPreviousWeek()
             "1 Month" -> getStartOfMonth()
