@@ -3,6 +3,7 @@ package com.amarant.apps.budgetapp.ui.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,7 +77,8 @@ class BudgetEntryFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    debitOrCredit = parent?.getItemAtPosition(position).toString()
+                    val spinnerItem = parent?.getItemAtPosition(position) as SpinnerItem
+                    debitOrCredit = spinnerItem.text
                     calculatePreliminaryBalance(binding.editAmount.text.toString())
                 }
 
