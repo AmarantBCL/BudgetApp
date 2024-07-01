@@ -1,16 +1,14 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
-import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.widget.addTextChangedListener
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +16,8 @@ import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentBudgetEntryBinding
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.ui.adapter.SpinnerAdapter
+import com.amarant.apps.budgetapp.ui.adapter.SpinnerItem
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateStringToMillis
@@ -130,12 +130,11 @@ class BudgetEntryFragment : Fragment() {
     }
 
     private fun setSpinnerForDebitOrCredit() {
-        val debitOrCreditArray = ArrayList<String>()
-        debitOrCreditArray.add("Debit")
-        debitOrCreditArray.add("Credit")
-        val arrayAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, debitOrCreditArray)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val spinnerItems = listOf(
+            SpinnerItem(R.drawable.ic_debit, "Debit"),
+            SpinnerItem(R.drawable.ic_credit, "Credit")
+        )
+        val arrayAdapter = SpinnerAdapter(requireContext(), spinnerItems)
         binding.debitCreditSpinner.adapter = arrayAdapter
     }
 
