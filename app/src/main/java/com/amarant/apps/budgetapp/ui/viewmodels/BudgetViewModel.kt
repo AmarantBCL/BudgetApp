@@ -8,6 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.repository.BudgetRepository
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_MONTH
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_ONE_MONTH
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_ONE_WEEK
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_TODAY
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +28,6 @@ class BudgetViewModel @Inject constructor(
 ) : ViewModel() {
 
     val allBudgetEntries: LiveData<List<Budget>> = budgetRepository.getAllBudgetEntries()
-    val totalCredit: LiveData<Float> = budgetRepository.getTotalCredit()
-    val totalSpending: LiveData<Float> = budgetRepository.getTotalSpending()
 
     var _dateRangeBudgetEntries: MutableLiveData<List<Budget>> = MutableLiveData()
     val dateRandeBudgetEntries: LiveData<List<Budget>> = _dateRangeBudgetEntries
@@ -65,11 +69,12 @@ class BudgetViewModel @Inject constructor(
 
     private fun calculateStartPeriod(period: String): Long {
         val start = when(period) {
-            "Today" -> UtilityFunctions.getToday()
-            "Yesterday" -> UtilityFunctions.getYesterday()
-            "1 Week" -> UtilityFunctions.getStartOfWeek()
-            "2 Weeks" -> UtilityFunctions.getStartOfPreviousWeek()
-            "1 Month" -> UtilityFunctions.getStartOfMonth()
+            PERIOD_TODAY -> UtilityFunctions.getToday()
+            PERIOD_YESTERDAY -> UtilityFunctions.getYesterday()
+            PERIOD_ONE_WEEK -> UtilityFunctions.getStartOfWeek()
+            PERIOD_TWO_WEEKS -> UtilityFunctions.getStartOfPreviousWeek()
+            PERIOD_ONE_MONTH -> UtilityFunctions.getStartOfMonth()
+            PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfLastMonth()
             else -> {
                 0L
             }
