@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.repository.BudgetRepository
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
@@ -54,6 +55,12 @@ class BudgetViewModel @Inject constructor(
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod()
         return budgetRepository.getTotalCreditForPeriod(start, end)
+    }
+
+    fun getSpendingsByCategory(period: String): LiveData<List<BudgetCategoryDetails>> {
+        val start = calculateStartPeriod(period)
+        val end = calculateEndPeriod()
+        return budgetRepository.getSpendingsByCategory(start, end)
     }
 
     private fun calculateStartPeriod(period: String): Long {

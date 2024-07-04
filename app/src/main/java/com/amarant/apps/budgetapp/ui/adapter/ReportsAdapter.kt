@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -35,7 +34,7 @@ class ReportsAdapter(
                     val resId = context.resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", context.packageName)
                     binding.budgetItemCategory.setImageDrawable(ContextCompat.getDrawable(context, resId))
                 } else {
-                    binding.budgetItemCategory.setImageResource(R.drawable.ic_unknown)
+                    binding.budgetItemCategory.setImageResource(R.drawable.cat_unknown)
                 }
                 if (creditOrDebit == "Credit") {
                     binding.budgetItemType.setImageResource(R.drawable.ic_credit)

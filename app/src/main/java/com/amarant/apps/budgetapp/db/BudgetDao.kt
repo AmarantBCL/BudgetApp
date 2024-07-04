@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 
 @Dao
 interface BudgetDao {
@@ -37,4 +38,8 @@ interface BudgetDao {
 
     @Query("SELECT * FROM budget WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     suspend fun getReportsBetweenDates(startDate: Long, endDate: Long): List<Budget>
+
+    @Query("SELECT category, SUM(amount) AS amount FROM budget WHERE creditOrDebit = 'Debit' " +
+            "AND date BETWEEN :startDate AND :endDate GROUP BY category ORDER BY amount ASC")
+    fun getSpendingsByCategory(startDate: Long, endDate: Long): LiveData<List<BudgetCategoryDetails>>
 }

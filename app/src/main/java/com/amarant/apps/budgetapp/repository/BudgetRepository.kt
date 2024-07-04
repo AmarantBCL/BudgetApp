@@ -29,4 +29,7 @@ class BudgetRepository @Inject constructor(
 
     suspend fun getBudgetEntriesBetweenDates(startDate: Long, endDate: Long) =
         budgetDao.getReportsBetweenDates(startDate, endDate)
+
+    fun getSpendingsByCategory(startDate: Long, endDate: Long) =
+        budgetDao.getSpendingsByCategory(startDate, endDate)
 }
