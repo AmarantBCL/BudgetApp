@@ -10,6 +10,7 @@ import com.amarant.apps.budgetapp.databinding.UpdateBudgetBottomSheetBinding
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,12 +37,17 @@ class UpdateBudgetBottomSheetFragment(
         super.onViewCreated(view, savedInstanceState)
         binding.updateAmount.setText(currentBudgetItem.amount.toString())
         binding.updatePurpose.setText(currentBudgetItem.purpose)
+//        binding.chipGroup.setSingleSelection(CATEGORY_MAPPING[currentBudgetItem.category] ?: 0)
         binding.updateBudgetEntry.setOnClickListener {
             val updatedAmount = binding.updateAmount.text.toString().trim()
             val updatedPurpose = binding.updatePurpose.text.toString().trim()
+            val checkedId = binding.chipGroup.checkedChipId
+            val chip = requireView().findViewById<Chip>(checkedId)
+            val category = chip.text.toString()
             budgetViewModel.updateBudget(
                 updatedAmount.toFloat(),
                 updatedPurpose,
+                category,
                 currentBudgetItem.id!!
             )
             dismiss()
@@ -51,5 +57,20 @@ class UpdateBudgetBottomSheetFragment(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private companion object {
+
+        private val CATEGORY_MAPPING = mapOf(
+            "Unknown" to 0,
+            "Groceries" to 0,
+            "Restaurants" to 1,
+            "Cash" to 2,
+            "Utilities" to 3,
+            "Clothes" to 4,
+            "House" to 5,
+            "Car" to 6,
+            "Health" to 7
+        )
     }
 }

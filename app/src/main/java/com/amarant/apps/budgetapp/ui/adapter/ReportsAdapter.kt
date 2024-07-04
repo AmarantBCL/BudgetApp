@@ -1,9 +1,11 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -22,13 +24,20 @@ class ReportsAdapter(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val context = holder.itemView.context
         with(holder) {
             with(differ.currentList[position]) {
                 binding.budgetItemAmount.text = amount.toString()
                 binding.budgetItemDate.text = dateMillisToString(date.toLong())
                 binding.budgetItemPurpose.text = purpose
                 binding.budgetItemPurpose.tooltipText = purpose
-                if (creditOrDebit.equals("Credit")) {
+                if (category != "Unknown") {
+                    val resId = context.resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", context.packageName)
+                    binding.budgetItemCategory.setImageDrawable(ContextCompat.getDrawable(context, resId))
+                } else {
+                    binding.budgetItemCategory.setImageResource(R.drawable.ic_unknown)
+                }
+                if (creditOrDebit == "Credit") {
                     binding.budgetItemType.setImageResource(R.drawable.ic_credit)
                 } else {
                     binding.budgetItemType.setImageResource(R.drawable.ic_debit)

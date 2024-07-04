@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,5 +12,7 @@ data class Budget(
     val bankName: String,
     val amount: Float,
     val purpose: String,
-    val creditOrDebit: String
+    val creditOrDebit: String,
+    @ColumnInfo(defaultValue = "Unknown")
+    val category: String
 )

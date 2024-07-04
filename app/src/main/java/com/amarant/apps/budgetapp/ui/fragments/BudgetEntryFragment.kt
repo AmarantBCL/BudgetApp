@@ -22,6 +22,7 @@ import com.amarant.apps.budgetapp.ui.adapter.SpinnerItem
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateStringToMillis
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -102,13 +103,17 @@ class BudgetEntryFragment : Fragment() {
             val purpose = binding.editPurpose.text.toString().trim()
             val date = dateStringToMillis(args.selectedDate!!).toString()
             val revisedCurrentBalance = remainingBalance
+            val checkedId = binding.chipGroup.checkedChipId
+            val chip = requireView().findViewById<Chip>(checkedId)
+            val category = chip.text.toString()
             submitBudgetEntryToDB(
                 bankName,
                 debitOrCredit,
                 amount,
                 purpose,
                 date,
-                revisedCurrentBalance
+                revisedCurrentBalance,
+                category
             )
         }
     }
@@ -146,7 +151,8 @@ class BudgetEntryFragment : Fragment() {
         amount: String,
         purpose: String,
         date: String,
-        revisedCurrentBalance: String
+        revisedCurrentBalance: String,
+        category: String
     ) {
         var amountToInsert = amount.toFloat()
         if (debitOrCredit.equals("Debit")) {
@@ -158,7 +164,8 @@ class BudgetEntryFragment : Fragment() {
                 bankName = bankName,
                 amount = amountToInsert,
                 purpose = purpose,
-                creditOrDebit = debitOrCredit
+                creditOrDebit = debitOrCredit,
+                category = category
             )
         )
         profileViewModel.updateCurrentBalance(revisedBalance = revisedCurrentBalance.toFloat())

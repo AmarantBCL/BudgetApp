@@ -14,9 +14,8 @@
             android:id="@+id/bank_spinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginTop="52dp"
-            android:layout_marginEnd="32dp"
             android:pointerIcon="arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -27,9 +26,8 @@
             android:id="@+id/debit_credit_spinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
             android:pointerIcon="arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -41,9 +39,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
             android:hint="Enter Amount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,9 +59,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
             android:hint="Purpose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +74,100 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/purposeLayout"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Groceries"
+                app:chipIcon="@drawable/cat_groceries"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restaurants"
+                app:chipIcon="@drawable/cat_restaurants"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cash"
+                app:chipIcon="@drawable/cat_cash"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Utilities"
+                app:chipIcon="@drawable/cat_utilities"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clothes"
+                app:chipIcon="@drawable/cat_clothes"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="House"
+                app:chipIcon="@drawable/cat_house"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car"
+                app:chipIcon="@drawable/cat_car"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Health"
+                app:chipIcon="@drawable/cat_health"
+                app:chipIconSize="16dp"
+                app:chipIconTint="@color/primary"
+                app:chipIconVisible="true" />
+
+        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:id="@+id/textView2"
@@ -88,7 +178,7 @@
             android:text="Balance in this account \nafter this entry"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/purposeLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/chip_group" />
 
         <TextView
             android:id="@+id/remainingBalance"
@@ -99,7 +189,7 @@
             android:text="1512.200"
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/purposeLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/chip_group" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submit_budget_entry"

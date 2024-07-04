@@ -12,8 +12,8 @@ class BudgetRepository @Inject constructor(
 
     fun getAllBudgetEntries() = budgetDao.getAllData()
 
-    suspend fun updateBudget(amount: Float, purpose: String, id: Int) =
-        budgetDao.updateBudget(amount, purpose, id)
+    suspend fun updateBudget(amount: Float, purpose: String, category: String, id: Int) =
+        budgetDao.updateBudget(amount, purpose, category, id)
 
     suspend fun deleteEntry(budget: Budget) = budgetDao.deleteEntry(budget)
 

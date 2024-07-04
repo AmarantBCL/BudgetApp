@@ -5,49 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/budget_item_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary"
+        tools:srcCompat="@drawable/cat_groceries" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/budgetItemAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="1000"
         android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/budget_item_category"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1000" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/budget_item_purpose"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="eToro investment"
-        android:textSize="20dp"
-        android:maxLines="1"
         android:ellipsize="end"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budgetItemAmount" />
+        android:maxLines="1"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/budget_item_category"
+        app:layout_constraintTop_toBottomOf="@+id/budgetItemAmount"
+        tools:text="Food" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/budgetItemDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="10/09/2021 10:12 am"
         android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/budgetItemType"
         app:layout_constraintStart_toEndOf="@+id/budgetItemAmount"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10/09/2021 10:12 am" />
 
     <ImageView
         android:id="@+id/budgetItemType"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_debit" />
 
     <View
         android:layout_width="match_parent"
