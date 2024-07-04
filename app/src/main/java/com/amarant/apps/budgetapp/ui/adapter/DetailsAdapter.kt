@@ -29,15 +29,16 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>(
                         "drawable",
                         context.packageName
                     )
-                    binding.budgetItemCategory.setImageDrawable(
+                    binding.imgIcon.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
                             resId
                         )
                     )
                 } else {
-                    binding.budgetItemCategory.setImageResource(R.drawable.cat_unknown)
+                    binding.imgIcon.setImageResource(R.drawable.cat_unknown)
                 }
+                binding.budgetCategoryName.text = "$category :"
                 binding.budgetItemAmount.text = amount.toString()
             }
         }
