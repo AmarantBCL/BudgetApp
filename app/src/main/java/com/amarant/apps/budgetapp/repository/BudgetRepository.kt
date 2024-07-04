@@ -17,10 +17,6 @@ class BudgetRepository @Inject constructor(
 
     suspend fun deleteEntry(budget: Budget) = budgetDao.deleteEntry(budget)
 
-    fun getTotalCredit() = budgetDao.getTotalCredit()
-
-    fun getTotalSpending() = budgetDao.getTotalSpending()
-
     fun getTotalSpendingForPeriod(startDate: Long, endDate: Long) =
         budgetDao.getTotalSpendingForPeriod(startDate, endDate)
 

@@ -10,6 +10,7 @@ import com.amarant.apps.budgetapp.databinding.UpdateBudgetBottomSheetBinding
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils
+import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,14 +62,14 @@ class UpdateBudgetBottomSheetFragment(
     }
 
     private fun setChips() {
-        for (category in CategoryUtils.ALL_CATEGORIES) {
+        for (category in ALL_CATEGORIES) {
             val chip = Chip(requireContext())
             chip.text = category
             val resId = resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", requireContext().packageName)
             chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
             chip.isChipIconVisible = true
             binding.chipGroup.addView(chip)
-            if (category == "Groceries") {
+            if (category == ALL_CATEGORIES[0]) {
                 chip.isChecked = true
             }
         }
