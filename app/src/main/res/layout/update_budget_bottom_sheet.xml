@@ -21,9 +21,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/updateAmount"
-            android:inputType="numberDecimal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -38,10 +38,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/updateAmountLayout">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/update_purpose"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,90 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/updatePurposeLayout"
         app:selectionRequired="true"
-        app:singleSelection="true">
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Groceries"
-            app:chipIcon="@drawable/cat_groceries"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Restaurants"
-            app:chipIcon="@drawable/cat_restaurants"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cash"
-            app:chipIcon="@drawable/cat_cash"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Utilities"
-            app:chipIcon="@drawable/cat_utilities"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clothes"
-            app:chipIcon="@drawable/cat_clothes"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="House"
-            app:chipIcon="@drawable/cat_house"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Car"
-            app:chipIcon="@drawable/cat_car"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Health"
-            app:chipIcon="@drawable/cat_health"
-            app:chipIconSize="16dp"
-            app:chipIconTint="@color/primary"
-            app:chipIconVisible="true" />
-
-    </com.google.android.material.chip.ChipGroup>
+        app:singleSelection="true" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updateBudgetEntry"

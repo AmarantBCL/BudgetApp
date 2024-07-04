@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +23,7 @@ import com.amarant.apps.budgetapp.ui.adapter.SpinnerAdapter
 import com.amarant.apps.budgetapp.ui.adapter.SpinnerItem
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
+import com.amarant.apps.budgetapp.util.CategoryUtils
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateStringToMillis
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -55,6 +58,7 @@ class BudgetEntryFragment : Fragment() {
         activity?.title = "Enter budget for: ${args.selectedDate}"
         getProfileData()
         setSpinnerForDebitOrCredit()
+        setChips()
         binding.bankSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -143,6 +147,20 @@ class BudgetEntryFragment : Fragment() {
         )
         val arrayAdapter = SpinnerAdapter(requireContext(), spinnerItems)
         binding.debitCreditSpinner.adapter = arrayAdapter
+    }
+
+    private fun setChips() {
+        for (category in CategoryUtils.ALL_CATEGORIES) {
+            val chip = Chip(requireContext())
+            chip.text = category
+            val resId = resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", requireContext().packageName)
+            chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
+            chip.isChipIconVisible = true
+            binding.chipGroup.addView(chip)
+            if (category == "Groceries") {
+                chip.isChecked = true
+            }
+        }
     }
 
     private fun submitBudgetEntryToDB(

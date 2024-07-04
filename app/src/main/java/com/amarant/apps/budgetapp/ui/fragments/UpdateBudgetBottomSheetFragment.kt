@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.UpdateBudgetBottomSheetBinding
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.util.CategoryUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,9 +36,9 @@ class UpdateBudgetBottomSheetFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setChips()
         binding.updateAmount.setText(currentBudgetItem.amount.toString())
         binding.updatePurpose.setText(currentBudgetItem.purpose)
-//        binding.chipGroup.setSingleSelection(CATEGORY_MAPPING[currentBudgetItem.category] ?: 0)
         binding.updateBudgetEntry.setOnClickListener {
             val updatedAmount = binding.updateAmount.text.toString().trim()
             val updatedPurpose = binding.updatePurpose.text.toString().trim()
@@ -59,18 +60,17 @@ class UpdateBudgetBottomSheetFragment(
         _binding = null
     }
 
-    private companion object {
-
-        private val CATEGORY_MAPPING = mapOf(
-            "Unknown" to 0,
-            "Groceries" to 0,
-            "Restaurants" to 1,
-            "Cash" to 2,
-            "Utilities" to 3,
-            "Clothes" to 4,
-            "House" to 5,
-            "Car" to 6,
-            "Health" to 7
-        )
+    private fun setChips() {
+        for (category in CategoryUtils.ALL_CATEGORIES) {
+            val chip = Chip(requireContext())
+            chip.text = category
+            val resId = resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", requireContext().packageName)
+            chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
+            chip.isChipIconVisible = true
+            binding.chipGroup.addView(chip)
+            if (category == "Groceries") {
+                chip.isChecked = true
+            }
+        }
     }
 }
