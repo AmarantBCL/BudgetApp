@@ -31,7 +31,6 @@ object UtilityFunctions {
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        Log.d("WTF", "${calendar}")
         return calendar.timeInMillis
     }
 
@@ -42,7 +41,6 @@ object UtilityFunctions {
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        Log.d("WTF", "${calendar}")
         return calendar.timeInMillis
     }
 

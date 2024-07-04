@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,17 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.repository.BudgetRepository
+import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_ONE_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_ONE_WEEK
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_MONTHS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_MONTH
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_WEEK
 import com.amarant.apps.budgetapp.util.Constants.PERIOD_TODAY
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_DAYS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_WEEK
 import com.amarant.apps.budgetapp.util.Constants.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -51,19 +53,19 @@ class BudgetViewModel @Inject constructor(
 
     fun calculateTotalSpending(period: String): LiveData<Float> {
         val start = calculateStartPeriod(period)
-        val end = calculateEndPeriod()
+        val end = calculateEndPeriod(period)
         return budgetRepository.getTotalSpendingForPeriod(start, end)
     }
 
     fun calculateTotalCredit(period: String): LiveData<Float> {
         val start = calculateStartPeriod(period)
-        val end = calculateEndPeriod()
+        val end = calculateEndPeriod(period)
         return budgetRepository.getTotalCreditForPeriod(start, end)
     }
 
     fun getSpendingsByCategory(period: String): LiveData<List<BudgetCategoryDetails>> {
         val start = calculateStartPeriod(period)
-        val end = calculateEndPeriod()
+        val end = calculateEndPeriod(period)
         return budgetRepository.getSpendingsByCategory(start, end)
     }
 
@@ -71,10 +73,13 @@ class BudgetViewModel @Inject constructor(
         val start = when(period) {
             PERIOD_TODAY -> UtilityFunctions.getToday()
             PERIOD_YESTERDAY -> UtilityFunctions.getYesterday()
-            PERIOD_ONE_WEEK -> UtilityFunctions.getStartOfWeek()
-            PERIOD_TWO_WEEKS -> UtilityFunctions.getStartOfPreviousWeek()
-            PERIOD_ONE_MONTH -> UtilityFunctions.getStartOfMonth()
+            PERIOD_LAST_TWO_DAYS -> UtilityFunctions.getYesterday()
+            PERIOD_THIS_WEEK -> UtilityFunctions.getStartOfWeek()
+            PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfPreviousWeek()
+            PERIOD_LAST_TWO_WEEKS -> UtilityFunctions.getStartOfPreviousWeek()
+            PERIOD_THIS_MONTH -> UtilityFunctions.getStartOfMonth()
             PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfLastMonth()
+            PERIOD_LAST_TWO_MONTHS -> UtilityFunctions.getStartOfLastMonth()
             else -> {
                 0L
             }
@@ -82,9 +87,17 @@ class BudgetViewModel @Inject constructor(
         return start
     }
 
-    private fun calculateEndPeriod(): Long {
-        val dateInMillies = Calendar.getInstance().timeInMillis
-        val startDate = dateMillisToString(dateInMillies)
-        return UtilityFunctions.dateStringToMillis(startDate)
+    private fun calculateEndPeriod(period: String): Long {
+        val end = when(period) {
+            PERIOD_YESTERDAY -> UtilityFunctions.getToday() - 1000
+            PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfWeek() - 1000
+            PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfMonth() - 1000
+            else -> {
+                val dateInMillies = Calendar.getInstance().timeInMillis
+                val startDate = dateMillisToString(dateInMillies)
+                UtilityFunctions.dateStringToMillis(startDate)
+            }
+        }
+        return end
     }
 }

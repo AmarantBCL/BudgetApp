@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,16 @@ import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_ONE_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_ONE_WEEK
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_MONTHS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_MONTH
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_WEEK
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_SHOW_ALL
 import com.amarant.apps.budgetapp.util.Constants.PERIOD_TODAY
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_DAYS
+import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_WEEK
 import com.amarant.apps.budgetapp.util.Constants.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.Constants.SELECT_DATA_RANGE
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_SHOW_ALL
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfLastMonth
@@ -30,6 +34,7 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfPreviousWeek
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfWeek
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getToday
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getYesterday
+import com.bumptech.glide.util.Util
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
@@ -47,10 +52,13 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         SELECT_DATA_RANGE,
         PERIOD_TODAY,
         PERIOD_YESTERDAY,
-        PERIOD_ONE_WEEK,
-        PERIOD_TWO_WEEKS,
-        PERIOD_ONE_MONTH,
+        PERIOD_LAST_TWO_DAYS,
+        PERIOD_THIS_WEEK,
+        PERIOD_LAST_WEEK,
+        PERIOD_LAST_TWO_WEEKS,
+        PERIOD_THIS_MONTH,
         PERIOD_LAST_MONTH,
+        PERIOD_LAST_TWO_MONTHS,
         PERIOD_SHOW_ALL
     )
     private lateinit var startDate: String
@@ -108,10 +116,13 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
                 when(parent?.getItemAtPosition(position)) {
                     PERIOD_TODAY -> getReportsForSelectedPeriod(PERIOD_TODAY)
                     PERIOD_YESTERDAY -> getReportsForSelectedPeriod(PERIOD_YESTERDAY)
-                    PERIOD_ONE_WEEK -> getReportsForSelectedPeriod(PERIOD_ONE_WEEK)
-                    PERIOD_TWO_WEEKS -> getReportsForSelectedPeriod(PERIOD_TWO_WEEKS)
-                    PERIOD_ONE_MONTH -> getReportsForSelectedPeriod(PERIOD_ONE_MONTH)
+                    PERIOD_LAST_TWO_DAYS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_DAYS)
+                    PERIOD_THIS_WEEK -> getReportsForSelectedPeriod(PERIOD_THIS_WEEK)
+                    PERIOD_LAST_WEEK -> getReportsForSelectedPeriod(PERIOD_LAST_WEEK)
+                    PERIOD_LAST_TWO_WEEKS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_WEEKS)
+                    PERIOD_THIS_MONTH -> getReportsForSelectedPeriod(PERIOD_THIS_MONTH)
                     PERIOD_LAST_MONTH -> getReportsForSelectedPeriod(PERIOD_LAST_MONTH)
+                    PERIOD_LAST_TWO_MONTHS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_MONTHS)
                     else -> getAllEntries()
                 }
                 period = parent?.getItemAtPosition(position) as String
@@ -150,8 +161,8 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     private fun setStartDate(): String {
-        val dateInMillies = Calendar.getInstance().timeInMillis
-        return dateMillisToString(dateInMillies)
+        val dateInMillis = Calendar.getInstance().timeInMillis
+        return dateMillisToString(dateInMillis)
     }
 
     private fun setSpinnerValues() {
@@ -161,11 +172,13 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     private fun getReportsBetweenDates(startDate: String, endDate: String) {
-        val start = UtilityFunctions.dateStringToMillis(endDate)
-        val end = UtilityFunctions.dateStringToMillis(startDate)
+        val start = UtilityFunctions.dateStringToMillis(startDate)
+        val end = UtilityFunctions.dateStringToMillis(endDate)
         budgetViewModel.getReportsBetweenDates(start, end)
         budgetViewModel.dateRandeBudgetEntries.observe(viewLifecycleOwner) {
-            reportsAdapter.differ.submitList(it)
+            reportsAdapter.differ.submitList(it) {
+                binding.rcvReports.scrollToPosition(0)
+            }
         }
     }
 
@@ -173,16 +186,24 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         val start = when(period) {
             PERIOD_TODAY -> getToday()
             PERIOD_YESTERDAY -> getYesterday()
-            PERIOD_ONE_WEEK -> getStartOfWeek()
-            PERIOD_TWO_WEEKS -> getStartOfPreviousWeek()
-            PERIOD_ONE_MONTH -> getStartOfMonth()
+            PERIOD_LAST_TWO_DAYS -> getYesterday()
+            PERIOD_THIS_WEEK -> getStartOfWeek()
+            PERIOD_LAST_WEEK -> getStartOfPreviousWeek()
+            PERIOD_LAST_TWO_WEEKS -> getStartOfPreviousWeek()
+            PERIOD_THIS_MONTH -> getStartOfMonth()
             PERIOD_LAST_MONTH -> getStartOfLastMonth()
+            PERIOD_LAST_TWO_MONTHS -> getStartOfLastMonth()
             else -> {
                 getAllEntries()
                 return
             }
         }
-        val end = UtilityFunctions.dateStringToMillis(startDate)
-        getReportsBetweenDates(dateMillisToString(end), dateMillisToString(start))
+        val end = when(period) {
+            PERIOD_YESTERDAY -> getToday() - 1000
+            PERIOD_LAST_WEEK -> getStartOfWeek() - 1000
+            PERIOD_LAST_MONTH -> getStartOfMonth() - 1000
+            else -> UtilityFunctions.dateStringToMillis(startDate)
+        }
+        getReportsBetweenDates(dateMillisToString(start), dateMillisToString(end))
     }
 }

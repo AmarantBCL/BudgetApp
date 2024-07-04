@@ -64,7 +64,6 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
         budgetViewModel.getSpendingsByCategory(period).observe(viewLifecycleOwner) {
-            Log.d("WTF", it.toString())
             detailsAdapter.differ.submitList(it)
         }
     }
