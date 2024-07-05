@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BudgetApp</string>
+    <string name="enter_budget">Добавить бюджет</string>
+    <string name="see_reports">Посмотреть отчеты</string>
+    <string name="select_the_date">Выберите дату</string>
+    <string name="enter_amount">Укажите количество</string>
+    <string name="purpose">Цель</string>
+    <string name="balance_in_account_after_entry">Баланс на счете \nпосле ввода</string>
+    <string name="submit_entry">Подтвердить запись</string>
+    <string name="image">Изображение</string>
+    <string name="enter_your_name">Ваше имя</string>
+    <string name="email">Электронная почта</string>
+    <string name="bank_details">Детали банка</string>
+    <string name="bank_name">Имя банка</string>
+    <string name="initial_balance">Изначальный баланс</string>
+    <string name="current_balance">Текущий баланс</string>
+    <string name="make_primary_bank">Сделать моим основным банком</string>
+    <string name="submit_details">Подтвердить детали</string>
+    <string name="update_current_balance">Обновить текущий баланс</string>
+    <string name="show_statistics">Показать статистику</string>
+    <string name="total_spending">Общие траты :</string>
+    <string name="total_credit">Общий доход :</string>
+    <string name="more_spending_details">Детали по тратам</string>
+    <string name="amount">Количество</string>
+    <string name="update_entry">Обновить запись</string>
+    <string name="profile">Профиль</string>
+    <string name="complete_profile">Заполните профиль</string>
+    <string name="hide">Скрыть</string>
+    <string name="current_balance_updated_to">Текущий баланс обновлен до: %s</string>
+    <string name="could_not_save_bitmap">Невозможно сохранить Bitmap</string>
+    <string name="enter_budget_for">Бюджет за: %s</string>
+    <string name="none">НЕТ</string>
+    <string name="entry_added">Запись добавлена</string>
+
+    <string-array name="debit_or_credit">
+        <item>Дебет</item>
+        <item>Кредит</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>Продукты</item>
+        <item>Рестораны</item>
+        <item>Наличные</item>
+        <item>Коммуналка</item>
+        <item>Одежда</item>
+        <item>Дом</item>
+        <item>Автомобиль</item>
+        <item>Здоровье</item>
+        <item>Питомцы</item>
+        <item>Такси</item>
+    </string-array>
+    <string name="spending_reports">Отчеты по тратам</string>
+    <string name="item_deleted">Запись удалена</string>
+    <string name="undo">Вернуть</string>
+    <string name="fill_in_all_fields">Заполните все необходимые поля</string>
+</resources>

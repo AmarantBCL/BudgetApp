@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
@@ -76,7 +77,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = "Spending Reports"
+        activity?.title = getString(R.string.spending_reports)
         startDate = setStartDate()
         initializeRecyclerView()
         setSpinnerValues()
@@ -96,8 +97,8 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
                 val position = viewHolder.adapterPosition
                 val budget = reportsAdapter.differ.currentList[position]
                 budgetViewModel.deleteEntry(budget)
-                Snackbar.make(view, "Item Deleted", Snackbar.LENGTH_LONG).apply {
-                    setAction("UNDO") {
+                Snackbar.make(view, getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                    setAction(getString(R.string.undo)) {
                         budgetViewModel.insertBudget(budget)
                     }
                     show()
@@ -110,7 +111,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         getAllEntries()
         binding.statistics.setOnClickListener {
             val bottomSheet = StatisticsBottomSheetFragment.newInstance(period)
-            bottomSheet.show(requireActivity().supportFragmentManager, "StatisticsBottomSheet")
+            bottomSheet.show(requireActivity().supportFragmentManager, StatisticsBottomSheetFragment.TAG)
         }
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -144,7 +145,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     override fun onClick(position: Int) {
         val currentBudgetItem = reportsAdapter.differ.currentList[position]
         val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
-        bottomSheet.show(requireActivity().supportFragmentManager, "UpdateBudgetBottomSheet")
+        bottomSheet.show(requireActivity().supportFragmentManager, UpdateBudgetBottomSheetFragment.TAG)
     }
 
     private fun initializeRecyclerView() {

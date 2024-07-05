@@ -11,14 +11,15 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginVertical="2dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="4dp"
-        android:textSize="16sp"
         android:textColor="?attr/spinnerColor"
-        tools:text="Text" />
+        android:textSize="16sp"
+        tools:text="Last week" />
 </LinearLayout>

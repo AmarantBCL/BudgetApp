@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Show Statistics"
+        android:text="@string/show_statistics"
         android:textSize="20sp"
         android:textColor="@color/primaryDark"
         app:layout_constraintBottom_toBottomOf="parent"

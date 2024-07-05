@@ -8,7 +8,6 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +68,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = "Profile"
+        activity?.title = resources.getString(R.string.profile)
         myPref = requireContext().getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE)
         if (myPref.contains(PREFERENCE_PROFILE_EXISTENCE_KEY)) {
             changeViewVisibilityPostRegistration()
@@ -80,7 +79,7 @@ class ProfileFragment : Fragment() {
             takePhoto.launch("image/*")
         }
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) { profile ->
-            if (profile!!.size >= 1) {
+            if (profile!!.isNotEmpty()) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val listOfImage = loadImageFromInternalStorage()
                     for (i in listOfImage) {
@@ -89,15 +88,16 @@ class ProfileFragment : Fragment() {
                                 .into(binding.profileImage)
                         }
                     }
-                    binding.bankName.setText(profile!![0].bankName)
-                    binding.initialBalance.setText(profile!![0].initialBalance.toString())
-                    binding.currentBalance.setText(profile!![0].currentBalance.toString())
-                    binding.materialCheckBox.isChecked = profile!![0].primaryBank
-                    binding.profileName.setText(profile!![0].name)
-                    binding.profileEmail.setText(profile!![0].email)
+                    binding.bankName.setText(profile[0].bankName)
+                    binding.initialBalance.setText(profile[0].initialBalance.toString())
+                    binding.currentBalance.setText(profile[0].currentBalance.toString())
+                    binding.materialCheckBox.isChecked = profile[0].primaryBank
+                    binding.profileName.setText(profile[0].name)
+                    binding.profileEmail.setText(profile[0].email)
                 }
             } else {
-                Toast.makeText(requireContext(), "Complete Profile", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.complete_profile), Toast.LENGTH_SHORT).show()
             }
         }
         binding.submitProfile.setOnClickListener {
@@ -113,8 +113,9 @@ class ProfileFragment : Fragment() {
             val currentBalance = binding.currentBalance.text.toString().trim()
             val revisedBalance = currentBalance.toFloat()
             profileViewModel.updateCurrentBalance(revisedBalance)
-            val snackbar = Snackbar.make(binding.profileConstrain, "Current balance updated to: $revisedBalance", Snackbar.LENGTH_SHORT)
-            snackbar.setAction("Hide") {
+            val snackbar = Snackbar.make(binding.profileConstrain,
+                getString(R.string.current_balance_updated_to, revisedBalance.toString()), Snackbar.LENGTH_SHORT)
+            snackbar.setAction(getString(R.string.hide)) {
                 snackbar.dismiss()
             }
             snackbar.show()
@@ -185,7 +186,7 @@ class ProfileFragment : Fragment() {
                 if (bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)) {
                     Glide.with(requireContext()).load(bitmap).circleCrop()
                         .into(binding.profileImage)
-                    throw IOException("Could not save Bitmap")
+                    throw IOException(getString(R.string.could_not_save_bitmap))
                 }
             }
             true

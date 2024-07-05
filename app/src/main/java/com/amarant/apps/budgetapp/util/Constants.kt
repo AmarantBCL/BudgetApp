@@ -6,6 +6,9 @@ object Constants {
     const val PREFERENCE_NAME = "profile_preference"
     const val PREFERENCE_PROFILE_EXISTENCE_KEY = "PREFERENCE_PROFILE_EXISTENCE_KEY"
 
+    const val DEBIT = "Debit"
+    const val CREDIT = "Credit"
+
     const val SELECT_DATA_RANGE = "Select Date Range"
     const val PERIOD_SHOW_ALL = "Show All"
 

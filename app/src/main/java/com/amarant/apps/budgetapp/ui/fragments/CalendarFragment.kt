@@ -33,8 +33,8 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        activity?.title = "Enter your budget"
-        binding.calView.setOnDateChangeListener { view, year, month, day ->
+        activity?.title = resources.getString(R.string.enter_budget)
+        binding.calView.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = "$day/${month + 1}/$year"
             val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(selectedDate)
             findNavController().navigate(action)

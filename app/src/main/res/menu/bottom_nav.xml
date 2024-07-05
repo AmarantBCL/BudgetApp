@@ -3,9 +3,9 @@
     <item
         android:id="@+id/calendarFragment"
         android:icon="@drawable/ic_edit"
-        android:title="Enter Budget" />
+        android:title="@string/enter_budget" />
     <item
         android:id="@+id/reportsFragment"
         android:icon="@drawable/ic_file"
-        android:title="See Reports" />
+        android:title="@string/see_reports" />
 </menu>

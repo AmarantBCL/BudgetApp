@@ -25,6 +25,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils
 import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
+import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateStringToMillis
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -41,9 +42,11 @@ class BudgetEntryFragment : Fragment() {
     private val profileViewModel: ProfileViewModel by viewModels()
     private var currentBalance: Float = 0.0f
     private lateinit var bankName: String
-    private var debitOrCredit: String = "Debit"
+    private var debitOrCredit = Constants.DEBIT
     private lateinit var remainingBalance: String
     private val budgetViewModel: BudgetViewModel by viewModels()
+
+    private val chipMap = mutableMapOf<Chip, Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +59,7 @@ class BudgetEntryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = "Enter budget for: ${args.selectedDate}"
+        activity?.title = getString(R.string.enter_budget_for, args.selectedDate)
         getProfileData()
         setSpinnerForDebitOrCredit()
         setChips()
@@ -72,7 +75,7 @@ class BudgetEntryFragment : Fragment() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                bankName = "NONE"
+                bankName = getString(R.string.none)
             }
         }
         binding.debitCreditSpinner.onItemSelectedListener =
@@ -84,7 +87,13 @@ class BudgetEntryFragment : Fragment() {
                     id: Long
                 ) {
                     val spinnerItem = parent?.getItemAtPosition(position) as SpinnerItem
-                    debitOrCredit = spinnerItem.text
+                    val spinnerText = spinnerItem.text
+                    debitOrCredit =
+                        if (spinnerText == resources.getStringArray(R.array.debit_or_credit)[0]) {
+                            Constants.DEBIT
+                        } else {
+                            Constants.CREDIT
+                        }
                     calculatePreliminaryBalance(binding.editAmount.text.toString())
                 }
 
@@ -106,11 +115,23 @@ class BudgetEntryFragment : Fragment() {
         binding.submitBudgetEntry.setOnClickListener {
             val amount = binding.editAmount.text.toString().trim()
             val purpose = binding.editPurpose.text.toString().trim()
+            if (amount.isEmpty() || purpose.isEmpty()) {
+                val snackbar = Snackbar.make(
+                    binding.budgetEntryConstraint,
+                    getString(R.string.fill_in_all_fields),
+                    Snackbar.LENGTH_SHORT
+                )
+                snackbar.setAction(getString(R.string.hide)) {
+                    snackbar.dismiss()
+                }
+                snackbar.show()
+                return@setOnClickListener
+            }
             val date = dateStringToMillis(args.selectedDate!!).toString()
             val revisedCurrentBalance = remainingBalance
             val checkedId = binding.chipGroup.checkedChipId
             val chip = requireView().findViewById<Chip>(checkedId)
-            val category = chip.text.toString()
+            val category = ALL_CATEGORIES[chipMap[chip] ?: 0]
             submitBudgetEntryToDB(
                 bankName,
                 debitOrCredit,
@@ -144,24 +165,29 @@ class BudgetEntryFragment : Fragment() {
 
     private fun setSpinnerForDebitOrCredit() {
         val spinnerItems = listOf(
-            SpinnerItem(R.drawable.ic_debit, "Debit"),
-            SpinnerItem(R.drawable.ic_credit, "Credit")
+            SpinnerItem(R.drawable.ic_debit, resources.getStringArray(R.array.debit_or_credit)[0]),
+            SpinnerItem(R.drawable.ic_credit, resources.getStringArray(R.array.debit_or_credit)[1])
         )
         val arrayAdapter = SpinnerAdapter(requireContext(), spinnerItems)
         binding.debitCreditSpinner.adapter = arrayAdapter
     }
 
     private fun setChips() {
-        for (category in ALL_CATEGORIES) {
+        for ((index, category) in ALL_CATEGORIES.withIndex()) {
             val chip = Chip(requireContext())
-            chip.text = category
-            val resId = resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", requireContext().packageName)
+            chip.text = resources.getStringArray(R.array.categories)[index]
+            val resId = resources.getIdentifier(
+                "drawable/cat_${category.lowercase()}",
+                "drawable",
+                requireContext().packageName
+            )
             chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
             chip.isChipIconVisible = true
             binding.chipGroup.addView(chip)
             if (category == ALL_CATEGORIES[0]) {
                 chip.isChecked = true
             }
+            chipMap[chip] = index
         }
     }
 
@@ -175,8 +201,8 @@ class BudgetEntryFragment : Fragment() {
         category: String
     ) {
         var amountToInsert = amount.toFloat()
-        if (debitOrCredit.equals("Debit")) {
-            amountToInsert = -1 * amountToInsert
+        if (debitOrCredit == Constants.DEBIT) {
+            amountToInsert *= -1
         }
         budgetViewModel.insertBudget(
             Budget(
@@ -189,8 +215,11 @@ class BudgetEntryFragment : Fragment() {
             )
         )
         profileViewModel.updateCurrentBalance(revisedBalance = revisedCurrentBalance.toFloat())
-        val snackbar = Snackbar.make(binding.budgetEntryConstraint, "Entry added", Snackbar.LENGTH_SHORT)
-        snackbar.setAction("Hide") {
+        val snackbar = Snackbar.make(
+            binding.budgetEntryConstraint,
+            getString(R.string.entry_added), Snackbar.LENGTH_SHORT
+        )
+        snackbar.setAction(getString(R.string.hide)) {
             snackbar.dismiss()
         }
         snackbar.show()
@@ -199,7 +228,7 @@ class BudgetEntryFragment : Fragment() {
 
     private fun calculatePreliminaryBalance(enteredAmount: String) {
         val amount = enteredAmount.ifEmpty { "0" }
-        val temp = if (debitOrCredit == "Debit") {
+        val temp = if (debitOrCredit == Constants.DEBIT) {
             (currentBalance - amount.toFloat())
         } else {
             (currentBalance + amount.toFloat())

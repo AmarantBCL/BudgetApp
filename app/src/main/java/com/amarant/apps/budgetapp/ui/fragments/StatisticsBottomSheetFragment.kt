@@ -85,6 +85,8 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
 
         private const val KEY_PERIOD = "period"
 
+        const val TAG = "StatisticsBottomSheet"
+
         fun newInstance(period: String): StatisticsBottomSheetFragment {
             return StatisticsBottomSheetFragment().apply {
                 arguments = Bundle().apply {

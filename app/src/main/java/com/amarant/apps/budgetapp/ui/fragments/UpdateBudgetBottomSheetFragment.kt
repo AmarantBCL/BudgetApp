@@ -2,12 +2,12 @@ package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.UpdateBudgetBottomSheetBinding
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
@@ -26,6 +26,8 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var currentBudgetItem: Budget
 
     val budgetViewModel: BudgetViewModel by activityViewModels()
+
+    private val chipMap = mutableMapOf<Chip, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,7 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
             val updatedPurpose = binding.updatePurpose.text.toString().trim()
             val checkedId = binding.chipGroup.checkedChipId
             val chip = requireView().findViewById<Chip>(checkedId)
-            val category = chip.text.toString()
+            val category = ALL_CATEGORIES[chipMap[chip] ?: 0]
             budgetViewModel.updateBudget(
                 updatedAmount.toFloat(),
                 updatedPurpose,
@@ -74,9 +76,9 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setChips() {
-        for (category in ALL_CATEGORIES) {
+        for ((index, category) in ALL_CATEGORIES.withIndex()) {
             val chip = Chip(requireContext())
-            chip.text = category
+            chip.text = resources.getStringArray(R.array.categories)[index]
             val resId = resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", requireContext().packageName)
             chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
             chip.isChipIconVisible = true
@@ -84,12 +86,15 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
             if (category == ALL_CATEGORIES[0]) {
                 chip.isChecked = true
             }
+            chipMap[chip] = index
         }
     }
 
     companion object {
 
         private const val KEY_BUDGET_ITEM = "budget_item"
+
+        const val TAG = "UpdateBudgetBottomSheet"
 
         fun newInstance(budgetItem: Budget): UpdateBudgetBottomSheetFragment {
             return UpdateBudgetBottomSheetFragment().apply {

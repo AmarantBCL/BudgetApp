@@ -1,3 +1,56 @@
 <resources>
     <string name="app_name">BudgetApp</string>
+    <string name="enter_budget">Enter Budget</string>
+    <string name="see_reports">See Reports</string>
+    <string name="select_the_date">Select the date</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="purpose">Purpose</string>
+    <string name="balance_in_account_after_entry">Balance in this account \nafter this entry</string>
+    <string name="submit_entry">Submit Entry</string>
+    <string name="image">Image</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="email">Email</string>
+    <string name="bank_details">Bank Details</string>
+    <string name="bank_name">Bank name</string>
+    <string name="initial_balance">Initial Balance</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="make_primary_bank">Make this my primary bank</string>
+    <string name="submit_details">Submit Details</string>
+    <string name="update_current_balance">Update Current Balance</string>
+    <string name="show_statistics">Show Statistics</string>
+    <string name="total_spending">Total Spending :</string>
+    <string name="total_credit">Total Credit :</string>
+    <string name="more_spending_details">More spending details</string>
+    <string name="amount">Amount</string>
+    <string name="update_entry">Update Entry</string>
+    <string name="profile">Profile</string>
+    <string name="complete_profile">Complete Profile</string>
+    <string name="hide">Hide</string>
+    <string name="current_balance_updated_to">Current balance updated to: %s</string>
+    <string name="could_not_save_bitmap">Could not save Bitmap</string>
+    <string name="enter_budget_for">Enter budget for: %s</string>
+    <string name="none">NONE</string>
+    <string name="entry_added">Entry added</string>
+    <string name="spending_reports">Spending Reports</string>
+    <string name="item_deleted">Item Deleted</string>
+    <string name="undo">Undo</string>
+    <string name="fill_in_all_fields">Fill in all the required fields</string>
+
+    <string-array name="debit_or_credit">
+        <item>Debit</item>
+        <item>Credit</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>Groceries</item>
+        <item>Restaurants</item>
+        <item>Cash</item>
+        <item>Utilities</item>
+        <item>Clothes</item>
+        <item>House</item>
+        <item>Car</item>
+        <item>Health</item>
+        <item>Pets</item>
+        <item>Taxi</item>
+    </string-array>
 </resources>
