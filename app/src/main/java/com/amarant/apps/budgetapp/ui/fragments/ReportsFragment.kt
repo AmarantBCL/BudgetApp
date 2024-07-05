@@ -124,7 +124,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
                     PERIOD_THIS_MONTH -> getReportsForSelectedPeriod(PERIOD_THIS_MONTH)
                     PERIOD_LAST_MONTH -> getReportsForSelectedPeriod(PERIOD_LAST_MONTH)
                     PERIOD_LAST_TWO_MONTHS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_MONTHS)
-                    else -> getAllEntries()
+                    else -> getReportsForSelectedPeriod(PERIOD_SHOW_ALL)
                 }
                 period = parent?.getItemAtPosition(position) as String
             }
@@ -157,9 +157,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private fun getAllEntries() {
         budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
-            reportsAdapter.differ.submitList(it) {
-                binding.rcvReports.scrollToPosition(0)
-            }
+            reportsAdapter.differ.submitList(it)
         }
     }
 
@@ -192,7 +190,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
             PERIOD_LAST_MONTH -> getStartOfLastMonth()
             PERIOD_LAST_TWO_MONTHS -> getStartOfLastMonth()
             else -> {
-                getAllEntries()
+                getReportsBetweenDates(dateMillisToString(0L), startDate)
                 return
             }
         }

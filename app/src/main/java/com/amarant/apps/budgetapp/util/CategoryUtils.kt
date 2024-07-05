@@ -10,6 +10,8 @@ object CategoryUtils {
         "Clothes",
         "House",
         "Car",
-        "Health"
+        "Health",
+        "Pets",
+        "Taxi"
     )
 }

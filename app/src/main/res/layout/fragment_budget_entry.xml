@@ -10,6 +10,18 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/budgetEntryConstraint">
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="52dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectionRequired="true"
+            app:singleSelection="true" />
+
         <Spinner
             android:id="@+id/bank_spinner"
             android:layout_width="match_parent"
@@ -21,14 +33,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/chip_group" />
 
         <Spinner
             android:id="@+id/debit_credit_spinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="16dp"
             android:pointerIcon="arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -75,18 +87,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/purposeLayout"
-            app:selectionRequired="true"
-            app:singleSelection="true" />
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -96,7 +96,7 @@
             android:text="Balance in this account \nafter this entry"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chip_group" />
+            app:layout_constraintTop_toBottomOf="@+id/purposeLayout" />
 
         <TextView
             android:id="@+id/remainingBalance"
@@ -107,7 +107,7 @@
             android:text="1512.200"
             android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/chip_group" />
+            app:layout_constraintTop_toBottomOf="@+id/purposeLayout" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submit_budget_entry"

@@ -68,7 +68,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_back"
         android:text="Update Entry"
-        android:textColor="@color/white"
+        android:textColor="?attr/spinnerColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
