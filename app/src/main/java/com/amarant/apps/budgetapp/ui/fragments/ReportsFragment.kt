@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +47,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     private val binding: FragmentReportsBinding
         get() = _binding ?: throw RuntimeException("FragmentReportsBinding == null")
 
-    private val budgetViewModel: BudgetViewModel by viewModels()
+    private val budgetViewModel: BudgetViewModel by activityViewModels()
     private lateinit var reportsAdapter: ReportsAdapter
     private val dateRangeArray = arrayOf(
         SELECT_DATA_RANGE,
@@ -142,7 +143,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     override fun onClick(position: Int) {
         val currentBudgetItem = reportsAdapter.differ.currentList[position]
-        val bottomSheet = UpdateBudgetBottomSheetFragment(currentBudgetItem)
+        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
         bottomSheet.show(requireActivity().supportFragmentManager, "UpdateBudgetBottomSheet")
     }
 

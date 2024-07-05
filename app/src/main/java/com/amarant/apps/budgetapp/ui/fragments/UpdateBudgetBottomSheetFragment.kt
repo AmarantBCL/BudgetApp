@@ -1,30 +1,42 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.amarant.apps.budgetapp.databinding.UpdateBudgetBottomSheetBinding
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
-import com.amarant.apps.budgetapp.util.CategoryUtils
 import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UpdateBudgetBottomSheetFragment(
-    val currentBudgetItem: Budget
-) : BottomSheetDialogFragment() {
+class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: UpdateBudgetBottomSheetBinding? = null
     private val binding: UpdateBudgetBottomSheetBinding
         get() = _binding ?: throw RuntimeException("UpdateBudgetBottomSheetBinding == null")
 
-    val budgetViewModel: BudgetViewModel by viewModels()
+    private lateinit var currentBudgetItem: Budget
+
+    val budgetViewModel: BudgetViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        currentBudgetItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(KEY_BUDGET_ITEM, Budget::class.java)
+                ?: throw RuntimeException("No arguments passed to UpdateBudgetBottomSheetFragment")
+        } else {
+            requireArguments().getParcelable(KEY_BUDGET_ITEM)
+                ?: throw RuntimeException("No arguments passed to UpdateBudgetBottomSheetFragment")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +83,19 @@ class UpdateBudgetBottomSheetFragment(
             binding.chipGroup.addView(chip)
             if (category == ALL_CATEGORIES[0]) {
                 chip.isChecked = true
+            }
+        }
+    }
+
+    companion object {
+
+        private const val KEY_BUDGET_ITEM = "budget_item"
+
+        fun newInstance(budgetItem: Budget): UpdateBudgetBottomSheetFragment {
+            return UpdateBudgetBottomSheetFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(KEY_BUDGET_ITEM, budgetItem)
+                }
             }
         }
     }
