@@ -156,8 +156,10 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     private fun getAllEntries() {
-        budgetViewModel.allBudgetEntries.observe(viewLifecycleOwner) {
-            reportsAdapter.differ.submitList(it)
+        budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
+            reportsAdapter.differ.submitList(it) {
+                binding.rcvReports.scrollToPosition(0)
+            }
         }
     }
 
@@ -175,12 +177,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     private fun getReportsBetweenDates(startDate: String, endDate: String) {
         val start = UtilityFunctions.dateStringToMillis(startDate)
         val end = UtilityFunctions.dateStringToMillis(endDate)
-        budgetViewModel.getReportsBetweenDates(start, end)
-        budgetViewModel.dateRandeBudgetEntries.observe(viewLifecycleOwner) {
-            reportsAdapter.differ.submitList(it) {
-                binding.rcvReports.scrollToPosition(0)
-            }
-        }
+        budgetViewModel.setReportsBetweenDates(start, end)
     }
 
     private fun getReportsForSelectedPeriod(period: String) {

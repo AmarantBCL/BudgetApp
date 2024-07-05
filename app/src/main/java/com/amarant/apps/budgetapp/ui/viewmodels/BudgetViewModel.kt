@@ -3,6 +3,7 @@ package com.amarant.apps.budgetapp.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
@@ -29,26 +30,31 @@ class BudgetViewModel @Inject constructor(
     val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
-    val allBudgetEntries: LiveData<List<Budget>> = budgetRepository.getAllBudgetEntries()
-
-    var _dateRangeBudgetEntries: MutableLiveData<List<Budget>> = MutableLiveData()
-    val dateRandeBudgetEntries: LiveData<List<Budget>> = _dateRangeBudgetEntries
+    private val _dateRange = MutableLiveData(Pair(0L, System.currentTimeMillis()))
+    val dateRange: LiveData<Pair<Long, Long>>
+        get() = _dateRange
 
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
     }
 
-    fun updateBudget(amount: Float, purpose: String, category: String, id: Int) = viewModelScope.launch {
-        budgetRepository.updateBudget(amount, purpose, category, id)
-    }
+    fun updateBudget(amount: Float, purpose: String, category: String, id: Int) =
+        viewModelScope.launch {
+            budgetRepository.updateBudget(amount, purpose, category, id)
+        }
 
     fun deleteEntry(budget: Budget) = viewModelScope.launch {
         budgetRepository.deleteEntry(budget)
     }
 
-    fun getReportsBetweenDates(startDate: Long, endDate: Long) = viewModelScope.launch {
-        val response = budgetRepository.getBudgetEntriesBetweenDates(startDate, endDate)
-        _dateRangeBudgetEntries.postValue(response)
+    fun setReportsBetweenDates(startDate: Long, endDate: Long) {
+        _dateRange.value = Pair(startDate, endDate)
+    }
+
+    fun getReportsBetweenDates(): LiveData<List<Budget>> {
+        return dateRange.switchMap { pair ->
+            budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second)
+        }
     }
 
     fun calculateTotalSpending(period: String): LiveData<Float> {
@@ -70,7 +76,7 @@ class BudgetViewModel @Inject constructor(
     }
 
     private fun calculateStartPeriod(period: String): Long {
-        val start = when(period) {
+        val start = when (period) {
             PERIOD_TODAY -> UtilityFunctions.getToday()
             PERIOD_YESTERDAY -> UtilityFunctions.getYesterday()
             PERIOD_LAST_TWO_DAYS -> UtilityFunctions.getYesterday()
@@ -88,7 +94,7 @@ class BudgetViewModel @Inject constructor(
     }
 
     private fun calculateEndPeriod(period: String): Long {
-        val end = when(period) {
+        val end = when (period) {
             PERIOD_YESTERDAY -> UtilityFunctions.getToday() - 1000
             PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfWeek() - 1000
             PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfMonth() - 1000

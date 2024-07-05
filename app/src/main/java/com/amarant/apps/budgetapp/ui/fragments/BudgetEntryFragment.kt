@@ -132,6 +132,7 @@ class BudgetEntryFragment : Fragment() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             val bankNames = ArrayList<String>()
             bankNames.add(it[0].bankName)
+            bankName = it[0].bankName
             currentBalance = it[0].currentBalance
             binding.remainingBalance.text = it[0].currentBalance.toString()
             val arrayAdapter =

@@ -37,7 +37,7 @@ interface BudgetDao {
     fun getTotalCreditForPeriod(startDate: Long, endDate: Long): LiveData<Float>
 
     @Query("SELECT * FROM budget WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
-    suspend fun getReportsBetweenDates(startDate: Long, endDate: Long): List<Budget>
+    fun getReportsBetweenDates(startDate: Long, endDate: Long): LiveData<List<Budget>>
 
     @Query("SELECT category, SUM(amount) AS amount FROM budget WHERE creditOrDebit = 'Debit' " +
             "AND date BETWEEN :startDate AND :endDate GROUP BY category ORDER BY amount ASC")

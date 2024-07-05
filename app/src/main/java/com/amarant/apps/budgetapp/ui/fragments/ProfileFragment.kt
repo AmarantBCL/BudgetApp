@@ -113,7 +113,11 @@ class ProfileFragment : Fragment() {
             val currentBalance = binding.currentBalance.text.toString().trim()
             val revisedBalance = currentBalance.toFloat()
             profileViewModel.updateCurrentBalance(revisedBalance)
-            Snackbar.make(binding.profileConstrain, "Current balance updated to: $revisedBalance", Snackbar.LENGTH_SHORT).show()
+            val snackbar = Snackbar.make(binding.profileConstrain, "Current balance updated to: $revisedBalance", Snackbar.LENGTH_SHORT)
+            snackbar.setAction("Hide") {
+                snackbar.dismiss()
+            }
+            snackbar.show()
             findNavController().popBackStack()
         }
     }
