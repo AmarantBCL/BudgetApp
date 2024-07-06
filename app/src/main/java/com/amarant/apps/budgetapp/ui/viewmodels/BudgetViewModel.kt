@@ -8,16 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.repository.BudgetRepository
-import com.amarant.apps.budgetapp.util.Constants
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_MONTHS
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_WEEK
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_TODAY
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_WEEKS
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_DAYS
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_WEEK
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_YESTERDAY
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,11 +26,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BudgetViewModel @Inject constructor(
-    val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
     private val _dateRange = MutableLiveData(Pair(0L, System.currentTimeMillis()))
-    val dateRange: LiveData<Pair<Long, Long>>
+    private val dateRange: LiveData<Pair<Long, Long>>
         get() = _dateRange
 
     fun insertBudget(budget: Budget) = viewModelScope.launch {
@@ -57,25 +56,25 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
-    fun calculateTotalSpending(period: String): LiveData<Float> {
+    fun calculateTotalSpending(period: Int): LiveData<Float> {
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod(period)
         return budgetRepository.getTotalSpendingForPeriod(start, end)
     }
 
-    fun calculateTotalCredit(period: String): LiveData<Float> {
+    fun calculateTotalCredit(period: Int): LiveData<Float> {
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod(period)
         return budgetRepository.getTotalCreditForPeriod(start, end)
     }
 
-    fun getSpendingsByCategory(period: String): LiveData<List<BudgetCategoryDetails>> {
+    fun getSpendingsByCategory(period: Int): LiveData<List<BudgetCategoryDetails>> {
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod(period)
         return budgetRepository.getSpendingsByCategory(start, end)
     }
 
-    private fun calculateStartPeriod(period: String): Long {
+    private fun calculateStartPeriod(period: Int): Long {
         val start = when (period) {
             PERIOD_TODAY -> UtilityFunctions.getToday()
             PERIOD_YESTERDAY -> UtilityFunctions.getYesterday()
@@ -93,7 +92,7 @@ class BudgetViewModel @Inject constructor(
         return start
     }
 
-    private fun calculateEndPeriod(period: String): Long {
+    private fun calculateEndPeriod(period: Int): Long {
         val end = when (period) {
             PERIOD_YESTERDAY -> UtilityFunctions.getToday() - 1000
             PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfWeek() - 1000

@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,17 +15,16 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_MONTHS
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_MONTH
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_THIS_WEEK
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_SHOW_ALL
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_TODAY
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_WEEKS
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_TWO_DAYS
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_LAST_WEEK
-import com.amarant.apps.budgetapp.util.Constants.PERIOD_YESTERDAY
-import com.amarant.apps.budgetapp.util.Constants.SELECT_DATA_RANGE
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfLastMonth
@@ -36,7 +33,6 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfPreviousWeek
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getStartOfWeek
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getToday
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getYesterday
-import com.bumptech.glide.util.Util
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
@@ -50,19 +46,6 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
     private lateinit var reportsAdapter: ReportsAdapter
-    private val dateRangeArray = arrayOf(
-        SELECT_DATA_RANGE,
-        PERIOD_TODAY,
-        PERIOD_YESTERDAY,
-        PERIOD_LAST_TWO_DAYS,
-        PERIOD_THIS_WEEK,
-        PERIOD_LAST_WEEK,
-        PERIOD_LAST_TWO_WEEKS,
-        PERIOD_THIS_MONTH,
-        PERIOD_LAST_MONTH,
-        PERIOD_LAST_TWO_MONTHS,
-        PERIOD_SHOW_ALL
-    )
     private lateinit var startDate: String
     private var period = PERIOD_SHOW_ALL
 
@@ -115,26 +98,15 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         }
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when(parent?.getItemAtPosition(position)) {
-                    PERIOD_TODAY -> getReportsForSelectedPeriod(PERIOD_TODAY)
-                    PERIOD_YESTERDAY -> getReportsForSelectedPeriod(PERIOD_YESTERDAY)
-                    PERIOD_LAST_TWO_DAYS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_DAYS)
-                    PERIOD_THIS_WEEK -> getReportsForSelectedPeriod(PERIOD_THIS_WEEK)
-                    PERIOD_LAST_WEEK -> getReportsForSelectedPeriod(PERIOD_LAST_WEEK)
-                    PERIOD_LAST_TWO_WEEKS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_WEEKS)
-                    PERIOD_THIS_MONTH -> getReportsForSelectedPeriod(PERIOD_THIS_MONTH)
-                    PERIOD_LAST_MONTH -> getReportsForSelectedPeriod(PERIOD_LAST_MONTH)
-                    PERIOD_LAST_TWO_MONTHS -> getReportsForSelectedPeriod(PERIOD_LAST_TWO_MONTHS)
-                    else -> getReportsForSelectedPeriod(PERIOD_SHOW_ALL)
-                }
-                period = parent?.getItemAtPosition(position) as String
+                getReportsForSelectedPeriod(position)
+                period = position
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
         }
-        binding.dateRangeReportSpinner.setSelection(0)
+        binding.dateRangeReportSpinner.setSelection(PERIOD_SHOW_ALL)
     }
 
     override fun onDestroyView() {
@@ -168,6 +140,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     private fun setSpinnerValues() {
+        val dateRangeArray = resources.getStringArray(R.array.periods)
         val arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dateRangeArray)
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.dateRangeReportSpinner.adapter = arrayAdapter
@@ -179,7 +152,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         budgetViewModel.setReportsBetweenDates(start, end)
     }
 
-    private fun getReportsForSelectedPeriod(period: String) {
+    private fun getReportsForSelectedPeriod(period: Int) {
         val start = when(period) {
             PERIOD_TODAY -> getToday()
             PERIOD_YESTERDAY -> getYesterday()

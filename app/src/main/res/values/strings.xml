@@ -35,7 +35,7 @@
     <string name="item_deleted">Item Deleted</string>
     <string name="undo">Undo</string>
     <string name="fill_in_all_fields">Fill in all the required fields</string>
-    <string name="category_placeholder">%1$s :</string>
+    <string name="category_placeholder">%s :</string>
 
     <string-array name="debit_or_credit">
         <item>Debit</item>
@@ -53,5 +53,18 @@
         <item>Health</item>
         <item>Pets</item>
         <item>Taxi</item>
+    </string-array>
+
+    <string-array name="periods">
+        <item>Today</item>
+        <item>Yesterday</item>
+        <item>Last 2 days</item>
+        <item>This week</item>
+        <item>Last week</item>
+        <item>Last 2 weeks</item>
+        <item>This month</item>
+        <item>Last month</item>
+        <item>Last 2 months</item>
+        <item>Show All</item>
     </string-array>
 </resources>

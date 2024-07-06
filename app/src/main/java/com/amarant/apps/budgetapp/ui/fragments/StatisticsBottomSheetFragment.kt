@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.databinding.StatisticsBottomSheetBinding
 import com.amarant.apps.budgetapp.ui.adapter.DetailsAdapter
-import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,13 +22,13 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val budgetViewModel: BudgetViewModel by viewModels()
 
-    private lateinit var period: String
+    private var period: Int = PERIOD_SHOW_ALL
 
     private lateinit var detailsAdapter: DetailsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        period = requireArguments().getString(KEY_PERIOD) ?: "Show All"
+        period = requireArguments().getInt(KEY_PERIOD)
     }
 
     override fun onCreateView(
@@ -87,10 +86,10 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
 
         const val TAG = "StatisticsBottomSheet"
 
-        fun newInstance(period: String): StatisticsBottomSheetFragment {
+        fun newInstance(period: Int): StatisticsBottomSheetFragment {
             return StatisticsBottomSheetFragment().apply {
                 arguments = Bundle().apply {
-                    putString(KEY_PERIOD, period)
+                    putInt(KEY_PERIOD, period)
                 }
             }
         }
