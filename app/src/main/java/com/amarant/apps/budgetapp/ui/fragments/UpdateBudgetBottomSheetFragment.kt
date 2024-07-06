@@ -25,7 +25,7 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var currentBudgetItem: Budget
 
-    val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val budgetViewModel: BudgetViewModel by activityViewModels()
 
     private val chipMap = mutableMapOf<Chip, Int>()
 
@@ -79,7 +79,11 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
         for ((index, category) in ALL_CATEGORIES.withIndex()) {
             val chip = Chip(requireContext())
             chip.text = resources.getStringArray(R.array.categories)[index]
-            val resId = resources.getIdentifier("drawable/cat_${category.lowercase()}", "drawable", requireContext().packageName)
+            val resId = resources.getIdentifier(
+                "drawable/cat_${category.lowercase()}",
+                "drawable",
+                requireContext().packageName
+            )
             chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
             chip.isChipIconVisible = true
             binding.chipGroup.addView(chip)

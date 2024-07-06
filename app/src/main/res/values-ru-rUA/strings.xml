@@ -36,6 +36,7 @@
     <string name="item_deleted">Запись удалена</string>
     <string name="undo">Вернуть</string>
     <string name="fill_in_all_fields">Заполните все необходимые поля</string>
+    <string name="category_placeholder">%s :</string>
 
     <string-array name="debit_or_credit">
         <item>Дебет</item>
@@ -67,5 +68,4 @@
         <item>Посл. 2 месяца</item>
         <item>Показать все</item>
     </string-array>
-    <string name="category_placeholder">%s :</string>
 </resources>
