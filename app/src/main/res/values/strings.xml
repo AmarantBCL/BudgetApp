@@ -35,6 +35,7 @@
     <string name="item_deleted">Item Deleted</string>
     <string name="undo">Undo</string>
     <string name="fill_in_all_fields">Fill in all the required fields</string>
+    <string name="category_placeholder">%1$s :</string>
 
     <string-array name="debit_or_credit">
         <item>Debit</item>

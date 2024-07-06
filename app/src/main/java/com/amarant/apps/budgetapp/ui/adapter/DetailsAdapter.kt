@@ -11,11 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ItemDetailsBinding
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
+import com.amarant.apps.budgetapp.util.CategoryUtils
 
 class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailsViewHolder {
-        return DetailsViewHolder(ItemDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return DetailsViewHolder(
+            ItemDetailsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -38,7 +45,12 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>(
                 } else {
                     binding.imgIcon.setImageResource(R.drawable.cat_unknown)
                 }
-                binding.budgetCategoryName.text = "$category :"
+                binding.budgetCategoryName.text =
+                    context.getString(
+                        R.string.category_placeholder,
+                        context.resources.getStringArray(R.array.categories)[CategoryUtils.CATEGORY_MAPPING[category]
+                            ?: 0]
+                    )
                 binding.budgetItemAmount.text = amount.toString()
             }
         }
@@ -48,14 +60,21 @@ class DetailsAdapter() : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>(
         return differ.currentList.size
     }
 
-    inner class DetailsViewHolder(val binding: ItemDetailsBinding): RecyclerView.ViewHolder(binding.root)
+    inner class DetailsViewHolder(val binding: ItemDetailsBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     private val differCallback = object : DiffUtil.ItemCallback<BudgetCategoryDetails>() {
-        override fun areItemsTheSame(oldItem: BudgetCategoryDetails, newItem: BudgetCategoryDetails): Boolean {
+        override fun areItemsTheSame(
+            oldItem: BudgetCategoryDetails,
+            newItem: BudgetCategoryDetails
+        ): Boolean {
             return oldItem.category == newItem.category
         }
 
-        override fun areContentsTheSame(oldItem: BudgetCategoryDetails, newItem: BudgetCategoryDetails): Boolean {
+        override fun areContentsTheSame(
+            oldItem: BudgetCategoryDetails,
+            newItem: BudgetCategoryDetails
+        ): Boolean {
             return oldItem == newItem
         }
     }

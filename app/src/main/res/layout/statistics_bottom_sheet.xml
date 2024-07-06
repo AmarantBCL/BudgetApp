@@ -16,7 +16,7 @@
         android:drawableStart="@drawable/ic_debit"
         android:drawablePadding="8dp"
         android:text="@string/total_spending"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,10 +24,10 @@
         android:id="@+id/totalSpending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/materialTextView"
+        android:layout_marginEnd="16dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="£100.02" />
 
@@ -40,7 +40,7 @@
         android:drawableStart="@drawable/ic_credit"
         android:drawablePadding="8dp"
         android:text="@string/total_credit"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
 
@@ -48,10 +48,10 @@
         android:id="@+id/totalCredit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/materialTextView"
+        android:layout_marginEnd="16dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalSpending"
         tools:text="£100.02" />
 
@@ -62,7 +62,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/more_spending_details"
-        android:textColor="@color/primary"
+        android:textColor="@color/primaryDark"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,5 +80,12 @@
         app:layout_constraintTop_toBottomOf="@id/lbl_more_details"
         tools:listitem="@layout/item_details"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
