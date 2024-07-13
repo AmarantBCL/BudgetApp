@@ -51,8 +51,9 @@
         <item>House</item>
         <item>Car</item>
         <item>Health</item>
-        <item>Pets</item>
         <item>Taxi</item>
+        <item>Pets</item>
+        <item>Taxes</item>
     </string-array>
 
     <string-array name="periods">

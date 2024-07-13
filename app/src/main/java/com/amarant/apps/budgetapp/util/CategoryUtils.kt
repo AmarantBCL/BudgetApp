@@ -11,8 +11,9 @@ object CategoryUtils {
         "House",
         "Car",
         "Health",
+        "Taxi",
         "Pets",
-        "Taxi"
+        "Taxes"
     )
 
     val CATEGORY_MAPPING = mapOf(
@@ -24,7 +25,8 @@ object CategoryUtils {
         "House" to 5,
         "Car" to 6,
         "Health" to 7,
-        "Pets" to 8,
-        "Taxi" to 9
+        "Taxi" to 8,
+        "Pets" to 9,
+        "Taxes" to 10
     )
 }

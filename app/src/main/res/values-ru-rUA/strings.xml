@@ -52,8 +52,9 @@
         <item>Дом</item>
         <item>Автомобиль</item>
         <item>Здоровье</item>
-        <item>Питомцы</item>
         <item>Такси</item>
+        <item>Питомцы</item>
+        <item>Налоги</item>
     </string-array>
 
     <string-array name="periods">
