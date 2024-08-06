@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +79,21 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rcvSpendingDetails.layoutManager = layoutManager
         binding.rcvSpendingDetails.adapter = detailsAdapter
+        detailsAdapter.itemClickListener = { position, operation ->
+            val item = detailsAdapter.differ.currentList[position]
+            val currentSpending = binding.totalSpending.text.toString().toFloat()
+            Log.d("WTF", "currentSpending: $currentSpending [${binding.totalSpending.text}]")
+            Log.d("WTF", "${item.amount} (${item.amount * -1})")
+            if (operation) {
+                Log.e("WTF", "ADD")
+                binding.totalSpending.text = (currentSpending + item.amount * -1).toString()
+                Log.e("WTF", "Became: ${currentSpending + item.amount * -1}")
+            } else {
+                Log.e("WTF", "SUBTRACT")
+                binding.totalSpending.text = (currentSpending - item.amount * -1).toString()
+                Log.e("WTF", "Became: ${currentSpending - item.amount * -1}")
+            }
+        }
     }
 
     companion object {

@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="CustomTheme">
         <attr name="spinnerColor" format="color"/>
+        <attr name="statisticsColor" format="color"/>
     </declare-styleable>
 </resources>
