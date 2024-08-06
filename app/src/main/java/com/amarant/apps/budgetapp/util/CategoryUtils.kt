@@ -10,9 +10,15 @@ object CategoryUtils {
         "Clothes",
         "House",
         "Car",
+        "Beauty",
         "Health",
-        "Taxi",
         "Pets",
+        "Taxi",
+        "Entertainment",
+        "Education",
+        "Traveling",
+        "Gifts",
+        "Charity",
         "Taxes"
     )
 
@@ -24,9 +30,15 @@ object CategoryUtils {
         "Clothes" to 4,
         "House" to 5,
         "Car" to 6,
-        "Health" to 7,
-        "Taxi" to 8,
+        "Beauty" to 7,
+        "Health" to 8,
         "Pets" to 9,
-        "Taxes" to 10
+        "Taxi" to 10,
+        "Entertainment" to 11,
+        "Education" to 12,
+        "Traveling" to 13,
+        "Gifts" to 14,
+        "Charity" to 15,
+        "Taxes" to 16
     )
 }

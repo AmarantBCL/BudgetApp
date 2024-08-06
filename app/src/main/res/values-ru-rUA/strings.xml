@@ -51,9 +51,15 @@
         <item>Одежда</item>
         <item>Дом</item>
         <item>Автомобиль</item>
+        <item>Красота</item>
         <item>Здоровье</item>
-        <item>Такси</item>
         <item>Питомцы</item>
+        <item>Такси</item>
+        <item>Развлечения</item>
+        <item>Образование</item>
+        <item>Путешествия</item>
+        <item>Подарки</item>
+        <item>Донат</item>
         <item>Налоги</item>
     </string-array>
 

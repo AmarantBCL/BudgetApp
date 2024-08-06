@@ -50,9 +50,15 @@
         <item>Clothes</item>
         <item>House</item>
         <item>Car</item>
+        <item>Beauty</item>
         <item>Health</item>
-        <item>Taxi</item>
         <item>Pets</item>
+        <item>Taxi</item>
+        <item>Entertainment</item>
+        <item>Education</item>
+        <item>Traveling</item>
+        <item>Gifts</item>
+        <item>Charity</item>
         <item>Taxes</item>
     </string-array>
 
