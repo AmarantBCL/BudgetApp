@@ -75,4 +75,10 @@
         <item>Посл. 2 месяца</item>
         <item>Показать все</item>
     </string-array>
+    <string name="piggy_bank">Копилка</string>
+    <string name="saved">Накоплено</string>
+    <string name="currency">Валюта $</string>
+    <string name="hryvnia">Гривня ₴</string>
+    <string name="taken">Взято</string>
+    <string name="balance_updated">Баланс обновлен</string>
 </resources>

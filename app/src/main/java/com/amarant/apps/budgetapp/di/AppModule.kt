@@ -32,4 +32,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideBudgetDao(db: BudgetDatabase) = db.getBudgetDao()
+
+    @Provides
+    @Singleton
+    fun providePiggyBankDao(db: BudgetDatabase) = db.getPiggyBank()
 }

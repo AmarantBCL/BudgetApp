@@ -36,6 +36,12 @@
     <string name="undo">Undo</string>
     <string name="fill_in_all_fields">Fill in all the required fields</string>
     <string name="category_placeholder">%s :</string>
+    <string name="piggy_bank">Piggy bank</string>
+    <string name="saved">Collected</string>
+    <string name="currency">Currency $</string>
+    <string name="hryvnia">Hryvnia ₴</string>
+    <string name="taken">Taken</string>
+    <string name="balance_updated">Balance updated</string>
 
     <string-array name="debit_or_credit">
         <item>Debit</item>

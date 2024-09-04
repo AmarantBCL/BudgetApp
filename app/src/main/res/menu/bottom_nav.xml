@@ -4,6 +4,12 @@
         android:id="@+id/calendarFragment"
         android:icon="@drawable/ic_edit"
         android:title="@string/enter_budget" />
+
+    <item
+        android:id="@+id/piggyBankFragment"
+        android:icon="@drawable/ic_bank"
+        android:title="@string/enter_budget" />
+
     <item
         android:id="@+id/reportsFragment"
         android:icon="@drawable/ic_file"

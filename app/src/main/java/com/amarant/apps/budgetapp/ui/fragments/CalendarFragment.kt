@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
+import com.amarant.apps.budgetapp.entities.PiggyBank
+import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +23,7 @@ class CalendarFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentCalendarBinding == null")
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val piggyBankViewModel: PiggyBankViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +45,26 @@ class CalendarFragment : Fragment() {
         }
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
+                piggyBankViewModel.updatePiggyBank(PiggyBank(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0)
+                )
                 findNavController().navigate(R.id.action_global_profileFragment)
+            }
+        }
+        // TODO DEL Temp for testing
+        piggyBankViewModel.getPiggyBank().observe(viewLifecycleOwner) {
+            if (it == null) {
+                piggyBankViewModel.updatePiggyBank(PiggyBank(
+                    0,
+                    0,
+                    0,
+                    0,
+                    0)
+                )
             }
         }
     }
