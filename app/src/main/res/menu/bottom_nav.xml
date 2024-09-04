@@ -8,7 +8,7 @@
     <item
         android:id="@+id/piggyBankFragment"
         android:icon="@drawable/ic_bank"
-        android:title="@string/enter_budget" />
+        android:title="@string/piggy_bank" />
 
     <item
         android:id="@+id/reportsFragment"

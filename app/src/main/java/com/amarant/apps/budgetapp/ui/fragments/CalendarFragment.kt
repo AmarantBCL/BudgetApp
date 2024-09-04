@@ -55,18 +55,18 @@ class CalendarFragment : Fragment() {
                 findNavController().navigate(R.id.action_global_profileFragment)
             }
         }
-        // TODO DEL Temp for testing
-        piggyBankViewModel.getPiggyBank().observe(viewLifecycleOwner) {
-            if (it == null) {
-                piggyBankViewModel.updatePiggyBank(PiggyBank(
-                    0,
-                    0,
-                    0,
-                    0,
-                    0)
-                )
-            }
-        }
+//        // TODO DEL Temp for testing
+//        piggyBankViewModel.getPiggyBank().observe(viewLifecycleOwner) {
+//            if (it == null) {
+//                piggyBankViewModel.updatePiggyBank(PiggyBank(
+//                    0,
+//                    0,
+//                    0,
+//                    0,
+//                    0)
+//                )
+//            }
+//        }
     }
 
     override fun onDestroyView() {

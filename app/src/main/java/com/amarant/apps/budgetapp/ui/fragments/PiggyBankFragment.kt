@@ -58,11 +58,15 @@ class PiggyBankFragment : Fragment() {
             val hryvniaTaken = binding.editHryvniaTaken.text.toString().toInt()
             val piggyBank = PiggyBank(piggyBankId, currencySaved, hryvniaSaved, currencyTaken, hryvniaTaken)
             piggyBankViewModel.updatePiggyBank(piggyBank)
-            Snackbar.make(
+            val snackbar = Snackbar.make(
                 binding.piggyBankConstraint,
                 getString(R.string.balance_updated),
                 Snackbar.LENGTH_SHORT
-            ).show()
+            )
+            snackbar.setAction(getString(R.string.hide)) {
+                snackbar.dismiss()
+            }
+            snackbar.show()
             findNavController().popBackStack()
         }
     }
