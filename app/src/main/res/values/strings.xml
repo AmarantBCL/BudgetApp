@@ -42,6 +42,8 @@
     <string name="hryvnia">Hryvnia ₴</string>
     <string name="taken">Taken</string>
     <string name="balance_updated">Balance updated</string>
+    <string name="field_must_not_be_empty">Field must not be empty</string>
+    <string name="update_balance">Update balance</string>
 
     <string-array name="debit_or_credit">
         <item>Debit</item>

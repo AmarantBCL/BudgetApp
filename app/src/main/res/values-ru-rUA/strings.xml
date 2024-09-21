@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BudgetApp</string>
-    <string name="enter_budget">Добавить бюджет</string>
-    <string name="see_reports">Посмотреть отчеты</string>
+    <string name="enter_budget">Бюджет</string>
+    <string name="see_reports">Отчеты</string>
     <string name="select_the_date">Выберите дату</string>
     <string name="enter_amount">Укажите количество</string>
     <string name="purpose">Цель</string>
@@ -81,4 +81,6 @@
     <string name="hryvnia">Гривня ₴</string>
     <string name="taken">Взято</string>
     <string name="balance_updated">Баланс обновлен</string>
+    <string name="field_must_not_be_empty">Поле не должно быть пустым</string>
+    <string name="update_balance">Обновить баланс</string>
 </resources>

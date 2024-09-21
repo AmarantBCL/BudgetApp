@@ -52,22 +52,35 @@ class PiggyBankFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnUpdateMoney.setOnClickListener {
-            val currencySaved = binding.editCurrencySaved.text.toString().toInt()
-            val hryvniaSaved = binding.editHryvniaSaved.text.toString().toInt()
-            val currencyTaken = binding.editCurrencyTaken.text.toString().toInt()
-            val hryvniaTaken = binding.editHryvniaTaken.text.toString().toInt()
-            val piggyBank = PiggyBank(piggyBankId, currencySaved, hryvniaSaved, currencyTaken, hryvniaTaken)
-            piggyBankViewModel.updatePiggyBank(piggyBank)
-            val snackbar = Snackbar.make(
-                binding.piggyBankConstraint,
-                getString(R.string.balance_updated),
-                Snackbar.LENGTH_SHORT
-            )
-            snackbar.setAction(getString(R.string.hide)) {
-                snackbar.dismiss()
+            if (binding.editCurrencySaved.text.toString()
+                    .isNotEmpty() && binding.editHryvniaSaved.text.toString()
+                    .isNotEmpty() && binding.editCurrencyTaken.text.toString()
+                    .isNotEmpty() && binding.editHryvniaTaken.text.toString().isNotEmpty()
+            ) {
+                val currencySaved = binding.editCurrencySaved.text.toString().toInt()
+                val hryvniaSaved = binding.editHryvniaSaved.text.toString().toInt()
+                val currencyTaken = binding.editCurrencyTaken.text.toString().toInt()
+                val hryvniaTaken = binding.editHryvniaTaken.text.toString().toInt()
+                val piggyBank =
+                    PiggyBank(piggyBankId, currencySaved, hryvniaSaved, currencyTaken, hryvniaTaken)
+                piggyBankViewModel.updatePiggyBank(piggyBank)
+                val snackbar = Snackbar.make(
+                    binding.piggyBankConstraint,
+                    getString(R.string.balance_updated),
+                    Snackbar.LENGTH_SHORT
+                )
+                snackbar.setAction(getString(R.string.hide)) {
+                    snackbar.dismiss()
+                }
+                snackbar.show()
+                findNavController().popBackStack()
+            } else {
+                Snackbar.make(
+                    binding.piggyBankConstraint,
+                    getString(R.string.field_must_not_be_empty),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
-            snackbar.show()
-            findNavController().popBackStack()
         }
     }
 }
