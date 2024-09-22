@@ -1,8 +1,10 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,9 @@ import androidx.navigation.fragment.findNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentPinBinding
 import com.amarant.apps.budgetapp.ui.MainActivity
+import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.Constants.SNACKBAR_PIN_DURATION
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +30,8 @@ class PinFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentPinBinding == null")
 
     private var digitEditTexts = mutableListOf<EditText>()
+
+    private var enteredDigits = "****"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,22 +77,50 @@ class PinFragment : Fragment() {
                     val enteredPin = editable.toString()
                     if (enteredPin.isNotEmpty()) {
                         if (index < digitEditTexts.size - 1) {
+                            replaceCharAtIndex(index, enteredPin)
                             digitEditTexts[index + 1].requestFocus()
                         } else {
-                            for (e in digitEditTexts) {
-                                e.isEnabled = false
+                            replaceCharAtIndex(index, enteredPin)
+                            if (isPinCorrect(enteredDigits)) {
+                                for (e in digitEditTexts) {
+                                    e.isEnabled = false
+                                }
+                                toggleBottomNavigationMenu(false)
+                                saveEnteredPin()
+                                findNavController().popBackStack()
+                                Snackbar.make(
+                                    binding.constraintPin,
+                                    getString(R.string.success),
+                                    SNACKBAR_PIN_DURATION
+                                ).show()
+                            } else {
+                                Snackbar.make(
+                                    binding.constraintPin,
+                                    getString(R.string.incorrect_pin),
+                                    SNACKBAR_PIN_DURATION
+                                ).show()
                             }
-                            toggleBottomNavigationMenu(false)
-                            findNavController().navigate(PinFragmentDirections.actionPinFragmentToCalendarFragment(true))
-                            Snackbar.make(
-                                binding.constraintPin,
-                                getString(R.string.success),
-                                SNACKBAR_PIN_DURATION
-                            ).show()
                         }
                     }
                 }
             })
         }
+    }
+
+    fun replaceCharAtIndex(index: Int, newChar: String) {
+        val str = enteredDigits
+        enteredDigits = str.substring(0, index) + newChar + str.substring(index + 1)
+    }
+
+    private fun isPinCorrect(pin: String): Boolean {
+        return pin == "1111"
+    }
+
+    private fun saveEnteredPin() {
+        val sharedPrefs = requireContext().getSharedPreferences(
+            PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
+        sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, true).apply()
     }
 }

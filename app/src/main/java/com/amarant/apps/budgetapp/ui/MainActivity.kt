@@ -1,10 +1,12 @@
 package com.amarant.apps.budgetapp.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
+import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,11 +46,21 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
+    override fun onStop() {
+        super.onStop()
+        resetPinCode()
+    }
+
     private fun checkProfileData() {
         profileViewModel.profileLiveData.observe(this) {
             if (it.isEmpty()) {
                 navController.navigate(R.id.action_global_profileFragment)
             }
         }
+    }
+
+    private fun resetPinCode() {
+        val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false).apply()
     }
 }

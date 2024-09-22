@@ -1,25 +1,24 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.entities.PiggyBank
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
-
-    private val args by navArgs<CalendarFragmentArgs>()
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding: FragmentCalendarBinding
@@ -80,9 +79,9 @@ class CalendarFragment : Fragment() {
     }
 
     private fun checkPin() {
-        if (args.isPinEntered) {
-            // TODO
-        } else {
+        val sharedPrefs = requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val isPinEntered = sharedPrefs.getBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false)
+        if (!isPinEntered) {
             findNavController().navigate(R.id.action_calendarFragment_to_pinFragment)
         }
     }

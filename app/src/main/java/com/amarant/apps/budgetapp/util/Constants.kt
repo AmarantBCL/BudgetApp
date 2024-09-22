@@ -5,6 +5,7 @@ object Constants {
     const val DATABASE_NAME = "budget_db"
     const val PREFERENCE_NAME = "profile_preference"
     const val PREFERENCE_PROFILE_EXISTENCE_KEY = "PREFERENCE_PROFILE_EXISTENCE_KEY"
+    const val PREFERENCE_IS_PIN_ENTERED_KEY = "IS_PIN_ENTERED"
 
     const val DEBIT = "Debit"
     const val CREDIT = "Credit"
