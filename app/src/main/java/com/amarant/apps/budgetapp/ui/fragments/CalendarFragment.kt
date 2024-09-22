@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.entities.PiggyBank
@@ -17,6 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
+
+    private val args by navArgs<CalendarFragmentArgs>()
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding: FragmentCalendarBinding
@@ -53,6 +56,8 @@ class CalendarFragment : Fragment() {
                     0)
                 )
                 findNavController().navigate(R.id.action_global_profileFragment)
+            } else {
+                checkPin()
             }
         }
 //        // TODO DEL Temp for testing
@@ -72,5 +77,13 @@ class CalendarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun checkPin() {
+        if (args.isPinEntered) {
+            // TODO
+        } else {
+            findNavController().navigate(R.id.action_calendarFragment_to_pinFragment)
+        }
     }
 }

@@ -8,4 +8,6 @@ object Constants {
 
     const val DEBIT = "Debit"
     const val CREDIT = "Credit"
+
+    const val SNACKBAR_PIN_DURATION = 1000
 }

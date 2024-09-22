@@ -14,6 +14,13 @@
             android:id="@+id/action_calendarFragment_to_budgetEntryFragment"
             app:destination="@id/budgetEntryFragment"
             app:popUpTo="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_pinFragment"
+            app:destination="@id/pinFragment" />
+        <argument
+            android:name="isPinEntered"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/budgetEntryFragment"
@@ -48,4 +55,13 @@
         android:name="com.amarant.apps.budgetapp.ui.fragments.PiggyBankFragment"
         android:label="Piggy bank"
         tools:layout="@layout/fragment_piggy_bank" />
+    <fragment
+        android:id="@+id/pinFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.PinFragment"
+        android:label="fragment_pin"
+        tools:layout="@layout/fragment_pin" >
+        <action
+            android:id="@+id/action_pinFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
 </navigation>

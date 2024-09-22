@@ -83,4 +83,6 @@
     <string name="balance_updated">Баланс обновлен</string>
     <string name="field_must_not_be_empty">Поле не должно быть пустым</string>
     <string name="update_balance">Обновить баланс</string>
+    <string name="enter_your_pin">Введите ваш PIN:</string>
+    <string name="pin">PIN</string>
 </resources>

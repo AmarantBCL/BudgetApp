@@ -82,4 +82,8 @@
         <item>Last 2 months</item>
         <item>Show All</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="enter_your_pin">Enter your PIN:</string>
+    <string name="pin">PIN</string>
+    <string name="success">Success!</string>
 </resources>
