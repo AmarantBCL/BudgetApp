@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.amarant.apps.budgetapp.R
@@ -62,6 +63,11 @@ class PinFragment : Fragment() {
         digitEditTexts.add(2, binding.editPin3)
         digitEditTexts.add(3, binding.editPin4)
         binding.editPin1.requestFocus()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
     }
 
     private fun setClickListeners() {

@@ -86,5 +86,6 @@
     <string name="enter_your_pin">Enter your PIN:</string>
     <string name="pin">PIN</string>
     <string name="success">Success!</string>
-    <string name="incorrect_pin">Incorrect PIN</string>
+    <string name="incorrect_pin">Incorrect PIN.</string>
+    <string name="i_don_t_have_pin">I don\'t have PIN.</string>
 </resources>

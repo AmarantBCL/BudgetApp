@@ -18,6 +18,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,6 +61,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetPinCode() {
+        val bottomNavBar = findViewById<BottomNavigationView>(R.id.bottomNavBar)
+        val bottomMenu = bottomNavBar.menu
+        bottomMenu.findItem(R.id.piggyBankFragment).isEnabled = true
+        bottomMenu.findItem(R.id.reportsFragment).isEnabled = true
         val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false).apply()
     }

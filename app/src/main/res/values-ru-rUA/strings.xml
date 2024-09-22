@@ -85,4 +85,7 @@
     <string name="update_balance">Обновить баланс</string>
     <string name="enter_your_pin">Введите ваш PIN:</string>
     <string name="pin">PIN</string>
+    <string name="success">Успешный вход!</string>
+    <string name="incorrect_pin">Неверный PIN</string>
+    <string name="i_don_t_have_pin">У меня нет PIN.</string>
 </resources>
