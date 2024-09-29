@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -47,6 +48,13 @@ class PinFragment : Fragment() {
         toggleBottomNavigationMenu(true)
         initViews()
         setClickListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.editPin1.requestFocus()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.editPin1, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun toggleBottomNavigationMenu(hide: Boolean) {
