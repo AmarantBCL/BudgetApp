@@ -1,19 +1,29 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.StatisticsBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.UpdateBudgetBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
@@ -64,6 +74,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         startDate = setStartDate()
         initializeRecyclerView()
         setSpinnerValues()
+        setHasOptionsMenu(true)
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -92,6 +103,34 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
             attachToRecyclerView(binding.rcvReports)
         }
         getAllEntries()
+        setClickListeners()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.reports_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.filters) {
+            val bottomSheet = FiltersBottomSheetFragment.newInstance()
+            bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
+        }
+        return true
+    }
+
+    override fun onClick(position: Int) {
+        val currentBudgetItem = reportsAdapter.differ.currentList[position]
+        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
+        bottomSheet.show(requireActivity().supportFragmentManager, UpdateBudgetBottomSheetFragment.TAG)
+    }
+
+    private fun setClickListeners() {
         binding.statistics.setOnClickListener {
             val bottomSheet = StatisticsBottomSheetFragment.newInstance(period)
             bottomSheet.show(requireActivity().supportFragmentManager, StatisticsBottomSheetFragment.TAG)
@@ -107,17 +146,6 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
             }
         }
         binding.dateRangeReportSpinner.setSelection(PERIOD_SHOW_ALL)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onClick(position: Int) {
-        val currentBudgetItem = reportsAdapter.differ.currentList[position]
-        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
-        bottomSheet.show(requireActivity().supportFragmentManager, UpdateBudgetBottomSheetFragment.TAG)
     }
 
     private fun initializeRecyclerView() {

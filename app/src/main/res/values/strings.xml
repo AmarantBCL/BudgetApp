@@ -88,4 +88,7 @@
     <string name="success">Success!</string>
     <string name="incorrect_pin">Incorrect PIN.</string>
     <string name="i_don_t_have_pin">I don\'t have PIN.</string>
+    <string name="apply_filters">Apply filters</string>
+    <string name="filters">Filters</string>
+    <string name="no_filters">No filters</string>
 </resources>

@@ -88,4 +88,7 @@
     <string name="success">Успешный вход!</string>
     <string name="incorrect_pin">Неверный PIN</string>
     <string name="i_don_t_have_pin">У меня нет PIN.</string>
+    <string name="apply_filters">Применить фильтры</string>
+    <string name="filters">Фильтры</string>
+    <string name="no_filters">Без фильтров</string>
 </resources>

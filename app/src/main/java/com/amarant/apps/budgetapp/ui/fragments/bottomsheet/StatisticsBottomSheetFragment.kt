@@ -1,4 +1,4 @@
-package com.amarant.apps.budgetapp.ui.fragments
+package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
 import android.os.Bundle
 import android.util.Log
@@ -46,6 +46,11 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
         initRecyclerView()
         observeViewModel()
         setClickListeners()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeViewModel() {

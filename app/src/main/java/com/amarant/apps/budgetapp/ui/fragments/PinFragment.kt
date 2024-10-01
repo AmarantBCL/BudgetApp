@@ -106,13 +106,21 @@ class PinFragment : Fragment() {
                                     binding.constraintPin,
                                     getString(R.string.success),
                                     SNACKBAR_PIN_DURATION
-                                ).show()
+                                ).apply {
+                                    setAction(getString(R.string.hide)) {
+                                        dismiss()
+                                    }
+                                }.show()
                             } else {
                                 Snackbar.make(
                                     binding.constraintPin,
                                     getString(R.string.incorrect_pin),
                                     SNACKBAR_PIN_DURATION
-                                ).show()
+                                ).apply {
+                                    setAction(getString(R.string.hide)) {
+                                        dismiss()
+                                    }
+                                }.show()
                             }
                         }
                     }

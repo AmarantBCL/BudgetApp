@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,6 +34,10 @@ class BudgetViewModel @Inject constructor(
     private val dateRange: LiveData<Pair<Long, Long>>
         get() = _dateRange
 
+    private val _appliedFilter = MutableLiveData("")
+    val appliedFilter: LiveData<String>
+        get() = _appliedFilter
+
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
     }
@@ -52,7 +57,9 @@ class BudgetViewModel @Inject constructor(
 
     fun getReportsBetweenDates(): LiveData<List<Budget>> {
         return dateRange.switchMap { pair ->
-            budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second)
+            appliedFilter.switchMap { filter ->
+                budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second, filter)
+            }
         }
     }
 
@@ -72,6 +79,10 @@ class BudgetViewModel @Inject constructor(
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod(period)
         return budgetRepository.getSpendingsByCategory(start, end)
+    }
+
+    fun applyFilter(filter: String) {
+        _appliedFilter.value = filter
     }
 
     private fun calculateStartPeriod(period: Int): Long {

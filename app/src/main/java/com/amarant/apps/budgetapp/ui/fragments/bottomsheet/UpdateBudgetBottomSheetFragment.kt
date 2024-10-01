@@ -1,4 +1,4 @@
-package com.amarant.apps.budgetapp.ui.fragments
+package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
 import android.os.Build
 import android.os.Bundle
