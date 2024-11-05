@@ -24,6 +24,9 @@ import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.Constants.SNACKBAR_PIN_DURATION
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class PinFragment : Fragment() {
 
@@ -112,6 +115,7 @@ class PinFragment : Fragment() {
                                     }
                                 }.show()
                             } else {
+                                resetIncorrectPin()
                                 Snackbar.make(
                                     binding.constraintPin,
                                     getString(R.string.incorrect_pin),
@@ -135,7 +139,7 @@ class PinFragment : Fragment() {
     }
 
     private fun isPinCorrect(pin: String): Boolean {
-        return pin == "1111"
+        return pin == getCurrentDayAndMonth()
     }
 
     private fun saveEnteredPin() {
@@ -144,5 +148,19 @@ class PinFragment : Fragment() {
             Context.MODE_PRIVATE
         )
         sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, true).apply()
+    }
+
+    private fun resetIncorrectPin() {
+        for (editText in digitEditTexts) {
+            editText.text = null
+        }
+        digitEditTexts[0].requestFocus()
+    }
+
+    private fun getCurrentDayAndMonth(): String {
+        val calendar = Calendar.getInstance()
+        val day = String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH))
+        val month = String.format("%02d", calendar.get(Calendar.MONTH) + 1)
+        return "$month$day"
     }
 }
