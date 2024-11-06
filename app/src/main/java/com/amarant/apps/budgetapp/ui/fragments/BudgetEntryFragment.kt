@@ -112,16 +112,6 @@ class BudgetEntryFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
             }
         })
-        binding.editPurpose.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
         binding.submitBudgetEntry.setOnClickListener {
             val amount = binding.editAmount.text.toString().trim()
             val purpose = binding.editPurpose.text.toString().trim()
@@ -151,7 +141,7 @@ class BudgetEntryFragment : Fragment() {
                 revisedCurrentBalance,
                 category
             )
-            historyViewModel.addHistory(HistoryItem(0, purpose, chipMap[chip] ?: 0))
+            historyViewModel.addHistory(HistoryItem(purpose, chipMap[chip] ?: 0))
         }
     }
 
@@ -203,8 +193,6 @@ class BudgetEntryFragment : Fragment() {
         binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
             val checkedId = binding.chipGroup.checkedChipId
             val chip = requireView().findViewById<Chip>(checkedId)
-//            val selectedChip = group.findViewById<Chip>(checkedIds.first())
-//            val selectedOption = selectedChip.text.toString()
             historyViewModel.switchHistoryCategory(chipMap[chip] ?: 0)
         }
         historyViewModel.switchHistoryCategory(0)

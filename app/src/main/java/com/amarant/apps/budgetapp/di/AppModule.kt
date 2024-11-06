@@ -2,6 +2,8 @@ package com.amarant.apps.budgetapp.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.amarant.apps.budgetapp.db.BudgetDatabase
 import com.amarant.apps.budgetapp.util.Constants.DATABASE_NAME
 import dagger.Module
@@ -23,7 +25,15 @@ object AppModule {
         context,
         BudgetDatabase::class.java,
         DATABASE_NAME
-    ).build()
+    ).addMigrations(MIGRATION_5_6).build()
+
+    private val MIGRATION_5_6: Migration = object : Migration(5, 6) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `new_history` (`entry` TEXT PRIMARY KEY NOT NULL, `category` INTEGER NOT NULL)")
+            database.execSQL("DROP TABLE history")
+            database.execSQL("ALTER TABLE new_history RENAME TO history")
+        }
+    }
 
     @Provides
     @Singleton
