@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Spinner
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
@@ -107,6 +108,26 @@ class BudgetEntryFragment : Fragment() {
 
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 calculatePreliminaryBalance(text.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+        // TODO Testing
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            listOf(
+                "Fees",
+                "Supermarket"
+            )
+        )
+        binding.editPurpose.setAdapter(adapter)
+        binding.editPurpose.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun afterTextChanged(p0: Editable?) {
