@@ -3,15 +3,11 @@ package com.amarant.apps.budgetapp.ui.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Spinner
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,11 +16,12 @@ import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentBudgetEntryBinding
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.ui.adapter.SpinnerAdapter
 import com.amarant.apps.budgetapp.ui.adapter.SpinnerItem
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
-import com.amarant.apps.budgetapp.util.CategoryUtils
 import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateStringToMillis
@@ -46,6 +43,7 @@ class BudgetEntryFragment : Fragment() {
     private var debitOrCredit = Constants.DEBIT
     private lateinit var remainingBalance: String
     private val budgetViewModel: BudgetViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
 
     private val chipMap = mutableMapOf<Chip, Int>()
 
@@ -63,6 +61,7 @@ class BudgetEntryFragment : Fragment() {
         activity?.title = getString(R.string.enter_budget_for, args.selectedDate)
         getProfileData()
         setSpinnerForDebitOrCredit()
+        readHistory()
         setChips()
         binding.bankSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -113,16 +112,6 @@ class BudgetEntryFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
             }
         })
-        // TODO Testing
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            listOf(
-                "Fees",
-                "Supermarket"
-            )
-        )
-        binding.editPurpose.setAdapter(adapter)
         binding.editPurpose.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -162,6 +151,7 @@ class BudgetEntryFragment : Fragment() {
                 revisedCurrentBalance,
                 category
             )
+            historyViewModel.addHistory(HistoryItem(0, purpose, chipMap[chip] ?: 0))
         }
     }
 
@@ -210,6 +200,14 @@ class BudgetEntryFragment : Fragment() {
             }
             chipMap[chip] = index
         }
+        binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            val checkedId = binding.chipGroup.checkedChipId
+            val chip = requireView().findViewById<Chip>(checkedId)
+//            val selectedChip = group.findViewById<Chip>(checkedIds.first())
+//            val selectedOption = selectedChip.text.toString()
+            historyViewModel.switchHistoryCategory(chipMap[chip] ?: 0)
+        }
+        historyViewModel.switchHistoryCategory(0)
     }
 
     private fun submitBudgetEntryToDB(
@@ -256,5 +254,16 @@ class BudgetEntryFragment : Fragment() {
         }
         remainingBalance = temp.toString()
         binding.remainingBalance.text = remainingBalance
+    }
+
+    private fun readHistory() {
+        historyViewModel.getHistory().observe(viewLifecycleOwner) { history ->
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                history.map { it.entry }
+            )
+            binding.editPurpose.setAdapter(adapter)
+        }
     }
 }
