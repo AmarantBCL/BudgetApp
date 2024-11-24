@@ -61,6 +61,7 @@
         <item>Подарки</item>
         <item>Донат</item>
         <item>Налоги</item>
+        <item>Аренда</item>
     </string-array>
 
     <string-array name="periods">
