@@ -40,7 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textColor="@color/green" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -61,7 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textColor="@android:color/holo_orange_light" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
