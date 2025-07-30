@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margin & padding -->
+    <dimen name="regular_margin">8dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+
+    <!-- Text size -->
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_regular">16sp</dimen>
+    <dimen name="text_large">18sp</dimen>
+    <dimen name="text_extra_large">24sp</dimen>
+
+    <!-- Image size -->
+    <dimen name="step_icon_size">100dp</dimen>
+    <dimen name="feature_icon_size">32dp</dimen>
+
+    <!-- View elements -->
+    <dimen name="progress_bar_height">8dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+</resources>

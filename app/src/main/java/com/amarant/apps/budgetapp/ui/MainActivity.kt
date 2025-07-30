@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setBottomNavigation()
 //        checkProfileData()
-        Log.e("WTF", "MainActivity")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

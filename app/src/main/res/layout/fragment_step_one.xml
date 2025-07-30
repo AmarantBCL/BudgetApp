@@ -1,14 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.viewpager.StepOneFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ProgressBar
+        android:id="@+id/pbar_step"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Step #1" />
+        android:layout_height="@dimen/progress_bar_height"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginVertical="@dimen/large_margin"
+        android:max="5"
+        android:progress="1"
+        android:progressDrawable="@drawable/bg_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_step"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:text="Step 1 of 5"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pbar_step" />
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="@dimen/step_icon_size"
+        android:layout_height="@dimen/step_icon_size"
+        android:layout_marginTop="@dimen/large_margin"
+        android:contentDescription="icon"
+        app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_step"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_bank" />
+
+    <TextView
+        android:id="@+id/lbl_welcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="Welcome to Budget Tracker"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Heading"
+        app:layout_constraintBottom_toTopOf="@id/lbl_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_icon" />
+
+    <TextView
+        android:id="@+id/lbl_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="Take control of your finances with our comprehesive budget tracking app"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Primary"
+        app:layout_constraintBottom_toTopOf="@id/recycler_features_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_welcome" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_features_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/btn_previous"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_description"
+        tools:itemCount="3"
+        tools:listitem="@layout/list_item_feature" />
+
+    <Button
+        android:id="@+id/btn_previous"
+        style="@style/InactiveButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:text="Previous"
+        android:textAppearance="@style/Text.Button"
+        app:icon="@drawable/ic_arrow_left"
+        app:iconGravity="textStart"
+        app:iconSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_next"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_next"
+        style="@style/ActiveButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/large_margin"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:text="Next"
+        android:textAppearance="@style/Text.Button"
+        app:icon="@drawable/ic_arrow_right"
+        app:iconGravity="textEnd"
+        app:iconSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_previous" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

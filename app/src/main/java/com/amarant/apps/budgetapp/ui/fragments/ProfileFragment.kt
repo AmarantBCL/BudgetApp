@@ -123,7 +123,6 @@ class ProfileFragment : Fragment() {
             snackbar.show()
             findNavController().popBackStack()
         }
-        Log.d("WTF", "ProfileFragment")
     }
 
     private fun submitData(

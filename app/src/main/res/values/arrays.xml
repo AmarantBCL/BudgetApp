@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feature_titles">
+        <item>Track Expenses</item>
+        <item>Saving Goals</item>
+        <item>Tax Planning</item>
+    </string-array>
+
+    <string-array name="feature_descriptions">
+        <item>Monitor your daily spending</item>
+        <item>Set and achieve financial targets</item>
+        <item>Monitor your daily spending</item>
+    </string-array>
+</resources>
