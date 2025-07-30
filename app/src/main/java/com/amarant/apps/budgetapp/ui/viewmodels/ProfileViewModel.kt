@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     val profileLiveData: LiveData<List<Profile>> = profileRepository.getProfile()

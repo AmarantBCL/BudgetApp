@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/calendarFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/calendarFragment"
@@ -57,4 +57,16 @@
         android:name="com.amarant.apps.budgetapp.ui.fragments.PinFragment"
         android:label="fragment_pin"
         tools:layout="@layout/fragment_pin" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 </navigation>

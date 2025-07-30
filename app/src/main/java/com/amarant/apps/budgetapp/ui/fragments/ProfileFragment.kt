@@ -8,6 +8,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class ProfileFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentProfileBinding == null")
 
     private val profileViewModel: ProfileViewModel by viewModels()
+
     private var filePath: Uri? = null
     private lateinit var bitmap: Bitmap
     private lateinit var myPref: SharedPreferences
@@ -79,7 +81,7 @@ class ProfileFragment : Fragment() {
             takePhoto.launch("image/*")
         }
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) { profile ->
-            if (profile!!.isNotEmpty()) {
+            if (profile.isNotEmpty()) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val listOfImage = loadImageFromInternalStorage()
                     for (i in listOfImage) {
@@ -95,10 +97,10 @@ class ProfileFragment : Fragment() {
                     binding.profileName.setText(profile[0].name)
                     binding.profileEmail.setText(profile[0].email)
                 }
-            } else {
-                Toast.makeText(requireContext(),
-                    getString(R.string.complete_profile), Toast.LENGTH_SHORT).show()
-            }
+            } //else {
+//                Toast.makeText(requireContext(),
+//                    getString(R.string.complete_profile), Toast.LENGTH_SHORT).show()
+//            }
         }
         binding.submitProfile.setOnClickListener {
             submitData(
@@ -121,6 +123,7 @@ class ProfileFragment : Fragment() {
             snackbar.show()
             findNavController().popBackStack()
         }
+        Log.d("WTF", "ProfileFragment")
     }
 
     private fun submitData(

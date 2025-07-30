@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.entities.PiggyBank
@@ -40,12 +41,26 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        initViews()
+        observeViewModel()
+        Log.d("WTF", "CalendarFragment")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun initViews() {
         activity?.title = resources.getString(R.string.enter_budget)
-        binding.calView.setOnDateChangeListener { _, year, month, day ->
+        binding.calendarView.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = "$day/${month + 1}/$year"
             val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(selectedDate)
             findNavController().navigate(action)
         }
+    }
+
+    private fun observeViewModel() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 piggyBankViewModel.updatePiggyBank(PiggyBank(
@@ -55,7 +70,11 @@ class CalendarFragment : Fragment() {
                     0,
                     0)
                 )
-                findNavController().navigate(R.id.action_global_profileFragment)
+                findNavController().navigate(R.id.action_global_profileFragment, null, navOptions {
+                    popUpTo(R.id.calendarFragment) {
+                        inclusive = true
+                    }
+                })
             } else {
                 checkPin()
             }
@@ -72,11 +91,6 @@ class CalendarFragment : Fragment() {
 //                )
 //            }
 //        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun checkPin() {
