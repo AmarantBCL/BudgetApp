@@ -82,6 +82,7 @@ class CalendarFragment : Fragment() {
     private fun checkPin() {
         val sharedPrefs = requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val isPinEntered = sharedPrefs.getBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false)
+        Log.e("WTF", "Check PIN: $isPinEntered")
         if (!isPinEntered) {
             findNavController().navigate(R.id.action_calendarFragment_to_pinFragment)
         }

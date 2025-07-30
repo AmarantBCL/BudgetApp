@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
-import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -47,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() { // TODO Monitor the frequency of PIN prompting
+        super.onDestroy()
         resetPinCode()
     }
 
