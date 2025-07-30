@@ -32,9 +32,9 @@ class StepOneFragment : Fragment() {
 
     private fun initViews() {
         val data = listOf(
-            Feature(resources.getStringArray(R.array.feature_titles)[0], resources.getStringArray(R.array.feature_descriptions)[0], R.drawable.ic_credit),
-            Feature(resources.getStringArray(R.array.feature_titles)[1], resources.getStringArray(R.array.feature_descriptions)[1], R.drawable.ic_bank),
-            Feature(resources.getStringArray(R.array.feature_titles)[2], resources.getStringArray(R.array.feature_descriptions)[2], R.drawable.cat_taxes)
+            Feature(resources.getStringArray(R.array.feature_titles)[0], resources.getStringArray(R.array.feature_descriptions)[0], R.drawable.ic_trend),
+            Feature(resources.getStringArray(R.array.feature_titles)[1], resources.getStringArray(R.array.feature_descriptions)[1], R.drawable.ic_piggy_bank),
+            Feature(resources.getStringArray(R.array.feature_titles)[2], resources.getStringArray(R.array.feature_descriptions)[2], R.drawable.ic_shield)
         )
         val featureAdapter = FeatureAdapter()
         binding.recyclerFeaturesList.adapter = featureAdapter

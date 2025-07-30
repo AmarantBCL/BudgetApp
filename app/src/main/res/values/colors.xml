@@ -7,4 +7,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#32FA05</color>
     <color name="red">#FA0505</color>
+
+    <!-- New colors -->
+    <color name="secondary_gray">#6B6B6C</color>
+    <color name="background_dark_purple">#2D213D</color>
+    <color name="accent_purple">#793CC9</color>
+    <color name="primary_white">#FFFFFF</color>
+    <color name="auxiliary_smoke_gray">#1B1B1E</color>
+    <color name="positive_green">#22C55E</color>
+    <color name="window_black">#1A1A1A</color>
+    <color name="card_background">#222131</color>
 </resources>

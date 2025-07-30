@@ -3,7 +3,7 @@
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <corners android:radius="12dp"/> <solid android:color="@color/primaryDark"/> </shape>
+            <corners android:radius="12dp"/> <solid android:color="@color/background_dark_purple"/> </shape>
     </item>
 
     <item android:id="@android:id/secondaryProgress">
@@ -18,7 +18,7 @@
         <clip>
             <shape android:shape="rectangle">
                 <corners android:radius="12dp"/>
-                <solid android:color="@color/primary"/> </shape>
+                <solid android:color="@color/accent_purple"/> </shape>
         </clip>
     </item>
 </layer-list>
