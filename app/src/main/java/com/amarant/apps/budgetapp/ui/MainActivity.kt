@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -56,6 +57,19 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
         binding.bottomNavBar.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.onboardingFragment,
+                R.id.splashFragment -> {
+                    supportActionBar?.hide()
+                    binding.bottomNavBar.visibility = View.GONE
+                }
+                else -> {
+                    supportActionBar?.show()
+                    binding.bottomNavBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
 //    private fun checkProfileData() {

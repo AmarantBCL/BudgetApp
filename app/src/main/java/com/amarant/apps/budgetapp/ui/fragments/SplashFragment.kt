@@ -47,7 +47,7 @@ class SplashFragment : Fragment() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 findNavController().navigate(
-                    R.id.action_splashFragment_to_profileFragment,
+                    R.id.action_splashFragment_to_onboardingFragment,
                     null,
                     navOptions {
                         popUpTo(R.id.splashFragment) {

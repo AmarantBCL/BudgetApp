@@ -61,12 +61,17 @@
         android:id="@+id/splashFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.SplashFragment"
         android:label="SplashFragment"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
         <action
-            android:id="@+id/action_splashFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_splashFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding" />
 </navigation>
