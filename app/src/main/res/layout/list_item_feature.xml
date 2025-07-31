@@ -21,15 +21,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_credit" />
+            app:srcCompat="@drawable/ic_trend" />
 
         <TextView
             android:id="@+id/lbl_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/regular_margin"
+            android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:layout_marginBottom="@dimen/small_margin"
             android:text="Track Expenses"
             android:textAppearance="@style/Text.Heading.Small"
             app:layout_constraintBottom_toTopOf="@id/lbl_description"
@@ -41,7 +40,7 @@
             android:id="@+id/lbl_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/regular_margin"
+            android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
             android:text="Monitor your daily spending"
             android:textAppearance="@style/Text.Secondary"

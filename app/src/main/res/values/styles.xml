@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- PIN Edit text styling -->
     <style name="PinEditTextStyle">
         <item name="android:gravity">center</item>
         <item name="android:inputType">numberPassword</item>
         <item name="android:maxLength">1</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- Chip styling -->
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipIconSize">16dp</item>
+        <item name="chipIconTint">@color/primary</item>
     </style>
 </resources>

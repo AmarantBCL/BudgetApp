@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.amarant.apps.budgetapp.databinding.FragmentOnboardingBinding
 import com.amarant.apps.budgetapp.ui.adapter.OnboardingAdapter
+import com.amarant.apps.budgetapp.ui.fragments.viewpager.StepOneFragment
 
 class OnboardingFragment : Fragment() {
 
@@ -26,6 +27,7 @@ class OnboardingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
+        setClickListeners()
     }
 
     override fun onDestroyView() {
@@ -37,5 +39,12 @@ class OnboardingFragment : Fragment() {
         val onboardingAdapter = OnboardingAdapter(requireActivity())
         binding.viewPagerOnboard.adapter = onboardingAdapter
         binding.viewPagerOnboard.isUserInputEnabled = false
+    }
+
+    private fun setClickListeners() {
+        binding.btnNext.setOnClickListener {
+            val currentItem = binding.viewPagerOnboard.currentItem
+            binding.viewPagerOnboard.setCurrentItem(currentItem + 1, true)
+        }
     }
 }
