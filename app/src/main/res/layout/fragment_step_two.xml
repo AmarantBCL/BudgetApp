@@ -85,7 +85,8 @@
             android:drawableTint="@color/secondary_gray"
             android:hint="Enter your full name"
             android:includeFontPadding="false"
-            android:textAppearance="@style/Text.Secondary"
+            android:inputType="text"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="@color/primary_white"
             android:textColorHint="@color/secondary_gray" />
 
@@ -127,7 +128,8 @@
             android:drawablePadding="@dimen/regular_margin"
             android:hint="Enter your email"
             android:includeFontPadding="false"
-            android:textAppearance="@style/Text.Secondary"
+            android:inputType="textEmailAddress"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textColor="@color/primary_white"
             android:textColorHint="@color/secondary_gray" />
 

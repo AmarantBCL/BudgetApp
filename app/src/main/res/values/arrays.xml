@@ -11,4 +11,10 @@
         <item>Set and achieve financial targets</item>
         <item>Prepare for quarterly taxes</item>
     </string-array>
+
+    <string-array name="currency">
+        <item>$ Dollar</item>
+        <item>€ Euro</item>
+        <item>₴ Hryvnia</item>
+    </string-array>
 </resources>

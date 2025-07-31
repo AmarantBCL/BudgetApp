@@ -49,10 +49,10 @@ class OnboardingFragment : Fragment() {
                 binding.btnPrevious.isEnabled = position > 0
                 binding.tvStep.text = "Step ${position + 1} of 5"
                 binding.pbarStep.setProgress(position + 1, true)
-                if (position == 0) {
-                    onboardingViewModel.setNextButtonState(true)
-                } else {
-                    onboardingViewModel.updateNextButtonState()
+                when(position) {
+                    1 -> onboardingViewModel.updateNextButtonState()
+                    2 -> onboardingViewModel.updateNextButtonStateFromCurrency()
+                    else -> onboardingViewModel.setNextButtonState(true)
                 }
             }
         })

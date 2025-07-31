@@ -16,7 +16,6 @@
 
     <!-- Outlined edit text styling -->
     <style name="OutlinedEditTextStyle">
-        <item name="android:inputType">text</item>
         <item name="android:maxLength">48</item>
         <item name="android:maxLines">1</item>
     </style>

@@ -19,6 +19,10 @@ class OnboardingViewModel: ViewModel() {
     val emailAddress: LiveData<String>
         get() = _emailAddress
 
+    private val _currency = MutableLiveData<String>()
+    val currency: LiveData<String>
+        get() = _currency
+
     fun setNextButtonState(isEnabled: Boolean) {
         _isNextButtonEnabled.value = isEnabled
     }
@@ -37,5 +41,15 @@ class OnboardingViewModel: ViewModel() {
         val currentFullName = _fullName.value ?: ""
         val currentEmail = _emailAddress.value ?: ""
         _isNextButtonEnabled.value = currentFullName.isNotEmpty() && currentEmail.isNotEmpty()
+    }
+
+    fun setCurrency(currency: String) {
+        _currency.value = currency
+        updateNextButtonStateFromCurrency()
+    }
+
+    fun updateNextButtonStateFromCurrency() {
+        val currency = _currency.value ?: ""
+        _isNextButtonEnabled.value = currency.isNotEmpty()
     }
 }
