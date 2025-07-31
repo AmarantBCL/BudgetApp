@@ -29,11 +29,10 @@
         app:icon="@drawable/ic_arrow_left"
         app:iconGravity="textStart"
         app:iconSize="16dp"
+        app:iconTint="@color/secondary_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_next"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#1e1e26"
-        app:strokeWidth="1dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_next"
@@ -49,7 +48,7 @@
         app:icon="@drawable/ic_arrow_right"
         app:iconGravity="textEnd"
         app:iconSize="@dimen/button_icon_size"
-        app:iconTint="@color/primary_white"
+        app:iconTint="@color/button_active"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_previous" />

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ActiveButtonStyle">
-        <item name="android:textColor">@color/primary_white</item>
+        <item name="android:textColor">@color/button_active</item>
         <item name="android:backgroundTint">@color/accent_purple</item>
     </style>
 
     <style name="InactiveButtonStyle">
-        <item name="android:backgroundTint">@color/auxiliary_smoke_gray</item>
+        <item name="android:textColor">@color/secondary_gray</item>
+        <item name="android:backgroundTint">@color/button_inactive</item>
         <item name="android:enabled">false</item>
     </style>
 </resources>

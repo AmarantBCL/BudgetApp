@@ -10,7 +10,7 @@
 <!--        <item name="colorSecondaryVariant">@color/primaryDark</item>-->
 <!--        <item name="colorOnSecondary">@color/black</item>-->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/background_dark_purple</item>
         <!-- Customize your theme here. -->
         <item name="spinnerColor">@color/black</item>
         <item name="statisticsColor">@android:color/darker_gray</item>

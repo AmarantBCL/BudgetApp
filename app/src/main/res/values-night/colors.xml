@@ -9,17 +9,17 @@
     <color name="red">#FA0505</color>
 
     <!-- New colors -->
-    <color name="secondary_gray">#656467</color>
-    <color name="background_dark_purple">#BFBAF8</color>
-    <color name="accent_purple">#7118DC</color>
-    <color name="primary_white">#161415</color>
+    <color name="secondary_gray">#6B6B6C</color>
+    <color name="background_dark_purple">#2D213D</color>
+    <color name="accent_purple">#793CC9</color>
+    <color name="primary_white">#FFFFFF</color>
     <color name="auxiliary_smoke_gray">#1B1B1E</color>
     <color name="positive_green">#22C55E</color>
-    <color name="window_black">#FFFEFB</color>
-    <color name="card_background">#F9F6FF</color>
-    <color name="light_gray">#7E7E7C</color>
+    <color name="window_black">#1A1A1A</color>
+    <color name="card_background">#222131</color>
+    <color name="light_gray">#AAAAAA</color>
 
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
-    <color name="button_inactive">#F7F3F0</color>
+    <color name="button_inactive">#222131</color>
 </resources>
