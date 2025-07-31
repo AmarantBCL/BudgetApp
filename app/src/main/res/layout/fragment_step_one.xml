@@ -7,33 +7,6 @@
     android:background="@color/window_black"
     tools:context=".ui.fragments.viewpager.StepOneFragment">
 
-    <ProgressBar
-        android:id="@+id/pbar_step"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_bar_height"
-        android:layout_marginHorizontal="@dimen/large_margin"
-        android:layout_marginVertical="@dimen/large_margin"
-        android:max="5"
-        android:progress="1"
-        android:progressDrawable="@drawable/bg_progress_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_step"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/large_margin"
-        android:layout_marginTop="@dimen/regular_margin"
-        android:text="Step 1 of 5"
-        android:textAlignment="center"
-        android:textAppearance="@style/Text.Secondary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pbar_step" />
-
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="@dimen/step_icon_size"
@@ -43,7 +16,8 @@
         app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_step"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/circle_sparkle" />
 

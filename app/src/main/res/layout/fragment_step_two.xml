@@ -1,14 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/window_black"
     tools:context=".ui.fragments.viewpager.StepTwoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Step #2" />
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="@dimen/step_icon_size"
+        android:layout_height="@dimen/step_icon_size"
+        android:layout_marginTop="@dimen/large_margin"
+        android:contentDescription="icon"
+        app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/circle_person" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/lbl_welcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="Personal Information"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Heading"
+        app:layout_constraintBottom_toTopOf="@id/lbl_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_icon" />
+
+    <TextView
+        android:id="@+id/lbl_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:text="Let's get to know you better"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Primary"
+        app:layout_constraintBottom_toTopOf="@id/lbl_full_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_welcome" />
+
+    <TextView
+        android:id="@+id/lbl_full_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="Full Name"
+        android:textAppearance="@style/Text.Secondary.Bold"
+        app:layout_constraintBottom_toTopOf="@id/til_full_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_description" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_full_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        app:boxBackgroundColor="@color/card_background"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toTopOf="@id/lbl_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_full_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_full_name"
+            style="@style/OutlinedEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="@dimen/regular_margin"
+            android:drawableTint="@color/secondary_gray"
+            android:hint="Enter your full name"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/Text.Secondary"
+            android:textColor="@color/primary_white"
+            android:textColorHint="@color/secondary_gray" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/lbl_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="Email Address"
+        android:textAppearance="@style/Text.Secondary.Bold"
+        app:layout_constraintBottom_toTopOf="@id/til_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_full_name" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginBottom="@dimen/large_margin"
+        app:boxBackgroundColor="@color/card_background"
+        app:hintEnabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_email"
+            style="@style/OutlinedEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_email"
+            android:drawablePadding="@dimen/regular_margin"
+            android:hint="Enter your email"
+            android:includeFontPadding="false"
+            android:textAppearance="@style/Text.Secondary"
+            android:textColor="@color/primary_white"
+            android:textColorHint="@color/secondary_gray" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
