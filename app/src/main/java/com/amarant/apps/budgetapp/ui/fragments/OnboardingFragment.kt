@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.amarant.apps.budgetapp.databinding.FragmentOnboardingBinding
 import com.amarant.apps.budgetapp.ui.adapter.OnboardingAdapter
-import com.amarant.apps.budgetapp.ui.fragments.viewpager.StepOneFragment
+import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
 
 class OnboardingFragment : Fragment() {
 
     private var _binding: FragmentOnboardingBinding? = null
     private val binding: FragmentOnboardingBinding
         get() = _binding ?: throw RuntimeException("FragmentOnboardingBinding == null")
+
+    private val onboardingViewModel: OnboardingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +31,7 @@ class OnboardingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
+        observeViewModel()
         setClickListeners()
     }
 
@@ -45,6 +49,11 @@ class OnboardingFragment : Fragment() {
                 binding.btnPrevious.isEnabled = position > 0
                 binding.tvStep.text = "Step ${position + 1} of 5"
                 binding.pbarStep.setProgress(position + 1, true)
+                if (position == 0) {
+                    onboardingViewModel.setNextButtonState(true)
+                } else {
+                    onboardingViewModel.updateNextButtonState()
+                }
             }
         })
     }
@@ -61,6 +70,12 @@ class OnboardingFragment : Fragment() {
             if (currentItem > 0) {
                 binding.viewPagerOnboard.setCurrentItem(currentItem - 1, true)
             }
+        }
+    }
+
+    private fun observeViewModel() {
+        onboardingViewModel.isNextButtonEnabled.observe(viewLifecycleOwner) {
+            binding.btnNext.isEnabled = it
         }
     }
 }

@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentStepOneBinding
 import com.amarant.apps.budgetapp.entities.Feature
 import com.amarant.apps.budgetapp.ui.adapter.FeatureAdapter
+import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
 
 class StepOneFragment : Fragment() {
 
