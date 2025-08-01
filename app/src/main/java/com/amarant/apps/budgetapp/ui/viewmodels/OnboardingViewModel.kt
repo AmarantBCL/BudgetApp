@@ -1,9 +1,11 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.amarant.apps.budgetapp.entities.CategoryItem
+import com.amarant.apps.budgetapp.util.EmailUtils
 
 class OnboardingViewModel: ViewModel() {
 
@@ -52,7 +54,11 @@ class OnboardingViewModel: ViewModel() {
     fun updateNextButtonState() {
         val currentFullName = _fullName.value ?: ""
         val currentEmail = _emailAddress.value ?: ""
-        _isNextButtonEnabled.value = currentFullName.isNotEmpty() && currentEmail.isNotEmpty()
+        if (currentFullName.isNotEmpty() && currentEmail.isNotEmpty()) {
+            _isNextButtonEnabled.value = EmailUtils.isValidEmail(currentEmail)
+        } else {
+            _isNextButtonEnabled.value = false
+        }
     }
 
     fun setCurrency(currency: String) {

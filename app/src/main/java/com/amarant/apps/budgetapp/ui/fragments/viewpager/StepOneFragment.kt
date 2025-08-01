@@ -1,18 +1,14 @@
 package com.amarant.apps.budgetapp.ui.fragments.viewpager
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentStepOneBinding
 import com.amarant.apps.budgetapp.entities.Feature
 import com.amarant.apps.budgetapp.ui.adapter.FeatureAdapter
-import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
 
 class StepOneFragment : Fragment() {
 
@@ -30,14 +26,26 @@ class StepOneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        setupRecyclerView()
     }
 
-    private fun initViews() {
+    private fun setupRecyclerView() {
         val data = listOf(
-            Feature(resources.getStringArray(R.array.feature_titles)[0], resources.getStringArray(R.array.feature_descriptions)[0], R.drawable.ic_trend),
-            Feature(resources.getStringArray(R.array.feature_titles)[1], resources.getStringArray(R.array.feature_descriptions)[1], R.drawable.ic_piggy_bank),
-            Feature(resources.getStringArray(R.array.feature_titles)[2], resources.getStringArray(R.array.feature_descriptions)[2], R.drawable.ic_shield)
+            Feature(
+                resources.getStringArray(R.array.feature_titles)[0],
+                resources.getStringArray(R.array.feature_descriptions)[0],
+                R.drawable.ic_trend
+            ),
+            Feature(
+                resources.getStringArray(R.array.feature_titles)[1],
+                resources.getStringArray(R.array.feature_descriptions)[1],
+                R.drawable.ic_piggy_bank
+            ),
+            Feature(
+                resources.getStringArray(R.array.feature_titles)[2],
+                resources.getStringArray(R.array.feature_descriptions)[2],
+                R.drawable.ic_shield
+            )
         )
         val featureAdapter = FeatureAdapter()
         binding.recyclerFeaturesList.adapter = featureAdapter

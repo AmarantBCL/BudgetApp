@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.amarant.apps.budgetapp.databinding.FragmentStepTwoBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
+import com.amarant.apps.budgetapp.util.EmailUtils
 
 class StepTwoFragment : Fragment() {
 
@@ -65,7 +66,13 @@ class StepTwoFragment : Fragment() {
             }
 
             override fun afterTextChanged(editable: Editable?) {
-                onboardingViewModel.setEmailAddress(editable.toString())
+                val text = editable.toString()
+                onboardingViewModel.setEmailAddress(text)
+                if (EmailUtils.isValidEmail(text)) {
+                    binding.tilEmail.error = null
+                } else {
+                    binding.tilEmail.error = "Enter an email with a valid format"
+                }
             }
         })
     }

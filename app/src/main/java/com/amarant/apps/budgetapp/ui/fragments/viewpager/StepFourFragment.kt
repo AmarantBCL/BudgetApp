@@ -23,6 +23,8 @@ class StepFourFragment : Fragment() {
 
     private val onboardingViewModel: OnboardingViewModel by activityViewModels()
 
+    private lateinit var categoriesAdapter: CategoriesAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,7 +35,8 @@ class StepFourFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        setupRecyclerView()
+        observeViewModel()
     }
 
     override fun onDestroyView() {
@@ -41,14 +44,18 @@ class StepFourFragment : Fragment() {
         _binding = null
     }
 
-    private fun initViews() {
-        val categoriesAdapter = CategoriesAdapter()
+    private fun setupRecyclerView() {
+        categoriesAdapter = CategoriesAdapter()
         binding.recyclerCategories.adapter = categoriesAdapter
         val categoriesArr = resources.getStringArray(R.array.categories)
         onboardingViewModel.initCategories(categoriesArr)
         categoriesAdapter.onCategoryCheckedListener = { categoryName, isChecked ->
             onboardingViewModel.updateCategorySelection(categoryName, isChecked)
         }
+
+    }
+
+    private fun observeViewModel() {
         onboardingViewModel.categories.observe(viewLifecycleOwner) {
             categoriesAdapter.submitList(it)
         }

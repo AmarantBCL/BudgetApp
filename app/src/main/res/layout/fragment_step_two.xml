@@ -113,6 +113,7 @@
         android:layout_marginHorizontal="@dimen/large_margin"
         android:layout_marginBottom="@dimen/large_margin"
         app:boxBackgroundColor="@color/card_background"
+        app:errorEnabled="true"
         app:hintEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
