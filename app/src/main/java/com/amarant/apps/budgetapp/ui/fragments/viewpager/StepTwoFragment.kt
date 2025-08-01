@@ -32,6 +32,7 @@ class StepTwoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        setTextWatchers()
     }
 
     override fun onDestroyView() {
@@ -42,6 +43,9 @@ class StepTwoFragment : Fragment() {
     private fun initViews() {
         binding.editFullName.setText(onboardingViewModel.fullName.value)
         binding.editEmail.setText(onboardingViewModel.emailAddress.value)
+    }
+
+    private fun setTextWatchers() {
         binding.editFullName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
             }

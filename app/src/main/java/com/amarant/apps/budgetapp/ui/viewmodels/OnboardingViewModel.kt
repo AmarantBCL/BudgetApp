@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +21,14 @@ class OnboardingViewModel: ViewModel() {
     private val _currency = MutableLiveData<String>()
     val currency: LiveData<String>
         get() = _currency
+
+    private val _monthlyIncome = MutableLiveData("")
+    val monthlyIncome: LiveData<String>
+        get() = _monthlyIncome
+
+    private val _savingGoal = MutableLiveData("")
+    val savingGoal: LiveData<String>
+        get() = _savingGoal
 
     fun setNextButtonState(isEnabled: Boolean) {
         _isNextButtonEnabled.value = isEnabled
@@ -51,5 +58,19 @@ class OnboardingViewModel: ViewModel() {
     fun updateNextButtonStateFromCurrency() {
         val currency = _currency.value ?: ""
         _isNextButtonEnabled.value = currency.isNotEmpty()
+    }
+
+    fun setMonthlyIncome(income: String) {
+        val incomeAsInt = income.toIntOrNull()
+        if (incomeAsInt != null && incomeAsInt > 0) {
+            _monthlyIncome.value = incomeAsInt.toString()
+        }
+    }
+
+    fun setSavingGoal(goal: String) {
+        val savingGoalAsInt = goal.toIntOrNull()
+        if (savingGoalAsInt != null && savingGoalAsInt > 0) {
+            _savingGoal.value = savingGoalAsInt.toString()
+        }
     }
 }
