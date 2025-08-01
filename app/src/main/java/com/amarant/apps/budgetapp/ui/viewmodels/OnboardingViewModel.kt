@@ -3,6 +3,7 @@ package com.amarant.apps.budgetapp.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.amarant.apps.budgetapp.entities.CategoryItem
 
 class OnboardingViewModel: ViewModel() {
 
@@ -29,6 +30,10 @@ class OnboardingViewModel: ViewModel() {
     private val _savingGoal = MutableLiveData("")
     val savingGoal: LiveData<String>
         get() = _savingGoal
+
+    private val _categories = MutableLiveData<List<CategoryItem>>()
+    val categories: LiveData<List<CategoryItem>>
+        get() = _categories
 
     fun setNextButtonState(isEnabled: Boolean) {
         _isNextButtonEnabled.value = isEnabled
@@ -71,6 +76,23 @@ class OnboardingViewModel: ViewModel() {
         val savingGoalAsInt = goal.toIntOrNull()
         if (savingGoalAsInt != null && savingGoalAsInt > 0) {
             _savingGoal.value = savingGoalAsInt.toString()
+        }
+    }
+
+    fun initCategories(array: Array<String>) {
+        if (categories.value.isNullOrEmpty()) {
+            val list = array.map { CategoryItem(it, false) }
+            _categories.value = list
+        }
+    }
+
+    fun updateCategorySelection(categoryName: String, isChecked: Boolean) {
+        val currentList = categories.value.orEmpty().toMutableList()
+        val index = currentList.indexOfFirst { it.name == categoryName }
+        if (index != -1) {
+            val oldItem = currentList[index]
+            currentList[index] = oldItem.copy(isChecked = isChecked)
+            _categories.value = currentList.toList()
         }
     }
 }

@@ -17,4 +17,25 @@
         <item>€ Euro</item>
         <item>₴ Hryvnia</item>
     </string-array>
+
+    <string-array name="categories">
+        <item>Groceries</item>
+        <item>Restaurants</item>
+        <item>Cash</item>
+        <item>Utilities</item>
+        <item>Clothes</item>
+        <item>House</item>
+        <item>Car</item>
+        <item>Beauty</item>
+        <item>Health</item>
+        <item>Pets</item>
+        <item>Taxi</item>
+        <item>Entertainment</item>
+        <item>Education</item>
+        <item>Traveling</item>
+        <item>Gifts</item>
+        <item>Charity</item>
+        <item>Taxes</item>
+        <item>Rent</item>
+    </string-array>
 </resources>

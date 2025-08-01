@@ -43,27 +43,6 @@
         <item>Кредит</item>
     </string-array>
 
-    <string-array name="categories">
-        <item>Продукты</item>
-        <item>Рестораны</item>
-        <item>Наличные</item>
-        <item>Коммуналка</item>
-        <item>Одежда</item>
-        <item>Дом</item>
-        <item>Автомобиль</item>
-        <item>Красота</item>
-        <item>Здоровье</item>
-        <item>Питомцы</item>
-        <item>Такси</item>
-        <item>Развлечения</item>
-        <item>Образование</item>
-        <item>Путешествия</item>
-        <item>Подарки</item>
-        <item>Донат</item>
-        <item>Налоги</item>
-        <item>Аренда</item>
-    </string-array>
-
     <string-array name="periods">
         <item>Сегодня</item>
         <item>Вчера</item>
