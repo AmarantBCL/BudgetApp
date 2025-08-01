@@ -1,14 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/window_black"
     tools:context=".ui.fragments.viewpager.StepFiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Step #5" />
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="@dimen/step_icon_size"
+        android:layout_height="@dimen/step_icon_size"
+        android:layout_marginTop="@dimen/large_margin"
+        android:contentDescription="icon"
+        app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/circle_all_set" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/lbl_welcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="You're All Set!"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Heading"
+        app:layout_constraintBottom_toTopOf="@id/lbl_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_icon" />
+
+    <TextView
+        android:id="@+id/lbl_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:text="Your budget tracker is ready. Start managing your finances today!"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Primary"
+        app:layout_constraintBottom_toTopOf="@id/card_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_welcome" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/large_margin"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_description"
+        app:layout_goneMarginBottom="@dimen/large_margin">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lbl_profile_summary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/large_margin"
+                android:layout_marginTop="@dimen/large_margin"
+                android:text="Profile Summary"
+                android:textAlignment="center"
+                android:textAppearance="@style/Text.Secondary.Bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lbl_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Name:"
+                android:textAppearance="@style/Text.Secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_profile_summary" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Vados"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                app:layout_constraintStart_toEndOf="@id/lbl_name"
+                app:layout_constraintTop_toBottomOf="@id/lbl_profile_summary" />
+
+            <TextView
+                android:id="@+id/lbl_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Currency:"
+                android:textAppearance="@style/Text.Secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_name" />
+
+            <TextView
+                android:id="@+id/tv_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="USD"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                app:layout_constraintStart_toEndOf="@id/lbl_currency"
+                app:layout_constraintTop_toBottomOf="@id/lbl_name" />
+
+            <TextView
+                android:id="@+id/lbl_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Monthly Income:"
+                android:textAppearance="@style/Text.Secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_currency" />
+
+            <TextView
+                android:id="@+id/tv_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="$2500"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                app:layout_constraintStart_toEndOf="@id/lbl_income"
+                app:layout_constraintTop_toBottomOf="@id/lbl_currency" />
+
+            <TextView
+                android:id="@+id/lbl_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:paddingBottom="@dimen/large_margin"
+                android:text="Categories:"
+                android:textAppearance="@style/Text.Secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+
+            <TextView
+                android:id="@+id/tv_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="4 Selected"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                app:layout_constraintStart_toEndOf="@id/lbl_categories"
+                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

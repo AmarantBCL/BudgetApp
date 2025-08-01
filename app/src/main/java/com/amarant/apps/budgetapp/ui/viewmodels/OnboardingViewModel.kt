@@ -66,16 +66,18 @@ class OnboardingViewModel: ViewModel() {
         updateNextButtonStateFromCurrency()
     }
 
-    fun updateNextButtonStateFromCurrency() {
-        val currency = _currency.value ?: ""
-        _isNextButtonEnabled.value = currency.isNotEmpty()
-    }
-
     fun setMonthlyIncome(income: String) {
         val incomeAsInt = income.toIntOrNull()
         if (incomeAsInt != null && incomeAsInt > 0) {
             _monthlyIncome.value = incomeAsInt.toString()
         }
+        updateNextButtonStateFromCurrency()
+    }
+
+    fun updateNextButtonStateFromCurrency() {
+        val currency = _currency.value ?: ""
+        val income = _monthlyIncome.value ?: ""
+        _isNextButtonEnabled.value = currency.isNotEmpty() && income.isNotEmpty()
     }
 
     fun setSavingGoal(goal: String) {

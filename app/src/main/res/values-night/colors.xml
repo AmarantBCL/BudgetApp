@@ -18,6 +18,7 @@
     <color name="window_black">#1A1A1A</color>
     <color name="card_background">#222131</color>
     <color name="light_gray">#AAAAAA</color>
+    <color name="dark_green">#1C3C28</color>
 
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
