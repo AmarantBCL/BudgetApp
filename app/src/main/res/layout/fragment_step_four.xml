@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/window_black"
     tools:context=".ui.fragments.viewpager.StepFourFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Step #4" />
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="@dimen/step_icon_size"
+        android:layout_height="@dimen/step_icon_size"
+        android:layout_marginTop="@dimen/large_margin"
+        android:contentDescription="icon"
+        app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/circle_categories" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/lbl_welcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="Budget Categories"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Heading"
+        app:layout_constraintBottom_toTopOf="@id/lbl_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_icon" />
+
+    <TextView
+        android:id="@+id/lbl_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:text="Choose categories you want to track"
+        android:textAlignment="center"
+        android:textAppearance="@style/Text.Primary"
+        app:layout_constraintBottom_toTopOf="@id/recycler_categories"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_welcome" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_categories"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/card_notice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_description"
+        tools:listitem="@layout/list_item_category" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_notice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:layout_marginBottom="@dimen/large_margin"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_categories">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/large_margin"
+            android:text="You can always add or remove categories later in the settings."
+            android:textAppearance="@style/Text.Secondary" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
