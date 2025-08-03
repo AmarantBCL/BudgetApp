@@ -3,11 +3,11 @@
     <item
         android:id="@+id/calendarFragment"
         android:icon="@drawable/ic_calendar"
-        android:title="@string/enter_budget" />
+        android:title="Calendar" />
 
     <item
         android:id="@+id/piggyBankFragment"
-        android:icon="@drawable/ic_bank"
+        android:icon="@drawable/ic_piggy_bank"
         android:title="@string/piggy_bank" />
 
     <item

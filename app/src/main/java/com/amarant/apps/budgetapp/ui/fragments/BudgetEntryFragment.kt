@@ -152,7 +152,7 @@ class BudgetEntryFragment : Fragment() {
 
     private fun getProfileData() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
-            val bankNames = ArrayList<String>()
+            val bankNames = ArrayList<String>() // TODO Fix empty profile
             bankNames.add(it[0].bankName)
             bankName = it[0].bankName
             currentBalance = it[0].currentBalance

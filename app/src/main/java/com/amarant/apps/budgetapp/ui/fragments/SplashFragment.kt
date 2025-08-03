@@ -35,7 +35,6 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        Log.d("WTF", "SplashFragment")
     }
 
     override fun onDestroyView() {

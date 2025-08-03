@@ -77,6 +77,10 @@
         <action
             android:id="@+id/action_onboardingFragment_to_calendarFragment"
             app:destination="@id/calendarFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
             app:popUpTo="@id/onboardingFragment"
             app:popUpToInclusive="true" />
     </fragment>

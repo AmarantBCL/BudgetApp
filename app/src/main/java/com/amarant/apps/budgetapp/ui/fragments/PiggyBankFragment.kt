@@ -28,7 +28,7 @@ class PiggyBankFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPiggyBankBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,6 +38,11 @@ class PiggyBankFragment : Fragment() {
         activity?.title = getString(R.string.piggy_bank)
         observeViewModel()
         setClickListeners()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeViewModel() {

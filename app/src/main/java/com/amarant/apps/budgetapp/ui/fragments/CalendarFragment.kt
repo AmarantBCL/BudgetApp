@@ -43,7 +43,6 @@ class CalendarFragment : Fragment() {
         setHasOptionsMenu(true)
         initViews()
         observeViewModel()
-        Log.d("WTF", "CalendarFragment")
     }
 
     override fun onDestroyView() {
@@ -52,7 +51,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initViews() {
-        activity?.title = resources.getString(R.string.enter_budget)
+        activity?.title = "Calendar"
         binding.calendarView.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = "$day/${month + 1}/$year"
             val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(selectedDate)
@@ -63,8 +62,9 @@ class CalendarFragment : Fragment() {
     private fun observeViewModel() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
+                // TODO Disabled temporarily so as not to create lots of piggy banks
                 piggyBankViewModel.updatePiggyBank(PiggyBank(
-                    0,
+                    1,
                     0,
                     0,
                     0,

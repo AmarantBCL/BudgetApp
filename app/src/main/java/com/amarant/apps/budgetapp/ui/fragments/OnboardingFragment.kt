@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentOnboardingBinding
 import com.amarant.apps.budgetapp.ui.adapter.OnboardingAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 
 class OnboardingFragment : Fragment() {
 
@@ -19,6 +22,7 @@ class OnboardingFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentOnboardingBinding == null")
 
     private val onboardingViewModel: OnboardingViewModel by activityViewModels()
+    private val profileViewModel: ProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,9 +68,11 @@ class OnboardingFragment : Fragment() {
     private fun setClickListeners() {
         binding.btnNext.setOnClickListener {
             val currentItem = binding.viewPagerOnboard.currentItem
-            if (currentItem < 4) {
+            if (currentItem == 1) {
+//            if (currentItem < 4) {
                 binding.viewPagerOnboard.setCurrentItem(currentItem + 1, true)
             } else {
+                findNavController().graph.setStartDestination(R.id.calendarFragment)
                 findNavController().navigate(
                     OnboardingFragmentDirections.actionOnboardingFragmentToCalendarFragment()
                 )
@@ -83,6 +89,9 @@ class OnboardingFragment : Fragment() {
     private fun observeViewModel() {
         onboardingViewModel.isNextButtonEnabled.observe(viewLifecycleOwner) {
             binding.btnNext.isEnabled = it
+        }
+        onboardingViewModel.tempProfile.observe(viewLifecycleOwner) {
+            Log.e("WTF", "$it")
         }
     }
 }
