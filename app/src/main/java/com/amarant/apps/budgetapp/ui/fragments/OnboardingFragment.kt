@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.amarant.apps.budgetapp.databinding.FragmentOnboardingBinding
 import com.amarant.apps.budgetapp.ui.adapter.OnboardingAdapter
@@ -44,6 +45,7 @@ class OnboardingFragment : Fragment() {
         val onboardingAdapter = OnboardingAdapter(requireActivity())
         binding.viewPagerOnboard.adapter = onboardingAdapter
         binding.viewPagerOnboard.isUserInputEnabled = false
+        binding.viewPagerOnboard.offscreenPageLimit = 1
         binding.viewPagerOnboard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.btnPrevious.isEnabled = position > 0
@@ -54,6 +56,7 @@ class OnboardingFragment : Fragment() {
                     2 -> onboardingViewModel.updateNextButtonStateFromCurrency()
                     else -> onboardingViewModel.setNextButtonState(true)
                 }
+//                binding.btnNext.text = if (position == 4) "Get Started" else "Next"
             }
         })
     }
@@ -63,6 +66,10 @@ class OnboardingFragment : Fragment() {
             val currentItem = binding.viewPagerOnboard.currentItem
             if (currentItem < 4) {
                 binding.viewPagerOnboard.setCurrentItem(currentItem + 1, true)
+            } else {
+                findNavController().navigate(
+                    OnboardingFragmentDirections.actionOnboardingFragmentToCalendarFragment()
+                )
             }
         }
         binding.btnPrevious.setOnClickListener {

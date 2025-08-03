@@ -70,11 +70,11 @@ class CalendarFragment : Fragment() {
                     0,
                     0)
                 )
-                findNavController().navigate(R.id.action_global_profileFragment, null, navOptions {
-                    popUpTo(R.id.calendarFragment) {
-                        inclusive = true
-                    }
-                })
+//                findNavController().navigate(R.id.action_global_profileFragment, null, navOptions {
+//                    popUpTo(R.id.calendarFragment) {
+//                        inclusive = true
+//                    }
+//                })
             } else {
                 checkPin()
             }
