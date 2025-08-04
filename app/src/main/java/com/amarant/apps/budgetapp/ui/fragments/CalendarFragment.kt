@@ -63,20 +63,20 @@ class CalendarFragment : Fragment() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 // TODO Disabled temporarily so as not to create lots of piggy banks
-                piggyBankViewModel.updatePiggyBank(PiggyBank(
-                    1,
-                    0,
-                    0,
-                    0,
-                    0)
-                )
+//                piggyBankViewModel.updatePiggyBank(PiggyBank(
+//                    1,
+//                    0,
+//                    0,
+//                    0,
+//                    0)
+//                )
 //                findNavController().navigate(R.id.action_global_profileFragment, null, navOptions {
 //                    popUpTo(R.id.calendarFragment) {
 //                        inclusive = true
 //                    }
 //                })
             } else {
-                checkPin()
+//                checkPin()
             }
         }
 //        // TODO DEL Temp for testing

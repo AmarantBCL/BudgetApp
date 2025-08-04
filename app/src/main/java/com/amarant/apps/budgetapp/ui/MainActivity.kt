@@ -23,6 +23,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,6 +54,18 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() { // TODO Monitor the frequency of PIN prompting
         super.onDestroy()
         resetPinCode()
+    }
+
+    fun showSnackbarMessage(view: View, message: String) {
+        val snackbar = Snackbar.make(
+            view,
+            message,
+            Snackbar.LENGTH_SHORT
+        )
+        snackbar.setAction(getString(R.string.hide)) {
+            snackbar.dismiss()
+        }
+        snackbar.show()
     }
 
     private fun setBottomNavigation() {

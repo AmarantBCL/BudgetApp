@@ -5,40 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.amarant.apps.budgetapp.entities.CategoryItem
+import com.amarant.apps.budgetapp.entities.Profile
 import com.amarant.apps.budgetapp.entities.TempProfile
 import com.amarant.apps.budgetapp.util.EmailUtils
 
 class OnboardingViewModel: ViewModel() {
 
-    private val _isNextButtonEnabled = MutableLiveData<Boolean>()
-    val isNextButtonEnabled: LiveData<Boolean>
-        get() = _isNextButtonEnabled
-
-//    private val _fullName = MutableLiveData<String>()
-//    val fullName: LiveData<String>
-//        get() = _fullName
-//
-//    private val _emailAddress = MutableLiveData<String>()
-//    val emailAddress: LiveData<String>
-//        get() = _emailAddress
-//
-//    private val _currency = MutableLiveData<String>()
-//    val currency: LiveData<String>
-//        get() = _currency
-//
-//    private val _monthlyIncome = MutableLiveData("")
-//    val monthlyIncome: LiveData<String>
-//        get() = _monthlyIncome
-//
-//    private val _savingGoal = MutableLiveData("")
-//    val savingGoal: LiveData<String>
-//        get() = _savingGoal
-//
-//    private val _categories = MutableLiveData<List<CategoryItem>>()
-//    val categories: LiveData<List<CategoryItem>>
-//        get() = _categories
-
-    private val _tempProfile = MutableLiveData<TempProfile>(TempProfile(
+    private val _tempProfile = MutableLiveData(TempProfile(
         fullName = "",
         email = "",
         currency = "",
@@ -49,17 +22,16 @@ class OnboardingViewModel: ViewModel() {
     val tempProfile: LiveData<TempProfile>
         get() = _tempProfile
 
+    private val _isNextButtonEnabled = MutableLiveData<Boolean>()
+    val isNextButtonEnabled: LiveData<Boolean>
+        get() = _isNextButtonEnabled
+
     val fullName: LiveData<String> = tempProfile.map { it.fullName }
     val emailAddress: LiveData<String> = tempProfile.map { it.email }
     val currency: LiveData<String> = tempProfile.map { it.currency }
     val monthlyIncome: LiveData<String> = tempProfile.map { it.monthlyIncome.toString() }
     val savingGoal: LiveData<String> = tempProfile.map { it.savingGoal.toString() }
     val categories: LiveData<List<CategoryItem>> = tempProfile.map { it.categories }
-
-    private fun updateProfile(update: (TempProfile) -> TempProfile) {
-        val current = _tempProfile.value ?: return
-        _tempProfile.value = update(current)
-    }
 
     fun updateNextButtonState() {
         val profile = _tempProfile.value ?: return
@@ -72,29 +44,16 @@ class OnboardingViewModel: ViewModel() {
     }
 
     fun setFullName(name: String) {
-//        _fullName.value = name
         updateProfile { it.copy(fullName = name) }
         updateNextButtonState()
     }
 
     fun setEmailAddress(email: String) {
-//        _emailAddress.value = email
         updateProfile { it.copy(email = email) }
         updateNextButtonState()
     }
 
-//    fun updateNextButtonState() {
-//        val currentFullName = _fullName.value ?: ""
-//        val currentEmail = _emailAddress.value ?: ""
-//        if (currentFullName.isNotEmpty() && currentEmail.isNotEmpty()) {
-//            _isNextButtonEnabled.value = EmailUtils.isValidEmail(currentEmail)
-//        } else {
-//            _isNextButtonEnabled.value = false
-//        }
-//    }
-
     fun setCurrency(currency: String) {
-//        _currency.value = currency
         updateProfile { it.copy(currency = currency) }
         updateNextButtonStateFromCurrency()
     }
@@ -102,10 +61,8 @@ class OnboardingViewModel: ViewModel() {
     fun setMonthlyIncome(income: String) {
         val incomeAsInt = income.toIntOrNull()
         if (incomeAsInt != null && incomeAsInt > 0) {
-//            _monthlyIncome.value = incomeAsInt.toString()
             updateProfile { it.copy(monthlyIncome = incomeAsInt.toString()) }
         } else {
-//            _monthlyIncome.value = null
             updateProfile { it.copy(monthlyIncome = null) }
         }
         updateNextButtonStateFromCurrency()
@@ -115,16 +72,12 @@ class OnboardingViewModel: ViewModel() {
         val profile = _tempProfile.value ?: return
         val income = profile.monthlyIncome ?: ""
         _isNextButtonEnabled.value = profile.currency.isNotEmpty() && income.isNotEmpty()
-//        val currency = _currency.value ?: ""
-//        val income = _monthlyIncome.value ?: ""
-//        _isNextButtonEnabled.value = currency.isNotEmpty() && income.isNotEmpty()
     }
 
     fun setSavingGoal(goal: String) {
         val savingGoalAsInt = goal.toIntOrNull()
         if (savingGoalAsInt != null && savingGoalAsInt > 0) {
             updateProfile { it.copy(savingGoal = savingGoalAsInt.toString()) }
-//            _savingGoal.value = savingGoalAsInt.toString()
         }
     }
 
@@ -132,7 +85,6 @@ class OnboardingViewModel: ViewModel() {
         if (categories.value.isNullOrEmpty()) {
             val list = array.map { CategoryItem(it, false) }
             updateProfile { it.copy(categories = list) }
-//            _categories.value = list
         }
     }
 
@@ -143,7 +95,32 @@ class OnboardingViewModel: ViewModel() {
             val oldItem = currentList[index]
             currentList[index] = oldItem.copy(isChecked = isChecked)
             updateProfile { it.copy(categories = currentList.toList()) }
-//            _categories.value = currentList.toList()
         }
+    }
+
+    fun buildAndSaveUserProfile(): Profile? {
+        val temp = _tempProfile.value ?: return null
+        if (temp.fullName.isBlank() ||
+            temp.email.isBlank() ||
+            temp.currency.isBlank() ||
+            temp.monthlyIncome == null
+        ) {
+            return null
+        }
+        val selectedCategoryNames = temp.categories.filter { it.isChecked }.map { it.name }
+        return Profile(
+            name = temp.fullName,
+            email = temp.email,
+            profileImageFilePath = "",
+            bankName = "",
+            currentBalance = 0f,
+            initialBalance = 0f,
+            primaryBank = true
+        )
+    }
+
+    private fun updateProfile(update: (TempProfile) -> TempProfile) {
+        val current = _tempProfile.value ?: return
+        _tempProfile.value = update(current)
     }
 }

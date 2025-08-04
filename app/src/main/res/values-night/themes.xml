@@ -12,6 +12,8 @@
         <item name="colorOnError">@color/accent_purple</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/window_black</item>
+        <!-- Action bar color. -->
+        <item name="actionBarStyle">@style/Custom.ActionBar</item>
         <!-- Customize your theme here. -->
         <item name="spinnerColor">@color/white</item>
         <item name="statisticsColor">@android:color/darker_gray</item>

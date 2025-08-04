@@ -11,8 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentOnboardingBinding
+import com.amarant.apps.budgetapp.entities.PiggyBank
+import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.OnboardingAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 
 class OnboardingFragment : Fragment() {
@@ -23,6 +26,7 @@ class OnboardingFragment : Fragment() {
 
     private val onboardingViewModel: OnboardingViewModel by activityViewModels()
     private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val piggyBankViewModel: PiggyBankViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,14 +72,28 @@ class OnboardingFragment : Fragment() {
     private fun setClickListeners() {
         binding.btnNext.setOnClickListener {
             val currentItem = binding.viewPagerOnboard.currentItem
-            if (currentItem == 1) {
-//            if (currentItem < 4) {
+//            if (currentItem == 1) {
+            if (currentItem < 4) {
                 binding.viewPagerOnboard.setCurrentItem(currentItem + 1, true)
             } else {
-                findNavController().graph.setStartDestination(R.id.calendarFragment)
-                findNavController().navigate(
-                    OnboardingFragmentDirections.actionOnboardingFragmentToCalendarFragment()
-                )
+                val profile = onboardingViewModel.buildAndSaveUserProfile()
+                if (profile != null) {
+                    profileViewModel.insertProfileData(profile)
+                    piggyBankViewModel.updatePiggyBank(
+                        PiggyBank(
+                        1,
+                        0,
+                        0,
+                        0,
+                        0)
+                    )
+                    findNavController().graph.setStartDestination(R.id.calendarFragment)
+                    findNavController().navigate(
+                        OnboardingFragmentDirections.actionOnboardingFragmentToCalendarFragment()
+                    )
+                } else {
+                    (requireActivity() as MainActivity).showSnackbarMessage(binding.btnNext, "Error in creating the profile.")
+                }
             }
         }
         binding.btnPrevious.setOnClickListener {
