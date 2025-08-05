@@ -22,5 +22,6 @@
 
     <style name="Custom.ActionBar" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="background">@color/window_black</item>
+        <item name="android:textColor">@color/accent_purple</item>
     </style>
 </resources>

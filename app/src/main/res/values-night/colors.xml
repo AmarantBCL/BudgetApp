@@ -15,10 +15,16 @@
     <color name="primary_white">#FFFFFF</color>
     <color name="auxiliary_smoke_gray">#1B1B1E</color>
     <color name="positive_green">#22C55E</color>
+    <color name="negative_red">#F6291B</color>
     <color name="window_black">#1A1A1A</color>
     <color name="card_background">#222131</color>
     <color name="light_gray">#AAAAAA</color>
     <color name="dark_green">#1C3C28</color>
+    <color name="category_background">#222131</color>
+    <color name="orange">#E24F06</color>
+    <color name="pink">#E224A8</color>
+    <color name="blue">#215BED</color>
+    <color name="forest_green">#56C82C</color>
 
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
