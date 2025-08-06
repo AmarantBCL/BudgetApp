@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_calendar"
@@ -7,217 +7,235 @@
     android:layout_height="match_parent"
     android:background="@color/window_black">
 
-    <TextView
-        android:id="@+id/lbl_select_date"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/select_the_date"
-        android:textAppearance="@style/Text.Heading.Medium"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/window_black"
+        app:liftOnScroll="true">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_calendar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_select_date">
-
-        <CalendarView
-            android:id="@+id/calendar_view"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_calendar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/card_background"
-            android:dateTextAppearance="@style/Text.Calendar.Date"
-            android:weekDayTextAppearance="@style/Text.Calendar.Weekday" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="10dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    </androidx.cardview.widget.CardView>
+            <CalendarView
+                android:id="@+id/calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/card_background"
+                android:dateTextAppearance="@style/Text.Calendar.Date"
+                android:weekDayTextAppearance="@style/Text.Calendar.Weekday" />
 
-    <TextView
-        android:id="@+id/tv_today_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/large_margin"
-        android:layout_marginTop="@dimen/regular_margin"
-        android:drawablePadding="@dimen/regular_margin"
-        android:text="Monday, August 4, 2025"
-        android:textAppearance="@style/Text.Secondary"
-        android:textColor="@color/primary_white"
-        app:drawableStartCompat="@drawable/ic_dollar"
-        app:drawableTint="@color/primary_white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_calendar" />
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tv_number_of_entries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/large_margin"
-        android:layout_marginTop="@dimen/regular_margin"
-        android:text="5 entries"
-        android:textAppearance="@style/Text.Secondary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_calendar" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_income_expenses"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="0dp"
-        android:visibility="gone"
-        app:cardBackgroundColor="@color/card_background"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:cardElevation="@dimen/card_elevation"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_today_date"
-        tools:visibility="visible">
+            <TextView
+                android:id="@+id/tv_today_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/regular_margin"
+                android:text="August 4, 2025"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/primary_white"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_dollar"
+                app:drawableTint="@color/primary_white" />
+
+            <TextView
+                android:id="@+id/tv_number_of_entries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 entries"
+                android:textSize="16sp"
+                android:textAppearance="@style/Text.Secondary" />
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_income_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="0dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_today_date"
+            tools:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/lbl_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/regular_margin"
+                    android:paddingTop="@dimen/regular_margin"
+                    android:text="Income"
+                    android:textAppearance="@style/Text.Secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/lbl_expenses"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik"
+                    android:paddingHorizontal="@dimen/regular_margin"
+                    android:text="+500.0"
+                    android:textAppearance="@style/Text.Secondary"
+                    android:textColor="@color/positive_green"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/lbl_income"
+                    app:layout_constraintStart_toStartOf="@id/lbl_income"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+
+                <TextView
+                    android:id="@+id/lbl_expenses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/regular_margin"
+                    android:paddingTop="@dimen/regular_margin"
+                    android:text="Expenses"
+                    android:textAppearance="@style/Text.Secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/lbl_net_income"
+                    app:layout_constraintStart_toEndOf="@id/lbl_income"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_expenses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik"
+                    android:paddingHorizontal="@dimen/regular_margin"
+                    android:paddingBottom="@dimen/small_margin"
+                    android:text="-1529.0"
+                    android:textAppearance="@style/Text.Secondary"
+                    android:textColor="@color/negative_red"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/lbl_expenses"
+                    app:layout_constraintStart_toStartOf="@id/lbl_expenses"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+
+                <TextView
+                    android:id="@+id/lbl_net_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/regular_margin"
+                    android:paddingTop="@dimen/regular_margin"
+                    android:text="Net"
+                    android:textAppearance="@style/Text.Secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lbl_expenses"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_net_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik"
+                    android:paddingHorizontal="@dimen/regular_margin"
+                    android:paddingBottom="@dimen/small_margin"
+                    android:text="-1029.0"
+                    android:textAppearance="@style/Text.Secondary"
+                    android:textColor="@color/negative_red"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/lbl_net_income"
+                    app:layout_constraintStart_toStartOf="@id/lbl_net_income"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_net_income" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/scrollable_content_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/lbl_income"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/regular_margin"
-                android:paddingTop="@dimen/regular_margin"
-                android:text="Income"
-                android:textAppearance="@style/Text.Secondary"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toStartOf="@id/lbl_expenses"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_income"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:paddingHorizontal="@dimen/regular_margin"
-                android:text="+500.0"
-                android:textAppearance="@style/Text.Secondary"
-                android:textColor="@color/positive_green"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/lbl_income"
-                app:layout_constraintStart_toStartOf="@id/lbl_income"
-                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
-
-            <TextView
-                android:id="@+id/lbl_expenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/regular_margin"
-                android:paddingTop="@dimen/regular_margin"
-                android:text="Expenses"
-                android:textSize="12sp"
-                android:textAppearance="@style/Text.Secondary"
-                app:layout_constraintEnd_toStartOf="@id/lbl_net_income"
-                app:layout_constraintStart_toEndOf="@id/lbl_income"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_expenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:paddingHorizontal="@dimen/regular_margin"
-                android:paddingBottom="@dimen/small_margin"
-                android:text="-1529.0"
-                android:textAppearance="@style/Text.Secondary"
-                android:textColor="@color/negative_red"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/lbl_expenses"
-                app:layout_constraintStart_toStartOf="@id/lbl_expenses"
-                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
-
-            <TextView
-                android:id="@+id/lbl_net_income"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/regular_margin"
-                android:textSize="12sp"
-                android:paddingTop="@dimen/regular_margin"
-                android:text="Net"
-                android:textAppearance="@style/Text.Secondary"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_entries"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/lbl_expenses"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="6"
+                tools:listitem="@layout/list_item_today_entry"
+                tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/tv_net_income"
+            <ImageView
+                android:id="@+id/img_dollar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:paddingHorizontal="@dimen/regular_margin"
-                android:paddingBottom="@dimen/small_margin"
-                android:text="-1029.0"
+                android:layout_marginTop="@dimen/regular_margin"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/tv_empty_entries"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:srcCompat="@drawable/circle_dollar"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_empty_entries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="@dimen/regular_margin"
+                android:text="No entries for this date.\nTap 'Add Entry' to get started!"
+                android:textAlignment="center"
                 android:textAppearance="@style/Text.Secondary"
-                android:textColor="@color/negative_red"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/lbl_net_income"
-                app:layout_constraintStart_toStartOf="@id/lbl_net_income"
-                app:layout_constraintTop_toBottomOf="@id/lbl_net_income" />
+                android:visibility="gone"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_dollar"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.core.widget.NestedScrollView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_entries"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/regular_margin"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_income_expenses"
-        tools:itemCount="6"
-        tools:listitem="@layout/list_item_today_entry"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/img_dollar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/regular_margin"
-        app:layout_constraintBottom_toTopOf="@id/tv_empty_entries"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_today_date"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/circle_dollar"
-        tools:visibility="gone" />
-
-    <TextView
-        android:id="@+id/tv_empty_entries"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/regular_margin"
-        android:text="No entries for this date.\nTap 'Add Entry' to get started!"
-        android:textAlignment="center"
-        android:textAppearance="@style/Text.Secondary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_dollar"
-        tools:visibility="gone" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

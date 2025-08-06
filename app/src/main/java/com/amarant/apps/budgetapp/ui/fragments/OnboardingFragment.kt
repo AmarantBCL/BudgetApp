@@ -53,7 +53,7 @@ class OnboardingFragment : Fragment() {
         val onboardingAdapter = OnboardingAdapter(requireActivity())
         binding.viewPagerOnboard.adapter = onboardingAdapter
         binding.viewPagerOnboard.isUserInputEnabled = false
-        binding.viewPagerOnboard.offscreenPageLimit = 1
+        binding.viewPagerOnboard.offscreenPageLimit = 3
         binding.viewPagerOnboard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.btnPrevious.isEnabled = position > 0

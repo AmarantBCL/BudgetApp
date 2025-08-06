@@ -7,22 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
-import com.amarant.apps.budgetapp.entities.Budget
-import com.amarant.apps.budgetapp.entities.PiggyBank
 import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
@@ -30,17 +24,16 @@ import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
-import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.amarant.apps.budgetapp.util.UtilityFunctions
-import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import java.time.Month
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.Locale.filter
 import kotlin.math.absoluteValue
-import kotlin.math.log
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
@@ -70,6 +63,8 @@ class CalendarFragment : Fragment() {
         setHasOptionsMenu(true)
         initViews()
         observeViewModel()
+        val cardCalendarParams = binding.cardCalendar.layoutParams as AppBarLayout.LayoutParams
+        initialScrollFlags = cardCalendarParams.scrollFlags
     }
 
     override fun onDestroyView() {
@@ -78,11 +73,20 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initViews() {
-        activity?.title = "Calendar"
+//        activity?.title = "Calendar"
         currentDate = getFormattedDate()
         val start = UtilityFunctions.dateStringToMillis(currentDate.toString())
         val end = UtilityFunctions.dateStringToMillis(currentDate.toString())
         budgetViewModel.setReportsBetweenDates(start, end)
+        currentDate?.let {
+            val calendar = Calendar.getInstance()
+            val date = setFormattedDay(
+                calendar.get(Calendar.DATE),
+                calendar.get(Calendar.MONTH + 1),
+                calendar.get(Calendar.YEAR)
+            )
+            binding.tvTodayDate.text = date
+        }
 //        Log.e("WTF", "### $currentDate")
 //        Log.d("WTF", "### $start -> $end")
         binding.calendarView.setOnDateChangeListener { _, year, month, day ->
@@ -95,6 +99,15 @@ class CalendarFragment : Fragment() {
             budgetViewModel.setReportsBetweenDates(start, end)
 //            val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(selectedDate)
 //            findNavController().navigate(action)
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month + 1, day)
+            Log.e("WTF", "${calendar.get(Calendar.MONTH)}")
+            val date = setFormattedDay(
+                calendar.get(Calendar.DATE),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.YEAR)
+            )
+            binding.tvTodayDate.text = date
         }
         todayBudgetAdapter = TodayBudgetAdapter()
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
@@ -138,6 +151,7 @@ class CalendarFragment : Fragment() {
         button.setOnClickListener {
             currentDate?.let {
                 val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(it)
+                Log.e("[CalendarFragment]", "$action")
                 findNavController().navigate(action)
             }
         }
@@ -176,7 +190,8 @@ class CalendarFragment : Fragment() {
 //            }
 //        }
         budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
-            todayBudgetAdapter.submitList(it)
+            todayBudgetAdapter.submitList(it.reversed())
+            binding.tvNumberOfEntries.text = "${it.size} entries"
             Log.d("WTF", "LiveData UPDATED")
             if (it.isNotEmpty()) {
                 val totalIncome = it.filter { it.creditOrDebit == "Credit" }.sumOf { it.amount.toDouble() }
@@ -188,6 +203,7 @@ class CalendarFragment : Fragment() {
                 binding.imgDollar.visibility = View.GONE
                 binding.tvIncome.text = "+$totalIncome"
                 binding.tvExpenses.text = totalExpenses.toString()
+                setAppBarScrolling(binding.cardCalendar, true)
                 if (netIncome > 0) {
                     binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
                     binding.tvNetIncome.text = "+$netIncome"
@@ -196,6 +212,7 @@ class CalendarFragment : Fragment() {
                     binding.tvNetIncome.text = netIncome.toString()
                 }
             } else {
+                setAppBarScrolling(binding.cardCalendar, false)
                 binding.recyclerEntries.visibility = View.GONE
                 binding.cardIncomeExpenses.visibility = View.GONE
                 binding.tvEmptyEntries.visibility = View.VISIBLE
@@ -216,6 +233,29 @@ class CalendarFragment : Fragment() {
         val formattedDate = formatter.format(currentDate)
 
         return formattedDate
+    }
+
+    fun setFormattedDay(day: Int, month: Int, year: Int): String {
+        // August 4, 2025
+        // 6/8/2025
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, month - 1) // -1, так как Calendar с 0-индексом
+
+        // Получаем название месяца
+        val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US)
+        return "$monthName $day, $year"
+    }
+
+    private var initialScrollFlags = 0
+
+    private fun setAppBarScrolling(calendarView: CardView, isEnabled: Boolean) {
+        val params = calendarView.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = if (isEnabled) {
+            AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+        } else {
+            0
+        }
+        calendarView.layoutParams = params
     }
 
     private fun checkPin() {

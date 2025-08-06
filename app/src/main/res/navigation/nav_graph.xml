@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.CalendarFragment"
-        android:label="CalendarFragment"
+        android:label="Calendar"
         tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_budgetEntryFragment"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/budgetEntryFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetEntryFragment"
-        android:label="BudgetEntryFragment"
+        android:label="Add entry"
         tools:layout="@layout/fragment_budget_entry">
         <argument
             android:name="selectedDate"

@@ -26,7 +26,7 @@ class TodayBudgetAdapter : ListAdapter<Budget, TodayBudgetAdapter.TodayBudgetVie
             binding.tvCategory.text = item.category
             binding.tvAmount.text = item.amount.toString()
             val categoryImageResId = when (item.category) {
-                "Transportation" -> R.drawable.circle_transportation
+                "Car" -> R.drawable.circle_transportation
                 "Restaurants" -> R.drawable.circle_cafe
                 "Groceries" -> R.drawable.circle_shopping
                 "Rent" -> R.drawable.circle_housing
