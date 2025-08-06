@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -22,6 +23,7 @@ import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
         setBottomNavigation()
 //        checkProfileData()
     }
@@ -82,6 +86,15 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     supportActionBar?.show()
                     binding.bottomNavBar.visibility = View.VISIBLE
+                    if (destination.id == R.id.calendarFragment) {
+                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+                        button.visibility = View.VISIBLE
+                    } else {
+                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+                        button.visibility = View.GONE
+                    }
                 }
             }
         }
