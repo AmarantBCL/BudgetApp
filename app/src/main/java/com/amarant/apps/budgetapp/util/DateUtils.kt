@@ -6,7 +6,7 @@ import java.util.Locale
 
 object DateUtils {
 
-    private const val CALENDAR_DATE_PATTERN = "dd MMMM, yyyy"
+    private const val CALENDAR_DATE_PATTERN = "d MMMM, yyyy"
 
     fun getFormattedDate(date: Long): String {
         val date = Date(date)

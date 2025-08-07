@@ -20,8 +20,34 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <!-- ActionBar styling -->
     <style name="Custom.ActionBar" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="background">@color/window_black</item>
         <item name="android:textColor">@color/accent_purple</item>
     </style>
+
+    <!-- Dialog styling -->
+<!--    <style name="CustomDialog" parent="Theme.MaterialComponents.Light.Dialog">-->
+<!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="android:windowFullscreen">false</item>-->
+<!--        <item name="android:windowIsFloating">true</item>-->
+<!--    </style>-->
+
+<!--    <style name="Example.MaterialDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">-->
+<!--        <item name="materialAlertDialogTitleTextStyle">@style/Example.MaterialDialog.Title</item>-->
+<!--        <item name="shapeAppearanceOverlay">@style/ShapeDialog</item>-->
+<!--    </style>-->
+
+<!--    <style name="Example.MaterialDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">-->
+<!--        <item name="android:textStyle">bold</item>-->
+<!--    </style>-->
+
+<!--    <style name="ShapeDialog">-->
+<!--        <item name="cornerFamily">rounded</item>-->
+<!--        <item name="cornerFamilyTopLeft">rounded</item>-->
+<!--        <item name="cornerFamilyTopRight">rounded</item>-->
+<!--        <item name="cornerSizeBottomLeft">24dp</item>-->
+<!--        <item name="cornerSizeBottomRight">24dp</item>-->
+<!--    </style>-->
 </resources>

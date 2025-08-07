@@ -103,9 +103,10 @@ class CalendarFragment : Fragment() {
         val button = toolbar.findViewById<Button>(R.id.btn_action)
         button.setOnClickListener {
             currentDate?.let {
-                val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(it)
-                Log.e("[CalendarFragment]", "$action")
-                findNavController().navigate(action)
+//                val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(it)
+//                Log.e("[CalendarFragment]", "$action")
+//                findNavController().navigate(action)
+                findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToDialogFragmentAddEntry(it))
             }
         }
     }

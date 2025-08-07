@@ -38,4 +38,9 @@
         <item>Taxes</item>
         <item>Rent</item>
     </string-array>
+
+    <string-array name="operation_types">
+        <item>Expense</item>
+        <item>Income</item>
+    </string-array>
 </resources>

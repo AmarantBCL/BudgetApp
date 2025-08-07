@@ -24,6 +24,8 @@ class StepThreeFragment : Fragment() {
 
     private val onboardingViewModel: OnboardingViewModel by activityViewModels()
 
+    private lateinit var autoCompleteTextView: AutoCompleteTextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,23 +46,27 @@ class StepThreeFragment : Fragment() {
     }
 
     private fun initViews() {
+        initAutoCompleteTextViews()
+        onboardingViewModel.currency.value?.let {
+            autoCompleteTextView.setText(it, false)
+        }
+        binding.editIncome.setText(onboardingViewModel.monthlyIncome.value)
+        binding.editSavingsGoal.setText(onboardingViewModel.savingGoal.value)
+    }
+
+    private fun initAutoCompleteTextViews() {
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.list_item_exposed_dropdown,
             resources.getStringArray(R.array.currency)
         )
-        val autoCompleteTextView = (binding.tilCurrency.editText as? AutoCompleteTextView)
-        autoCompleteTextView?.setAdapter(adapter)
-        autoCompleteTextView?.onItemClickListener = AdapterView.OnItemClickListener {
+        autoCompleteTextView = (binding.tilCurrency.editText as AutoCompleteTextView)
+        autoCompleteTextView.setAdapter(adapter)
+        autoCompleteTextView.onItemClickListener = AdapterView.OnItemClickListener {
                 parent, view, position, id ->
             val selectedCurrency = parent.getItemAtPosition(position).toString()
             onboardingViewModel.setCurrency(selectedCurrency)
         }
-        onboardingViewModel.currency.value?.let {
-            autoCompleteTextView?.setText(it, false)
-        }
-        binding.editIncome.setText(onboardingViewModel.monthlyIncome.value)
-        binding.editSavingsGoal.setText(onboardingViewModel.savingGoal.value)
     }
 
     private fun setTextWatchers() {

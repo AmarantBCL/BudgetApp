@@ -18,5 +18,7 @@
         <item name="spinnerColor">@color/black</item>
         <item name="statisticsColor">@android:color/darker_gray</item>
         <item name="chipStyle">@style/CustomChipStyle</item>
+
+<!--        <item name="materialAlertDialogTheme">@style/Example.MaterialDialog</item>-->
     </style>
 </resources>
