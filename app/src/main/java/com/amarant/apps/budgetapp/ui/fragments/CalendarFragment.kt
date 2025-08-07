@@ -25,6 +25,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
+import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -52,6 +53,8 @@ class CalendarFragment : Fragment() {
     private val calendarViewModel: CalendarViewModel by viewModels()
 
     private lateinit var todayBudgetAdapter: TodayBudgetAdapter
+
+    private var initialScrollFlags = 0
     private var currentDate: String? = null
 
     override fun onCreateView(
@@ -78,41 +81,18 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initViews() {
-//        activity?.title = "Calendar"
-//        currentDate = getFormattedDate()
-//        Log.d("WTF", "$currentDate")
-//        val start = UtilityFunctions.dateStringToMillis(currentDate.toString())
-//        val end = UtilityFunctions.dateStringToMillis(currentDate.toString())
-//        budgetViewModel.setReportsBetweenDates(start, end)
-//        currentDate?.let {
-//            val calendar = Calendar.getInstance()
-//            val date = setFormattedDay(
-//                calendar.get(Calendar.DATE),
-//                calendar.get(Calendar.MONTH + 1),
-//                calendar.get(Calendar.YEAR)
-//            )
-//            binding.tvTodayDate.text = date
-//        }
-//        Log.e("WTF", "### $currentDate")
-//        Log.d("WTF", "### $start -> $end")
         binding.calendarView.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = "$day/${month + 1}/$year"
             currentDate = selectedDate
             val start = UtilityFunctions.dateStringToMillis(selectedDate)
             val end = UtilityFunctions.dateStringToMillis("${day}/${month + 1}/$year")
-//            Log.e("WTF", "$selectedDate")
-//            Log.d("WTF", "$start -> $end")
             budgetViewModel.setReportsBetweenDates(start, end)
             val calendar = Calendar.getInstance()
-            calendar.set(year, month + 1, day)
-            Log.e("WTF", "[CALENDAR DATE CHANGED] Calendar.MONTH: ${calendar.get(Calendar.MONTH)}")
-            val date = setFormattedDay(
-                calendar.get(Calendar.DATE),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.YEAR)
-            )
-            binding.tvTodayDate.text = date
             calendar.set(year, month, day)
+//            Log.e("WTF", "[CALENDAR DATE CHANGED] Calendar.DAY: ${calendar.get(Calendar.DATE)} Calendar.MONTH: ${calendar.get(Calendar.MONTH)} Calendar.YEAR: ${calendar.get(Calendar.YEAR)}")
+            val date = DateUtils.getFormattedDate(calendar.timeInMillis)
+//            Log.d("WTF", "[FORMATTED DATE] $date")
+            binding.tvTodayDate.text = date
             calendarViewModel.setSelectedDate(calendar.timeInMillis)
         }
         todayBudgetAdapter = TodayBudgetAdapter()
@@ -195,63 +175,19 @@ class CalendarFragment : Fragment() {
         calendarViewModel.selectedDate.value?.let { savedDate ->
             val date = Date(savedDate)
             val debugFormatter = SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault())
-            val formatter = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
             val anotherFormatter = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
             val debugFormattedDate = debugFormatter.format(date)
-            val formattedDate = formatter.format(date)
+            val formattedDate = DateUtils.getFormattedDate(savedDate)
             val anotherFormattedDate = anotherFormatter.format(date)
             Log.e("WTF", "[LIVE DATA UPDATE] savedDate: $savedDate ($debugFormattedDate)")
             val start = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
             val end = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
-//            Log.e("WTF", "$selectedDate")
-//            Log.d("WTF", "$start -> $end")
             budgetViewModel.setReportsBetweenDates(start, end)
             currentDate = anotherFormattedDate
             binding.calendarView.date = savedDate
             binding.tvTodayDate.text = formattedDate
-//            currentDate = getFormattedDate()
-//            Log.d("WTF", "$currentDate")
-//            val start = savedDate//UtilityFunctions.dateStringToMillis(currentDate.toString())
-//            val end = savedDate - 86400 * 1000//UtilityFunctions.dateStringToMillis(currentDate.toString())
-//            budgetViewModel.setReportsBetweenDates(start, end)
-//            currentDate?.let {
-//                val calendar = Calendar.getInstance()
-//                val date = setFormattedDay(
-//                    calendar.get(Calendar.DATE),
-//                    calendar.get(Calendar.MONTH + 1),
-//                    calendar.get(Calendar.YEAR)
-//                )
-//                binding.tvTodayDate.text = date
-//            }
         }
     }
-
-    fun getFormattedDate(): String {
-        // Create a SimpleDateFormat object with the desired pattern.
-        // The Locale.US is used to ensure the format is consistent, as some locales might handle M/d/yyyy differently.
-        val formatter = SimpleDateFormat("d/M/yyyy", Locale.US)
-
-        // Get the current date.
-        val currentDate = Date()
-
-        // Format the date using the formatter.
-        val formattedDate = formatter.format(currentDate)
-
-        return formattedDate
-    }
-
-    fun setFormattedDay(day: Int, month: Int, year: Int): String {
-        // August 4, 2025
-        // 6/8/2025
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, month - 1) // -1, так как Calendar с 0-индексом
-
-        // Получаем название месяца
-        val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US)
-        return "$monthName $day, $year"
-    }
-
-    private var initialScrollFlags = 0
 
     private fun setAppBarScrolling(calendarView: CardView, isEnabled: Boolean) {
         val params = calendarView.layoutParams as AppBarLayout.LayoutParams
