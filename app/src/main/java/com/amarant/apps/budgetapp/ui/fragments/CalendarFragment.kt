@@ -30,7 +30,10 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.Month
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -76,35 +79,33 @@ class CalendarFragment : Fragment() {
 
     private fun initViews() {
 //        activity?.title = "Calendar"
-        currentDate = getFormattedDate()
+//        currentDate = getFormattedDate()
 //        Log.d("WTF", "$currentDate")
-        val start = UtilityFunctions.dateStringToMillis(currentDate.toString())
-        val end = UtilityFunctions.dateStringToMillis(currentDate.toString())
-        budgetViewModel.setReportsBetweenDates(start, end)
-        currentDate?.let {
-            val calendar = Calendar.getInstance()
-            val date = setFormattedDay(
-                calendar.get(Calendar.DATE),
-                calendar.get(Calendar.MONTH + 1),
-                calendar.get(Calendar.YEAR)
-            )
-            binding.tvTodayDate.text = date
-        }
+//        val start = UtilityFunctions.dateStringToMillis(currentDate.toString())
+//        val end = UtilityFunctions.dateStringToMillis(currentDate.toString())
+//        budgetViewModel.setReportsBetweenDates(start, end)
+//        currentDate?.let {
+//            val calendar = Calendar.getInstance()
+//            val date = setFormattedDay(
+//                calendar.get(Calendar.DATE),
+//                calendar.get(Calendar.MONTH + 1),
+//                calendar.get(Calendar.YEAR)
+//            )
+//            binding.tvTodayDate.text = date
+//        }
 //        Log.e("WTF", "### $currentDate")
 //        Log.d("WTF", "### $start -> $end")
         binding.calendarView.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = "$day/${month + 1}/$year"
-//            currentDate = selectedDate
+            currentDate = selectedDate
             val start = UtilityFunctions.dateStringToMillis(selectedDate)
             val end = UtilityFunctions.dateStringToMillis("${day}/${month + 1}/$year")
 //            Log.e("WTF", "$selectedDate")
 //            Log.d("WTF", "$start -> $end")
             budgetViewModel.setReportsBetweenDates(start, end)
-//            val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(selectedDate)
-//            findNavController().navigate(action)
             val calendar = Calendar.getInstance()
             calendar.set(year, month + 1, day)
-            Log.e("WTF", "${calendar.get(Calendar.MONTH)}")
+            Log.e("WTF", "[CALENDAR DATE CHANGED] Calendar.MONTH: ${calendar.get(Calendar.MONTH)}")
             val date = setFormattedDay(
                 calendar.get(Calendar.DATE),
                 calendar.get(Calendar.MONTH),
@@ -118,39 +119,6 @@ class CalendarFragment : Fragment() {
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerEntries.addItemDecoration(divider)
         binding.recyclerEntries.adapter = todayBudgetAdapter
-//        val entryOne = Budget(1, "2025-08-04", "Privatbank", -75f, "Morning coffee", "Debit", "Restaurants")
-//        val entryTwo = Budget(2, "2025-08-04", "Privatbank", -208f, "Uber ride", "Debit", "Transportation")
-//        val entryThree = Budget(3, "2025-08-04", "Privatbank", 25000f, "Salary", "Credit", "Cash")
-//        val entryFour = Budget(4, "2025-08-04", "Privatbank", -855f, "Blood tests", "Debit", "Health")
-//        val entryFive = Budget(5, "2025-08-04", "Privatbank", -9500f, "Apartment", "Debit", "Rent")
-//        val entrySix = Budget(6, "2025-08-05", "Privatbank", -528f, "Supermarket", "Debit", "Groceries")
-//        val entrySeven = Budget(7, "2025-08-05", "Privatbank", -791f, "Cyberpunk 2077", "Debit", "Entertainment")
-//        val list = listOf<Budget>()//(entryOne, entryTwo, entryThree, entryFour, entryFive, entrySix, entrySeven)
-//        todayBudgetAdapter.submitList(list)
-//        binding.tvNumberOfEntries.text = "${list.size} entries"
-//        if (list.isNotEmpty()) {
-//            val totalIncome = list.filter { it.creditOrDebit == "Credit" }.sumOf { it.amount.toDouble() }
-//            val totalExpenses = list.filter { it.creditOrDebit == "Debit" }.sumOf { it.amount.toDouble() }
-//            val netIncome = totalIncome - totalExpenses.absoluteValue
-//            binding.recyclerEntries.visibility = View.VISIBLE
-//            binding.cardIncomeExpenses.visibility = View.VISIBLE
-//            binding.tvEmptyEntries.visibility = View.GONE
-//            binding.imgDollar.visibility = View.GONE
-//            binding.tvIncome.text = "+$totalIncome"
-//            binding.tvExpenses.text = totalExpenses.toString()
-//            if (netIncome > 0) {
-//                binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
-//                binding.tvNetIncome.text = "+$netIncome"
-//            } else {
-//                binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-//                binding.tvNetIncome.text = netIncome.toString()
-//            }
-//        } else {
-//            binding.recyclerEntries.visibility = View.GONE
-//            binding.cardIncomeExpenses.visibility = View.GONE
-//            binding.tvEmptyEntries.visibility = View.VISIBLE
-//            binding.imgDollar.visibility = View.VISIBLE
-//        }
         val toolbar = (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
         val button = toolbar.findViewById<Button>(R.id.btn_action)
         button.setOnClickListener {
@@ -197,7 +165,7 @@ class CalendarFragment : Fragment() {
         budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
             todayBudgetAdapter.submitList(it.reversed())
             binding.tvNumberOfEntries.text = "${it.size} entries"
-            Log.d("WTF", "LiveData UPDATED")
+            Log.d("WTF", "[LIVE DATA UPDATE] getReportsBetweenDates()")
             if (it.isNotEmpty()) {
                 val totalIncome = it.filter { it.creditOrDebit == "Credit" }.sumOf { it.amount.toDouble() }
                 val totalExpenses = it.filter { it.creditOrDebit == "Debit" }.sumOf { it.amount.toDouble() }
@@ -225,8 +193,22 @@ class CalendarFragment : Fragment() {
             }
         }
         calendarViewModel.selectedDate.value?.let { savedDate ->
-            Log.e("WTF", "$savedDate")
+            val date = Date(savedDate)
+            val debugFormatter = SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault())
+            val formatter = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
+            val anotherFormatter = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+            val debugFormattedDate = debugFormatter.format(date)
+            val formattedDate = formatter.format(date)
+            val anotherFormattedDate = anotherFormatter.format(date)
+            Log.e("WTF", "[LIVE DATA UPDATE] savedDate: $savedDate ($debugFormattedDate)")
+            val start = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
+            val end = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
+//            Log.e("WTF", "$selectedDate")
+//            Log.d("WTF", "$start -> $end")
+            budgetViewModel.setReportsBetweenDates(start, end)
+            currentDate = anotherFormattedDate
             binding.calendarView.date = savedDate
+            binding.tvTodayDate.text = formattedDate
 //            currentDate = getFormattedDate()
 //            Log.d("WTF", "$currentDate")
 //            val start = savedDate//UtilityFunctions.dateStringToMillis(currentDate.toString())
