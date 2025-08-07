@@ -20,6 +20,7 @@ import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.CalendarViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
@@ -44,7 +45,8 @@ class CalendarFragment : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private val piggyBankViewModel: PiggyBankViewModel by viewModels()
-    private val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val budgetViewModel: BudgetViewModel by viewModels()
+    private val calendarViewModel: CalendarViewModel by viewModels()
 
     private lateinit var todayBudgetAdapter: TodayBudgetAdapter
     private var currentDate: String? = null
@@ -75,6 +77,7 @@ class CalendarFragment : Fragment() {
     private fun initViews() {
 //        activity?.title = "Calendar"
         currentDate = getFormattedDate()
+//        Log.d("WTF", "$currentDate")
         val start = UtilityFunctions.dateStringToMillis(currentDate.toString())
         val end = UtilityFunctions.dateStringToMillis(currentDate.toString())
         budgetViewModel.setReportsBetweenDates(start, end)
@@ -91,7 +94,7 @@ class CalendarFragment : Fragment() {
 //        Log.d("WTF", "### $start -> $end")
         binding.calendarView.setOnDateChangeListener { _, year, month, day ->
             val selectedDate = "$day/${month + 1}/$year"
-            currentDate = selectedDate
+//            currentDate = selectedDate
             val start = UtilityFunctions.dateStringToMillis(selectedDate)
             val end = UtilityFunctions.dateStringToMillis("${day}/${month + 1}/$year")
 //            Log.e("WTF", "$selectedDate")
@@ -108,6 +111,8 @@ class CalendarFragment : Fragment() {
                 calendar.get(Calendar.YEAR)
             )
             binding.tvTodayDate.text = date
+            calendar.set(year, month, day)
+            calendarViewModel.setSelectedDate(calendar.timeInMillis)
         }
         todayBudgetAdapter = TodayBudgetAdapter()
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
@@ -218,6 +223,24 @@ class CalendarFragment : Fragment() {
                 binding.tvEmptyEntries.visibility = View.VISIBLE
                 binding.imgDollar.visibility = View.VISIBLE
             }
+        }
+        calendarViewModel.selectedDate.value?.let { savedDate ->
+            Log.e("WTF", "$savedDate")
+            binding.calendarView.date = savedDate
+//            currentDate = getFormattedDate()
+//            Log.d("WTF", "$currentDate")
+//            val start = savedDate//UtilityFunctions.dateStringToMillis(currentDate.toString())
+//            val end = savedDate - 86400 * 1000//UtilityFunctions.dateStringToMillis(currentDate.toString())
+//            budgetViewModel.setReportsBetweenDates(start, end)
+//            currentDate?.let {
+//                val calendar = Calendar.getInstance()
+//                val date = setFormattedDay(
+//                    calendar.get(Calendar.DATE),
+//                    calendar.get(Calendar.MONTH + 1),
+//                    calendar.get(Calendar.YEAR)
+//                )
+//                binding.tvTodayDate.text = date
+//            }
         }
     }
 

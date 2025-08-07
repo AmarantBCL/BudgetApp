@@ -32,7 +32,17 @@ class TodayBudgetAdapter : ListAdapter<Budget, TodayBudgetAdapter.TodayBudgetVie
                 "Rent" -> R.drawable.circle_housing
                 "Health" -> R.drawable.circle_health
                 "Entertainment" -> R.drawable.circle_entertainment
-                "Cash" -> R.drawable.circle_income
+                "Cash" -> R.drawable.circle_transfer
+                "Taxes" -> R.drawable.circle_taxes
+                "Clothes" -> R.drawable.circle_clothing
+                "Pets" -> R.drawable.circle_pets
+                "Education" -> R.drawable.circle_education
+                "Gifts" -> R.drawable.circle_gifts
+                "Charity" -> R.drawable.circle_charity
+                "Traveling" -> R.drawable.circle_traveling
+                "Beauty" -> R.drawable.circle_personal_care
+                "Utilities" -> R.drawable.circle_utilities
+                "Taxi" -> R.drawable.circle_subscriptions
                 else -> R.drawable.cat_unknown
             }
             binding.imgCategory.setImageResource(categoryImageResId)

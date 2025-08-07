@@ -20,11 +20,22 @@
     <color name="card_background">#F9F6FF</color>
     <color name="light_gray">#7E7E7C</color>
     <color name="dark_green">#2B5D3D</color>
+
+    <!-- Category colors -->
     <color name="category_background">#222131</color>
     <color name="orange">#E24F06</color>
     <color name="pink">#E224A8</color>
     <color name="blue">#215BED</color>
     <color name="forest_green">#56C82C</color>
+    <color name="state_gray">#778899</color>
+    <color name="violet">#936AFE</color>
+    <color name="amber">#FFBF00</color>
+    <color name="indigo">#8F00FF</color>
+    <color name="rose">#FF1D8D</color>
+    <color name="teal">#069494</color>
+    <color name="sky">#87CEEB</color>
+    <color name="light_orange">#FFA500</color>
+    <color name="cyan">#00FFFF</color>
 
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
