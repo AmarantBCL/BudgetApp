@@ -106,7 +106,7 @@ class CalendarFragment : Fragment() {
 //                val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(it)
 //                Log.e("[CalendarFragment]", "$action")
 //                findNavController().navigate(action)
-                findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToDialogFragmentAddEntry(it))
+                findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToDialogFragmentAddEntry(currentDate))
             }
         }
     }

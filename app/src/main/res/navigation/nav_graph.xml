@@ -20,7 +20,11 @@
             app:popUpTo="@id/calendarFragment" />
         <action
             android:id="@+id/action_calendarFragment_to_dialogFragmentAddEntry"
-            app:destination="@id/dialogFragmentAddEntry" />
+            app:destination="@id/dialogFragmentAddEntry"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/budgetEntryFragment"
@@ -99,15 +103,15 @@
             app:popUpTo="@id/onboardingFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <dialog
+    <fragment
         android:id="@+id/dialogFragmentAddEntry"
         android:name="com.amarant.apps.budgetapp.ui.dialogs.DialogFragmentAddEntry"
-        android:label="DialogFragmentAddEntry"
-        tools:layout="@layout/dialog_add_budget_entry" >
+        android:label="Add Entry"
+        tools:layout="@layout/dialog_add_budget_entry">
         <argument
             android:name="selectedDate"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </dialog>
+            app:nullable="true" />
+    </fragment>
 </navigation>

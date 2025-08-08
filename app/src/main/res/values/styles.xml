@@ -50,4 +50,24 @@
 <!--        <item name="cornerSizeBottomLeft">24dp</item>-->
 <!--        <item name="cornerSizeBottomRight">24dp</item>-->
 <!--    </style>-->
+
+    <!-- ToggleButton styling -->
+    <style name="MyToggleButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <!-- Цвет текста -->
+        <item name="android:textColor">@color/toggle_button_text</item>
+        <!-- Размер текста -->
+<!--        <item name="android:textSize">16sp</item>-->
+        <!-- Скругления -->
+        <item name="cornerRadius">16dp</item>
+        <!-- Толщина обводки -->
+        <item name="strokeWidth">1dp</item>
+        <!-- Цвет обводки -->
+        <item name="strokeColor">@color/toggle_button_stroke</item>
+        <!-- Цвет при нажатии -->
+<!--        <item name="rippleColor">@color/secondary_gray</item>-->
+        <!-- Отступы -->
+<!--        <item name="android:paddingHorizontal">24dp</item>-->
+<!--        <item name="android:paddingVertical">8dp</item>-->
+    </style>
+
 </resources>
