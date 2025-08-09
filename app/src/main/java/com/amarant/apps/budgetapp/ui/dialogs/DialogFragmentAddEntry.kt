@@ -175,6 +175,7 @@ class DialogFragmentAddEntry : Fragment() {
                 QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
             )
         )
+        binding.lblAddEntry.text = "On ${args.selectedDate}"
     }
 
     private fun setClickListeners() {
@@ -250,6 +251,18 @@ class DialogFragmentAddEntry : Fragment() {
             Log.d("WTF", "$purpose")
             Log.d("WTF", "$date")
             Log.d("WTF", "$category")
+            val amountAsInt = amount.toIntOrNull()
+            if (amountAsInt == null || purpose.isEmpty() || category.isEmpty()) {
+                val snackbar = Snackbar.make(
+                    binding.btnAddEntry,
+                    getString(R.string.fill_in_all_fields), Snackbar.LENGTH_SHORT
+                )
+                snackbar.setAction(getString(R.string.hide)) {
+                    snackbar.dismiss()
+                }
+                snackbar.show()
+                return@setOnClickListener
+            }
             submitBudgetEntryToDB(
                 bankName,
                 debitOrCredit,
@@ -259,7 +272,7 @@ class DialogFragmentAddEntry : Fragment() {
                 revisedCurrentBalance,
                 category
             )
-            historyViewModel.addHistory(HistoryItem(purpose, CategoryUtils.CATEGORY_MAPPING[selectedCategory] ?: 0))
+            historyViewModel.addHistory(HistoryItem(purpose, CATEGORY_MAPPING[selectedCategory] ?: 0))
         }
     }
 

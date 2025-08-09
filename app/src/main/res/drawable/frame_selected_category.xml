@@ -4,6 +4,6 @@
     <solid android:color="@color/card_background" />
 
     <stroke
-        android:width="2dp"
-        android:color="@color/primary_white" />
+        android:width="3dp"
+        android:color="@color/accent_purple" />
 </shape>

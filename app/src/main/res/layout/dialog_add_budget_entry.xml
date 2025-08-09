@@ -98,7 +98,7 @@
                 android:fontFamily="@font/rubik"
                 android:text="Expense"
                 android:textAllCaps="false"
-                app:cornerRadius="16dp"
+                app:cornerRadius="12dp"
                 app:icon="@drawable/ic_debit"
                 app:iconGravity="textStart"
                 app:iconTint="@color/toggle_button_icon_negative" />
@@ -147,10 +147,55 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:hint="Amount"
                 android:inputType="number"
-                android:textColorHint="@color/secondary_gray" />
+                android:maxLength="12"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/secondary_gray"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="Name"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_amount" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            app:boxBackgroundColor="@color/card_background"
+            app:endIconTint="@color/secondary_gray"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_name">
+
+            <AutoCompleteTextView
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:fontFamily="@font/rubik"
+                android:hint="Name"
+                android:inputType="textCapSentences"
+                android:maxLength="96"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/secondary_gray"
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +210,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/tv_selected_category"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_amount" />
+            app:layout_constraintTop_toBottomOf="@id/til_name" />
 
         <TextView
             android:id="@+id/tv_selected_category"
@@ -179,7 +224,7 @@
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/lbl_category"
-            app:layout_constraintTop_toBottomOf="@id/til_amount"
+            app:layout_constraintTop_toBottomOf="@id/til_name"
             tools:text="Shopping" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -236,60 +281,23 @@
 
         <!--    </com.google.android.material.textfield.TextInputLayout>-->
 
-        <TextView
-            android:id="@+id/lbl_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/large_margin"
-            android:layout_marginTop="@dimen/large_margin"
-            android:text="Name"
-            android:textAppearance="@style/Text.Secondary.Bold"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_show_more" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/large_margin"
-            android:paddingBottom="16dp"
-            app:boxBackgroundColor="@color/card_background"
-            app:endIconTint="@color/secondary_gray"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_name">
-
-            <AutoCompleteTextView
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/rubik"
-                android:hint="Name"
-                android:inputType="textCapSentences"
-                android:padding="16dp"
-                android:textColorHint="@color/secondary_gray"
-                android:textSize="16sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <Button
             android:id="@+id/btn_add_entry"
             style="@style/ActiveButtonStyle"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="@dimen/large_margin"
+            android:background="@drawable/btn_back"
+            android:includeFontPadding="false"
             android:text="Add Entry"
             android:textAppearance="@style/Text.Button"
             app:cornerRadius="8dp"
+            app:icon="@drawable/ic_plus"
+            app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_name" />
+            app:layout_constraintTop_toBottomOf="@id/lbl_show_more" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

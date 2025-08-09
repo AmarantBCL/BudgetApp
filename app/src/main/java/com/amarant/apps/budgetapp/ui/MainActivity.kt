@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -23,6 +24,7 @@ import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
+import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
@@ -92,6 +94,18 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.hide()
                     binding.bottomNavBar.visibility = View.GONE
                 }
+                R.id.dialogFragmentAddEntry -> {
+                    binding.bottomNavBar.visibility = View.GONE
+                    if (destination.id == R.id.calendarFragment) {
+                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+                        button.visibility = View.VISIBLE
+                    } else {
+                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+                        button.visibility = View.GONE
+                    }
+                }
                 else -> {
                     supportActionBar?.show()
                     binding.bottomNavBar.visibility = View.VISIBLE
@@ -130,21 +144,37 @@ class MainActivity : AppCompatActivity() {
         sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false).apply()
     }
 
-    // TODO Just for testing, needs to be reworked for specific EditText elements
+    // TODO Just for testing, needs to be reworked for specific EditText elements.
+    // TODO HOWEVER! This seems to be a good solution to focusing issue and is considered optimal.
+//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+//        val view = currentFocus
+//        if (view != null && (ev?.action == MotionEvent.ACTION_UP || ev?.action == MotionEvent.ACTION_MOVE)) {
+//            val hideKeyboardHelper = Rect()
+//            view.getGlobalVisibleRect(hideKeyboardHelper)
+//            if (!hideKeyboardHelper.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+//                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        val view = currentFocus
-        if (view != null && (ev?.action == MotionEvent.ACTION_UP || ev?.action == MotionEvent.ACTION_MOVE)) {
-            val hideKeyboardHelper = Rect()
-            view.getGlobalVisibleRect(hideKeyboardHelper)
-            if (!hideKeyboardHelper.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        if (ev?.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    // Если клик вне EditText, скрываем клавиатуру
+                    v.hideKeyboard()
+                    v.clearFocus() // Также убираем фокус с EditText
+                }
             }
         }
         return super.dispatchTouchEvent(ev)
     }
 
-    private fun hideKeyboard() {
+    private fun View.hideKeyboard() {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
