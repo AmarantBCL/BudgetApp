@@ -35,8 +35,7 @@ class EntryViewModel : ViewModel() {
 
     fun getSelectedCategoryName(): String {
         val indexOfCategory = selectedCategory.value ?: 0
-        val categories = categories.value ?: listOf()
-        val element = categories[indexOfCategory]
+        val element = allCategories[indexOfCategory]
         return element.name
     }
 

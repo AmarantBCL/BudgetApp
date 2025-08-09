@@ -9,7 +9,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -281,6 +283,24 @@ class DialogFragmentAddEntry : Fragment() {
                 )
             )
         }
+        binding.editName.onItemClickListener = AdapterView.OnItemClickListener {
+            parent, view, position, id ->
+                binding.editName.clearFocus()
+                hideKeyboardFrom(binding.editName)
+        }
+        binding.editName.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboardFrom(textView)
+                textView.clearFocus()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+    }
+
+    private fun hideKeyboardFrom(view: View) {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun observeViewModel() {
