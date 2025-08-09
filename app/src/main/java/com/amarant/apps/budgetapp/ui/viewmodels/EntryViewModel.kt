@@ -1,9 +1,11 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.amarant.apps.budgetapp.R
+import com.amarant.apps.budgetapp.entities.CategoryStat
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 
 class EntryViewModel : ViewModel() {
@@ -20,18 +22,37 @@ class EntryViewModel : ViewModel() {
     val selectedCategory: LiveData<Int>
         get() = _selectedCategory
 
-//    private var selectedCategory = 0
     private var allCategories: List<QuickCategoryItem> = listOf()
 
-    fun initCategories(array: Array<String>) {
+    private fun sortCategories(categoriesList: List<String>, stats: List<CategoryStat>): List<String> {
+        val countMap = stats.associate { it.category to it.count }
+        val posMap = categoriesList.withIndex().associate { it.value to it.index }
+        return categoriesList.sortedWith(
+            compareByDescending<String> { countMap[it] ?: 0 }
+                .thenBy { posMap[it] ?: Int.MAX_VALUE }
+        )
+    }
+
+    fun getSelectedCategoryName(): String {
+        val indexOfCategory = selectedCategory.value ?: 0
+        val categories = categories.value ?: listOf()
+        val element = categories[indexOfCategory]
+        return element.name
+    }
+
+    fun initCategories(array: Array<String>, categoryStats: List<CategoryStat>) {
         if (categories.value.isNullOrEmpty()) {
-            val list = array.map { QuickCategoryItem(it, getCategoryDrawable(it)) }
-            allCategories = list
+//            val usedList = categoryStats.map { QuickCategoryItem(it.category, getCategoryDrawable(it.category)) }
+//            val defaultList = array.map { QuickCategoryItem(it, getCategoryDrawable(it)) }
+            val sorted = sortCategories(array.toList(), categoryStats).map {
+                QuickCategoryItem(it, getCategoryDrawable(it))
+            }
+            allCategories = sorted
             val expanded = isExpanded.value
             if (expanded == true) {
-                _categories.value = list
+                _categories.value = sorted
             } else {
-                _categories.value = list.take(8)
+                _categories.value = sorted.take(8)
             }
             setCategorySelected(0)
         }

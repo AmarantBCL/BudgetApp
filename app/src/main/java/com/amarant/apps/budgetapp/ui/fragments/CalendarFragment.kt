@@ -150,7 +150,6 @@ class CalendarFragment : Fragment() {
         budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
             todayBudgetAdapter.submitList(it.reversed())
             binding.tvNumberOfEntries.text = "${it.size} entries"
-            Log.d("WTF", "[LIVE DATA UPDATE] getReportsBetweenDates()")
             if (it.isNotEmpty()) {
                 val totalIncome = it.filter { it.creditOrDebit == "Credit" }.sumOf { it.amount.toDouble() }
                 val totalExpenses = it.filter { it.creditOrDebit == "Debit" }.sumOf { it.amount.toDouble() }
@@ -184,7 +183,7 @@ class CalendarFragment : Fragment() {
             val debugFormattedDate = debugFormatter.format(date)
             val formattedDate = DateUtils.getFormattedDate(savedDate)
             val anotherFormattedDate = anotherFormatter.format(date)
-            Log.e("WTF", "[LIVE DATA UPDATE] savedDate: $savedDate ($debugFormattedDate)")
+//            Log.e("WTF", "[LIVE DATA UPDATE] savedDate: $savedDate ($debugFormattedDate)")
             val start = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
             val end = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
             budgetViewModel.setReportsBetweenDates(start, end)

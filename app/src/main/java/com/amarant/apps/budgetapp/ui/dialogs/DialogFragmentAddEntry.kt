@@ -286,12 +286,11 @@ class DialogFragmentAddEntry : Fragment() {
     private fun observeViewModel() {
         val categoriesArr = resources.getStringArray(R.array.categories)
 //        Log.e("WTF", "${categoriesArr[0]}")
-        entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray())
-        historyViewModel.switchHistoryCategory(0)
+//        entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray())
+//        historyViewModel.switchHistoryCategory(0)
         budgetViewModel.getCategoryStats().observe(viewLifecycleOwner) {
             Log.d("WTF", it.toString())
-//            selectedCategory = "Groceries"
-//            binding.tvSelectedCategory.text = "Groceries"
+            entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray(), it)
         }
         entryViewModel.categories.observe(viewLifecycleOwner) {
 //            val list = if (isExpanded) it else it.take(8)
@@ -307,10 +306,11 @@ class DialogFragmentAddEntry : Fragment() {
             binding.lblShowMore.text = if (it) "Show less" else "Show more"
         }
         entryViewModel.selectedCategory.observe(viewLifecycleOwner) {
-            val categoriesArr = ALL_CATEGORIES.toTypedArray()
-            selectedCategory = categoriesArr[it]
-            binding.tvSelectedCategory.text = categoriesArr[it]
-            historyViewModel.switchHistoryCategory(it)
+//            val categoriesArr = ALL_CATEGORIES.toTypedArray()
+            val categoryName = entryViewModel.getSelectedCategoryName()
+            selectedCategory = categoryName
+            binding.tvSelectedCategory.text = categoryName//categoriesArr[it]
+            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
         }
     }
 
