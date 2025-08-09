@@ -8,6 +8,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
+import com.amarant.apps.budgetapp.entities.CategoryStat
 import com.amarant.apps.budgetapp.repository.BudgetRepository
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
@@ -83,6 +84,10 @@ class BudgetViewModel @Inject constructor(
 
     fun applyFilter(filter: String) {
         _appliedFilter.value = filter
+    }
+
+    fun getCategoryStats(): LiveData<List<CategoryStat>> {
+        return budgetRepository.getCategoryStats()
     }
 
     private fun calculateStartPeriod(period: Int): Long {

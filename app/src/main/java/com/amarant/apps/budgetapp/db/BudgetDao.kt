@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
+import com.amarant.apps.budgetapp.entities.CategoryStat
 
 @Dao
 interface BudgetDao {
@@ -42,4 +43,12 @@ interface BudgetDao {
     @Query("SELECT category, SUM(amount) AS amount FROM budget WHERE creditOrDebit = 'Debit' " +
             "AND date BETWEEN :startDate AND :endDate GROUP BY category ORDER BY amount ASC")
     fun getSpendingsByCategory(startDate: Long, endDate: Long): LiveData<List<BudgetCategoryDetails>>
+
+    @Query("""
+        SELECT category, COUNT(*) AS entries_count
+        FROM budget
+        GROUP BY category
+        ORDER BY entries_count DESC
+    """)
+    fun getCategoryStats(): LiveData<List<CategoryStat>>
 }

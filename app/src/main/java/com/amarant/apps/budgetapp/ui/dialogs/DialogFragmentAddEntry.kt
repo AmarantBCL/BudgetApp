@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,9 +26,11 @@ import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.EntryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils
+import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
 import com.amarant.apps.budgetapp.util.CategoryUtils.CATEGORY_MAPPING
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
@@ -47,6 +50,7 @@ class DialogFragmentAddEntry : Fragment() {
     private val binding: DialogAddBudgetEntryBinding
         get() = _binding ?: throw RuntimeException("DialogAddBudgetEntryBinding == null")
 
+    private val entryViewModel: EntryViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by viewModels()
     private val budgetViewModel: BudgetViewModel by viewModels()
     private val historyViewModel: HistoryViewModel by viewModels()
@@ -55,7 +59,7 @@ class DialogFragmentAddEntry : Fragment() {
     private lateinit var typeAutoCompleteTextView: AutoCompleteTextView
     private lateinit var categoryAutoCompleteTextView: AutoCompleteTextView
 
-    private var isExpanded = false
+//    private var isExpanded = false
     private var selectedCategory = ""
 
 //    private var dialogView: View? = null
@@ -108,134 +112,131 @@ class DialogFragmentAddEntry : Fragment() {
         quickCategoriesAdapter = QuickCategoriesAdapter()
         binding.recyclerQuickCategories.adapter = quickCategoriesAdapter
         quickCategoriesAdapter.onCategoryClickListener = { name, isSelected ->
-            val currentList = quickCategoriesAdapter.currentList.toMutableList()
-
-//            val currentList = categories.value.orEmpty().toMutableList()
-
-            val newList = if (!isExpanded) {
-                mutableListOf(
-                    QuickCategoryItem("Groceries", R.drawable.circle_shopping),
-                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
-                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
-                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
-                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
-                    QuickCategoryItem("House", R.drawable.circle_housing),
-                    QuickCategoryItem("Car", R.drawable.circle_transportation),
-                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
-                )
-            } else {
-                mutableListOf(
-                    QuickCategoryItem("Groceries", R.drawable.circle_shopping),
-                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
-                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
-                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
-                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
-                    QuickCategoryItem("House", R.drawable.circle_housing),
-                    QuickCategoryItem("Car", R.drawable.circle_transportation),
-                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care),
-
-                    QuickCategoryItem("Health", R.drawable.circle_health),
-                    QuickCategoryItem("Pets", R.drawable.circle_pets),
-                    QuickCategoryItem("Taxi", R.drawable.circle_subscriptions),
-                    QuickCategoryItem("Entertainment", R.drawable.circle_entertainment),
-                    QuickCategoryItem("Education", R.drawable.circle_education),
-                    QuickCategoryItem("Traveling", R.drawable.circle_traveling),
-                    QuickCategoryItem("Gifts", R.drawable.circle_gifts),
-                    QuickCategoryItem("Charity", R.drawable.circle_charity),
-
-                    QuickCategoryItem("Taxes", R.drawable.circle_taxes),
-                    QuickCategoryItem("Rent", R.drawable.circle_housing),
-                )
-            }
-
-            val index = newList.indexOfFirst { it.name == name }
-            if (index != -1) {
-                val oldItem = newList[index]
-                newList[index] = oldItem.copy(isSelected = !isSelected)
-//                updateProfile { it.copy(categories = currentList.toList()) }
-            }
-            if (!isSelected) {
-                selectedCategory = name
-                binding.tvSelectedCategory.text = name
-                historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[name] ?: 0)
-            } else {
-                binding.tvSelectedCategory.text = ""
-            }
-            quickCategoriesAdapter.submitList(newList)
+//            val currentList = quickCategoriesAdapter.currentList.toMutableList()
+//            val newList = if (!isExpanded) {
+//                mutableListOf(
+//                    QuickCategoryItem("Groceries", R.drawable.circle_shopping, true),
+//                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
+//                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
+//                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
+//                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
+//                    QuickCategoryItem("House", R.drawable.circle_housing),
+//                    QuickCategoryItem("Car", R.drawable.circle_transportation),
+//                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
+//                )
+//            } else {
+//                mutableListOf(
+//                    QuickCategoryItem("Groceries", R.drawable.circle_shopping, true),
+//                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
+//                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
+//                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
+//                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
+//                    QuickCategoryItem("House", R.drawable.circle_housing),
+//                    QuickCategoryItem("Car", R.drawable.circle_transportation),
+//                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care),
+//
+//                    QuickCategoryItem("Health", R.drawable.circle_health),
+//                    QuickCategoryItem("Pets", R.drawable.circle_pets),
+//                    QuickCategoryItem("Taxi", R.drawable.circle_subscriptions),
+//                    QuickCategoryItem("Entertainment", R.drawable.circle_entertainment),
+//                    QuickCategoryItem("Education", R.drawable.circle_education),
+//                    QuickCategoryItem("Traveling", R.drawable.circle_traveling),
+//                    QuickCategoryItem("Gifts", R.drawable.circle_gifts),
+//                    QuickCategoryItem("Charity", R.drawable.circle_charity),
+//
+//                    QuickCategoryItem("Taxes", R.drawable.circle_taxes),
+//                    QuickCategoryItem("Rent", R.drawable.circle_housing),
+//                )
+//            }
+            entryViewModel.selectCategory(name)
+//            val index = newList.indexOfFirst { it.name == name }
+//            if (index != -1) {
+//                val oldItem = newList[index]
+//                newList[index] = oldItem.copy(isSelected = !isSelected)
+//            }
+//            if (!isSelected) {
+//                selectedCategory = name
+//                binding.tvSelectedCategory.text = name
+//                historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[name] ?: 0)
+//            } else {
+//                binding.tvSelectedCategory.text = ""
+//            }
+//            quickCategoriesAdapter.submitList(newList)
         }
-        quickCategoriesAdapter.submitList(
-            listOf(
-                QuickCategoryItem("Groceries", R.drawable.circle_shopping),
-                QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
-                QuickCategoryItem("Cash", R.drawable.circle_transfer),
-                QuickCategoryItem("Utilities", R.drawable.circle_utilities),
-                QuickCategoryItem("Clothes", R.drawable.circle_clothing),
-                QuickCategoryItem("House", R.drawable.circle_housing),
-                QuickCategoryItem("Car", R.drawable.circle_transportation),
-                QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
-            )
-        )
+//        quickCategoriesAdapter.submitList(
+//            listOf(
+//                QuickCategoryItem("Groceries", R.drawable.circle_shopping, true),
+//                QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
+//                QuickCategoryItem("Cash", R.drawable.circle_transfer),
+//                QuickCategoryItem("Utilities", R.drawable.circle_utilities),
+//                QuickCategoryItem("Clothes", R.drawable.circle_clothing),
+//                QuickCategoryItem("House", R.drawable.circle_housing),
+//                QuickCategoryItem("Car", R.drawable.circle_transportation),
+//                QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
+//            )
+//        )
         binding.lblAddEntry.text = "On ${args.selectedDate}"
     }
 
     private fun setClickListeners() {
         binding.lblShowMore.setOnClickListener {
-            val list = if (isExpanded) {
-                listOf(
-                    QuickCategoryItem("Groceries", R.drawable.circle_shopping),
-                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
-                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
-                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
-                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
-                    QuickCategoryItem("House", R.drawable.circle_housing),
-                    QuickCategoryItem("Car", R.drawable.circle_transportation),
-                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
-                )
-            } else {
-                listOf(
-                    QuickCategoryItem("Groceries", R.drawable.circle_shopping),
-                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
-                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
-                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
-                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
-                    QuickCategoryItem("House", R.drawable.circle_housing),
-                    QuickCategoryItem("Car", R.drawable.circle_transportation),
-                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care),
-
-                    QuickCategoryItem("Health", R.drawable.circle_health),
-                    QuickCategoryItem("Pets", R.drawable.circle_pets),
-                    QuickCategoryItem("Taxi", R.drawable.circle_subscriptions),
-                    QuickCategoryItem("Entertainment", R.drawable.circle_entertainment),
-                    QuickCategoryItem("Education", R.drawable.circle_education),
-                    QuickCategoryItem("Traveling", R.drawable.circle_traveling),
-                    QuickCategoryItem("Gifts", R.drawable.circle_gifts),
-                    QuickCategoryItem("Charity", R.drawable.circle_charity),
-
-                    QuickCategoryItem("Taxes", R.drawable.circle_taxes),
-                    QuickCategoryItem("Rent", R.drawable.circle_housing),
-                )
-            }
-            isExpanded = !isExpanded
-            quickCategoriesAdapter.submitList(list) {
-                if (!isExpanded) {
+//            val list = if (isExpanded) {
+//                listOf(
+//                    QuickCategoryItem("Groceries", R.drawable.circle_shopping, true),
+//                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
+//                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
+//                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
+//                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
+//                    QuickCategoryItem("House", R.drawable.circle_housing),
+//                    QuickCategoryItem("Car", R.drawable.circle_transportation),
+//                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care)
+//                )
+//            } else {
+//                listOf(
+//                    QuickCategoryItem("Groceries", R.drawable.circle_shopping, true),
+//                    QuickCategoryItem("Restaurants", R.drawable.circle_cafe),
+//                    QuickCategoryItem("Cash", R.drawable.circle_transfer),
+//                    QuickCategoryItem("Utilities", R.drawable.circle_utilities),
+//                    QuickCategoryItem("Clothes", R.drawable.circle_clothing),
+//                    QuickCategoryItem("House", R.drawable.circle_housing),
+//                    QuickCategoryItem("Car", R.drawable.circle_transportation),
+//                    QuickCategoryItem("Beauty", R.drawable.circle_personal_care),
+//
+//                    QuickCategoryItem("Health", R.drawable.circle_health),
+//                    QuickCategoryItem("Pets", R.drawable.circle_pets),
+//                    QuickCategoryItem("Taxi", R.drawable.circle_subscriptions),
+//                    QuickCategoryItem("Entertainment", R.drawable.circle_entertainment),
+//                    QuickCategoryItem("Education", R.drawable.circle_education),
+//                    QuickCategoryItem("Traveling", R.drawable.circle_traveling),
+//                    QuickCategoryItem("Gifts", R.drawable.circle_gifts),
+//                    QuickCategoryItem("Charity", R.drawable.circle_charity),
+//
+//                    QuickCategoryItem("Taxes", R.drawable.circle_taxes),
+//                    QuickCategoryItem("Rent", R.drawable.circle_housing),
+//                )
+//            }
+            entryViewModel.changeExpandedState()
+//            isExpanded = !isExpanded
+//            quickCategoriesAdapter.submitList(list) {
+//                if (!isExpanded) {
 //                    binding.scrollView.fullScroll(View.FOCUS_UP)
 //                    TransitionManager.beginDelayedTransition(binding.scrollView)
-                    binding.scrollView.post {
+//                    binding.scrollView.post {
 //                        binding.scrollView.scrollTo(0, 0)
-                    }
-                } else {
-                    binding.scrollView.post {
+//                    }
+//                } else {
+//                    binding.scrollView.post {
 //                        TransitionManager.beginDelayedTransition(binding.scrollView)
 //                        binding.scrollView.scrollTo(0, binding.lblCategory.top)
-                    }
-                }
-                TransitionManager.beginDelayedTransition(binding.scrollView)
-                binding.lblShowMore.text = if (isExpanded) "Show less" else "Show more"
+//                    }
+//                }
+//                TransitionManager.beginDelayedTransition(binding.scrollView)
+//                binding.lblShowMore.text = if (isExpanded) "Show less" else "Show more"
 //                binding.recyclerQuickCategories.layoutAnimation =
 //                    AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
 //                binding.recyclerQuickCategories.scheduleLayoutAnimation()
 
-            }
+//            }
         }
         binding.btnAddEntry.setOnClickListener {
             val bankName = ""
@@ -244,7 +245,8 @@ class DialogFragmentAddEntry : Fragment() {
             val purpose = binding.tilName.editText?.text.toString()
             val d = Date(System.currentTimeMillis())
             val formatter = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
-            val date = UtilityFunctions.dateStringToMillis(args.selectedDate ?: formatter.format(d)).toString()
+            val date = UtilityFunctions.dateStringToMillis(args.selectedDate ?: formatter.format(d))
+                .toString()
             val revisedCurrentBalance = "0"
             val category = selectedCategory
             Log.d("WTF", "$amount")
@@ -272,12 +274,44 @@ class DialogFragmentAddEntry : Fragment() {
                 revisedCurrentBalance,
                 category
             )
-            historyViewModel.addHistory(HistoryItem(purpose, CATEGORY_MAPPING[selectedCategory] ?: 0))
+            historyViewModel.addHistory(
+                HistoryItem(
+                    purpose,
+                    CATEGORY_MAPPING[selectedCategory] ?: 0
+                )
+            )
         }
     }
 
     private fun observeViewModel() {
+        val categoriesArr = resources.getStringArray(R.array.categories)
+//        Log.e("WTF", "${categoriesArr[0]}")
+        entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray())
         historyViewModel.switchHistoryCategory(0)
+        budgetViewModel.getCategoryStats().observe(viewLifecycleOwner) {
+            Log.d("WTF", it.toString())
+//            selectedCategory = "Groceries"
+//            binding.tvSelectedCategory.text = "Groceries"
+        }
+        entryViewModel.categories.observe(viewLifecycleOwner) {
+//            val list = if (isExpanded) it else it.take(8)
+            quickCategoriesAdapter.submitList(it) {
+//                TransitionManager.beginDelayedTransition(binding.recyclerQuickCategories)
+                binding.scrollView.post {
+                    val top = binding.lblCategory.top
+                    binding.scrollView.smoothScrollTo(0, top)
+                }
+            }
+        }
+        entryViewModel.isExpanded.observe(viewLifecycleOwner) {
+            binding.lblShowMore.text = if (it) "Show less" else "Show more"
+        }
+        entryViewModel.selectedCategory.observe(viewLifecycleOwner) {
+            val categoriesArr = ALL_CATEGORIES.toTypedArray()
+            selectedCategory = categoriesArr[it]
+            binding.tvSelectedCategory.text = categoriesArr[it]
+            historyViewModel.switchHistoryCategory(it)
+        }
     }
 
     private fun submitBudgetEntryToDB(

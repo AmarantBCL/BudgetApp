@@ -28,4 +28,6 @@ class BudgetRepository @Inject constructor(
 
     fun getSpendingsByCategory(startDate: Long, endDate: Long) =
         budgetDao.getSpendingsByCategory(startDate, endDate)
+
+    fun getCategoryStats() = budgetDao.getCategoryStats()
 }
