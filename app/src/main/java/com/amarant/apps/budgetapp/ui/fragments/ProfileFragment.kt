@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
+@Deprecated("Profile system has been reworked")
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 

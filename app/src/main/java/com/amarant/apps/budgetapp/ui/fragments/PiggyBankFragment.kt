@@ -38,6 +38,10 @@ class PiggyBankFragment : Fragment() {
         activity?.title = getString(R.string.piggy_bank)
         observeViewModel()
         setClickListeners()
+        // TODO Debug navigation
+        val navController = findNavController()
+        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
+        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestinationId}")
     }
 
     override fun onDestroyView() {

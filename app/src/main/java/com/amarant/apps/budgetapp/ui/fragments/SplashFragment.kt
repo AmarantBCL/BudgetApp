@@ -35,6 +35,10 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+        // TODO Debug navigation
+        val navController = findNavController()
+        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
+        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestinationId}")
     }
 
     override fun onDestroyView() {
@@ -45,26 +49,26 @@ class SplashFragment : Fragment() {
     private fun observeViewModel() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
-                findNavController().navigate(R.id.action_splashFragment_to_onboardingFragment)
-//                findNavController().navigate(
-//                    R.id.action_splashFragment_to_onboardingFragment,
-//                    null,
-//                    navOptions {
-//                        popUpTo(R.id.splashFragment) {
-//                            inclusive = true
-//                        }
-//                    })
+                findNavController().navigate(
+                    R.id.action_splashFragment_to_onboardingFragment,
+                    null,
+                    navOptions {
+                        popUpTo(R.id.splashFragment) {
+                            inclusive = true
+                        }
+                    }
+                )
             } else {
                 findNavController().graph.setStartDestination(R.id.calendarFragment)
-                findNavController().navigate(R.id.action_splashFragment_to_calendarFragment)
-//                findNavController().navigate(
-//                    R.id.action_splashFragment_to_calendarFragment,
-//                    null,
-//                    navOptions {
-//                        popUpTo(R.id.splashFragment) {
-//                            inclusive = true
-//                        }
-//                    })
+                findNavController().navigate(
+                    R.id.action_splashFragment_to_calendarFragment,
+                    null,
+                    navOptions {
+                        popUpTo(R.id.splashFragment) {
+                            inclusive = true
+                        }
+                    }
+                )
             }
         }
     }

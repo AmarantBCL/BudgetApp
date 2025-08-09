@@ -73,6 +73,10 @@ class CalendarFragment : Fragment() {
         observeViewModel()
         val cardCalendarParams = binding.cardCalendar.layoutParams as AppBarLayout.LayoutParams
         initialScrollFlags = cardCalendarParams.scrollFlags
+        // TODO Debug navigation
+        val navController = findNavController()
+        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
+        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestinationId}")
     }
 
     override fun onDestroyView() {
@@ -155,12 +159,12 @@ class CalendarFragment : Fragment() {
                 binding.cardIncomeExpenses.visibility = View.VISIBLE
                 binding.tvEmptyEntries.visibility = View.GONE
                 binding.imgDollar.visibility = View.GONE
-                binding.tvIncome.text = "+$totalIncome"
+                binding.tvIncome.text = if (totalIncome > 0) "+$totalIncome" else totalIncome.toString()
                 binding.tvExpenses.text = totalExpenses.toString()
                 setAppBarScrolling(binding.cardCalendar, true)
                 if (netIncome > 0) {
                     binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
-                    binding.tvNetIncome.text = "+$netIncome"
+                    binding.tvNetIncome.text = if (netIncome > 0) "+$netIncome" else netIncome.toString()
                 } else {
                     binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
                     binding.tvNetIncome.text = netIncome.toString()

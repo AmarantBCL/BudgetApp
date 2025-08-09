@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -104,6 +105,10 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         }
         getAllEntries()
         setClickListeners()
+        // TODO Debug navigation
+        val navController = findNavController()
+        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
+        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestinationId}")
     }
 
     override fun onDestroyView() {

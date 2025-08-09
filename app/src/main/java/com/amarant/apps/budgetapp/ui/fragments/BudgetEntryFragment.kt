@@ -29,6 +29,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
+@Deprecated("Different fragment is used now")
 @AndroidEntryPoint
 class BudgetEntryFragment : Fragment() {
 

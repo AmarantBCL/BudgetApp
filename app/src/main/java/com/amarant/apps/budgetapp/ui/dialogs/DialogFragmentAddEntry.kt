@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
@@ -20,10 +21,14 @@ import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.DialogAddBudgetEntryBinding
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
+import com.amarant.apps.budgetapp.util.CategoryUtils
+import com.amarant.apps.budgetapp.util.CategoryUtils.CATEGORY_MAPPING
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.UtilityFunctions
@@ -44,6 +49,7 @@ class DialogFragmentAddEntry : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private val budgetViewModel: BudgetViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
 
     private lateinit var quickCategoriesAdapter: QuickCategoriesAdapter
     private lateinit var typeAutoCompleteTextView: AutoCompleteTextView
@@ -84,7 +90,13 @@ class DialogFragmentAddEntry : Fragment() {
 //        dialog?.window?.setDimAmount(0.7f)
 //        initAutoCompleteTextViews()
         initViews()
+        readHistory()
         setClickListeners()
+        observeViewModel()
+        // TODO Debug navigation
+        val navController = findNavController()
+        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
+        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestDisplayName}")
     }
 
     override fun onDestroyView() {
@@ -124,7 +136,7 @@ class DialogFragmentAddEntry : Fragment() {
 
                     QuickCategoryItem("Health", R.drawable.circle_health),
                     QuickCategoryItem("Pets", R.drawable.circle_pets),
-                    QuickCategoryItem("Subscriptions", R.drawable.circle_subscriptions),
+                    QuickCategoryItem("Taxi", R.drawable.circle_subscriptions),
                     QuickCategoryItem("Entertainment", R.drawable.circle_entertainment),
                     QuickCategoryItem("Education", R.drawable.circle_education),
                     QuickCategoryItem("Traveling", R.drawable.circle_traveling),
@@ -145,6 +157,7 @@ class DialogFragmentAddEntry : Fragment() {
             if (!isSelected) {
                 selectedCategory = name
                 binding.tvSelectedCategory.text = name
+                historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[name] ?: 0)
             } else {
                 binding.tvSelectedCategory.text = ""
             }
@@ -190,7 +203,7 @@ class DialogFragmentAddEntry : Fragment() {
 
                     QuickCategoryItem("Health", R.drawable.circle_health),
                     QuickCategoryItem("Pets", R.drawable.circle_pets),
-                    QuickCategoryItem("Subscriptions", R.drawable.circle_subscriptions),
+                    QuickCategoryItem("Taxi", R.drawable.circle_subscriptions),
                     QuickCategoryItem("Entertainment", R.drawable.circle_entertainment),
                     QuickCategoryItem("Education", R.drawable.circle_education),
                     QuickCategoryItem("Traveling", R.drawable.circle_traveling),
@@ -246,7 +259,12 @@ class DialogFragmentAddEntry : Fragment() {
                 revisedCurrentBalance,
                 category
             )
+            historyViewModel.addHistory(HistoryItem(purpose, CategoryUtils.CATEGORY_MAPPING[selectedCategory] ?: 0))
         }
+    }
+
+    private fun observeViewModel() {
+        historyViewModel.switchHistoryCategory(0)
     }
 
     private fun submitBudgetEntryToDB(
@@ -282,6 +300,17 @@ class DialogFragmentAddEntry : Fragment() {
         }
         snackbar.show()
         findNavController().popBackStack()
+    }
+
+    private fun readHistory() {
+        historyViewModel.getHistory().observe(viewLifecycleOwner) { history ->
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                history.map { it.entry }
+            )
+            binding.editName.setAdapter(adapter)
+        }
     }
 
     private fun initAutoCompleteTextViews() {

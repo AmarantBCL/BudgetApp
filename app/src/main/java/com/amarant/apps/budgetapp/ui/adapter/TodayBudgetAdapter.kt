@@ -43,6 +43,7 @@ class TodayBudgetAdapter : ListAdapter<Budget, TodayBudgetAdapter.TodayBudgetVie
                 "Beauty" -> R.drawable.circle_personal_care
                 "Utilities" -> R.drawable.circle_utilities
                 "Taxi" -> R.drawable.circle_subscriptions
+                "House" -> R.drawable.circle_housing
                 else -> R.drawable.cat_unknown
             }
             binding.imgCategory.setImageResource(categoryImageResId)

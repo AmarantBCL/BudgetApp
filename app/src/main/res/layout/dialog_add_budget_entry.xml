@@ -263,12 +263,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lbl_name">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
+                android:id="@+id/edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
                 android:hint="Name"
                 android:inputType="textCapSentences"
-                android:textColorHint="@color/secondary_gray" />
+                android:padding="16dp"
+                android:textColorHint="@color/secondary_gray"
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
