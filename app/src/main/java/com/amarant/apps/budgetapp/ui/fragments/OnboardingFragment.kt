@@ -76,7 +76,6 @@ class OnboardingFragment : Fragment() {
     private fun setClickListeners() {
         binding.btnNext.setOnClickListener {
             val currentItem = binding.viewPagerOnboard.currentItem
-//            if (currentItem == 1) {
             if (currentItem < 4) {
                 binding.viewPagerOnboard.setCurrentItem(currentItem + 1, true)
             } else {

@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.util
 
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Calendar
 

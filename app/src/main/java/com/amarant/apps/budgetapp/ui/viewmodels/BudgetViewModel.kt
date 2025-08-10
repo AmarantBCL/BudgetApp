@@ -10,6 +10,8 @@ import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.entities.CategoryStat
 import com.amarant.apps.budgetapp.repository.BudgetRepository
+import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
@@ -88,6 +90,30 @@ class BudgetViewModel @Inject constructor(
 
     fun getCategoryStats(): LiveData<List<CategoryStat>> {
         return budgetRepository.getCategoryStats()
+    }
+
+    fun validateEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: String): Boolean {
+        val bankName = ""
+        val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
+        val amountAsInt = amount.toIntOrNull()
+//        val dateInMillis = UtilityFunctions.dateStringToMillis(date).toString()
+        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
+            false
+        } else {
+            var amountToInsert = amountAsInt.toFloat()
+            if (debitOrCredit == Constants.DEBIT) {
+                amountToInsert *= -1
+            }
+            insertBudget(Budget(
+                date = date.toString(),
+                bankName = bankName,
+                amount = amountToInsert,
+                purpose = purpose,
+                creditOrDebit = debitOrCredit,
+                category = categoryName
+            ))
+            true
+        }
     }
 
     private fun calculateStartPeriod(period: Int): Long {

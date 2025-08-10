@@ -5,6 +5,7 @@
     android:id="@+id/constMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/window_black"
     tools:context=".ui.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -17,14 +18,14 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
-            app:titleTextAppearance="@style/Text.Heading.Medium"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/window_black"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextAppearance="@style/Text.Heading.Medium">
 
             <Button
                 android:id="@+id/btn_action"
@@ -33,7 +34,7 @@
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/large_margin"
                 android:includeFontPadding="false"
-                android:text="Add"
+                android:text="@string/add"
                 android:textAppearance="@style/Text.Button"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_plus"

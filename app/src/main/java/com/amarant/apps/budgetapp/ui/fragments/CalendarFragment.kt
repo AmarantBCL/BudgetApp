@@ -10,34 +10,30 @@ import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
+import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.CalendarViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
+import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
-import com.amarant.apps.budgetapp.util.DateUtils
+import com.amarant.apps.budgetapp.util.DateUtils.getFormattedDate
+import com.amarant.apps.budgetapp.util.DateUtils.getTimestampFromDate
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.Month
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
@@ -54,8 +50,7 @@ class CalendarFragment : Fragment() {
 
     private lateinit var todayBudgetAdapter: TodayBudgetAdapter
 
-    private var initialScrollFlags = 0
-    private var currentDate: String? = null
+    private var currentDateMillis: Long = System.currentTimeMillis()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,8 +66,8 @@ class CalendarFragment : Fragment() {
         setHasOptionsMenu(true)
         initViews()
         observeViewModel()
-        val cardCalendarParams = binding.cardCalendar.layoutParams as AppBarLayout.LayoutParams
-        initialScrollFlags = cardCalendarParams.scrollFlags
+        setClickListeners()
+        setCalendarListeners()
         // TODO Debug navigation
         val navController = findNavController()
         Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
@@ -85,34 +80,10 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding.calendarView.setOnDateChangeListener { _, year, month, day ->
-            val selectedDate = "$day/${month + 1}/$year"
-            currentDate = selectedDate
-            val start = UtilityFunctions.dateStringToMillis(selectedDate)
-            val end = UtilityFunctions.dateStringToMillis("${day}/${month + 1}/$year")
-            budgetViewModel.setReportsBetweenDates(start, end)
-            val calendar = Calendar.getInstance()
-            calendar.set(year, month, day)
-//            Log.e("WTF", "[CALENDAR DATE CHANGED] Calendar.DAY: ${calendar.get(Calendar.DATE)} Calendar.MONTH: ${calendar.get(Calendar.MONTH)} Calendar.YEAR: ${calendar.get(Calendar.YEAR)}")
-            val date = DateUtils.getFormattedDate(calendar.timeInMillis)
-//            Log.d("WTF", "[FORMATTED DATE] $date")
-            binding.tvTodayDate.text = date
-            calendarViewModel.setSelectedDate(calendar.timeInMillis)
-        }
         todayBudgetAdapter = TodayBudgetAdapter()
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerEntries.addItemDecoration(divider)
         binding.recyclerEntries.adapter = todayBudgetAdapter
-        val toolbar = (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
-        val button = toolbar.findViewById<Button>(R.id.btn_action)
-        button.setOnClickListener {
-            currentDate?.let {
-//                val action = CalendarFragmentDirections.actionCalendarFragmentToBudgetEntryFragment(it)
-//                Log.e("[CalendarFragment]", "$action")
-//                findNavController().navigate(action)
-                findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToDialogFragmentAddEntry(currentDate))
-            }
-        }
     }
 
     private fun observeViewModel() {
@@ -147,50 +118,91 @@ class CalendarFragment : Fragment() {
 //                )
 //            }
 //        }
-        budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
-            todayBudgetAdapter.submitList(it.reversed())
-            binding.tvNumberOfEntries.text = "${it.size} entries"
-            if (it.isNotEmpty()) {
-                val totalIncome = it.filter { it.creditOrDebit == "Credit" }.sumOf { it.amount.toDouble() }
-                val totalExpenses = it.filter { it.creditOrDebit == "Debit" }.sumOf { it.amount.toDouble() }
-                val netIncome = totalIncome - totalExpenses.absoluteValue
-                binding.recyclerEntries.visibility = View.VISIBLE
-                binding.cardIncomeExpenses.visibility = View.VISIBLE
-                binding.tvEmptyEntries.visibility = View.GONE
-                binding.imgDollar.visibility = View.GONE
-                binding.tvIncome.text = if (totalIncome > 0) "+$totalIncome" else totalIncome.toString()
-                binding.tvExpenses.text = totalExpenses.toString()
+        budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) { reports ->
+            todayBudgetAdapter.submitList(reports.reversed())
+            binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
+            if (reports.isNotEmpty()) {
+                setIncomeExpensesViews(reports)
+                setRecyclerViewVisibility(true)
                 setAppBarScrolling(binding.cardCalendar, true)
-                if (netIncome > 0) {
-                    binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
-                    binding.tvNetIncome.text = if (netIncome > 0) "+$netIncome" else netIncome.toString()
-                } else {
-                    binding.tvNetIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                    binding.tvNetIncome.text = netIncome.toString()
-                }
             } else {
                 setAppBarScrolling(binding.cardCalendar, false)
-                binding.recyclerEntries.visibility = View.GONE
-                binding.cardIncomeExpenses.visibility = View.GONE
-                binding.tvEmptyEntries.visibility = View.VISIBLE
-                binding.imgDollar.visibility = View.VISIBLE
+                setRecyclerViewVisibility(false)
             }
         }
         calendarViewModel.selectedDate.value?.let { savedDate ->
             val date = Date(savedDate)
-            val debugFormatter = SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.getDefault())
-            val anotherFormatter = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
-            val debugFormattedDate = debugFormatter.format(date)
-            val formattedDate = DateUtils.getFormattedDate(savedDate)
-            val anotherFormattedDate = anotherFormatter.format(date)
-//            Log.e("WTF", "[LIVE DATA UPDATE] savedDate: $savedDate ($debugFormattedDate)")
-            val start = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
-            val end = UtilityFunctions.dateStringToMillis(anotherFormattedDate)
-            budgetViewModel.setReportsBetweenDates(start, end)
-            currentDate = anotherFormattedDate
+            val startDate = getTimestampFromDate(date)
+            val displayedDate = getFormattedDate(savedDate)
+            budgetViewModel.setReportsBetweenDates(startDate, startDate)
+            currentDateMillis = startDate
             binding.calendarView.date = savedDate
-            binding.tvTodayDate.text = formattedDate
+            binding.tvTodayDate.text = displayedDate
         }
+    }
+
+    private fun setCalendarListeners() {
+        binding.calendarView.setOnDateChangeListener { _, year, month, day ->
+            val selectedDate = "$day/${month + 1}/$year"
+            val startDate = UtilityFunctions.dateStringToMillis(selectedDate)
+            val endDate = UtilityFunctions.dateStringToMillis("${day}/${month + 1}/$year")
+            currentDateMillis = startDate
+            budgetViewModel.setReportsBetweenDates(startDate, endDate)
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, day)
+            val displayedDate = getFormattedDate(calendar.timeInMillis)
+            binding.tvTodayDate.text = displayedDate
+            calendarViewModel.setSelectedDate(calendar.timeInMillis)
+        }
+    }
+
+    private fun setClickListeners() {
+        val toolbar =
+            (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+        val button = toolbar.findViewById<Button>(R.id.btn_action)
+        button.setOnClickListener {
+            val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
+                currentDateMillis
+            )
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun setIncomeExpensesViews(reports: List<Budget>) {
+        val totalIncome = reports.filter { it.creditOrDebit == Constants.CREDIT }.sumOf {
+            it.amount.toDouble()
+        }
+        val totalExpenses = reports.filter { it.creditOrDebit == Constants.DEBIT }.sumOf {
+            it.amount.toDouble()
+        }
+        val netIncome = totalIncome - totalExpenses.absoluteValue
+        binding.tvIncome.text =
+            if (totalIncome > 0) getString(R.string.placeholder_plus, totalIncome.toString()) else totalIncome.toString()
+        binding.tvExpenses.text = totalExpenses.toString()
+        if (netIncome > 0) {
+            binding.tvNetIncome.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.positive_green
+                )
+            )
+            binding.tvNetIncome.text = getString(R.string.placeholder_plus, netIncome.toString())
+        } else {
+            binding.tvNetIncome.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
+            binding.tvNetIncome.text = netIncome.toString()
+        }
+    }
+
+    private fun setRecyclerViewVisibility(isVisible: Boolean) {
+        binding.recyclerEntries.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.cardIncomeExpenses.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.tvEmptyEntries.visibility = if (isVisible) View.GONE else View.VISIBLE
+        binding.imgDollar.visibility = if (isVisible) View.GONE else View.VISIBLE
     }
 
     private fun setAppBarScrolling(calendarView: CardView, isEnabled: Boolean) {
@@ -204,7 +216,8 @@ class CalendarFragment : Fragment() {
     }
 
     private fun checkPin() {
-        val sharedPrefs = requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val sharedPrefs =
+            requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val isPinEntered = sharedPrefs.getBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false)
         Log.e("WTF", "Check PIN: $isPinEntered")
         if (!isPinEntered) {

@@ -71,4 +71,20 @@
     <string name="apply_filters">Применить фильтры</string>
     <string name="filters">Фильтры</string>
     <string name="no_filters">Без фильтров</string>
+    <string name="show_less">Показать меньше</string>
+    <string name="show_more">Показать больше</string>
+    <string name="number_of_entries">%1$d записей</string>
+    <string name="placeholder_plus">+%1$s</string>
+    <string name="type">Тип</string>
+    <string name="expense">Расход</string>
+    <string name="income">Доход</string>
+    <string name="category">Категория</string>
+    <string name="add_entry">Добавить запись</string>
+    <string name="calendar">Календарь</string>
+    <string name="on_date">На %1$s</string>
+    <string name="income_s">Доходы</string>
+    <string name="expenses">Расходы</string>
+    <string name="net">Прибыль</string>
+    <string name="add">Доб.</string>
+    <string name="loading">Загрузка...</string>
 </resources>

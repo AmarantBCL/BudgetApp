@@ -21,6 +21,8 @@ class HistoryViewModel @Inject constructor(
     private val categoryId: LiveData<Int>
         get() = _categoryId
 
+    fun getAllHistory() = historyRepository.getAllHistory()
+
     fun getHistory() = categoryId.switchMap {
         historyRepository.getHistory(it)
     }

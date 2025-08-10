@@ -18,49 +18,13 @@
             android:fontFamily="@font/rubik"
             android:paddingHorizontal="16dp"
             android:paddingTop="16dp"
-            android:text="On August 8, 2025"
-            android:textColor="@color/primary_white"
+            android:textColor="@color/light_gray"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!--    <TextView-->
-        <!--        android:id="@+id/lbl_type"-->
-        <!--        android:layout_width="0dp"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginHorizontal="@dimen/large_margin"-->
-        <!--        android:layout_marginTop="@dimen/large_margin"-->
-        <!--        android:text="Type"-->
-        <!--        android:textAppearance="@style/Text.Secondary.Bold"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--    <com.google.android.material.textfield.TextInputLayout-->
-        <!--        android:id="@+id/til_type"-->
-        <!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
-        <!--        android:layout_width="0dp"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginHorizontal="@dimen/large_margin"-->
-        <!--        app:boxBackgroundColor="@color/card_background"-->
-        <!--        app:endIconTint="@color/secondary_gray"-->
-        <!--        app:hintEnabled="false"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@id/lbl_type"-->
-        <!--        app:startIconDrawable="@drawable/ic_debit"-->
-        <!--        app:startIconTint="@color/negative_red">-->
-
-        <!--        <AutoCompleteTextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:hint="Expense"-->
-        <!--            android:inputType="none"-->
-        <!--            android:textColorHint="@color/secondary_gray" />-->
-
-        <!--    </com.google.android.material.textfield.TextInputLayout>-->
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="On August 8, 2025" />
 
         <TextView
             android:id="@+id/lbl_type"
@@ -68,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="Type"
+            android:text="@string/type"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +60,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik"
-                android:text="Expense"
+                android:text="@string/expense"
                 android:textAllCaps="false"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_debit"
@@ -110,7 +74,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik"
-                android:text="Income"
+                android:text="@string/income"
                 android:textAllCaps="false"
                 app:cornerRadius="16dp"
                 app:icon="@drawable/ic_credit"
@@ -125,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/regular_margin"
-            android:text="Amount"
+            android:text="@string/amount"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +112,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Amount"
+                android:hint="@string/amount"
                 android:inputType="number"
                 android:maxLength="12"
                 android:paddingHorizontal="14dp"
@@ -164,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="Name"
+            android:text="@string/purpose"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -189,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:fontFamily="@font/rubik"
-                android:hint="Name"
+                android:hint="@string/purpose"
                 android:inputType="textCapSentences"
                 android:maxLength="96"
                 android:paddingHorizontal="14dp"
@@ -205,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="Category"
+            android:text="@string/category"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/tv_selected_category"
@@ -249,37 +213,13 @@
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/regular_margin"
             android:fontFamily="@font/rubik"
-            android:text="Show more"
+            android:text="@string/show_more"
             android:textColor="@color/accent_purple"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_quick_categories" />
-
-        <!--    <com.google.android.material.textfield.TextInputLayout-->
-        <!--        android:id="@+id/til_category"-->
-        <!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
-        <!--        android:layout_width="0dp"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginHorizontal="@dimen/large_margin"-->
-        <!--        app:boxBackgroundColor="@color/card_background"-->
-        <!--        app:endIconTint="@color/secondary_gray"-->
-        <!--        app:hintEnabled="false"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@id/lbl_category"-->
-        <!--        app:startIconDrawable="@drawable/circle_shopping"-->
-        <!--        app:startIconTint="@null">-->
-
-        <!--        <AutoCompleteTextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:hint="Category"-->
-        <!--            android:inputType="text"-->
-        <!--            android:textColorHint="@color/secondary_gray" />-->
-
-        <!--    </com.google.android.material.textfield.TextInputLayout>-->
 
         <Button
             android:id="@+id/btn_add_entry"
@@ -289,7 +229,7 @@
             android:layout_margin="@dimen/large_margin"
             android:background="@drawable/btn_back"
             android:includeFontPadding="false"
-            android:text="Add Entry"
+            android:text="@string/add_entry"
             android:textAppearance="@style/Text.Button"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_plus"

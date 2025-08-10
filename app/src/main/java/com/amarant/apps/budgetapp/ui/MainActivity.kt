@@ -1,33 +1,21 @@
 package com.amarant.apps.budgetapp.ui
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
-import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
-import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.google.android.material.appbar.MaterialToolbar
@@ -94,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.hide()
                     binding.bottomNavBar.visibility = View.GONE
                 }
-                R.id.dialogFragmentAddEntry -> {
+                R.id.fragmentAddEntry -> {
                     binding.bottomNavBar.visibility = View.GONE
                     if (destination.id == R.id.calendarFragment) {
                         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
@@ -146,18 +134,6 @@ class MainActivity : AppCompatActivity() {
 
     // TODO Just for testing, needs to be reworked for specific EditText elements.
     // TODO HOWEVER! This seems to be a good solution to focusing issue and is considered optimal.
-//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-//        val view = currentFocus
-//        if (view != null && (ev?.action == MotionEvent.ACTION_UP || ev?.action == MotionEvent.ACTION_MOVE)) {
-//            val hideKeyboardHelper = Rect()
-//            view.getGlobalVisibleRect(hideKeyboardHelper)
-//            if (!hideKeyboardHelper.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-//                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-//            }
-//        }
-//        return super.dispatchTouchEvent(ev)
-//    }
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (ev?.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
@@ -165,9 +141,8 @@ class MainActivity : AppCompatActivity() {
                 val outRect = Rect()
                 v.getGlobalVisibleRect(outRect)
                 if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                    // Если клик вне EditText, скрываем клавиатуру
                     v.hideKeyboard()
-                    v.clearFocus() // Также убираем фокус с EditText
+                    v.clearFocus()
                 }
             }
         }

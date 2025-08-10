@@ -11,6 +11,9 @@ import com.amarant.apps.budgetapp.entities.HistoryItem
 @Dao
 interface HistoryDao {
 
+    @Query("SELECT * FROM history")
+    fun getAllHistory(): LiveData<List<HistoryItem>>
+
     @Query("SELECT * FROM history WHERE category = :categoryId")
     fun getHistory(categoryId: Int): LiveData<List<HistoryItem>>
 

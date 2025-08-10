@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.repository
 
-import androidx.lifecycle.LiveData
 import com.amarant.apps.budgetapp.db.HistoryDao
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import javax.inject.Inject
@@ -8,6 +7,8 @@ import javax.inject.Inject
 class HistoryRepository @Inject constructor(
     val historyDao: HistoryDao
 ) {
+
+    fun getAllHistory() = historyDao.getAllHistory()
 
     fun getHistory(categoryId: Int) = historyDao.getHistory(categoryId)
 

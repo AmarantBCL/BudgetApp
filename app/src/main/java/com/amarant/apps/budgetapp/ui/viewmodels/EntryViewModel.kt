@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,8 +40,6 @@ class EntryViewModel : ViewModel() {
 
     fun initCategories(array: Array<String>, categoryStats: List<CategoryStat>) {
         if (categories.value.isNullOrEmpty()) {
-//            val usedList = categoryStats.map { QuickCategoryItem(it.category, getCategoryDrawable(it.category)) }
-//            val defaultList = array.map { QuickCategoryItem(it, getCategoryDrawable(it)) }
             val sorted = sortCategories(array.toList(), categoryStats).map {
                 QuickCategoryItem(it, getCategoryDrawable(it))
             }
@@ -87,7 +84,6 @@ class EntryViewModel : ViewModel() {
             } else {
                 _categories.value = list.take(8)
             }
-//            selectedCategory = index
             _selectedCategory.value = index
         }
     }

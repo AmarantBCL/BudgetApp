@@ -7,10 +7,17 @@ import java.util.Locale
 object DateUtils {
 
     private const val CALENDAR_DATE_PATTERN = "d MMMM, yyyy"
+    private const val PARSE_TIMESTAMP_FROM_DATE_PATTERN = "dd/MM/yyyy"
 
-    fun getFormattedDate(date: Long): String {
-        val date = Date(date)
+    fun getFormattedDate(timestamp: Long): String {
+        val date = Date(timestamp)
         val formatter = SimpleDateFormat(CALENDAR_DATE_PATTERN, Locale.getDefault())
         return formatter.format(date)
+    }
+
+    fun getTimestampFromDate(date: Date): Long {
+        val formatter = SimpleDateFormat(PARSE_TIMESTAMP_FROM_DATE_PATTERN, Locale.getDefault())
+        val formattedDate = formatter.format(date)
+        return UtilityFunctions.dateStringToMillis(formattedDate)
     }
 }
