@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
-import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
@@ -84,6 +84,9 @@ class CalendarFragment : Fragment() {
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerEntries.addItemDecoration(divider)
         binding.recyclerEntries.adapter = todayBudgetAdapter
+        todayBudgetAdapter.onItemClickListener = {
+            budgetViewModel.toggleSelection(it.budget.id ?: -1)
+        }
     }
 
     private fun observeViewModel() {
@@ -118,9 +121,10 @@ class CalendarFragment : Fragment() {
 //                )
 //            }
 //        }
-        budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) { reports ->
+        budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             todayBudgetAdapter.submitList(reports.reversed())
             binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
+            Log.d("WTF", "UPDATES")
             if (reports.isNotEmpty()) {
                 setIncomeExpensesViews(reports)
                 setRecyclerViewVisibility(true)
@@ -168,12 +172,12 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun setIncomeExpensesViews(reports: List<Budget>) {
-        val totalIncome = reports.filter { it.creditOrDebit == Constants.CREDIT }.sumOf {
-            it.amount.toDouble()
+    private fun setIncomeExpensesViews(reports: List<BudgetUI>) {
+        val totalIncome = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.CREDIT }.sumOf {
+            it.budget.amount.toDouble()
         }
-        val totalExpenses = reports.filter { it.creditOrDebit == Constants.DEBIT }.sumOf {
-            it.amount.toDouble()
+        val totalExpenses = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }.sumOf {
+            it.budget.amount.toDouble()
         }
         val netIncome = totalIncome - totalExpenses.absoluteValue
         binding.tvIncome.text =

@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -9,12 +8,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ListItemTodayEntryBinding
-import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.util.Constants
 
-class TodayBudgetAdapter : ListAdapter<Budget, TodayBudgetAdapter.TodayBudgetViewHolder>(TodayBudgetDiffItemCallback()) {
+class TodayBudgetAdapter :
+    ListAdapter<BudgetUI, TodayBudgetAdapter.TodayBudgetViewHolder>(TodayBudgetDiffItemCallback()) {
+
+    var onItemClickListener: ((BudgetUI) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayBudgetViewHolder {
-        val binding = ListItemTodayEntryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ListItemTodayEntryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TodayBudgetViewHolder(binding)
     }
 
@@ -22,10 +26,7 @@ class TodayBudgetAdapter : ListAdapter<Budget, TodayBudgetAdapter.TodayBudgetVie
         val item = getItem(position)
         val context = holder.itemView.context
         with(holder) {
-            binding.tvTitle.text = item.purpose
-            binding.tvCategory.text = item.category
-            binding.tvAmount.text = item.amount.toString()
-            val categoryImageResId = when (item.category) {
+            val categoryImageResId = when (item.budget.category) {
                 "Car" -> R.drawable.circle_transportation
                 "Restaurants" -> R.drawable.circle_cafe
                 "Groceries" -> R.drawable.circle_shopping
@@ -46,27 +47,54 @@ class TodayBudgetAdapter : ListAdapter<Budget, TodayBudgetAdapter.TodayBudgetVie
                 "House" -> R.drawable.circle_housing
                 else -> R.drawable.cat_unknown
             }
+            val whiteColor = ContextCompat.getColor(context, R.color.primary_white)
+            val grayColor = ContextCompat.getColor(context, R.color.secondary_gray)
+            val greenColor = ContextCompat.getColor(context, R.color.positive_green)
+            val redColor = ContextCompat.getColor(context, R.color.negative_red)
             binding.imgCategory.setImageResource(categoryImageResId)
-            if (item.creditOrDebit == "Credit") {
-//                binding.imgType.setImageResource(R.drawable.ic_credit)
-                binding.tvAmount.setTextColor(ContextCompat.getColor(context, R.color.positive_green))
-                binding.tvAmount.text = "+${item.amount}"
+            binding.tvTitle.text = item.budget.purpose
+            binding.tvCategory.text = item.budget.category
+            binding.tvAmount.text = item.budget.amount.toString()
+            if (item.budget.creditOrDebit == Constants.CREDIT) {
+                binding.tvAmount.setTextColor(greenColor)
+                binding.tvAmount.text = context.resources.getString(
+                    R.string.placeholder_plus,
+                    item.budget.amount.toString()
+                )
             } else {
-//                binding.imgType.setImageResource(R.drawable.ic_debit)
-                binding.tvAmount.setTextColor(ContextCompat.getColor(context, R.color.negative_red))
+                binding.tvAmount.setTextColor(redColor)
+                binding.tvAmount.text = item.budget.amount.toString()
+            }
+            if (!item.isHidden) {
+                binding.tvTitle.setTextColor(whiteColor)
+                binding.tvTitle.alpha = 1.0f
+                binding.tvCategory.alpha = 1.0f
+                binding.tvAmount.alpha = 1.0f
+                binding.imgCategory.alpha = 1.0f
+            } else {
+                binding.tvTitle.setTextColor(grayColor)
+                binding.tvTitle.alpha = 0.5f
+                binding.tvCategory.alpha = 0.5f
+                binding.tvAmount.setTextColor(grayColor)
+                binding.tvAmount.alpha = 0.5f
+                binding.imgCategory.alpha = 0.5f
+            }
+            binding.root.setOnClickListener {
+                onItemClickListener?.invoke(item)
             }
         }
     }
 
-    class TodayBudgetViewHolder(val binding: ListItemTodayEntryBinding) : RecyclerView.ViewHolder(binding.root)
+    class TodayBudgetViewHolder(val binding: ListItemTodayEntryBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    class TodayBudgetDiffItemCallback : DiffUtil.ItemCallback<Budget>() {
+    class TodayBudgetDiffItemCallback : DiffUtil.ItemCallback<BudgetUI>() {
 
-        override fun areItemsTheSame(oldItem: Budget, newItem: Budget): Boolean {
-            return oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: BudgetUI, newItem: BudgetUI): Boolean {
+            return oldItem.budget.id == newItem.budget.id
         }
 
-        override fun areContentsTheSame(oldItem: Budget, newItem: Budget): Boolean {
+        override fun areContentsTheSame(oldItem: BudgetUI, newItem: BudgetUI): Boolean {
             return oldItem == newItem
         }
     }

@@ -1,6 +1,8 @@
 package com.amarant.apps.budgetapp.repository
 
+import androidx.lifecycle.map
 import com.amarant.apps.budgetapp.db.BudgetDao
+import com.amarant.apps.budgetapp.db.Mappers
 import com.amarant.apps.budgetapp.entities.Budget
 import javax.inject.Inject
 
@@ -25,6 +27,11 @@ class BudgetRepository @Inject constructor(
 
     fun getBudgetEntriesBetweenDates(startDate: Long, endDate: Long, filter: String) =
         budgetDao.getReportsBetweenDates(startDate, endDate, filter)
+
+    fun getBudgetUIEntriesBetweenDates(startDate: Long, endDate: Long, filter: String) =
+        budgetDao.getReportsBetweenDates(startDate, endDate, filter).map {
+            Mappers.entityListToUIList(it)
+        }
 
     fun getSpendingsByCategory(startDate: Long, endDate: Long) =
         budgetDao.getSpendingsByCategory(startDate, endDate)
