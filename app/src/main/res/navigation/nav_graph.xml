@@ -112,5 +112,9 @@
             android:name="selectedDate"
             android:defaultValue="0L"
             app:argType="long" />
+        <argument
+            android:name="budgetEntry"
+            app:argType="com.amarant.apps.budgetapp.entities.BudgetUI"
+            app:nullable="true" />
     </fragment>
 </navigation>

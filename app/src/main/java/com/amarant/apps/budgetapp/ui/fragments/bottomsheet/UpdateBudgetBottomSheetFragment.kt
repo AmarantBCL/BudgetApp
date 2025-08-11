@@ -61,6 +61,7 @@ class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
             val chip = requireView().findViewById<Chip>(checkedId)
             val category = ALL_CATEGORIES[chipMap[chip] ?: 0]
             budgetViewModel.updateBudget(
+                "Debit", // TODO Hardcoded and incorrect, should be deleted soon
                 updatedAmount.toFloat(),
                 updatedPurpose,
                 category,

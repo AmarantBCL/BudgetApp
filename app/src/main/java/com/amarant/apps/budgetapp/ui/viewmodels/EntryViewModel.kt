@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -70,6 +71,7 @@ class EntryViewModel : ViewModel() {
     fun selectCategory(categoryName: String) {
         val list = allCategories.toMutableList()
         val index = list.indexOfFirst { it.name == categoryName }
+        Log.d("WTF", "selectCategory: $categoryName")
         setCategorySelected(index)
     }
 

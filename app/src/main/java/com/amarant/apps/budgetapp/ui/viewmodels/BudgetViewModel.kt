@@ -47,9 +47,9 @@ class BudgetViewModel @Inject constructor(
         budgetRepository.insertBudget(budget)
     }
 
-    fun updateBudget(amount: Float, purpose: String, category: String, id: Int) =
+    fun updateBudget(creditOrDebit: String, amount: Float, purpose: String, category: String, id: Int) =
         viewModelScope.launch {
-            budgetRepository.updateBudget(amount, purpose, category, id)
+            budgetRepository.updateBudget(creditOrDebit, amount, purpose, category, id)
         }
 
     fun deleteEntry(budget: Budget) = viewModelScope.launch {
@@ -122,11 +122,10 @@ class BudgetViewModel @Inject constructor(
         return budgetRepository.getCategoryStats()
     }
 
-    fun validateEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: String): Boolean {
+    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: String): Boolean {
         val bankName = ""
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
         val amountAsInt = amount.toIntOrNull()
-//        val dateInMillis = UtilityFunctions.dateStringToMillis(date).toString()
         return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
             false
         } else {
@@ -142,6 +141,21 @@ class BudgetViewModel @Inject constructor(
                 creditOrDebit = debitOrCredit,
                 category = categoryName
             ))
+            true
+        }
+    }
+
+    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, categoryName: String): Boolean {
+        val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
+        val amountAsInt = amount.toIntOrNull()
+        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
+            false
+        } else {
+            var amountToInsert = amountAsInt.toFloat()
+            if (debitOrCredit == Constants.DEBIT) {
+                amountToInsert *= -1
+            }
+            updateBudget(debitOrCredit, amountToInsert, purpose, categoryName, id)
             true
         }
     }

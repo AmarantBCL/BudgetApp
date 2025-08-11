@@ -24,9 +24,11 @@ import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
 import com.amarant.apps.budgetapp.util.CategoryUtils.CATEGORY_MAPPING
+import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.MessageUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
 class AddEntryFragment : Fragment() {
@@ -75,6 +77,14 @@ class AddEntryFragment : Fragment() {
     private fun initViews() {
         val formattedDate = DateUtils.getFormattedDate(args.selectedDate)
         binding.lblAddEntry.text = getString(R.string.on_date, formattedDate)
+        args.budgetEntry?.let {
+            binding.btnAddEntry.text = getString(R.string.edit_entry)
+            binding.btnAddEntry.setIconResource(R.drawable.ic_edit)
+            binding.btnExpense.isChecked = it.budget.creditOrDebit == Constants.DEBIT
+            binding.btnIncome.isChecked = it.budget.creditOrDebit == Constants.CREDIT
+            binding.tilAmount.editText?.setText(it.budget.amount.toInt().absoluteValue.toString())
+            binding.tilName.editText?.setText(it.budget.purpose)
+        }
         quickCategoriesAdapter = QuickCategoriesAdapter()
         binding.recyclerQuickCategories.adapter = quickCategoriesAdapter
         quickCategoriesAdapter.onCategoryClickListener = { name ->
@@ -90,30 +100,30 @@ class AddEntryFragment : Fragment() {
             val isDebit = binding.btnExpense.isChecked
             val amount = binding.tilAmount.editText?.text.toString()
             val purpose = binding.tilName.editText?.text.toString()
-            val selectedDate = args.selectedDate
-            val wasEntrySubmitted = budgetViewModel.validateEntries(
-                isDebit,
-                amount,
-                purpose,
-                selectedDate,
-                selectedCategory
-            )
-            if (wasEntrySubmitted) {
-                saveHistory(purpose)
-                updateCurrentBalance()
-                MessageUtils.showSnackbarMessage(
-                    binding.btnAddEntry,
-                    getString(R.string.entry_added),
-                    getString(R.string.hide)
+            val budgetEntry = args.budgetEntry
+            var wasEntrySubmitted = false
+            var message = getString(R.string.entry_added)
+            if (budgetEntry == null) {
+                val selectedDate = args.selectedDate
+                wasEntrySubmitted = budgetViewModel.validateAndAddEntries(
+                    isDebit,
+                    amount,
+                    purpose,
+                    selectedDate,
+                    selectedCategory
                 )
-                findNavController().popBackStack()
             } else {
-                MessageUtils.showSnackbarMessage(
-                    binding.btnAddEntry,
-                    getString(R.string.fill_in_all_fields),
-                    getString(R.string.hide)
+                val id = budgetEntry.budget.id ?: -1
+                wasEntrySubmitted = budgetViewModel.validateAndEditEntries(
+                    id,
+                    isDebit,
+                    amount,
+                    purpose,
+                    selectedCategory
                 )
+                message = getString(R.string.entry_edited)
             }
+            submitEntry(wasEntrySubmitted, purpose, message)
         }
         binding.editName.onItemClickListener = AdapterView.OnItemClickListener {
                 _, _, _, _ ->
@@ -139,6 +149,9 @@ class AddEntryFragment : Fragment() {
         val categoriesArr = resources.getStringArray(R.array.categories)
         budgetViewModel.getCategoryStats().observe(viewLifecycleOwner) {
             entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray(), it)
+            args.budgetEntry?.let {
+                entryViewModel.selectCategory(it.budget.category)
+            }
         }
         entryViewModel.categories.observe(viewLifecycleOwner) {
             quickCategoriesAdapter.submitList(it) {
@@ -155,7 +168,26 @@ class AddEntryFragment : Fragment() {
             val categoryName = entryViewModel.getSelectedCategoryName()
             selectedCategory = categoryName
             binding.tvSelectedCategory.text = categoryName//categoriesArr[it]
-            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
+//            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
+        }
+    }
+
+    private fun submitEntry(wasEntrySubmitted: Boolean, purpose: String, message: String) {
+        if (wasEntrySubmitted) {
+            saveHistory(purpose)
+            updateCurrentBalance()
+            MessageUtils.showSnackbarMessage(
+                binding.btnAddEntry,
+                message,
+                getString(R.string.hide)
+            )
+            findNavController().popBackStack()
+        } else {
+            MessageUtils.showSnackbarMessage(
+                binding.btnAddEntry,
+                getString(R.string.fill_in_all_fields),
+                getString(R.string.hide)
+            )
         }
     }
 

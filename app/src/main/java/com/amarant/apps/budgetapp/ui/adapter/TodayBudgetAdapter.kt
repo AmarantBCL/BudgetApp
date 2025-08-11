@@ -15,6 +15,7 @@ class TodayBudgetAdapter :
     ListAdapter<BudgetUI, TodayBudgetAdapter.TodayBudgetViewHolder>(TodayBudgetDiffItemCallback()) {
 
     var onItemClickListener: ((BudgetUI) -> Unit)? = null
+    var onItemLongClickListener: ((BudgetUI) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayBudgetViewHolder {
         val binding =
@@ -81,6 +82,10 @@ class TodayBudgetAdapter :
             }
             binding.root.setOnClickListener {
                 onItemClickListener?.invoke(item)
+            }
+            binding.root.setOnLongClickListener {
+                onItemLongClickListener?.invoke(item)
+                true
             }
         }
     }

@@ -13,7 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
@@ -31,6 +33,7 @@ import com.amarant.apps.budgetapp.util.DateUtils.getTimestampFromDate
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Date
@@ -87,6 +90,35 @@ class CalendarFragment : Fragment() {
         todayBudgetAdapter.onItemClickListener = {
             budgetViewModel.toggleSelection(it.budget.id ?: -1)
         }
+        todayBudgetAdapter.onItemLongClickListener = {
+            val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
+                selectedDate = currentDateMillis,
+                budgetEntry = it
+            )
+            findNavController().navigate(action)
+        }
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val item = todayBudgetAdapter.currentList[position]
+                budgetViewModel.deleteEntry(item.budget)
+                Snackbar.make(requireView(), getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                    setAction(getString(R.string.undo)) {
+                        budgetViewModel.insertBudget(item.budget)
+                    }
+                    show()
+                }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.recyclerEntries)
     }
 
     private fun observeViewModel() {
@@ -124,7 +156,6 @@ class CalendarFragment : Fragment() {
         budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             todayBudgetAdapter.submitList(reports.reversed())
             binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
-            Log.d("WTF", "UPDATES")
             if (reports.isNotEmpty()) {
                 setIncomeExpensesViews(reports)
                 setRecyclerViewVisibility(true)
@@ -166,7 +197,8 @@ class CalendarFragment : Fragment() {
         val button = toolbar.findViewById<Button>(R.id.btn_action)
         button.setOnClickListener {
             val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
-                currentDateMillis
+                selectedDate = currentDateMillis,
+                budgetEntry = null
             )
             findNavController().navigate(action)
         }
