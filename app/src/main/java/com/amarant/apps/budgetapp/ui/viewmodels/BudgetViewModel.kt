@@ -41,6 +41,8 @@ class BudgetViewModel @Inject constructor(
     val appliedFilter: LiveData<String>
         get() = _appliedFilter
 
+    private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
+
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
     }
@@ -66,8 +68,6 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
-    private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
-
     fun toggleSelection(id: Int) {
         val current = selectedIds.value ?: emptySet()
         selectedIds.value = if (current.contains(id)) {
@@ -77,68 +77,23 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
-//    fun getBudgetUIEntriesBetweenDates(): LiveData<List<BudgetUI>> {
-//        return dateRange.switchMap { pair ->
-//            appliedFilter.switchMap { filter ->
-//                MediatorLiveData<List<BudgetUI>>().apply {
-//                    var budgets: List<Budget> = emptyList()
-//                    var selected: Set<Int> = emptySet()
-//                    Log.e("WTF", "#1")
-//                    fun update() {
-//                        Log.e("WTF", "#2")
-//                        value = budgets.map { budget ->
-//                            BudgetUI(budget, isHidden = budget.id in selected)
-//                        }
-//                    }
-//                    addSource(budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second, filter)) {
-//                        budgets = it
-//                        update()
-//                    }
-//                    addSource(selectedIds) {
-//                        selected = it
-//                        update()
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     fun getBudgetUIEntriesBetweenDates(): LiveData<List<BudgetUI>> {
-        val resultLiveData = MediatorLiveData<List<BudgetUI>>()
-        var budgets: List<Budget> = emptyList()
-        var selected: Set<Int> = emptySet()
-        fun update() {
-            resultLiveData.value = budgets.map { budget ->
-                BudgetUI(budget, isHidden = budget.id in selected)
+        val result = MediatorLiveData<List<BudgetUI>>()
+        val dbSource = dateRange.switchMap { dateRange ->
+            appliedFilter.switchMap { filter ->
+                budgetRepository.getBudgetEntriesBetweenDates(dateRange.first, dateRange.second, filter)
             }
         }
-        // Источник №1 — данные из БД по текущим фильтрам
-        val dbSource = MediatorLiveData<List<Budget>>()
-        dbSource.addSource(dateRange) { range ->
-            val (start, end) = range
-            val filter = appliedFilter.value ?: ""
-            dbSource.addSource(budgetRepository.getBudgetEntriesBetweenDates(start, end, filter)) {
-                budgets = it
-                update()
+        fun update(budgets: List<Budget>?, selected: Set<Int>?) {
+            if (budgets != null && selected != null) {
+                result.value = budgets.map { budget ->
+                    BudgetUI(budget, isHidden = budget.id in selected)
+                }
             }
         }
-        dbSource.addSource(appliedFilter) { filter ->
-            val (start, end) = dateRange.value ?: (0L to 0L)
-            dbSource.addSource(budgetRepository.getBudgetEntriesBetweenDates(start, end, filter)) {
-                budgets = it
-                update()
-            }
-        }
-        // Источник №2 — выбранные ID
-        resultLiveData.addSource(selectedIds) {
-            selected = it
-            update()
-        }
-        resultLiveData.addSource(dbSource) {
-            budgets = it
-            update()
-        }
-        return resultLiveData
+        result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value) }
+        result.addSource(selectedIds) { selected -> update(dbSource.value, selected) }
+        return result
     }
 
     fun calculateTotalSpending(period: Int): LiveData<Float> {
