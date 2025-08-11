@@ -4,43 +4,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_income_expenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lbl_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingTop="@dimen/regular_margin"
+                android:text="@string/income_s"
+                android:textAppearance="@style/Text.Secondary"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/lbl_expenses"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:paddingHorizontal="@dimen/regular_margin"
+                tools:text="+500.0"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/positive_green"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/lbl_income"
+                app:layout_constraintStart_toStartOf="@id/lbl_income"
+                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+
+            <TextView
+                android:id="@+id/lbl_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingTop="@dimen/regular_margin"
+                android:text="@string/expenses"
+                android:textAppearance="@style/Text.Secondary"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/lbl_net_income"
+                app:layout_constraintStart_toEndOf="@id/lbl_income"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingBottom="@dimen/small_margin"
+                tools:text="-1529.0"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/negative_red"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/lbl_expenses"
+                app:layout_constraintStart_toStartOf="@id/lbl_expenses"
+                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+
+            <TextView
+                android:id="@+id/lbl_net_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingTop="@dimen/regular_margin"
+                android:text="@string/net"
+                android:textAppearance="@style/Text.Secondary"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lbl_expenses"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_net_income"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingBottom="@dimen/small_margin"
+                tools:text="-1029.0"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/negative_red"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/lbl_net_income"
+                app:layout_constraintStart_toStartOf="@id/lbl_net_income"
+                app:layout_constraintTop_toBottomOf="@id/lbl_net_income" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <Spinner
         android:id="@+id/date_range_report_spinner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginHorizontal="@dimen/large_margin"
         android:pointerIcon="arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/card_income_expenses" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvReports"
+        android:id="@+id/recycler_reports"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/statistics"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_range_report_spinner" />
 
-    <TextView
-        android:id="@+id/statistics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/show_statistics"
-        android:textSize="20sp"
-        android:textColor="@color/primaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/statistics"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="8dp"-->
+    <!--        android:layout_marginBottom="8dp"-->
+    <!--        android:text="@string/show_statistics"-->
+    <!--        android:textSize="20sp"-->
+    <!--        android:textColor="@color/primaryDark"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.5"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

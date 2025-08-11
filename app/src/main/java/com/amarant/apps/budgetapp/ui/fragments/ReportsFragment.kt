@@ -10,22 +10,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
+import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
+import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.StatisticsBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.UpdateBudgetBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
@@ -47,6 +54,7 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.getYesterday
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
+import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
@@ -56,7 +64,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
         get() = _binding ?: throw RuntimeException("FragmentReportsBinding == null")
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
-    private lateinit var reportsAdapter: ReportsAdapter
+    private lateinit var reportsAdapter: TodayBudgetAdapter//ReportsAdapter
     private lateinit var startDate: String
     private var period = PERIOD_SHOW_ALL
 
@@ -71,13 +79,13 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = getString(R.string.spending_reports)
+//        activity?.title = getString(R.string.spending_reports)
         startDate = setStartDate()
         initializeRecyclerView()
         setSpinnerValues()
         setHasOptionsMenu(true)
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
             override fun onMove(
@@ -90,18 +98,18 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val budget = reportsAdapter.differ.currentList[position]
-                budgetViewModel.deleteEntry(budget)
+                val budget = reportsAdapter.currentList[position]
+                budgetViewModel.deleteEntry(budget.budget)
                 Snackbar.make(view, getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
                     setAction(getString(R.string.undo)) {
-                        budgetViewModel.insertBudget(budget)
+                        budgetViewModel.insertBudget(budget.budget)
                     }
                     show()
                 }
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).apply {
-            attachToRecyclerView(binding.rcvReports)
+            attachToRecyclerView(binding.recyclerReports)
         }
         getAllEntries()
         setClickListeners()
@@ -130,16 +138,16 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     override fun onClick(position: Int) {
-        val currentBudgetItem = reportsAdapter.differ.currentList[position]
-        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
-        bottomSheet.show(requireActivity().supportFragmentManager, UpdateBudgetBottomSheetFragment.TAG)
+//        val currentBudgetItem = reportsAdapter.currentList[position]
+//        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
+//        bottomSheet.show(requireActivity().supportFragmentManager, UpdateBudgetBottomSheetFragment.TAG)
     }
 
     private fun setClickListeners() {
-        binding.statistics.setOnClickListener {
-            val bottomSheet = StatisticsBottomSheetFragment.newInstance(period)
-            bottomSheet.show(requireActivity().supportFragmentManager, StatisticsBottomSheetFragment.TAG)
-        }
+//        binding.statistics.setOnClickListener {
+//            val bottomSheet = StatisticsBottomSheetFragment.newInstance(period)
+//            bottomSheet.show(requireActivity().supportFragmentManager, StatisticsBottomSheetFragment.TAG)
+//        }
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 getReportsForSelectedPeriod(position)
@@ -154,16 +162,57 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     private fun initializeRecyclerView() {
-        reportsAdapter = ReportsAdapter(this)
-        binding.rcvReports.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = reportsAdapter
+        reportsAdapter = TodayBudgetAdapter()//ReportsAdapter(this)
+        val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        binding.recyclerReports.addItemDecoration(divider)
+        binding.recyclerReports.adapter = reportsAdapter
+        reportsAdapter.onItemClickListener = {
+            budgetViewModel.toggleSelection(it.budget.id ?: -1)
+        }
+        reportsAdapter.onItemLongClickListener = {
+            val action = ReportsFragmentDirections.actionReportsFragmentToFragmentAddEntry(
+                selectedDate = it.budget.date.toLong(),
+                budgetEntry = it
+            )
+            findNavController().navigate(action)
         }
     }
 
     private fun getAllEntries() {
-        budgetViewModel.getReportsBetweenDates().observe(viewLifecycleOwner) {
-            reportsAdapter.differ.submitList(it)
+        budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
+            reportsAdapter.submitList(reports)
+//            binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
+            setIncomeExpensesViews(reports)
+        }
+    }
+
+    private fun setIncomeExpensesViews(reports: List<BudgetUI>) {
+        val totalIncome = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.CREDIT }.sumOf {
+            it.budget.amount.toDouble()
+        }
+        val totalExpenses = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }.sumOf {
+            it.budget.amount.toDouble()
+        }
+        val netIncome = totalIncome - totalExpenses.absoluteValue
+        binding.tvIncome.text =
+            if (totalIncome > 0) getString(R.string.placeholder_plus, totalIncome.toString()) else totalIncome.toString()
+        binding.tvExpenses.text = totalExpenses.toString()
+        if (netIncome > 0) {
+            binding.tvNetIncome.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.positive_green
+                )
+            )
+            binding.tvNetIncome.text = getString(R.string.placeholder_plus, netIncome.toString())
+        } else {
+            binding.tvNetIncome.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
+            binding.tvNetIncome.text = netIncome.toString()
         }
     }
 

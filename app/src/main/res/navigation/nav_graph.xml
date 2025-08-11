@@ -49,8 +49,16 @@
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.ReportsFragment"
-        android:label="ReportsFragment"
-        tools:layout="@layout/fragment_reports" />
+        android:label="@string/spending_reports"
+        tools:layout="@layout/fragment_reports" >
+        <action
+            android:id="@+id/action_reportsFragment_to_fragmentAddEntry"
+            app:destination="@id/fragmentAddEntry"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
     <action
         android:id="@+id/action_global_profileFragment"
         app:destination="@id/profileFragment" />
