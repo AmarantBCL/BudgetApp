@@ -13,10 +13,7 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,15 +21,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
-import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
+import com.amarant.apps.budgetapp.ui.adapter.DeprecatedReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
-import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.StatisticsBottomSheetFragment
-import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.UpdateBudgetBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.Constants
-import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
@@ -57,14 +51,14 @@ import java.util.Calendar
 import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
-class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
+class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
 
     private var _binding: FragmentReportsBinding? = null
     private val binding: FragmentReportsBinding
         get() = _binding ?: throw RuntimeException("FragmentReportsBinding == null")
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
-    private lateinit var reportsAdapter: TodayBudgetAdapter//ReportsAdapter
+    private lateinit var reportsAdapter: ReportsAdapter
     private lateinit var startDate: String
     private var period = PERIOD_SHOW_ALL
 
@@ -162,7 +156,7 @@ class ReportsFragment : Fragment(), ReportsAdapter.MyOnClickListener {
     }
 
     private fun initializeRecyclerView() {
-        reportsAdapter = TodayBudgetAdapter()//ReportsAdapter(this)
+        reportsAdapter = ReportsAdapter()
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerReports.addItemDecoration(divider)
         binding.recyclerReports.adapter = reportsAdapter
