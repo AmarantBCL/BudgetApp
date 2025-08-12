@@ -11,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FiltersBottomSheetBinding
+import com.amarant.apps.budgetapp.entities.QuickCategoryItem
+import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -26,7 +28,11 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
 
+    private lateinit var quickCategoriesAdapter: QuickCategoriesAdapter
+
     private val chipMap = mutableMapOf<Chip, Int>()
+
+    private var selectedCategory = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +46,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setChips()
+        initRecyclerView()
         observeViewModel()
         setClickListeners()
     }
@@ -47,6 +54,39 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // ЭТО КЛЮЧЕВОЙ ШАГ ДЛЯ FRAGMENT
+    override fun getTheme(): Int {
+        // Возвращаем ID нашего кастомного стиля с закругленными углами
+        return R.style.RoundedBottomSheetDialog
+    }
+
+    private fun initRecyclerView() {
+        quickCategoriesAdapter = QuickCategoriesAdapter()
+        binding.recyclerCategories.adapter = quickCategoriesAdapter
+        quickCategoriesAdapter.onCategoryClickListener = { name ->
+            Log.d("WTF", "Click: $selectedCategory != $name")
+            if (selectedCategory != name) {
+                val items = mutableListOf<QuickCategoryItem>()
+                items.add(
+                    QuickCategoryItem(
+                    "All", R.drawable.cat_unknown, name == "All"
+                )
+                )
+                selectedCategory = name
+                for (category in CategoryUtils.ALL_CATEGORIES) {
+                    val item = QuickCategoryItem(
+                        category,
+                        getCategoryDrawable(category),
+                        selectedCategory == category
+                    )
+                    items.add(item)
+                }
+                binding.tvSelectedCategory.text = name
+                quickCategoriesAdapter.submitList(items)
+            }
+        }
     }
 
     private fun setChips() {
@@ -65,18 +105,68 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun getCategoryDrawable(categoryName: String): Int {
+        return when(categoryName) {
+            "Car" -> R.drawable.circle_transportation
+            "Restaurants" -> R.drawable.circle_cafe
+            "Groceries" -> R.drawable.circle_shopping
+            "Rent" -> R.drawable.circle_housing
+            "Health" -> R.drawable.circle_health
+            "Entertainment" -> R.drawable.circle_entertainment
+            "Cash" -> R.drawable.circle_transfer
+            "Taxes" -> R.drawable.circle_taxes
+            "Clothes" -> R.drawable.circle_clothing
+            "Pets" -> R.drawable.circle_pets
+            "Education" -> R.drawable.circle_education
+            "Gifts" -> R.drawable.circle_gifts
+            "Charity" -> R.drawable.circle_charity
+            "Traveling" -> R.drawable.circle_traveling
+            "Beauty" -> R.drawable.circle_personal_care
+            "Utilities" -> R.drawable.circle_utilities
+            "Taxi" -> R.drawable.circle_subscriptions
+            "House" -> R.drawable.circle_housing
+            else -> R.drawable.cat_unknown
+        }
+    }
+
     private fun observeViewModel() {
         budgetViewModel.appliedFilter.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                for (chip in chipMap.keys) {
-                    if (chip.text == it) {
-                        chip.isChecked = true
-                        break
-                    }
+            Log.e("WTF", "$it")
+            if (it.isNotEmpty() && it != "All") {
+//                for (chip in chipMap.keys) {
+//                    if (chip.text == it) {
+//                        chip.isChecked = true
+//                        break
+//                    }
+//                }
+                val items = mutableListOf<QuickCategoryItem>()
+                items.add(QuickCategoryItem(
+                    "All", R.drawable.cat_unknown, false
+                ))
+                selectedCategory = it
+                for (category in CategoryUtils.ALL_CATEGORIES) {
+                    val item = QuickCategoryItem(
+                        category,
+                        getCategoryDrawable(category),
+                        selectedCategory == category
+                    )
+                    items.add(item)
                 }
+                quickCategoriesAdapter.submitList(items)
             } else {
-                binding.chipNone.isChecked = true
+//                binding.chipNone.isChecked = true
+                selectedCategory = ""
+                val items = mutableListOf<QuickCategoryItem>()
+                items.add(QuickCategoryItem(
+                    "All", R.drawable.cat_unknown, true
+                ))
+                for (category in CategoryUtils.ALL_CATEGORIES) {
+                    val item = QuickCategoryItem(category, getCategoryDrawable(category), selectedCategory == category)
+                    items.add(item)
+                }
+                quickCategoriesAdapter.submitList(items)
             }
+            binding.tvSelectedCategory.text = selectedCategory
         }
     }
 
@@ -89,7 +179,11 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
             } else {
                 CategoryUtils.ALL_CATEGORIES[chipMap[chip] ?: 0]
             }
-            budgetViewModel.applyFilter(category)
+            if (selectedCategory == "All") {
+                budgetViewModel.applyFilter("")
+            } else {
+                budgetViewModel.applyFilter(selectedCategory)
+            }
             dismiss()
         }
     }
