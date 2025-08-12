@@ -40,4 +40,5 @@
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
     <color name="button_inactive">#F7F3F0</color>
+    <color name="divider_color">#55656467</color>
 </resources>

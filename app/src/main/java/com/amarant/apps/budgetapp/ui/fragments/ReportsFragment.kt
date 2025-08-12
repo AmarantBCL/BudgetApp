@@ -21,12 +21,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.ui.adapter.DeprecatedReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
+import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
@@ -47,7 +50,10 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.getToday
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getYesterday
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Locale
 import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
@@ -93,12 +99,25 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val budget = reportsAdapter.currentList[position]
-                budgetViewModel.deleteEntry(budget.budget)
-                Snackbar.make(view, getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
-                    setAction(getString(R.string.undo)) {
-                        budgetViewModel.insertBudget(budget.budget)
+                when(budget) {
+                    is ReportsItem.Entry -> {
+                        budgetViewModel.deleteEntry(budget.entry.budget)
+                        Snackbar.make(view, getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                            setAction(getString(R.string.undo)) {
+                                budgetViewModel.insertBudget(budget.entry.budget)
+                            }
+                            show()
+                        }
                     }
-                    show()
+                    else -> {}
+                }
+            }
+
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                return if (viewHolder.itemViewType == ReportsAdapter.VIEW_TYPE_DATE) {
+                    0
+                } else {
+                    super.getSwipeDirs(recyclerView, viewHolder)
                 }
             }
         }
@@ -157,16 +176,18 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
 
     private fun initializeRecyclerView() {
         reportsAdapter = ReportsAdapter()
-        val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-        binding.recyclerReports.addItemDecoration(divider)
+        val dividerDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
+        binding.recyclerReports.addItemDecoration(CustomDividerDecoration(dividerDrawable))
+//        val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+//        binding.recyclerReports.addItemDecoration(divider)
         binding.recyclerReports.adapter = reportsAdapter
         reportsAdapter.onItemClickListener = {
-            budgetViewModel.toggleSelection(it.budget.id ?: -1)
+            budgetViewModel.toggleSelection(it.entry.budget.id ?: -1)
         }
         reportsAdapter.onItemLongClickListener = {
             val action = ReportsFragmentDirections.actionReportsFragmentToFragmentAddEntry(
-                selectedDate = it.budget.date.toLong(),
-                budgetEntry = it
+                selectedDate = it.entry.budget.date.toLong(),
+                budgetEntry = it.entry
             )
             findNavController().navigate(action)
         }
@@ -174,8 +195,14 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
 
     private fun getAllEntries() {
         budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
-            reportsAdapter.submitList(reports)
-//            binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
+            val groupedList = mutableListOf<ReportsItem>()
+            reports.groupBy { it.budget.date }.forEach { (date, items) ->
+                groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+                items.forEach { budgetUI ->
+                    groupedList.add(ReportsItem.Entry(budgetUI))
+                }
+            }
+            reportsAdapter.submitList(groupedList)
             setIncomeExpensesViews(reports)
         }
     }
