@@ -32,7 +32,7 @@
     <string name="enter_budget_for">Бюджет за: %s</string>
     <string name="none">НЕТ</string>
     <string name="entry_added">Запись добавлена</string>
-    <string name="spending_reports">Отчеты по тратам</string>
+    <string name="spending_reports">Отчеты</string>
     <string name="item_deleted">Запись удалена</string>
     <string name="undo">Вернуть</string>
     <string name="fill_in_all_fields">Заполните все необходимые поля</string>

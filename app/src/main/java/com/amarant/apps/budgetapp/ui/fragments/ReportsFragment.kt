@@ -66,7 +66,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
     private val budgetViewModel: BudgetViewModel by activityViewModels()
     private lateinit var reportsAdapter: ReportsAdapter
     private lateinit var startDate: String
-    private var period = PERIOD_SHOW_ALL
+    private var period = PERIOD_THIS_MONTH
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -171,7 +171,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
 
             }
         }
-        binding.dateRangeReportSpinner.setSelection(PERIOD_SHOW_ALL)
+        binding.dateRangeReportSpinner.setSelection(PERIOD_THIS_MONTH)
     }
 
     private fun initializeRecyclerView() {

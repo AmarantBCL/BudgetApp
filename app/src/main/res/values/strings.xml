@@ -31,7 +31,7 @@
     <string name="enter_budget_for">Enter budget for: %s</string>
     <string name="none">NONE</string>
     <string name="entry_added">Entry added</string>
-    <string name="spending_reports">Spending Reports</string>
+    <string name="spending_reports">Reports</string>
     <string name="item_deleted">Item Deleted</string>
     <string name="undo">Undo</string>
     <string name="fill_in_all_fields">Fill in all the required fields</string>
