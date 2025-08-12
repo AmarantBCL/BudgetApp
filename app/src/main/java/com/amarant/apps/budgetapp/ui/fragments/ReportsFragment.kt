@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -139,6 +140,20 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.reports_menu, menu)
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem?.actionView as? SearchView
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                performSearch(query)
+                searchView.clearFocus()
+                searchItem.collapseActionView()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -147,7 +162,17 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
             val bottomSheet = FiltersBottomSheetFragment.newInstance()
             bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
         }
+        if (item.itemId == R.id.sort) {
+            budgetViewModel.setSearchQuery("")
+            true
+        }
         return true
+    }
+
+    private fun performSearch(query: String?) {
+        query?.let {
+            budgetViewModel.setSearchQuery(query)
+        }
     }
 
     override fun onClick(position: Int) {

@@ -41,6 +41,8 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                 val budgetItem = item.entry
                 val context = holder.itemView.context
                 val categoryImageResId = getCategoryResId(budgetItem.budget.category)
+                val whiteColor = ContextCompat.getColor(context, R.color.primary_white)
+                val grayColor = ContextCompat.getColor(context, R.color.secondary_gray)
                 val greenColor = ContextCompat.getColor(context, R.color.positive_green)
                 val redColor = ContextCompat.getColor(context, R.color.negative_red)
                 if (item.entry.isHidden) {
@@ -81,6 +83,20 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                             binding.tvAmount.setTextColor(redColor)
                             binding.tvAmount.text = budgetItem.budget.amount.toString()
                         }
+//                        if (!budgetItem.isHidden) {
+//                            binding.tvTitle.setTextColor(whiteColor)
+//                            binding.tvTitle.alpha = 1.0f
+//                            binding.tvCategory.alpha = 1.0f
+//                            binding.tvAmount.alpha = 1.0f
+//                            binding.imgCategory.alpha = 1.0f
+//                        } else {
+//                            binding.tvTitle.setTextColor(grayColor)
+//                            binding.tvTitle.alpha = 0.5f
+//                            binding.tvCategory.alpha = 0.5f
+//                            binding.tvAmount.setTextColor(grayColor)
+//                            binding.tvAmount.alpha = 0.5f
+//                            binding.imgCategory.alpha = 0.5f
+//                        }
                         binding.root.setOnClickListener {
                             onItemClickListener?.invoke(item)
                         }

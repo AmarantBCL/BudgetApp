@@ -43,6 +43,10 @@ class BudgetViewModel @Inject constructor(
     val appliedFilter: LiveData<String>
         get() = _appliedFilter
 
+    private val _searchQuery = MutableLiveData("")
+    val searchQuery: LiveData<String>
+        get() = _searchQuery
+
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
 
     fun insertBudget(budget: Budget) = viewModelScope.launch {
@@ -62,13 +66,13 @@ class BudgetViewModel @Inject constructor(
         _dateRange.value = Pair(startDate, endDate)
     }
 
-    fun getReportsBetweenDates(): LiveData<List<Budget>> {
-        return dateRange.switchMap { pair ->
-            appliedFilter.switchMap { filter ->
-                budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second, filter)
-            }
-        }
-    }
+//    fun getReportsBetweenDates(): LiveData<List<Budget>> {
+//        return dateRange.switchMap { pair ->
+//            appliedFilter.switchMap { filter ->
+//                budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second, filter)
+//            }
+//        }
+//    }
 
     fun toggleSelection(id: Int) {
         val current = selectedIds.value ?: emptySet()
@@ -83,7 +87,9 @@ class BudgetViewModel @Inject constructor(
         val result = MediatorLiveData<List<BudgetUI>>()
         val dbSource = dateRange.switchMap { dateRange ->
             appliedFilter.switchMap { filter ->
-                budgetRepository.getBudgetEntriesBetweenDates(dateRange.first, dateRange.second, filter)
+                searchQuery.switchMap { query ->
+                    budgetRepository.getBudgetEntriesBetweenDates(dateRange.first, dateRange.second, filter, query)
+                }
             }
         }
         fun update(budgets: List<Budget>?, selected: Set<Int>?) {
@@ -118,6 +124,10 @@ class BudgetViewModel @Inject constructor(
 
     fun applyFilter(filter: String) {
         _appliedFilter.value = filter
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     fun getCategoryStats(): LiveData<List<CategoryStat>> {

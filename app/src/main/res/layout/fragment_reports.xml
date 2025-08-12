@@ -3,21 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/window_black">
 
-    <Spinner
-        android:id="@+id/date_range_report_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="@dimen/large_margin"
-        android:pointerIcon="arrow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@color/window_black">-->
+
+    <!--        <com.google.android.material.textfield.TextInputLayout-->
+    <!--            android:id="@+id/til_search"-->
+    <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginHorizontal="@dimen/large_margin"-->
+    <!--            app:boxBackgroundColor="@color/card_background"-->
+    <!--            app:endIconDrawable="@drawable/ic_clear"-->
+    <!--            app:endIconMode="clear_text"-->
+    <!--            app:endIconTint="@color/secondary_gray"-->
+    <!--            app:hintEnabled="false"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/card_income_expenses"-->
+    <!--            app:layout_scrollFlags="scroll|enterAlways"-->
+    <!--            app:startIconDrawable="@drawable/ic_search">-->
+
+    <!--            <AutoCompleteTextView-->
+    <!--                android:id="@+id/edit_search"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:fontFamily="@font/rubik"-->
+    <!--                android:hint="Search"-->
+    <!--                android:inputType="textCapSentences"-->
+    <!--                android:maxLength="96"-->
+    <!--                android:paddingHorizontal="14dp"-->
+    <!--                android:paddingVertical="8dp"-->
+    <!--                android:textColorHint="@color/secondary_gray"-->
+    <!--                android:textSize="16sp" />-->
+
+    <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_income_expenses"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="0dp"
@@ -27,7 +55,7 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_range_report_spinner">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -52,14 +80,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik"
                 android:paddingHorizontal="@dimen/regular_margin"
-                tools:text="+500.0"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/positive_green"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/lbl_income"
                 app:layout_constraintStart_toStartOf="@id/lbl_income"
-                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_income"
+                tools:text="+500.0" />
 
             <TextView
                 android:id="@+id/lbl_expenses"
@@ -81,14 +109,14 @@
                 android:fontFamily="@font/rubik"
                 android:paddingHorizontal="@dimen/regular_margin"
                 android:paddingBottom="@dimen/small_margin"
-                tools:text="-1529.0"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/negative_red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/lbl_expenses"
                 app:layout_constraintStart_toStartOf="@id/lbl_expenses"
-                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_income"
+                tools:text="-1529.0" />
 
             <TextView
                 android:id="@+id/lbl_net_income"
@@ -110,27 +138,52 @@
                 android:fontFamily="@font/rubik"
                 android:paddingHorizontal="@dimen/regular_margin"
                 android:paddingBottom="@dimen/small_margin"
-                tools:text="-1029.0"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/negative_red"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/lbl_net_income"
                 app:layout_constraintStart_toStartOf="@id/lbl_net_income"
-                app:layout_constraintTop_toBottomOf="@id/lbl_net_income" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_net_income"
+                tools:text="-1029.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
+<!--    <ImageView-->
+<!--        android:id="@+id/img_icon"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:src="@drawable/ic_period"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/date_range_report_spinner"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/date_range_report_spinner"-->
+<!--        app:layout_constraintHorizontal_chainStyle="packed"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@id/date_range_report_spinner"-->
+<!--        app:tint="@color/accent_purple" />-->
+
+    <Spinner
+        android:id="@+id/date_range_report_spinner"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:pointerIcon="arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_income_expenses"
+        app:layout_scrollFlags="scroll|enterAlways" />
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_reports"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_income_expenses" />
+        app:layout_constraintTop_toBottomOf="@id/date_range_report_spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
