@@ -1,24 +1,17 @@
 package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
-import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FiltersBottomSheetBinding
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

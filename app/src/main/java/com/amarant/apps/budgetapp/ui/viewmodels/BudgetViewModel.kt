@@ -184,6 +184,12 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
+    fun changeDateRange(position: Int) {
+        val start = calculateStartPeriod(position)
+        val end = calculateEndPeriod(position)
+        setReportsBetweenDates(start, end)
+    }
+
     private fun calculateStartPeriod(period: Int): Long {
         val start = when (period) {
             PERIOD_TODAY -> UtilityFunctions.getToday()

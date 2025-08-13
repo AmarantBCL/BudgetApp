@@ -10,14 +10,16 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ListItemDateBinding
 import com.amarant.apps.budgetapp.databinding.ListItemTodayEntryBinding
 import com.amarant.apps.budgetapp.databinding.ListItemTodayEntryHiddenBinding
+import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.NumberUtils
 
 class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(ReportsDiffItemCallback()) {
 
-    var onItemClickListener: ((ReportsItem.Entry) -> Unit)? = null
-    var onItemLongClickListener: ((ReportsItem.Entry) -> Unit)? = null
+    var onItemClickListener: ((BudgetUI) -> Unit)? = null
+    var onItemLongClickListener: ((BudgetUI) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
@@ -60,10 +62,10 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                             binding.tvAmount.text = formattedAmount
                         }
                         binding.root.setOnClickListener {
-                            onItemClickListener?.invoke(item)
+                            onItemClickListener?.invoke(item.entry)
                         }
                         binding.root.setOnLongClickListener {
-                            onItemLongClickListener?.invoke(item)
+                            onItemLongClickListener?.invoke(item.entry)
                             true
                         }
                     }
@@ -84,10 +86,10 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                             binding.tvAmount.text = formattedAmount
                         }
                         binding.root.setOnClickListener {
-                            onItemClickListener?.invoke(item)
+                            onItemClickListener?.invoke(item.entry)
                         }
                         binding.root.setOnLongClickListener {
-                            onItemLongClickListener?.invoke(item)
+                            onItemLongClickListener?.invoke(item.entry)
                             true
                         }
                     }
