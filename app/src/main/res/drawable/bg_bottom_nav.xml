@@ -10,8 +10,8 @@
         <shape android:shape="rectangle">
             <solid android:color="@color/card_background" />
             <corners
-                android:topLeftRadius="12dp"
-                android:topRightRadius="12dp" />
+                android:topLeftRadius="16dp"
+                android:topRightRadius="16dp" />
         </shape>
     </item>
 </layer-list>

@@ -223,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="@dimen/regular_margin"
-                android:text="No entries for this date.\nTap 'Add Entry' to get started!"
+                android:text="@string/no_entries_add_entry"
                 android:textAlignment="center"
                 android:textAppearance="@style/Text.Secondary"
                 android:textSize="16sp"

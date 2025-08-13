@@ -32,8 +32,6 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var quickCategoriesAdapter: QuickCategoriesAdapter
 
-//    private val chipMap = mutableMapOf<Chip, Int>()
-
     private var selectedCategory = ""
 
     override fun onCreateView(
@@ -47,7 +45,6 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setChips()
         initRecyclerView()
         observeViewModel()
         setClickListeners()
@@ -58,15 +55,10 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialogTheme)
-    }
-
     private fun initRecyclerView() {
         quickCategoriesAdapter = QuickCategoriesAdapter()
         binding.recyclerCategories.adapter = quickCategoriesAdapter
         quickCategoriesAdapter.onCategoryClickListener = { name ->
-            Log.d("WTF", "Click: $selectedCategory != $name")
             if (selectedCategory != name) {
                 val items = mutableListOf<QuickCategoryItem>()
                 items.add(
@@ -88,22 +80,6 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
             }
         }
     }
-
-//    private fun setChips() {
-//        for ((index, category) in CategoryUtils.ALL_CATEGORIES.withIndex()) {
-//            val chip = Chip(requireContext())
-//            chip.text = resources.getStringArray(R.array.categories)[index]
-//            val resId = resources.getIdentifier(
-//                "drawable/cat_${category.lowercase()}",
-//                "drawable",
-//                requireContext().packageName
-//            )
-//            chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
-//            chip.isChipIconVisible = true
-//            binding.filtersChipGroup.addView(chip)
-//            chipMap[chip] = index
-//        }
-//    }
 
     private fun getCategoryDrawable(categoryName: String): Int {
         return when(categoryName) {
@@ -132,12 +108,6 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
     private fun observeViewModel() {
         budgetViewModel.appliedFilter.observe(viewLifecycleOwner) {
             if (it.isNotEmpty() && it != "All") {
-//                for (chip in chipMap.keys) {
-//                    if (chip.text == it) {
-//                        chip.isChecked = true
-//                        break
-//                    }
-//                }
                 val items = mutableListOf<QuickCategoryItem>()
                 items.add(QuickCategoryItem(
                     "All", R.drawable.circle_all, false
@@ -151,9 +121,9 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
                     )
                     items.add(item)
                 }
+                binding.tvSelectedCategory.text = selectedCategory
                 quickCategoriesAdapter.submitList(items)
             } else {
-//                binding.chipNone.isChecked = true
                 selectedCategory = ""
                 val items = mutableListOf<QuickCategoryItem>()
                 items.add(QuickCategoryItem(
@@ -163,21 +133,14 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
                     val item = QuickCategoryItem(category, getCategoryDrawable(category), selectedCategory == category)
                     items.add(item)
                 }
+                binding.tvSelectedCategory.text = "All"
                 quickCategoriesAdapter.submitList(items)
             }
-            binding.tvSelectedCategory.text = selectedCategory
         }
     }
 
     private fun setClickListeners() {
         binding.btnApplyFilters.setOnClickListener {
-//            val checkedId = binding.filtersChipGroup.checkedChipId
-//            val chip = requireView().findViewById<Chip>(checkedId)
-//            val category = if (chip == binding.chipNone) {
-//                ""
-//            } else {
-//                CategoryUtils.ALL_CATEGORIES[chipMap[chip] ?: 0]
-//            }
             if (selectedCategory == "All") {
                 budgetViewModel.applyFilter("")
             } else {

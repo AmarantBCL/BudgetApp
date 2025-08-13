@@ -89,4 +89,6 @@
     <string name="loading">Загрузка...</string>
     <string name="edit_entry">Обновить запись</string>
     <string name="entry_edited">Запись обновлена</string>
+    <string name="no_entries_add_entry">Нет записей на эту дату.\nНажмите \'+ Доб.\' чтобы начать!</string>
+    <string name="no_entries_for_this_period">Нет записей за этот период.</string>
 </resources>

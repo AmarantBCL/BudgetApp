@@ -21,13 +21,11 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.ReportsItem
-import com.amarant.apps.budgetapp.ui.adapter.DeprecatedReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.Constants
-import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
@@ -52,15 +50,17 @@ import java.util.Calendar
 import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
-class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
+class ReportsFragment : Fragment() {
 
     private var _binding: FragmentReportsBinding? = null
     private val binding: FragmentReportsBinding
         get() = _binding ?: throw RuntimeException("FragmentReportsBinding == null")
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
+
     private lateinit var reportsAdapter: ReportsAdapter
     private lateinit var startDate: String
+
     private var period = PERIOD_THIS_MONTH
 
     override fun onCreateView(
@@ -74,51 +74,10 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        activity?.title = getString(R.string.spending_reports)
         startDate = setStartDate()
-        initializeRecyclerView()
+        initRecyclerView()
         setSpinnerValues()
         setHasOptionsMenu(true)
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-            0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return true
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                val budget = reportsAdapter.currentList[position]
-                when(budget) {
-                    is ReportsItem.Entry -> {
-                        budgetViewModel.deleteEntry(budget.entry.budget)
-                        Snackbar.make(view, getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
-                            setAction(getString(R.string.undo)) {
-                                budgetViewModel.insertBudget(budget.entry.budget)
-                            }
-                            show()
-                        }
-                    }
-                    else -> {}
-                }
-            }
-
-            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                return if (viewHolder.itemViewType == ReportsAdapter.VIEW_TYPE_DATE) {
-                    0
-                } else {
-                    super.getSwipeDirs(recyclerView, viewHolder)
-                }
-            }
-        }
-        ItemTouchHelper(itemTouchHelperCallback).apply {
-            attachToRecyclerView(binding.recyclerReports)
-        }
         observeViewModel()
         setClickListeners()
         // TODO Debug navigation
@@ -163,17 +122,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
         return true
     }
 
-    override fun onClick(position: Int) {
-//        val currentBudgetItem = reportsAdapter.currentList[position]
-//        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
-//        bottomSheet.show(requireActivity().supportFragmentManager, UpdateBudgetBottomSheetFragment.TAG)
-    }
-
     private fun setClickListeners() {
-//        binding.statistics.setOnClickListener {
-//            val bottomSheet = StatisticsBottomSheetFragment.newInstance(period)
-//            bottomSheet.show(requireActivity().supportFragmentManager, StatisticsBottomSheetFragment.TAG)
-//        }
         binding.dateRangeReportSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 getReportsForSelectedPeriod(position)
@@ -187,12 +136,10 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
         binding.dateRangeReportSpinner.setSelection(PERIOD_THIS_MONTH)
     }
 
-    private fun initializeRecyclerView() {
+    private fun initRecyclerView() {
         reportsAdapter = ReportsAdapter()
         val dividerDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.divider)!!
         binding.recyclerReports.addItemDecoration(CustomDividerDecoration(dividerDrawable))
-//        val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-//        binding.recyclerReports.addItemDecoration(divider)
         binding.recyclerReports.adapter = reportsAdapter
         reportsAdapter.onItemClickListener = {
             budgetViewModel.toggleSelection(it.entry.budget.id ?: -1)
@@ -204,18 +151,52 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
             )
             findNavController().navigate(action)
         }
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                when(val budget = reportsAdapter.currentList[position]) {
+                    is ReportsItem.Entry -> {
+                        budgetViewModel.deleteEntry(budget.entry.budget)
+                        Snackbar.make(requireView(), getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                            setAction(getString(R.string.undo)) {
+                                budgetViewModel.insertBudget(budget.entry.budget)
+                            }
+                            show()
+                        }
+                    }
+                    else -> {}
+                }
+            }
+
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                return if (viewHolder.itemViewType == ReportsAdapter.VIEW_TYPE_DATE) {
+                    0
+                } else {
+                    super.getSwipeDirs(recyclerView, viewHolder)
+                }
+            }
+        }
+        ItemTouchHelper(itemTouchHelperCallback).apply {
+            attachToRecyclerView(binding.recyclerReports)
+        }
     }
 
     private fun observeViewModel() {
+        budgetViewModel.reportsUI.observe(viewLifecycleOwner) { groupedReports ->
+            reportsAdapter.submitList(groupedReports)
+        }
         budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
-            val groupedList = mutableListOf<ReportsItem>()
-            reports.groupBy { it.budget.date }.forEach { (date, items) ->
-                groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-                items.forEach { budgetUI ->
-                    groupedList.add(ReportsItem.Entry(budgetUI))
-                }
-            }
-            reportsAdapter.submitList(groupedList)
             setIncomeExpensesViews(reports)
             binding.imgDollar.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE
             binding.lblEmptyEntries.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE

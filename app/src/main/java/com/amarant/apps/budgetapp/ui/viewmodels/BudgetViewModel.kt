@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
@@ -102,6 +103,17 @@ class BudgetViewModel @Inject constructor(
         result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value) }
         result.addSource(selectedIds) { selected -> update(dbSource.value, selected) }
         return result
+    }
+
+    val reportsUI: LiveData<List<ReportsItem>> = getBudgetUIEntriesBetweenDates().map { reports ->
+        val groupedList = mutableListOf<ReportsItem>()
+        reports.groupBy { it.budget.date }.forEach { (date, items) ->
+            groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+            items.reversed().forEach { budgetUI ->
+                groupedList.add(ReportsItem.Entry(budgetUI))
+            }
+        }
+        groupedList
     }
 
     fun calculateTotalSpending(period: Int): LiveData<Float> {

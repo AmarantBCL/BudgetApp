@@ -90,4 +90,6 @@
     <string name="loading">Loading...</string>
     <string name="edit_entry">Edit Entry</string>
     <string name="entry_edited">Entry edited</string>
+    <string name="no_entries_add_entry">No entries for this date.\nTap \'+ Add\' to get started!</string>
+    <string name="no_entries_for_this_period">No entries for this period.</string>
 </resources>
