@@ -30,6 +30,7 @@ import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.DateUtils.getFormattedDate
 import com.amarant.apps.budgetapp.util.DateUtils.getTimestampFromDate
+import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -212,9 +213,12 @@ class CalendarFragment : Fragment() {
             it.budget.amount.toDouble()
         }
         val netIncome = totalIncome - totalExpenses.absoluteValue
+        val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
+        val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
+        val formattedNet = NumberUtils.formatNumberWithThousandsSeparator(netIncome)
         binding.tvIncome.text =
-            if (totalIncome > 0) getString(R.string.placeholder_plus, totalIncome.toString()) else totalIncome.toString()
-        binding.tvExpenses.text = totalExpenses.toString()
+            if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
+        binding.tvExpenses.text = formattedExpenses
         if (netIncome > 0) {
             binding.tvNetIncome.setTextColor(
                 ContextCompat.getColor(
@@ -222,7 +226,7 @@ class CalendarFragment : Fragment() {
                     R.color.positive_green
                 )
             )
-            binding.tvNetIncome.text = getString(R.string.placeholder_plus, netIncome.toString())
+            binding.tvNetIncome.text = getString(R.string.placeholder_plus, formattedNet)
         } else {
             binding.tvNetIncome.setTextColor(
                 ContextCompat.getColor(
@@ -230,7 +234,7 @@ class CalendarFragment : Fragment() {
                     R.color.negative_red
                 )
             )
-            binding.tvNetIncome.text = netIncome.toString()
+            binding.tvNetIncome.text = formattedNet
         }
     }
 

@@ -10,6 +10,7 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ListItemTodayEntryBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.NumberUtils
 
 class TodayBudgetAdapter :
     ListAdapter<BudgetUI, TodayBudgetAdapter.TodayBudgetViewHolder>(TodayBudgetDiffItemCallback()) {
@@ -46,25 +47,26 @@ class TodayBudgetAdapter :
                 "Utilities" -> R.drawable.circle_utilities
                 "Taxi" -> R.drawable.circle_subscriptions
                 "House" -> R.drawable.circle_housing
-                else -> R.drawable.cat_unknown
+                else -> R.drawable.circle_all
             }
             val whiteColor = ContextCompat.getColor(context, R.color.primary_white)
             val grayColor = ContextCompat.getColor(context, R.color.secondary_gray)
             val greenColor = ContextCompat.getColor(context, R.color.positive_green)
             val redColor = ContextCompat.getColor(context, R.color.negative_red)
+            val formattedAmount = NumberUtils.formatNumberWithThousandsSeparator(item.budget.amount.toDouble())
             binding.imgCategory.setImageResource(categoryImageResId)
             binding.tvTitle.text = item.budget.purpose
             binding.tvCategory.text = item.budget.category
-            binding.tvAmount.text = item.budget.amount.toString()
+            binding.tvAmount.text = formattedAmount
             if (item.budget.creditOrDebit == Constants.CREDIT) {
                 binding.tvAmount.setTextColor(greenColor)
                 binding.tvAmount.text = context.resources.getString(
                     R.string.placeholder_plus,
-                    item.budget.amount.toString()
+                    formattedAmount
                 )
             } else {
                 binding.tvAmount.setTextColor(redColor)
-                binding.tvAmount.text = item.budget.amount.toString()
+                binding.tvAmount.text = formattedAmount
             }
             if (!item.isHidden) {
                 binding.tvTitle.setTextColor(whiteColor)

@@ -15,9 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
@@ -25,18 +23,17 @@ import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.ui.adapter.DeprecatedReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
-import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
+import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_WEEK
-import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_WEEK
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
@@ -51,10 +48,7 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.getToday
 import com.amarant.apps.budgetapp.util.UtilityFunctions.getYesterday
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Locale
 import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
@@ -125,7 +119,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(binding.recyclerReports)
         }
-        getAllEntries()
+        observeViewModel()
         setClickListeners()
         // TODO Debug navigation
         val navController = findNavController()
@@ -144,7 +138,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
         val searchView = searchItem?.actionView as? SearchView
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                performSearch(query)
+                query?.let { budgetViewModel.setSearchQuery(it) }
                 searchView.clearFocus()
                 searchItem.collapseActionView()
                 return true
@@ -169,12 +163,6 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
         return true
     }
 
-    private fun performSearch(query: String?) {
-        query?.let {
-            budgetViewModel.setSearchQuery(query)
-        }
-    }
-
     override fun onClick(position: Int) {
 //        val currentBudgetItem = reportsAdapter.currentList[position]
 //        val bottomSheet = UpdateBudgetBottomSheetFragment.newInstance(currentBudgetItem)
@@ -192,7 +180,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
                 period = position
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
         }
@@ -218,7 +206,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
         }
     }
 
-    private fun getAllEntries() {
+    private fun observeViewModel() {
         budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             val groupedList = mutableListOf<ReportsItem>()
             reports.groupBy { it.budget.date }.forEach { (date, items) ->
@@ -229,6 +217,8 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
             }
             reportsAdapter.submitList(groupedList)
             setIncomeExpensesViews(reports)
+            binding.imgDollar.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE
+            binding.lblEmptyEntries.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE
         }
     }
 
@@ -240,9 +230,12 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
             it.budget.amount.toDouble()
         }
         val netIncome = totalIncome - totalExpenses.absoluteValue
+        val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
+        val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
+        val formattedNet = NumberUtils.formatNumberWithThousandsSeparator(netIncome)
         binding.tvIncome.text =
-            if (totalIncome > 0) getString(R.string.placeholder_plus, totalIncome.toString()) else totalIncome.toString()
-        binding.tvExpenses.text = totalExpenses.toString()
+            if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
+        binding.tvExpenses.text = formattedExpenses
         if (netIncome > 0) {
             binding.tvNetIncome.setTextColor(
                 ContextCompat.getColor(
@@ -250,7 +243,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
                     R.color.positive_green
                 )
             )
-            binding.tvNetIncome.text = getString(R.string.placeholder_plus, netIncome.toString())
+            binding.tvNetIncome.text = getString(R.string.placeholder_plus, formattedNet)
         } else {
             binding.tvNetIncome.setTextColor(
                 ContextCompat.getColor(
@@ -258,7 +251,7 @@ class ReportsFragment : Fragment(), DeprecatedReportsAdapter.MyOnClickListener {
                     R.color.negative_red
                 )
             )
-            binding.tvNetIncome.text = netIncome.toString()
+            binding.tvNetIncome.text = formattedNet
         }
     }
 

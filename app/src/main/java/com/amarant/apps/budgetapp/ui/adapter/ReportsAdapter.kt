@@ -12,6 +12,7 @@ import com.amarant.apps.budgetapp.databinding.ListItemTodayEntryBinding
 import com.amarant.apps.budgetapp.databinding.ListItemTodayEntryHiddenBinding
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.util.Constants
+import com.amarant.apps.budgetapp.util.NumberUtils
 
 class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(ReportsDiffItemCallback()) {
 
@@ -41,23 +42,24 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                 val budgetItem = item.entry
                 val context = holder.itemView.context
                 val categoryImageResId = getCategoryResId(budgetItem.budget.category)
-                val whiteColor = ContextCompat.getColor(context, R.color.primary_white)
-                val grayColor = ContextCompat.getColor(context, R.color.secondary_gray)
+//                val whiteColor = ContextCompat.getColor(context, R.color.primary_white)
+//                val grayColor = ContextCompat.getColor(context, R.color.secondary_gray)
                 val greenColor = ContextCompat.getColor(context, R.color.positive_green)
                 val redColor = ContextCompat.getColor(context, R.color.negative_red)
+                val formattedAmount = NumberUtils.formatNumberWithThousandsSeparator(budgetItem.budget.amount.toDouble())
                 if (item.entry.isHidden) {
                     with(holder as ReportsHiddenViewHolder) {
                         binding.imgCategory.setImageResource(categoryImageResId)
                         binding.tvTitle.text = budgetItem.budget.purpose
                         binding.tvCategory.text = budgetItem.budget.category
-                        binding.tvAmount.text = budgetItem.budget.amount.toString()
+                        binding.tvAmount.text = formattedAmount
                         if (budgetItem.budget.creditOrDebit == Constants.CREDIT) {
                             binding.tvAmount.text = context.resources.getString(
                                 R.string.placeholder_plus,
-                                budgetItem.budget.amount.toString()
+                                formattedAmount
                             )
                         } else {
-                            binding.tvAmount.text = budgetItem.budget.amount.toString()
+                            binding.tvAmount.text = formattedAmount
                         }
                         binding.root.setOnClickListener {
                             onItemClickListener?.invoke(item)
@@ -72,16 +74,16 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                         binding.imgCategory.setImageResource(categoryImageResId)
                         binding.tvTitle.text = budgetItem.budget.purpose
                         binding.tvCategory.text = budgetItem.budget.category
-                        binding.tvAmount.text = budgetItem.budget.amount.toString()
+                        binding.tvAmount.text = formattedAmount
                         if (budgetItem.budget.creditOrDebit == Constants.CREDIT) {
                             binding.tvAmount.setTextColor(greenColor)
                             binding.tvAmount.text = context.resources.getString(
                                 R.string.placeholder_plus,
-                                budgetItem.budget.amount.toString()
+                                formattedAmount
                             )
                         } else {
                             binding.tvAmount.setTextColor(redColor)
-                            binding.tvAmount.text = budgetItem.budget.amount.toString()
+                            binding.tvAmount.text = formattedAmount
                         }
 //                        if (!budgetItem.isHidden) {
 //                            binding.tvTitle.setTextColor(whiteColor)

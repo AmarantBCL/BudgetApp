@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.CategoryUtils
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var quickCategoriesAdapter: QuickCategoriesAdapter
 
-    private val chipMap = mutableMapOf<Chip, Int>()
+//    private val chipMap = mutableMapOf<Chip, Int>()
 
     private var selectedCategory = ""
 
@@ -45,7 +47,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setChips()
+//        setChips()
         initRecyclerView()
         observeViewModel()
         setClickListeners()
@@ -56,10 +58,8 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    // ЭТО КЛЮЧЕВОЙ ШАГ ДЛЯ FRAGMENT
-    override fun getTheme(): Int {
-        // Возвращаем ID нашего кастомного стиля с закругленными углами
-        return R.style.RoundedBottomSheetDialog
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialogTheme)
     }
 
     private fun initRecyclerView() {
@@ -71,7 +71,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
                 val items = mutableListOf<QuickCategoryItem>()
                 items.add(
                     QuickCategoryItem(
-                    "All", R.drawable.cat_unknown, name == "All"
+                    "All", R.drawable.circle_all, name == "All"
                 )
                 )
                 selectedCategory = name
@@ -89,21 +89,21 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setChips() {
-        for ((index, category) in CategoryUtils.ALL_CATEGORIES.withIndex()) {
-            val chip = Chip(requireContext())
-            chip.text = resources.getStringArray(R.array.categories)[index]
-            val resId = resources.getIdentifier(
-                "drawable/cat_${category.lowercase()}",
-                "drawable",
-                requireContext().packageName
-            )
-            chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
-            chip.isChipIconVisible = true
-            binding.filtersChipGroup.addView(chip)
-            chipMap[chip] = index
-        }
-    }
+//    private fun setChips() {
+//        for ((index, category) in CategoryUtils.ALL_CATEGORIES.withIndex()) {
+//            val chip = Chip(requireContext())
+//            chip.text = resources.getStringArray(R.array.categories)[index]
+//            val resId = resources.getIdentifier(
+//                "drawable/cat_${category.lowercase()}",
+//                "drawable",
+//                requireContext().packageName
+//            )
+//            chip.chipIcon = ContextCompat.getDrawable(requireContext(), resId)
+//            chip.isChipIconVisible = true
+//            binding.filtersChipGroup.addView(chip)
+//            chipMap[chip] = index
+//        }
+//    }
 
     private fun getCategoryDrawable(categoryName: String): Int {
         return when(categoryName) {
@@ -125,13 +125,12 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
             "Utilities" -> R.drawable.circle_utilities
             "Taxi" -> R.drawable.circle_subscriptions
             "House" -> R.drawable.circle_housing
-            else -> R.drawable.cat_unknown
+            else -> R.drawable.circle_all
         }
     }
 
     private fun observeViewModel() {
         budgetViewModel.appliedFilter.observe(viewLifecycleOwner) {
-            Log.e("WTF", "$it")
             if (it.isNotEmpty() && it != "All") {
 //                for (chip in chipMap.keys) {
 //                    if (chip.text == it) {
@@ -141,7 +140,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 //                }
                 val items = mutableListOf<QuickCategoryItem>()
                 items.add(QuickCategoryItem(
-                    "All", R.drawable.cat_unknown, false
+                    "All", R.drawable.circle_all, false
                 ))
                 selectedCategory = it
                 for (category in CategoryUtils.ALL_CATEGORIES) {
@@ -158,7 +157,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
                 selectedCategory = ""
                 val items = mutableListOf<QuickCategoryItem>()
                 items.add(QuickCategoryItem(
-                    "All", R.drawable.cat_unknown, true
+                    "All", R.drawable.circle_all, true
                 ))
                 for (category in CategoryUtils.ALL_CATEGORIES) {
                     val item = QuickCategoryItem(category, getCategoryDrawable(category), selectedCategory == category)
@@ -171,14 +170,14 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setClickListeners() {
-        binding.applyFilters.setOnClickListener {
-            val checkedId = binding.filtersChipGroup.checkedChipId
-            val chip = requireView().findViewById<Chip>(checkedId)
-            val category = if (chip == binding.chipNone) {
-                ""
-            } else {
-                CategoryUtils.ALL_CATEGORIES[chipMap[chip] ?: 0]
-            }
+        binding.btnApplyFilters.setOnClickListener {
+//            val checkedId = binding.filtersChipGroup.checkedChipId
+//            val chip = requireView().findViewById<Chip>(checkedId)
+//            val category = if (chip == binding.chipNone) {
+//                ""
+//            } else {
+//                CategoryUtils.ALL_CATEGORIES[chipMap[chip] ?: 0]
+//            }
             if (selectedCategory == "All") {
                 budgetViewModel.applyFilter("")
             } else {
