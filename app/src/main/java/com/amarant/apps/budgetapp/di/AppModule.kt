@@ -2,9 +2,11 @@ package com.amarant.apps.budgetapp.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.amarant.apps.budgetapp.db.BudgetDatabase
+import com.amarant.apps.budgetapp.db.CategoryConverters
 import com.amarant.apps.budgetapp.util.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides

@@ -19,6 +19,7 @@
     </string-array>
 
     <string-array name="categories">
+        <item>All</item>
         <item>Groceries</item>
         <item>Restaurants</item>
         <item>Cash</item>

@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ListItemQuickCategoryBinding
+import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 
 class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAdapter.QuickCategoryViewHolder>(QuickCategoryDiffItemCallback()) {
 
-    var onCategoryClickListener: ((String) -> Unit)? = null
+    var onCategoryClickListener: ((Category) -> Unit)? = null
+//    var onCategoryClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuickCategoryViewHolder {
         val binding = ListItemQuickCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,8 +24,9 @@ class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAda
 
     override fun onBindViewHolder(holder: QuickCategoryViewHolder, position: Int) {
         val item = getItem(position)
+        val context = holder.itemView.context
         with(holder) {
-            binding.tvTitle.text = item.name
+            binding.tvTitle.text = if (item.name.isEmpty()) context.getString(R.string.all) else item.category.getLocalizedName(context)// item.name
             binding.imgIcon.setImageResource(item.iconResId)
             if (item.isSelected) {
                 binding.imgIcon.setBackgroundResource(R.drawable.frame_selected_category)
@@ -35,7 +38,8 @@ class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAda
                 binding.imgIcon.setBackgroundResource(resId)
             }
             binding.imgIcon.setOnClickListener {
-                onCategoryClickListener?.invoke(item.name)
+                onCategoryClickListener?.invoke(item.category)
+//                onCategoryClickListener?.invoke(item.name)
             }
         }
     }

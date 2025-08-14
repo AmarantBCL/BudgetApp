@@ -92,4 +92,5 @@
     <string name="entry_edited">Entry edited</string>
     <string name="no_entries_add_entry">No entries for this date.\nTap \'+ Add\' to get started!</string>
     <string name="no_entries_for_this_period">No entries for this period.</string>
+    <string name="all">All</string>
 </resources>

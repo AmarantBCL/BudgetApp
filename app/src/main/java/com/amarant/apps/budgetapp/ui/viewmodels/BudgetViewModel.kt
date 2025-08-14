@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.CategoryStat
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.repository.BudgetRepository
@@ -40,8 +42,8 @@ class BudgetViewModel @Inject constructor(
     private val dateRange: LiveData<Pair<Long, Long>>
         get() = _dateRange
 
-    private val _appliedFilter = MutableLiveData("")
-    val appliedFilter: LiveData<String>
+    private val _appliedFilter = MutableLiveData(Category.ALL)
+    val appliedFilter: LiveData<Category>
         get() = _appliedFilter
 
     private val _searchQuery = MutableLiveData("")
@@ -134,7 +136,7 @@ class BudgetViewModel @Inject constructor(
         return budgetRepository.getSpendingsByCategory(start, end)
     }
 
-    fun applyFilter(filter: String) {
+    fun applyFilter(filter: Category) {
         _appliedFilter.value = filter
     }
 
@@ -146,11 +148,13 @@ class BudgetViewModel @Inject constructor(
         return budgetRepository.getCategoryStats()
     }
 
-    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: String): Boolean {
+    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: Category): Boolean {
+//    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: String): Boolean {
         val bankName = ""
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
         val amountAsInt = amount.toIntOrNull()
-        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
+        return if (amountAsInt == null || purpose.isEmpty()) {
+//        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
             false
         } else {
             var amountToInsert = amountAsInt.toFloat()
@@ -164,22 +168,26 @@ class BudgetViewModel @Inject constructor(
                 purpose = purpose,
                 creditOrDebit = debitOrCredit,
                 category = categoryName
+//                category = categoryName
             ))
             true
         }
     }
 
-    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, categoryName: String): Boolean {
+    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, categoryName: Category): Boolean {
+//    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, categoryName: String): Boolean {
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
         val amountAsInt = amount.toIntOrNull()
-        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
+        return if (amountAsInt == null || purpose.isEmpty()) {
+//        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
             false
         } else {
             var amountToInsert = amountAsInt.toFloat()
             if (debitOrCredit == Constants.DEBIT) {
                 amountToInsert *= -1
             }
-            updateBudget(debitOrCredit, amountToInsert, purpose, categoryName, id)
+            updateBudget(debitOrCredit, amountToInsert, purpose, categoryName.dbName, id)
+//            updateBudget(debitOrCredit, amountToInsert, purpose, categoryName, id)
             true
         }
     }

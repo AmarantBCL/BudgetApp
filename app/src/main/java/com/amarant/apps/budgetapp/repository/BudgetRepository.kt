@@ -1,11 +1,13 @@
 package com.amarant.apps.budgetapp.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.amarant.apps.budgetapp.db.BudgetDao
 import com.amarant.apps.budgetapp.db.Mappers
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.entities.Category
 import javax.inject.Inject
 
 class BudgetRepository @Inject constructor(
@@ -27,11 +29,11 @@ class BudgetRepository @Inject constructor(
     fun getTotalCreditForPeriod(startDate: Long, endDate: Long) =
         budgetDao.getTotalCreditForPeriod(startDate, endDate)
 
-    fun getBudgetEntriesBetweenDates(startDate: Long, endDate: Long, filter: String, searchQuery: String = ""): LiveData<List<Budget>> {
+    fun getBudgetEntriesBetweenDates(startDate: Long, endDate: Long, filter: Category, searchQuery: String = ""): LiveData<List<Budget>> {
         return if (searchQuery.isEmpty()) {
-            budgetDao.getReportsBetweenDates(startDate, endDate, filter)
+            budgetDao.getReportsBetweenDates(startDate, endDate, filter.dbName)
         } else {
-            budgetDao.getReportsBetweenDatesWithSearch(startDate, endDate, filter, searchQuery)
+            budgetDao.getReportsBetweenDatesWithSearch(startDate, endDate, filter.dbName, searchQuery)
         }
     }
 

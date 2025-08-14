@@ -51,7 +51,7 @@
         android:id="@+id/btn_apply_filters"
         style="@style/ActiveButtonStyle"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"

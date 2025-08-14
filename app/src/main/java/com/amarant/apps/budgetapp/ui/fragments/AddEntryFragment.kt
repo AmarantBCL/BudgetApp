@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentAddEntryBinding
+import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
@@ -46,7 +47,7 @@ class AddEntryFragment : Fragment() {
 
     private lateinit var quickCategoriesAdapter: QuickCategoriesAdapter
 
-    private var selectedCategory = ""
+    private var selectedCategory = Category.ALL//""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -110,6 +111,7 @@ class AddEntryFragment : Fragment() {
                     amount,
                     purpose,
                     selectedDate,
+//                    selectedCategory
                     selectedCategory
                 )
             } else {
@@ -119,6 +121,7 @@ class AddEntryFragment : Fragment() {
                     isDebit,
                     amount,
                     purpose,
+//                    selectedCategory
                     selectedCategory
                 )
                 message = getString(R.string.entry_edited)
@@ -146,10 +149,12 @@ class AddEntryFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        val categoriesArr = resources.getStringArray(R.array.categories)
-        budgetViewModel.getCategoryStats().observe(viewLifecycleOwner) {
-            entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray(), it)
+//        val categoriesArr = resources.getStringArray(R.array.categories)
+        budgetViewModel.getCategoryStats().observe(viewLifecycleOwner) { categoryStats ->
+            entryViewModel.initCategories(Category.entries, categoryStats)
+//            entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray(), categoryStats)
             args.budgetEntry?.let {
+//                entryViewModel.selectCategory(it.budget.category)
                 entryViewModel.selectCategory(it.budget.category)
             }
         }
@@ -165,9 +170,10 @@ class AddEntryFragment : Fragment() {
             binding.lblShowMore.text = if (it) getString(R.string.show_less) else getString(R.string.show_more)
         }
         entryViewModel.selectedCategory.observe(viewLifecycleOwner) {
-            val categoryName = entryViewModel.getSelectedCategoryName()
-            selectedCategory = categoryName
-            binding.tvSelectedCategory.text = categoryName//categoriesArr[it]
+            val category = entryViewModel.getSelectedCategoryName()
+//            val categoryName = entryViewModel.getSelectedCategoryName()
+            selectedCategory = category//categoryName
+            binding.tvSelectedCategory.text = category.getLocalizedName(requireContext())//categoryName//categoriesArr[it]
 //            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
         }
     }
@@ -200,7 +206,8 @@ class AddEntryFragment : Fragment() {
         historyViewModel.addHistory(
             HistoryItem(
                 purpose,
-                CATEGORY_MAPPING[selectedCategory] ?: 0
+                selectedCategory.ordinal
+//                CATEGORY_MAPPING[selectedCategory] ?: 0
             )
         )
     }

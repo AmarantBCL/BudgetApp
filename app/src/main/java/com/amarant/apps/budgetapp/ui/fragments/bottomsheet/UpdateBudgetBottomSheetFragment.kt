@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
+@Deprecated("Obsolete")
 @AndroidEntryPoint
 class UpdateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
 

@@ -18,5 +18,5 @@ data class Budget(
     val purpose: String,
     val creditOrDebit: String,
     @ColumnInfo(defaultValue = "Unknown")
-    val category: String
+    val category: Category
 ) : Parcelable

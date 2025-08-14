@@ -43,7 +43,8 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
             is ReportsItem.Entry -> {
                 val budgetItem = item.entry
                 val context = holder.itemView.context
-                val categoryImageResId = getCategoryResId(budgetItem.budget.category)
+                val categoryImageResId = budgetItem.budget.category.iconRes//getCategoryResId(budgetItem.budget.category)
+//                val categoryImageResId = getCategoryResId(budgetItem.budget.category)
                 val greenColor = ContextCompat.getColor(context, R.color.positive_green)
                 val redColor = ContextCompat.getColor(context, R.color.negative_red)
                 val formattedAmount = NumberUtils.formatNumberWithThousandsSeparator(budgetItem.budget.amount.toDouble())
@@ -51,7 +52,8 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                     with(holder as ReportsHiddenViewHolder) {
                         binding.imgCategory.setImageResource(categoryImageResId)
                         binding.tvTitle.text = budgetItem.budget.purpose
-                        binding.tvCategory.text = budgetItem.budget.category
+                        binding.tvCategory.text = budgetItem.budget.category.getLocalizedName(context)
+//                        binding.tvCategory.text = budgetItem.budget.category
                         binding.tvAmount.text = formattedAmount
                         if (budgetItem.budget.creditOrDebit == Constants.CREDIT) {
                             binding.tvAmount.text = context.resources.getString(
@@ -73,7 +75,8 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                     with(holder as ReportsViewHolder) {
                         binding.imgCategory.setImageResource(categoryImageResId)
                         binding.tvTitle.text = budgetItem.budget.purpose
-                        binding.tvCategory.text = budgetItem.budget.category
+                        binding.tvCategory.text = budgetItem.budget.category.getLocalizedName(context)
+//                        binding.tvCategory.text = budgetItem.budget.category
                         binding.tvAmount.text = formattedAmount
                         if (budgetItem.budget.creditOrDebit == Constants.CREDIT) {
                             binding.tvAmount.setTextColor(greenColor)
@@ -117,29 +120,29 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
         }
     }
 
-    private fun getCategoryResId(category: String): Int {
-        return when (category) {
-            "Car" -> R.drawable.circle_transportation
-            "Restaurants" -> R.drawable.circle_cafe
-            "Groceries" -> R.drawable.circle_shopping
-            "Rent" -> R.drawable.circle_housing
-            "Health" -> R.drawable.circle_health
-            "Entertainment" -> R.drawable.circle_entertainment
-            "Cash" -> R.drawable.circle_transfer
-            "Taxes" -> R.drawable.circle_taxes
-            "Clothes" -> R.drawable.circle_clothing
-            "Pets" -> R.drawable.circle_pets
-            "Education" -> R.drawable.circle_education
-            "Gifts" -> R.drawable.circle_gifts
-            "Charity" -> R.drawable.circle_charity
-            "Traveling" -> R.drawable.circle_traveling
-            "Beauty" -> R.drawable.circle_personal_care
-            "Utilities" -> R.drawable.circle_utilities
-            "Taxi" -> R.drawable.circle_subscriptions
-            "House" -> R.drawable.circle_housing
-            else -> R.drawable.cat_unknown
-        }
-    }
+//    private fun getCategoryResId(category: String): Int {
+//        return when (category) {
+//            "Car" -> R.drawable.circle_transportation
+//            "Restaurants" -> R.drawable.circle_cafe
+//            "Groceries" -> R.drawable.circle_shopping
+//            "Rent" -> R.drawable.circle_housing
+//            "Health" -> R.drawable.circle_health
+//            "Entertainment" -> R.drawable.circle_entertainment
+//            "Cash" -> R.drawable.circle_transfer
+//            "Taxes" -> R.drawable.circle_taxes
+//            "Clothes" -> R.drawable.circle_clothing
+//            "Pets" -> R.drawable.circle_pets
+//            "Education" -> R.drawable.circle_education
+//            "Gifts" -> R.drawable.circle_gifts
+//            "Charity" -> R.drawable.circle_charity
+//            "Traveling" -> R.drawable.circle_traveling
+//            "Beauty" -> R.drawable.circle_personal_care
+//            "Utilities" -> R.drawable.circle_utilities
+//            "Taxi" -> R.drawable.circle_subscriptions
+//            "House" -> R.drawable.circle_housing
+//            else -> R.drawable.cat_unknown
+//        }
+//    }
 
     class ReportsViewHolder(val binding: ListItemTodayEntryBinding) :
         RecyclerView.ViewHolder(binding.root)

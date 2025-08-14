@@ -121,15 +121,16 @@
 
         <Button
             android:id="@+id/btn_update_money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/ActiveButtonStyle"
+            android:layout_width="300dp"
+            android:layout_height="56dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_back"
             android:text="@string/update_balance"
-            android:textColor="@color/white"
+            android:textAppearance="@style/Text.Button"
+            app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tip_hryvnia_taken" />

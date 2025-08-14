@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentBudgetEntryBinding
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.ui.adapter.SpinnerAdapter
 import com.amarant.apps.budgetapp.ui.adapter.SpinnerItem
@@ -132,7 +133,8 @@ class BudgetEntryFragment : Fragment() {
             val revisedCurrentBalance = remainingBalance
             val checkedId = binding.chipGroup.checkedChipId
             val chip = requireView().findViewById<Chip>(checkedId)
-            val category = ALL_CATEGORIES[chipMap[chip] ?: 0]
+            val category = Category.GROCERIES // TODO Hardcoded since it's a subject to delete
+//            val category = ALL_CATEGORIES[chipMap[chip] ?: 0]
             submitBudgetEntryToDB(
                 bankName,
                 debitOrCredit,
@@ -141,6 +143,7 @@ class BudgetEntryFragment : Fragment() {
                 date,
                 revisedCurrentBalance,
                 category
+//                category
             )
             historyViewModel.addHistory(HistoryItem(purpose, chipMap[chip] ?: 0))
         }
@@ -206,7 +209,7 @@ class BudgetEntryFragment : Fragment() {
         purpose: String,
         date: String,
         revisedCurrentBalance: String,
-        category: String
+        category: Category
     ) {
         var amountToInsert = amount.toFloat()
         if (debitOrCredit == Constants.DEBIT) {
@@ -220,6 +223,7 @@ class BudgetEntryFragment : Fragment() {
                 purpose = purpose,
                 creditOrDebit = debitOrCredit,
                 category = category
+//                category = category
             )
         )
         profileViewModel.updateCurrentBalance(revisedBalance = revisedCurrentBalance.toFloat())

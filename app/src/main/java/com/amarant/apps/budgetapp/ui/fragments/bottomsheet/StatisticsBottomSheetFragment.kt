@@ -14,6 +14,7 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+@Deprecated("Obsolete")
 @AndroidEntryPoint
 class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
 

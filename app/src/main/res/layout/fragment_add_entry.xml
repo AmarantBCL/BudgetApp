@@ -229,7 +229,7 @@
             android:id="@+id/btn_add_entry"
             style="@style/ActiveButtonStyle"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_margin="@dimen/large_margin"
             android:includeFontPadding="false"
             android:text="@string/add_entry"
