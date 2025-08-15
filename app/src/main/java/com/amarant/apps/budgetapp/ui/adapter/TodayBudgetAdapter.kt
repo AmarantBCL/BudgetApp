@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -30,27 +29,6 @@ class TodayBudgetAdapter :
         val context = holder.itemView.context
         with(holder) {
             val categoryImageResId = item.budget.category.iconRes
-//            val categoryImageResId = when (item.budget.category) {
-//                "Car" -> R.drawable.circle_transportation
-//                "Restaurants" -> R.drawable.circle_cafe
-//                "Groceries" -> R.drawable.circle_shopping
-//                "Rent" -> R.drawable.circle_housing
-//                "Health" -> R.drawable.circle_health
-//                "Entertainment" -> R.drawable.circle_entertainment
-//                "Cash" -> R.drawable.circle_transfer
-//                "Taxes" -> R.drawable.circle_taxes
-//                "Clothes" -> R.drawable.circle_clothing
-//                "Pets" -> R.drawable.circle_pets
-//                "Education" -> R.drawable.circle_education
-//                "Gifts" -> R.drawable.circle_gifts
-//                "Charity" -> R.drawable.circle_charity
-//                "Traveling" -> R.drawable.circle_traveling
-//                "Beauty" -> R.drawable.circle_personal_care
-//                "Utilities" -> R.drawable.circle_utilities
-//                "Taxi" -> R.drawable.circle_subscriptions
-//                "House" -> R.drawable.circle_housing
-//                else -> R.drawable.circle_all
-//            }
             val whiteColor = ContextCompat.getColor(context, R.color.primary_white)
             val grayColor = ContextCompat.getColor(context, R.color.secondary_gray)
             val greenColor = ContextCompat.getColor(context, R.color.positive_green)
@@ -59,7 +37,6 @@ class TodayBudgetAdapter :
             binding.imgCategory.setImageResource(categoryImageResId)
             binding.tvTitle.text = item.budget.purpose
             binding.tvCategory.text = item.budget.category.getLocalizedName(context)
-//            binding.tvCategory.text = item.budget.category
             binding.tvAmount.text = formattedAmount
             if (item.budget.creditOrDebit == Constants.CREDIT) {
                 binding.tvAmount.setTextColor(greenColor)

@@ -3,7 +3,6 @@ package com.amarant.apps.budgetapp.ui.adapter
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,6 @@ import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAdapter.QuickCategoryViewHolder>(QuickCategoryDiffItemCallback()) {
 
     var onCategoryClickListener: ((Category) -> Unit)? = null
-//    var onCategoryClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuickCategoryViewHolder {
         val binding = ListItemQuickCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,8 +24,8 @@ class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAda
         val item = getItem(position)
         val context = holder.itemView.context
         with(holder) {
-            binding.tvTitle.text = if (item.name.isEmpty()) context.getString(R.string.all) else item.category.getLocalizedName(context)// item.name
-            binding.imgIcon.setImageResource(item.iconResId)
+            binding.tvTitle.text = if (item.category.name.isEmpty()) context.getString(R.string.all) else item.category.getLocalizedName(context)
+            binding.imgIcon.setImageResource(item.category.iconRes)
             if (item.isSelected) {
                 binding.imgIcon.setBackgroundResource(R.drawable.frame_selected_category)
             } else {
@@ -39,7 +37,6 @@ class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAda
             }
             binding.imgIcon.setOnClickListener {
                 onCategoryClickListener?.invoke(item.category)
-//                onCategoryClickListener?.invoke(item.name)
             }
         }
     }
@@ -49,7 +46,7 @@ class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAda
     class QuickCategoryDiffItemCallback : DiffUtil.ItemCallback<QuickCategoryItem>() {
 
         override fun areItemsTheSame(oldItem: QuickCategoryItem, newItem: QuickCategoryItem): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.category == newItem.category
         }
 
         override fun areContentsTheSame(oldItem: QuickCategoryItem, newItem: QuickCategoryItem): Boolean {

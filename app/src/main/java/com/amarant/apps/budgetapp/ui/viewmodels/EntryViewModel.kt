@@ -1,10 +1,8 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.CategoryStat
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
@@ -26,40 +24,25 @@ class EntryViewModel : ViewModel() {
 
     private var allCategories: List<QuickCategoryItem> = listOf()
 
-    private fun sortCategories(categories: List<Category>, stats: List<CategoryStat>): List<Category> {
-//    private fun sortCategories(categories: List<String>, stats: List<CategoryStat>): List<String> {
-        val countMap = stats.associate { it.category to it.count }
-        val posMap = categories.withIndex().associate { it.value to it.index }
-        return categories.sortedWith(
-            compareByDescending<Category> { countMap[it.dbName] ?: 1 }
-                .thenBy { posMap[it] ?: Int.MAX_VALUE }
-        )
-    }
-
     fun getSelectedCategoryName(): Category {
-        val indexOfCategory = selectedCategory.value ?: 1
+        val indexOfCategory = selectedCategory.value ?: DEFAULT_CATEGORY_ID
         val element = allCategories[indexOfCategory]
         return element.category
-//        return element.name
     }
 
     fun initCategories(categoryEntries: EnumEntries<Category>, categoryStats: List<CategoryStat>) {
-//    fun initCategories(allCategoriesArr: Array<String>, categoryStats: List<CategoryStat>) {
         val newList = categoryEntries.toMutableList()
         newList.removeAt(0)
         if (categories.value.isNullOrEmpty()) {
             val sorted = sortCategories(newList, categoryStats).map {
-                QuickCategoryItem(it, it.dbName, it.iconRes)
+                QuickCategoryItem(it)
             }
-//            val sorted = sortCategories(allCategoriesArr.toList(), categoryStats).map {
-//                QuickCategoryItem(it, getCategoryDrawable(it))
-//            }
             allCategories = sorted
             val expanded = isExpanded.value
             if (expanded == true) {
                 _categories.value = sorted
             } else {
-                _categories.value = sorted.take(8)
+                _categories.value = sorted.take(DEFAULT_DISPLAYED_CATEGORIES)
             }
             setCategorySelected(0)
         }
@@ -70,7 +53,7 @@ class EntryViewModel : ViewModel() {
         val currentCategory = selectedCategory.value
         if (currentState == true) {
             _isExpanded.value = false
-            _categories.value = allCategories.take(8)
+            _categories.value = allCategories.take(DEFAULT_DISPLAYED_CATEGORIES)
         } else {
             _isExpanded.value = true
             _categories.value = allCategories
@@ -79,10 +62,18 @@ class EntryViewModel : ViewModel() {
     }
 
     fun selectCategory(category: Category) {
-//    fun selectCategory(categoryName: String) {
         val list = allCategories.toMutableList()
-        val index = list.indexOfFirst { it.name == category.dbName }
+        val index = list.indexOfFirst { it.category == category }
         setCategorySelected(index)
+    }
+
+    private fun sortCategories(categories: List<Category>, stats: List<CategoryStat>): List<Category> {
+        val countMap = stats.associate { it.category to it.count }
+        val posMap = categories.withIndex().associate { it.value to it.index }
+        return categories.sortedWith(
+            compareByDescending<Category> { countMap[it.dbName] ?: DEFAULT_CATEGORY_ID }
+                .thenBy { posMap[it] ?: Int.MAX_VALUE }
+        )
     }
 
     private fun setCategorySelected(index: Int) {
@@ -94,33 +85,15 @@ class EntryViewModel : ViewModel() {
             if (currentState == true) {
                 _categories.value = list
             } else {
-                _categories.value = list.take(8)
+                _categories.value = list.take(DEFAULT_DISPLAYED_CATEGORIES)
             }
             _selectedCategory.value = index
         }
     }
 
-//    private fun getCategoryDrawable(categoryName: String): Int {
-//        return when(categoryName) {
-//            "Car" -> R.drawable.circle_transportation
-//            "Restaurants" -> R.drawable.circle_cafe
-//            "Groceries" -> R.drawable.circle_shopping
-//            "Rent" -> R.drawable.circle_housing
-//            "Health" -> R.drawable.circle_health
-//            "Entertainment" -> R.drawable.circle_entertainment
-//            "Cash" -> R.drawable.circle_transfer
-//            "Taxes" -> R.drawable.circle_taxes
-//            "Clothes" -> R.drawable.circle_clothing
-//            "Pets" -> R.drawable.circle_pets
-//            "Education" -> R.drawable.circle_education
-//            "Gifts" -> R.drawable.circle_gifts
-//            "Charity" -> R.drawable.circle_charity
-//            "Traveling" -> R.drawable.circle_traveling
-//            "Beauty" -> R.drawable.circle_personal_care
-//            "Utilities" -> R.drawable.circle_utilities
-//            "Taxi" -> R.drawable.circle_subscriptions
-//            "House" -> R.drawable.circle_housing
-//            else -> R.drawable.cat_unknown
-//        }
-//    }
+    companion object {
+
+        private const val DEFAULT_CATEGORY_ID = 1
+        private const val DEFAULT_DISPLAYED_CATEGORIES = 8
+    }
 }

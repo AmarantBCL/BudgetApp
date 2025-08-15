@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -47,10 +46,21 @@ class BudgetViewModel @Inject constructor(
         get() = _appliedFilter
 
     private val _searchQuery = MutableLiveData("")
-    val searchQuery: LiveData<String>
+    private val searchQuery: LiveData<String>
         get() = _searchQuery
 
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
+
+    val reportsUI: LiveData<List<ReportsItem>> = getBudgetEntriesBetweenDates().map { reports ->
+        val groupedList = mutableListOf<ReportsItem>()
+        reports.groupBy { it.budget.date }.forEach { (date, items) ->
+            groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+            items.reversed().forEach { budgetUI ->
+                groupedList.add(ReportsItem.Entry(budgetUI))
+            }
+        }
+        groupedList
+    }
 
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
@@ -69,14 +79,6 @@ class BudgetViewModel @Inject constructor(
         _dateRange.value = Pair(startDate, endDate)
     }
 
-//    fun getReportsBetweenDates(): LiveData<List<Budget>> {
-//        return dateRange.switchMap { pair ->
-//            appliedFilter.switchMap { filter ->
-//                budgetRepository.getBudgetEntriesBetweenDates(pair.first, pair.second, filter)
-//            }
-//        }
-//    }
-
     fun toggleSelection(id: Int) {
         val current = selectedIds.value ?: emptySet()
         selectedIds.value = if (current.contains(id)) {
@@ -86,7 +88,7 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
-    fun getBudgetUIEntriesBetweenDates(): LiveData<List<BudgetUI>> {
+    fun getBudgetEntriesBetweenDates(): LiveData<List<BudgetUI>> {
         val result = MediatorLiveData<List<BudgetUI>>()
         val dbSource = dateRange.switchMap { dateRange ->
             appliedFilter.switchMap { filter ->
@@ -105,17 +107,6 @@ class BudgetViewModel @Inject constructor(
         result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value) }
         result.addSource(selectedIds) { selected -> update(dbSource.value, selected) }
         return result
-    }
-
-    val reportsUI: LiveData<List<ReportsItem>> = getBudgetUIEntriesBetweenDates().map { reports ->
-        val groupedList = mutableListOf<ReportsItem>()
-        reports.groupBy { it.budget.date }.forEach { (date, items) ->
-            groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-            items.reversed().forEach { budgetUI ->
-                groupedList.add(ReportsItem.Entry(budgetUI))
-            }
-        }
-        groupedList
     }
 
     fun calculateTotalSpending(period: Int): LiveData<Float> {
@@ -148,13 +139,11 @@ class BudgetViewModel @Inject constructor(
         return budgetRepository.getCategoryStats()
     }
 
-    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: Category): Boolean {
-//    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, categoryName: String): Boolean {
+    fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, category: Category): Boolean {
         val bankName = ""
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
         val amountAsInt = amount.toIntOrNull()
         return if (amountAsInt == null || purpose.isEmpty()) {
-//        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
             false
         } else {
             var amountToInsert = amountAsInt.toFloat()
@@ -167,27 +156,23 @@ class BudgetViewModel @Inject constructor(
                 amount = amountToInsert,
                 purpose = purpose,
                 creditOrDebit = debitOrCredit,
-                category = categoryName
-//                category = categoryName
+                category = category
             ))
             true
         }
     }
 
-    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, categoryName: Category): Boolean {
-//    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, categoryName: String): Boolean {
+    fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, category: Category): Boolean {
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
         val amountAsInt = amount.toIntOrNull()
         return if (amountAsInt == null || purpose.isEmpty()) {
-//        return if (amountAsInt == null || purpose.isEmpty() || categoryName.isEmpty()) {
             false
         } else {
             var amountToInsert = amountAsInt.toFloat()
             if (debitOrCredit == Constants.DEBIT) {
                 amountToInsert *= -1
             }
-            updateBudget(debitOrCredit, amountToInsert, purpose, categoryName.dbName, id)
-//            updateBudget(debitOrCredit, amountToInsert, purpose, categoryName, id)
+            updateBudget(debitOrCredit, amountToInsert, purpose, category.dbName, id)
             true
         }
     }

@@ -155,7 +155,7 @@ class CalendarFragment : Fragment() {
 //                )
 //            }
 //        }
-        budgetViewModel.getBudgetUIEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
+        budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             todayBudgetAdapter.submitList(reports.reversed())
             binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
             if (reports.isNotEmpty()) {
@@ -213,30 +213,30 @@ class CalendarFragment : Fragment() {
         val totalExpenses = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }.sumOf {
             it.budget.amount.toDouble()
         }
-        val netIncome = totalIncome - totalExpenses.absoluteValue
+//        val netIncome = totalIncome - totalExpenses.absoluteValue
         val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
         val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
-        val formattedNet = NumberUtils.formatNumberWithThousandsSeparator(netIncome)
+//        val formattedNet = NumberUtils.formatNumberWithThousandsSeparator(netIncome)
         binding.tvIncome.text =
             if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
         binding.tvExpenses.text = formattedExpenses
-        if (netIncome > 0) {
-            binding.tvNetIncome.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.positive_green
-                )
-            )
-            binding.tvNetIncome.text = getString(R.string.placeholder_plus, formattedNet)
-        } else {
-            binding.tvNetIncome.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.negative_red
-                )
-            )
-            binding.tvNetIncome.text = formattedNet
-        }
+//        if (netIncome > 0) {
+//            binding.tvNetIncome.setTextColor(
+//                ContextCompat.getColor(
+//                    requireContext(),
+//                    R.color.positive_green
+//                )
+//            )
+//            binding.tvNetIncome.text = getString(R.string.placeholder_plus, formattedNet)
+//        } else {
+//            binding.tvNetIncome.setTextColor(
+//                ContextCompat.getColor(
+//                    requireContext(),
+//                    R.color.negative_red
+//                )
+//            )
+//            binding.tvNetIncome.text = formattedNet
+//        }
     }
 
     private fun setRecyclerViewVisibility(isVisible: Boolean) {
