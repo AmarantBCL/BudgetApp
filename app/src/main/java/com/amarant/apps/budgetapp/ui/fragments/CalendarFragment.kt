@@ -2,6 +2,12 @@ package com.amarant.apps.budgetapp.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+import android.text.style.ForegroundColorSpan
+import android.text.style.SubscriptSpan
+import android.text.style.SuperscriptSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +22,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
@@ -215,6 +223,10 @@ class CalendarFragment : Fragment() {
         val totalExpenses = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }.sumOf {
             it.budget.amount.toDouble()
         }
+        val isHiddenIncome =
+            reports.any { it.isHidden && it.budget.creditOrDebit == Constants.CREDIT }
+        val isHiddenExpenses =
+            reports.any { it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }
 //        val netIncome = totalIncome - totalExpenses.absoluteValue
         val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
         val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
@@ -222,6 +234,7 @@ class CalendarFragment : Fragment() {
         binding.tvIncome.text =
             if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
         binding.tvExpenses.text = formattedExpenses
+        setHiddenIncomeExpensesViews(isHiddenIncome, isHiddenExpenses)
 //        if (netIncome > 0) {
 //            binding.tvNetIncome.setTextColor(
 //                ContextCompat.getColor(
@@ -239,6 +252,29 @@ class CalendarFragment : Fragment() {
 //            )
 //            binding.tvNetIncome.text = formattedNet
 //        }
+    }
+
+    private fun setHiddenIncomeExpensesViews(isHiddenIncome: Boolean, isHiddenExpenses: Boolean) {
+        val spanIncome = SpannableString("${getString(R.string.income)} ⬤")
+        val spanExpenses = SpannableString("${getString(R.string.expenses)} ⬤")
+        spanIncome.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.accent_purple)),
+            spanIncome.length - 1, spanIncome.length, SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spanExpenses.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.accent_purple)),
+            spanExpenses.length - 1, spanExpenses.length, SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        if (isHiddenIncome) {
+            binding.lblIncome.text = spanIncome
+        } else {
+            binding.lblIncome.text = getString(R.string.income)
+        }
+        if (isHiddenExpenses) {
+            binding.lblExpenses.text = spanExpenses
+        } else {
+            binding.lblExpenses.text = getString(R.string.expenses)
+        }
     }
 
     private fun setRecyclerViewVisibility(isVisible: Boolean) {

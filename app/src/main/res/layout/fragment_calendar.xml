@@ -94,6 +94,7 @@
                     android:text="@string/income_s"
                     android:textAlignment="center"
                     android:textAppearance="@style/Text.Secondary"
+                    android:textColor="@color/light_gray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toStartOf="@id/divider"
                     app:layout_constraintStart_toStartOf="parent"
@@ -134,6 +135,7 @@
                     android:text="@string/expenses"
                     android:textAlignment="center"
                     android:textAppearance="@style/Text.Secondary"
+                    android:textColor="@color/light_gray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/divider"
@@ -155,36 +157,36 @@
                     app:layout_constraintTop_toBottomOf="@id/lbl_income"
                     tools:text="-1529.0" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/lbl_net_income"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:paddingHorizontal="@dimen/regular_margin"-->
-<!--                    android:paddingTop="@dimen/regular_margin"-->
-<!--                    android:text="@string/net"-->
-<!--                    android:textAppearance="@style/Text.Secondary"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:visibility="gone"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toEndOf="@id/lbl_expenses"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/lbl_net_income"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:paddingHorizontal="@dimen/regular_margin"-->
+                <!--                    android:paddingTop="@dimen/regular_margin"-->
+                <!--                    android:text="@string/net"-->
+                <!--                    android:textAppearance="@style/Text.Secondary"-->
+                <!--                    android:textSize="14sp"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toEndOf="@id/lbl_expenses"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_net_income"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/rubik"-->
-<!--                    android:paddingHorizontal="@dimen/regular_margin"-->
-<!--                    android:paddingBottom="@dimen/small_margin"-->
-<!--                    android:textAppearance="@style/Text.Secondary"-->
-<!--                    android:textColor="@color/negative_red"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:visibility="gone"-->
-<!--                    app:layout_constraintEnd_toEndOf="@id/lbl_net_income"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/lbl_net_income"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/lbl_net_income"-->
-<!--                    tools:text="-1029.0" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_net_income"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:fontFamily="@font/rubik"-->
+                <!--                    android:paddingHorizontal="@dimen/regular_margin"-->
+                <!--                    android:paddingBottom="@dimen/small_margin"-->
+                <!--                    android:textAppearance="@style/Text.Secondary"-->
+                <!--                    android:textColor="@color/negative_red"-->
+                <!--                    android:textSize="16sp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    app:layout_constraintEnd_toEndOf="@id/lbl_net_income"-->
+                <!--                    app:layout_constraintStart_toStartOf="@id/lbl_net_income"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/lbl_net_income"-->
+                <!--                    tools:text="-1029.0" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
