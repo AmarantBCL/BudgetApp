@@ -157,7 +157,9 @@ class CalendarFragment : Fragment() {
 //        }
         budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             todayBudgetAdapter.submitList(reports.reversed())
-            binding.tvNumberOfEntries.text = getString(R.string.number_of_entries, reports.size)
+            val count = reports.size
+            val entriesString = resources.getQuantityString(R.plurals.entries_count, count, count)
+            binding.tvNumberOfEntries.text = entriesString
             if (reports.isNotEmpty()) {
                 setIncomeExpensesViews(reports)
                 setRecyclerViewVisibility(true)
