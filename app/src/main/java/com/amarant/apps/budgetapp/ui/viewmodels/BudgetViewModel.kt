@@ -46,12 +46,12 @@ class BudgetViewModel @Inject constructor(
         get() = _appliedFilter
 
     private val _searchQuery = MutableLiveData("")
-    private val searchQuery: LiveData<String>
+    val searchQuery: LiveData<String>
         get() = _searchQuery
 
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
 
-    val reportsUI: LiveData<List<ReportsItem>> = getBudgetEntriesBetweenDates().map { reports ->
+    val groupedEntries: LiveData<List<ReportsItem>> = getBudgetEntriesBetweenDates().map { reports ->
         val groupedList = mutableListOf<ReportsItem>()
         reports.groupBy { it.budget.date }.forEach { (date, items) ->
             groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))

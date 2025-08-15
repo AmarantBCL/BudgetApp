@@ -227,31 +227,12 @@ class CalendarFragment : Fragment() {
             reports.any { it.isHidden && it.budget.creditOrDebit == Constants.CREDIT }
         val isHiddenExpenses =
             reports.any { it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }
-//        val netIncome = totalIncome - totalExpenses.absoluteValue
         val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
         val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
-//        val formattedNet = NumberUtils.formatNumberWithThousandsSeparator(netIncome)
         binding.tvIncome.text =
             if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
         binding.tvExpenses.text = formattedExpenses
         setHiddenIncomeExpensesViews(isHiddenIncome, isHiddenExpenses)
-//        if (netIncome > 0) {
-//            binding.tvNetIncome.setTextColor(
-//                ContextCompat.getColor(
-//                    requireContext(),
-//                    R.color.positive_green
-//                )
-//            )
-//            binding.tvNetIncome.text = getString(R.string.placeholder_plus, formattedNet)
-//        } else {
-//            binding.tvNetIncome.setTextColor(
-//                ContextCompat.getColor(
-//                    requireContext(),
-//                    R.color.negative_red
-//                )
-//            )
-//            binding.tvNetIncome.text = formattedNet
-//        }
     }
 
     private fun setHiddenIncomeExpensesViews(isHiddenIncome: Boolean, isHiddenExpenses: Boolean) {

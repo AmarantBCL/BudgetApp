@@ -1,5 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -25,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
@@ -35,7 +38,9 @@ import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.absoluteValue
+import androidx.core.graphics.toColorInt
+import com.amarant.apps.budgetapp.ui.MainActivity
+import com.google.android.material.appbar.MaterialToolbar
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment() {
@@ -47,6 +52,10 @@ class ReportsFragment : Fragment() {
     private val budgetViewModel: BudgetViewModel by activityViewModels()
 
     private lateinit var reportsAdapter: ReportsAdapter
+
+    private var reportsMenu: Menu? = null
+    private var searchItem: MenuItem? = null
+    private var filterItem: MenuItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +86,9 @@ class ReportsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.reports_menu, menu)
+        reportsMenu = menu
+        searchItem = menu.findItem(R.id.search)
+        filterItem = menu.findItem(R.id.filters)
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as? SearchView
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -91,6 +103,8 @@ class ReportsFragment : Fragment() {
                 return false
             }
         })
+        updateSearchIcon(budgetViewModel.searchQuery.value ?: "")
+        updateFilterIcon(budgetViewModel.appliedFilter.value ?: Category.ALL)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -101,22 +115,8 @@ class ReportsFragment : Fragment() {
         }
         if (item.itemId == R.id.sort) {
             budgetViewModel.setSearchQuery("")
-            true
         }
         return true
-    }
-
-    private fun setClickListeners() {
-        binding.spinnerDateRange.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                budgetViewModel.changeDateRange(position)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-        binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
     }
 
     private fun initRecyclerView() {
@@ -175,13 +175,44 @@ class ReportsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        budgetViewModel.reportsUI.observe(viewLifecycleOwner) { groupedReports ->
+        budgetViewModel.groupedEntries.observe(viewLifecycleOwner) { groupedReports ->
             reportsAdapter.submitList(groupedReports)
         }
         budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             setIncomeExpensesViews(reports)
             binding.imgDollar.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE
             binding.lblEmptyEntries.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE
+        }
+        budgetViewModel.searchQuery.observe(viewLifecycleOwner) {
+            updateSearchIcon(it)
+            if (it.isNotEmpty()) {
+                val toolbar = (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+                activity?.title = it
+                toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.accent_purple))
+            } else {
+                val toolbar = (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
+                activity?.title = getString(R.string.spending_reports)
+                toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.primary_white))
+            }
+        }
+        budgetViewModel.appliedFilter.observe(viewLifecycleOwner) {
+            updateFilterIcon(it)
+        }
+    }
+
+    private fun updateSearchIcon(query: String) {
+        if (query.isNotEmpty()) {
+            searchItem?.icon?.setTintList(ColorStateList.valueOf("#793CC9".toColorInt()))
+        } else {
+            searchItem?.icon?.setTintList(null)
+        }
+    }
+
+    private fun updateFilterIcon(filter: Category) {
+        if (filter != Category.ALL) {
+            filterItem?.icon?.setTintList(ColorStateList.valueOf("#793CC9".toColorInt()))
+        } else {
+            filterItem?.icon?.setTintList(null)
         }
     }
 
@@ -196,31 +227,12 @@ class ReportsFragment : Fragment() {
             reports.any { it.isHidden && it.budget.creditOrDebit == Constants.CREDIT }
         val isHiddenExpenses =
             reports.any { it.isHidden && it.budget.creditOrDebit == Constants.DEBIT }
-//        val netIncome = totalIncome - totalExpenses.absoluteValue
         val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
         val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
-//        val formattedNet = NumberUtils.formatNumberWithThousandsSeparator(netIncome)
         binding.tvIncome.text =
             if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
         binding.tvExpenses.text = formattedExpenses
         setHiddenIncomeExpensesViews(isHiddenIncome, isHiddenExpenses)
-//        if (netIncome > 0) {
-//            binding.tvNetIncome.setTextColor(
-//                ContextCompat.getColor(
-//                    requireContext(),
-//                    R.color.positive_green
-//                )
-//            )
-//            binding.tvNetIncome.text = getString(R.string.placeholder_plus, formattedNet)
-//        } else {
-//            binding.tvNetIncome.setTextColor(
-//                ContextCompat.getColor(
-//                    requireContext(),
-//                    R.color.negative_red
-//                )
-//            )
-//            binding.tvNetIncome.text = formattedNet
-//        }
     }
 
     private fun setHiddenIncomeExpensesViews(isHiddenIncome: Boolean, isHiddenExpenses: Boolean) {
@@ -244,6 +256,19 @@ class ReportsFragment : Fragment() {
         } else {
             binding.lblExpenses.text = getString(R.string.expenses)
         }
+    }
+
+    private fun setClickListeners() {
+        binding.spinnerDateRange.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                budgetViewModel.changeDateRange(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+        binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
     }
 
     private fun setSpinnerValues() {
