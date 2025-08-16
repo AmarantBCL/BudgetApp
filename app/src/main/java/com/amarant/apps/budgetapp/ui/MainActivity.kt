@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -95,17 +97,17 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 else -> {
+                    val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
                     supportActionBar?.show()
                     binding.bottomNavBar.visibility = View.VISIBLE
                     if (destination.id == R.id.calendarFragment) {
-                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
                         val button = toolbar.findViewById<Button>(R.id.btn_action)
                         button.visibility = View.VISIBLE
                     } else {
-                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
                         val button = toolbar.findViewById<Button>(R.id.btn_action)
                         button.visibility = View.GONE
                     }
+                    toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.primary_white))
                 }
             }
         }
