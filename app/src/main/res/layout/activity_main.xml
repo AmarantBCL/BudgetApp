@@ -27,18 +27,18 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:titleTextAppearance="@style/Text.Heading.Medium">
 
-            <Button
-                android:id="@+id/btn_action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/large_margin"
-                android:includeFontPadding="false"
-                android:text="@string/add"
-                android:textAppearance="@style/Text.Button"
-                app:cornerRadius="8dp"
-                app:icon="@drawable/ic_plus"
-                app:iconGravity="textStart" />
+<!--            <Button-->
+<!--                android:id="@+id/btn_action"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginEnd="@dimen/large_margin"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:text="@string/add"-->
+<!--                android:textAppearance="@style/Text.Button"-->
+<!--                app:cornerRadius="8dp"-->
+<!--                app:icon="@drawable/ic_plus"-->
+<!--                app:iconGravity="textStart" />-->
 
         </com.google.android.material.appbar.MaterialToolbar>
 

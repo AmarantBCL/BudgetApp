@@ -16,6 +16,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
@@ -86,28 +88,28 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.fragmentAddEntry -> {
                     binding.bottomNavBar.visibility = View.GONE
-                    if (destination.id == R.id.calendarFragment) {
-                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
-                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-                        button.visibility = View.VISIBLE
-                    } else {
-                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
-                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-                        button.visibility = View.GONE
-                    }
+//                    if (destination.id == R.id.calendarFragment) {
+//                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+//                        button.visibility = View.VISIBLE
+//                    } else {
+//                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+//                        button.visibility = View.GONE
+//                    }
                 }
                 else -> {
-                    val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
+//                    val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
                     supportActionBar?.show()
                     binding.bottomNavBar.visibility = View.VISIBLE
-                    if (destination.id == R.id.calendarFragment) {
-                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-                        button.visibility = View.VISIBLE
-                    } else {
-                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-                        button.visibility = View.GONE
-                    }
-                    toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.primary_white))
+//                    if (destination.id == R.id.calendarFragment) {
+//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+//                        button.visibility = View.VISIBLE
+//                    } else {
+//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
+//                        button.visibility = View.GONE
+//                    }
+//                    toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.primary_white))
                 }
             }
         }

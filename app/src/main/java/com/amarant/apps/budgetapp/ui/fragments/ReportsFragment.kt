@@ -39,7 +39,12 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
+import androidx.transition.ChangeBounds
+import androidx.transition.ChangeTransform
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.ui.MainActivity
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 
 @AndroidEntryPoint
@@ -106,6 +111,12 @@ class ReportsFragment : Fragment() {
         updateSearchIcon(budgetViewModel.searchQuery.value ?: "")
         updateFilterIcon(budgetViewModel.appliedFilter.value ?: Category.ALL)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        val item = menu.findItem(R.id.sort)
+        item?.isVisible = !budgetViewModel.searchQuery.value.isNullOrEmpty()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -186,13 +197,15 @@ class ReportsFragment : Fragment() {
         budgetViewModel.searchQuery.observe(viewLifecycleOwner) {
             updateSearchIcon(it)
             if (it.isNotEmpty()) {
-                val toolbar = (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
                 activity?.title = it
-                toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.accent_purple))
+//                val item = reportsMenu?.findItem(R.id.sort)
+//                item?.isVisible = true
+                requireActivity().invalidateOptionsMenu()
             } else {
-                val toolbar = (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
                 activity?.title = getString(R.string.spending_reports)
-                toolbar.setTitleTextColor(ContextCompat.getColor(requireContext(), R.color.primary_white))
+//                val item = reportsMenu?.findItem(R.id.sort)
+//                item?.isVisible = false
+                requireActivity().invalidateOptionsMenu()
             }
         }
         budgetViewModel.appliedFilter.observe(viewLifecycleOwner) {

@@ -10,9 +10,12 @@ import android.text.style.SubscriptSpan
 import android.text.style.SuperscriptSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
@@ -42,6 +46,7 @@ import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
@@ -64,6 +69,11 @@ class CalendarFragment : Fragment() {
 
     private var currentDateMillis: Long = System.currentTimeMillis()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,10 +85,8 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
         initViews()
         observeViewModel()
-        setClickListeners()
         setCalendarListeners()
         // TODO Debug navigation
         val navController = findNavController()
@@ -89,6 +97,22 @@ class CalendarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val activity = requireActivity() as MainActivity
+        val appBar = activity.findViewById<AppBarLayout>(R.id.app_bar)
+        TransitionManager.beginDelayedTransition(appBar, Fade())
+        inflater.inflate(R.menu.calendar_menu, menu)
+        val buttonItem = menu.findItem(R.id.action_button_item)
+        val button = buttonItem.actionView?.findViewById<MaterialButton>(R.id.menu_button)
+        button?.setOnClickListener {
+            val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
+                selectedDate = currentDateMillis,
+                budgetEntry = null
+            )
+            findNavController().navigate(action)
+        }
     }
 
     private fun initViews() {
@@ -200,19 +224,6 @@ class CalendarFragment : Fragment() {
             val displayedDate = getFormattedDate(calendar.timeInMillis)
             binding.tvTodayDate.text = displayedDate
             calendarViewModel.setSelectedDate(calendar.timeInMillis)
-        }
-    }
-
-    private fun setClickListeners() {
-        val toolbar =
-            (requireActivity() as MainActivity).findViewById<MaterialToolbar>(R.id.toolbar)
-        val button = toolbar.findViewById<Button>(R.id.btn_action)
-        button.setOnClickListener {
-            val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
-                selectedDate = currentDateMillis,
-                budgetEntry = null
-            )
-            findNavController().navigate(action)
         }
     }
 
