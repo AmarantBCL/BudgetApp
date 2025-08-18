@@ -82,9 +82,11 @@
 
             <AutoCompleteTextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:hint="$ Dollar"
                 android:inputType="none"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
                 android:textColorHint="@color/secondary_gray" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -119,13 +121,15 @@
                 android:id="@+id/edit_income"
                 style="@style/OutlinedEditTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:drawableStart="@drawable/ic_dollar"
                 android:drawablePadding="@dimen/regular_margin"
                 android:drawableTint="@color/secondary_gray"
                 android:hint="Enter your monthly income"
                 android:includeFontPadding="false"
                 android:inputType="number"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:textColor="@color/primary_white"
                 android:textColorHint="@color/secondary_gray" />
@@ -163,12 +167,14 @@
                 android:id="@+id/edit_savings_goal"
                 style="@style/OutlinedEditTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:drawableStart="@drawable/ic_target"
                 android:drawablePadding="@dimen/regular_margin"
                 android:hint="How much do you want to save monthly?"
                 android:includeFontPadding="false"
                 android:inputType="number"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:textColor="@color/primary_white"
                 android:textColorHint="@color/secondary_gray" />

@@ -198,13 +198,9 @@ class ReportsFragment : Fragment() {
             updateSearchIcon(it)
             if (it.isNotEmpty()) {
                 activity?.title = it
-//                val item = reportsMenu?.findItem(R.id.sort)
-//                item?.isVisible = true
                 requireActivity().invalidateOptionsMenu()
             } else {
                 activity?.title = getString(R.string.spending_reports)
-//                val item = reportsMenu?.findItem(R.id.sort)
-//                item?.isVisible = false
                 requireActivity().invalidateOptionsMenu()
             }
         }

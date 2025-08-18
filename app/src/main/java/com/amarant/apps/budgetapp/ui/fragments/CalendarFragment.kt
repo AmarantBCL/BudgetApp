@@ -100,9 +100,9 @@ class CalendarFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val activity = requireActivity() as MainActivity
-        val appBar = activity.findViewById<AppBarLayout>(R.id.app_bar)
-        TransitionManager.beginDelayedTransition(appBar, Fade())
+//        val activity = requireActivity() as MainActivity
+//        val appBar = activity.findViewById<AppBarLayout>(R.id.app_bar)
+//        TransitionManager.beginDelayedTransition(appBar, Fade())
         inflater.inflate(R.menu.calendar_menu, menu)
         val buttonItem = menu.findItem(R.id.action_button_item)
         val button = buttonItem.actionView?.findViewById<MaterialButton>(R.id.menu_button)

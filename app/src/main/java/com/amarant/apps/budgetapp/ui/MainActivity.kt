@@ -3,6 +3,7 @@ package com.amarant.apps.budgetapp.ui
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
@@ -88,28 +90,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.fragmentAddEntry -> {
                     binding.bottomNavBar.visibility = View.GONE
-//                    if (destination.id == R.id.calendarFragment) {
-//                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
-//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-//                        button.visibility = View.VISIBLE
-//                    } else {
-//                        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
-//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-//                        button.visibility = View.GONE
-//                    }
                 }
                 else -> {
-//                    val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
                     supportActionBar?.show()
                     binding.bottomNavBar.visibility = View.VISIBLE
-//                    if (destination.id == R.id.calendarFragment) {
-//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-//                        button.visibility = View.VISIBLE
-//                    } else {
-//                        val button = toolbar.findViewById<Button>(R.id.btn_action)
-//                        button.visibility = View.GONE
-//                    }
-//                    toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.primary_white))
                 }
             }
         }
