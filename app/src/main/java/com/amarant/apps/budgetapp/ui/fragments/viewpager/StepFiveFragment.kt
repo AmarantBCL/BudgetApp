@@ -47,7 +47,8 @@ class StepFiveFragment : Fragment() {
             binding.tvCurrency.text = it
         }
         onboardingViewModel.categories.observe(viewLifecycleOwner) { categories ->
-            binding.tvCategories.text = "${categories.filter { it.isChecked }.size} Selected"
+            binding.tvCategories.text = "${categories.filter { it.isSelected }.size} Selected"
+//            binding.tvCategories.text = "${categories.filter { it.isChecked }.size} Selected"
         }
     }
 }

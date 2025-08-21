@@ -14,6 +14,7 @@ import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAdapter.QuickCategoryViewHolder>(QuickCategoryDiffItemCallback()) {
 
     var onCategoryClickListener: ((Category) -> Unit)? = null
+    var onCategoryMultiClickListener: ((Category, Boolean) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuickCategoryViewHolder {
         val binding = ListItemQuickCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -37,6 +38,7 @@ class QuickCategoriesAdapter : ListAdapter<QuickCategoryItem, QuickCategoriesAda
             }
             binding.imgIcon.setOnClickListener {
                 onCategoryClickListener?.invoke(item.category)
+                onCategoryMultiClickListener?.invoke(item.category, item.isSelected)
             }
         }
     }

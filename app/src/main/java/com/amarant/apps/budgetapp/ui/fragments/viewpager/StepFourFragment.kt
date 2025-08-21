@@ -12,6 +12,7 @@ import com.amarant.apps.budgetapp.databinding.FragmentStepFourBinding
 import com.amarant.apps.budgetapp.databinding.FragmentStepThreeBinding
 import com.amarant.apps.budgetapp.entities.CategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.CategoriesAdapter
+import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.OnboardingViewModel
 import kotlin.random.Random
 
@@ -23,7 +24,7 @@ class StepFourFragment : Fragment() {
 
     private val onboardingViewModel: OnboardingViewModel by activityViewModels()
 
-    private lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var categoriesAdapter: QuickCategoriesAdapter//CategoriesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,14 +46,17 @@ class StepFourFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        categoriesAdapter = CategoriesAdapter()
+        categoriesAdapter = QuickCategoriesAdapter()//CategoriesAdapter()
         binding.recyclerCategories.adapter = categoriesAdapter
-        val categoriesArr = resources.getStringArray(R.array.categories)
-        onboardingViewModel.initCategories(categoriesArr)
-        categoriesAdapter.onCategoryCheckedListener = { categoryName, isChecked ->
-            onboardingViewModel.updateCategorySelection(categoryName, isChecked)
+//        val categoriesArr = resources.getStringArray(R.array.categories)
+//        onboardingViewModel.initCategories(categoriesArr)
+        onboardingViewModel.initNewCategories()
+//        categoriesAdapter.onCategoryCheckedListener = { categoryName, isChecked ->
+//            onboardingViewModel.updateCategorySelection(categoryName, isChecked)
+//        }
+        categoriesAdapter.onCategoryMultiClickListener = { category, isSelected ->
+            onboardingViewModel.updateCategorySelection(category, !isSelected)
         }
-
     }
 
     private fun observeViewModel() {

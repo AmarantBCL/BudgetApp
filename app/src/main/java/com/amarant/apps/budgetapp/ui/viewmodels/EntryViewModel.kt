@@ -31,18 +31,18 @@ class EntryViewModel : ViewModel() {
     }
 
     fun initCategories(categoryEntries: EnumEntries<Category>, categoryStats: List<CategoryStat>) {
-        val newList = categoryEntries.toMutableList()
-        newList.removeAt(0)
+        val categoryList = categoryEntries.toMutableList()
+        categoryList.removeAt(0)
         if (categories.value.isNullOrEmpty()) {
-            val sorted = sortCategories(newList, categoryStats).map {
+            val sortedCategories = sortCategories(categoryList, categoryStats).map {
                 QuickCategoryItem(it)
             }
-            allCategories = sorted
+            allCategories = sortedCategories
             val expanded = isExpanded.value
             if (expanded == true) {
-                _categories.value = sorted
+                _categories.value = sortedCategories
             } else {
-                _categories.value = sorted.take(DEFAULT_DISPLAYED_CATEGORIES)
+                _categories.value = sortedCategories.take(DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES)
             }
             setCategorySelected(0)
         }
@@ -53,7 +53,7 @@ class EntryViewModel : ViewModel() {
         val currentCategory = selectedCategory.value
         if (currentState == true) {
             _isExpanded.value = false
-            _categories.value = allCategories.take(DEFAULT_DISPLAYED_CATEGORIES)
+            _categories.value = allCategories.take(DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES)
         } else {
             _isExpanded.value = true
             _categories.value = allCategories
@@ -85,7 +85,7 @@ class EntryViewModel : ViewModel() {
             if (currentState == true) {
                 _categories.value = list
             } else {
-                _categories.value = list.take(DEFAULT_DISPLAYED_CATEGORIES)
+                _categories.value = list.take(DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES)
             }
             _selectedCategory.value = index
         }
@@ -94,6 +94,6 @@ class EntryViewModel : ViewModel() {
     companion object {
 
         private const val DEFAULT_CATEGORY_ID = 1
-        private const val DEFAULT_DISPLAYED_CATEGORIES = 8
+        private const val DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES = 8
     }
 }

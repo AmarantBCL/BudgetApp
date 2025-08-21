@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import com.amarant.apps.budgetapp.entities.CategoryItem
+import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.Profile
+import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.entities.TempProfile
 import com.amarant.apps.budgetapp.util.EmailUtils
 
@@ -31,7 +32,8 @@ class OnboardingViewModel: ViewModel() {
     val currency: LiveData<String> = tempProfile.map { it.currency }
     val monthlyIncome: LiveData<String> = tempProfile.map { it.monthlyIncome.toString() }
     val savingGoal: LiveData<String> = tempProfile.map { it.savingGoal.toString() }
-    val categories: LiveData<List<CategoryItem>> = tempProfile.map { it.categories }
+    val categories: LiveData<List<QuickCategoryItem>> = tempProfile.map { it.categories }
+//    val categories: LiveData<List<CategoryItem>> = tempProfile.map { it.categories }
 
     fun updateNextButtonState() {
         val profile = _tempProfile.value ?: return
@@ -81,19 +83,37 @@ class OnboardingViewModel: ViewModel() {
         }
     }
 
-    fun initCategories(array: Array<String>) {
+//    fun initCategories(array: Array<String>) {
+//        if (categories.value.isNullOrEmpty()) {
+//            val list = array.map { CategoryItem(it, false) }
+//            updateProfile { it.copy(categories = list) }
+//        }
+//    }
+
+    fun initNewCategories() {
         if (categories.value.isNullOrEmpty()) {
-            val list = array.map { CategoryItem(it, false) }
-            updateProfile { it.copy(categories = list) }
+            val allCategories = Category.entries.map { QuickCategoryItem(it) }.toMutableList()
+            allCategories.removeAt(0)
+            updateProfile { it.copy(categories = allCategories) }
         }
     }
 
-    fun updateCategorySelection(categoryName: String, isChecked: Boolean) {
+//    fun updateCategorySelection(categoryName: String, isChecked: Boolean) {
+//        val currentList = categories.value.orEmpty().toMutableList()
+//        val index = currentList.indexOfFirst { it.name == categoryName }
+//        if (index != -1) {
+//            val oldItem = currentList[index]
+//            currentList[index] = oldItem.copy(isChecked = isChecked)
+//            updateProfile { it.copy(categories = currentList.toList()) }
+//        }
+//    }
+
+    fun updateCategorySelection(category: Category, isSelected: Boolean) {
         val currentList = categories.value.orEmpty().toMutableList()
-        val index = currentList.indexOfFirst { it.name == categoryName }
+        val index = currentList.indexOfFirst { it.category == category }
         if (index != -1) {
             val oldItem = currentList[index]
-            currentList[index] = oldItem.copy(isChecked = isChecked)
+            currentList[index] = oldItem.copy(isSelected = isSelected)
             updateProfile { it.copy(categories = currentList.toList()) }
         }
     }
@@ -107,7 +127,7 @@ class OnboardingViewModel: ViewModel() {
         ) {
             return null
         }
-        val selectedCategoryNames = temp.categories.filter { it.isChecked }.map { it.name }
+//        val selectedCategoryNames = temp.categories.filter { it.isChecked }.map { it.name }
         return Profile(
             name = temp.fullName,
             email = temp.email,
