@@ -3,14 +3,24 @@ package com.amarant.apps.budgetapp.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.Profile
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.entities.TempProfile
+import com.amarant.apps.budgetapp.repository.CategoryRepository
+import com.amarant.apps.budgetapp.repository.PiggyBankRepository
 import com.amarant.apps.budgetapp.util.EmailUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class OnboardingViewModel: ViewModel() {
+@HiltViewModel
+class OnboardingViewModel @Inject constructor(
+    private val repository: CategoryRepository
+): ViewModel() {
 
     private val _tempProfile = MutableLiveData(TempProfile(
         fullName = "",
@@ -115,6 +125,14 @@ class OnboardingViewModel: ViewModel() {
             val oldItem = currentList[index]
             currentList[index] = oldItem.copy(isSelected = isSelected)
             updateProfile { it.copy(categories = currentList.toList()) }
+            val selectedCategories = currentList.filter { it.isSelected }.map { it.category }
+            saveCategories(selectedCategories)
+        }
+    }
+
+    private fun saveCategories(selected: List<Category>) {
+        viewModelScope.launch {
+            repository.saveSelected(selected)
         }
     }
 

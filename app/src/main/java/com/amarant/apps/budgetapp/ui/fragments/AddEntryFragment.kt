@@ -23,8 +23,6 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.EntryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
-import com.amarant.apps.budgetapp.util.CategoryUtils.ALL_CATEGORIES
-import com.amarant.apps.budgetapp.util.CategoryUtils.CATEGORY_MAPPING
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.MessageUtils
@@ -47,7 +45,7 @@ class AddEntryFragment : Fragment() {
 
     private lateinit var quickCategoriesAdapter: QuickCategoriesAdapter
 
-    private var selectedCategory = Category.ALL//""
+    private var selectedCategory = Category.ALL
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,10 +62,6 @@ class AddEntryFragment : Fragment() {
         readHistory()
         setClickListeners()
         observeViewModel()
-        // TODO Debug navigation
-        val navController = findNavController()
-        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
-        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestDisplayName}")
     }
 
     override fun onDestroyView() {
@@ -111,7 +105,6 @@ class AddEntryFragment : Fragment() {
                     amount,
                     purpose,
                     selectedDate,
-//                    selectedCategory
                     selectedCategory
                 )
             } else {
@@ -121,7 +114,6 @@ class AddEntryFragment : Fragment() {
                     isDebit,
                     amount,
                     purpose,
-//                    selectedCategory
                     selectedCategory
                 )
                 message = getString(R.string.entry_edited)
@@ -149,12 +141,12 @@ class AddEntryFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-//        val categoriesArr = resources.getStringArray(R.array.categories)
-        budgetViewModel.getCategoryStats().observe(viewLifecycleOwner) { categoryStats ->
-            entryViewModel.initCategories(Category.entries, categoryStats)
-//            entryViewModel.initCategories(ALL_CATEGORIES.toTypedArray(), categoryStats)
+        entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categories ->
+//        entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categoryStats ->
+//            entryViewModel.initCategories(Category.entries, categoryStats)
+            Log.d("WTF", "getCategoryStats: $categories")
+            entryViewModel.simpleInitCategories(categories)
             args.budgetEntry?.let {
-//                entryViewModel.selectCategory(it.budget.category)
                 entryViewModel.selectCategory(it.budget.category)
             }
         }
@@ -171,10 +163,12 @@ class AddEntryFragment : Fragment() {
         }
         entryViewModel.selectedCategory.observe(viewLifecycleOwner) {
             val category = entryViewModel.getSelectedCategoryName()
-//            val categoryName = entryViewModel.getSelectedCategoryName()
-            selectedCategory = category//categoryName
-            binding.tvSelectedCategory.text = category.getLocalizedName(requireContext())//categoryName//categoriesArr[it]
+            selectedCategory = category
+            binding.tvSelectedCategory.text = category.getLocalizedName(requireContext())
 //            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
+        }
+        entryViewModel.selectedCategories.observe(viewLifecycleOwner) {
+            Log.d("WTF", "Cats: $it")
         }
     }
 
@@ -207,7 +201,6 @@ class AddEntryFragment : Fragment() {
             HistoryItem(
                 purpose,
                 selectedCategory.ordinal
-//                CATEGORY_MAPPING[selectedCategory] ?: 0
             )
         )
     }

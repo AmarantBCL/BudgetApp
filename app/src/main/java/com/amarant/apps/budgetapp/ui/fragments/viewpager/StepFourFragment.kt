@@ -60,8 +60,8 @@ class StepFourFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        onboardingViewModel.categories.observe(viewLifecycleOwner) {
-            categoriesAdapter.submitList(it)
+        onboardingViewModel.categories.observe(viewLifecycleOwner) { categories ->
+            categoriesAdapter.submitList(categories)
         }
     }
 }

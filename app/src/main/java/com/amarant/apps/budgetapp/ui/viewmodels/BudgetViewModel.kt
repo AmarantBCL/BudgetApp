@@ -11,7 +11,6 @@ import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
-import com.amarant.apps.budgetapp.entities.CategoryStat
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.repository.BudgetRepository
 import com.amarant.apps.budgetapp.util.Constants
@@ -133,10 +132,6 @@ class BudgetViewModel @Inject constructor(
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
-    }
-
-    fun getCategoryStats(): LiveData<List<CategoryStat>> {
-        return budgetRepository.getCategoryStats()
     }
 
     fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, category: Category): Boolean {

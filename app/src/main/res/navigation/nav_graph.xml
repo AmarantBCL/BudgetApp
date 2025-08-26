@@ -124,5 +124,17 @@
             android:name="budgetEntry"
             app:argType="com.amarant.apps.budgetapp.entities.BudgetUI"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_fragmentAddEntry_to_allCategoriesFragment"
+            app:destination="@id/allCategoriesFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/allCategoriesFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.AllCategoriesFragment"
+        android:label="fragment_all_categories"
+        tools:layout="@layout/fragment_all_categories" />
 </navigation>

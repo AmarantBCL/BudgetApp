@@ -78,10 +78,6 @@ class ReportsFragment : Fragment() {
         setSpinnerValues()
         observeViewModel()
         setClickListeners()
-        // TODO Debug navigation
-        val navController = findNavController()
-        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
-        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestinationId}")
     }
 
     override fun onDestroyView() {

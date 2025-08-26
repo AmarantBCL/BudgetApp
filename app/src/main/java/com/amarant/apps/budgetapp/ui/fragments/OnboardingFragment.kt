@@ -42,10 +42,6 @@ class OnboardingFragment : Fragment() {
         initViewPager()
         observeViewModel()
         setClickListeners()
-        // TODO Debug navigation
-        val navController = findNavController()
-        Log.d("DebugNavController", "[CURRENT DEST] ${navController.currentDestination}")
-        Log.e("DebugNavController", "[START DEST] ${navController.graph.startDestinationId}")
     }
 
     override fun onDestroyView() {
@@ -112,7 +108,10 @@ class OnboardingFragment : Fragment() {
             binding.btnNext.isEnabled = it
         }
         onboardingViewModel.tempProfile.observe(viewLifecycleOwner) {
-            Log.e("WTF", "$it")
+//            Log.e("WTF", "$it")
         }
+//        onboardingViewModel.selectedCategories.observe(viewLifecycleOwner) {
+//            Log.d("WTF", "Cats: $it")
+//        }
     }
 }

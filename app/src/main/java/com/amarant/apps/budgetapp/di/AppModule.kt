@@ -2,11 +2,9 @@ package com.amarant.apps.budgetapp.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.amarant.apps.budgetapp.db.BudgetDatabase
-import com.amarant.apps.budgetapp.db.CategoryConverters
 import com.amarant.apps.budgetapp.util.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
@@ -30,10 +28,10 @@ object AppModule {
     ).addMigrations(MIGRATION_5_6).build()
 
     private val MIGRATION_5_6: Migration = object : Migration(5, 6) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("CREATE TABLE IF NOT EXISTS `new_history` (`entry` TEXT PRIMARY KEY NOT NULL, `category` INTEGER NOT NULL)")
-            database.execSQL("DROP TABLE history")
-            database.execSQL("ALTER TABLE new_history RENAME TO history")
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS `new_history` (`entry` TEXT PRIMARY KEY NOT NULL, `category` INTEGER NOT NULL)")
+            db.execSQL("DROP TABLE history")
+            db.execSQL("ALTER TABLE new_history RENAME TO history")
         }
     }
 

@@ -68,6 +68,12 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
 
+    // Data Store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Flow with LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
