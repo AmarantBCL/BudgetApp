@@ -13,12 +13,13 @@ import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.entities.PiggyBank
 import com.amarant.apps.budgetapp.entities.Profile
+import com.amarant.apps.budgetapp.entities.Saving
 
 @Database(
-    entities = [Budget::class, Profile::class, PiggyBank::class, HistoryItem::class],
-    version = 6,
+    entities = [Budget::class, Profile::class, PiggyBank::class, HistoryItem::class, Saving::class],
+    version = 7,
     exportSchema = true,
-    autoMigrations = [AutoMigration(from = 4, to = 5)]
+    autoMigrations = [AutoMigration(from = 4, to = 5), AutoMigration(from = 6, to = 7)]
 )
 @TypeConverters(CategoryConverters::class)
 abstract class BudgetDatabase : RoomDatabase() {

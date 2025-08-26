@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BudgetApp</string>
+    <string name="app_name">Tracksy</string>
     <string name="enter_budget">Бюджет</string>
     <string name="see_reports">Отчеты</string>
     <string name="select_the_date">Выберите дату</string>
