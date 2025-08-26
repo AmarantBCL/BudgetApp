@@ -72,6 +72,7 @@ class CalendarFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        findNavController().graph.setStartDestination(R.id.calendarFragment)
     }
 
     override fun onCreateView(
