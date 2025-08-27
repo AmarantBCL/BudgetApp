@@ -62,8 +62,9 @@
                 android:fontFamily="@font/rubik"
                 android:text="@string/expense"
                 android:textAllCaps="false"
-                app:icon="@drawable/ic_debit"
+                app:icon="@drawable/ic_expenses"
                 app:iconGravity="textStart"
+                app:iconPadding="8dp"
                 app:iconTint="@color/toggle_button_icon_negative" />
 
             <com.google.android.material.button.MaterialButton
@@ -75,7 +76,8 @@
                 android:fontFamily="@font/rubik"
                 android:text="@string/income"
                 android:textAllCaps="false"
-                app:icon="@drawable/ic_credit"
+                app:icon="@drawable/ic_trend"
+                app:iconPadding="8dp"
                 app:iconGravity="textStart"
                 app:iconTint="@color/toggle_button_icon_positive" />
 

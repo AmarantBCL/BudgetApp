@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -31,7 +30,7 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
             tvTargetName.text = item.title
             chipCurrency.text = item.currency
             tvProgress.text = "${NumberUtils.formatNumberWithThousandsSeparator(item.saved.toDouble())} / ${NumberUtils.formatNumberWithThousandsSeparator(item.target.toDouble())}"
-            tvPercent.text = NumberUtils.formatDecimal(percent) + "% complete"
+            tvPercent.text = NumberUtils.formatDecimal(percent) + "%"
             tvToGo.text = toGo + " to go"
             tvDaysLeft.text = Math.round(dueTo).toString() + " days left"
             pbProgress.progress = percent.toInt()

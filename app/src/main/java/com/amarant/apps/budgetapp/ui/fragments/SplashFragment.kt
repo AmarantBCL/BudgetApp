@@ -44,17 +44,17 @@ class SplashFragment : Fragment() {
 
     private fun observeViewModel() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
-                findNavController().navigate(
-                    R.id.action_splashFragment_to_onboardingFragment,
-                    null,
-                    navOptions {
-                        popUpTo(R.id.splashFragment) {
-                            inclusive = true
-                        }
-                    }
-                )
-            } else {
+//            if (it.isEmpty()) {
+//                findNavController().navigate(
+//                    R.id.action_splashFragment_to_onboardingFragment,
+//                    null,
+//                    navOptions {
+//                        popUpTo(R.id.splashFragment) {
+//                            inclusive = true
+//                        }
+//                    }
+//                )
+//            } else {
                 findNavController().graph.setStartDestination(R.id.calendarFragment)
                 findNavController().navigate(
                     R.id.action_splashFragment_to_calendarFragment,
@@ -65,7 +65,7 @@ class SplashFragment : Fragment() {
                         }
                     }
                 )
-            }
+//            }
         }
     }
 }

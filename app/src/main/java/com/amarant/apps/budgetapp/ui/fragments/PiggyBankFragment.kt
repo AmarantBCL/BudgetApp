@@ -71,18 +71,20 @@ class PiggyBankFragment : Fragment() {
 
     private fun initViews() {
         savingsAdapter = SavingsAdapter()
-        val items = listOf(
-            Saving(1, "Новый ноутбук", 40000f, 500f, "HRN ₴",
-                1767268800000L, R.color.positive_green),
-            Saving(2, "Выезд за кордон", 10000f, 8500f, "USD $",
-                1772366400000L, R.color.blue)
-        )
+//        val items = listOf(
+//            Saving(1, "Новый ноутбук", 40000f, 500f, "HRN ₴",
+//                1767268800000L, R.color.positive_green),
+//            Saving(2, "Выезд за кордон", 10000f, 8500f, "USD $",
+//                1772366400000L, R.color.blue),
+//            Saving(3, "Отдых", 20000f, 2000f, "HRN ₴",
+//                1780346881000L, R.color.amber)
+//        )
         binding.recyclerSavings.adapter = savingsAdapter
-        savingsAdapter.submitList(items)
-        val totalSaved = items.sumOf { it.saved.toDouble() }
-        val totalTarget = items.sumOf { it.target.toDouble() }
-        binding.tvTotalSaved.text = NumberUtils.formatNumberWithThousandsSeparator(NumberUtils.formatDecimal(totalSaved).toDouble())
-        binding.tvTotalTarget.text = NumberUtils.formatNumberWithThousandsSeparator(NumberUtils.formatDecimal(totalTarget).toDouble())
+//        savingsAdapter.submitList(items)
+//        val totalSaved = items.sumOf { it.saved.toDouble() }
+//        val totalTarget = items.sumOf { it.target.toDouble() }
+//        binding.tvTotalSaved.text = NumberUtils.formatNumberWithThousandsSeparator(NumberUtils.formatDecimal(totalSaved).toDouble())
+//        binding.tvTotalTarget.text = NumberUtils.formatNumberWithThousandsSeparator(NumberUtils.formatDecimal(totalTarget).toDouble())
     }
 
     private fun observeViewModel() {
