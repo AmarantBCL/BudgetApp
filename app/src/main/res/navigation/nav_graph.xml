@@ -66,7 +66,15 @@
         android:id="@+id/piggyBankFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.PiggyBankFragment"
         android:label="Piggy bank"
-        tools:layout="@layout/fragment_piggy_bank" />
+        tools:layout="@layout/fragment_piggy_bank" >
+        <action
+            android:id="@+id/action_piggyBankFragment_to_addSavingFragment"
+            app:destination="@id/addSavingFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
     <fragment
         android:id="@+id/pinFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.PinFragment"
@@ -137,4 +145,9 @@
         android:name="com.amarant.apps.budgetapp.ui.fragments.AllCategoriesFragment"
         android:label="fragment_all_categories"
         tools:layout="@layout/fragment_all_categories" />
+    <fragment
+        android:id="@+id/addSavingFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.AddSavingFragment"
+        android:label="@string/add_target"
+        tools:layout="@layout/fragment_add_saving" />
 </navigation>

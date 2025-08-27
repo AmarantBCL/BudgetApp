@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.amarant.apps.budgetapp.entities.PiggyBank
+import com.amarant.apps.budgetapp.entities.Saving
 
 @Dao
 interface PiggyBankDao {
@@ -15,4 +16,13 @@ interface PiggyBankDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePiggyBank(piggyBank: PiggyBank)
+
+    @Query("SELECT * FROM savings")
+    fun getAllSavings(): LiveData<List<Saving>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addSaving(saving: Saving)
+
+    @Query("DELETE FROM savings WHERE id = :id")
+    fun deleteSaving(id: Int)
 }

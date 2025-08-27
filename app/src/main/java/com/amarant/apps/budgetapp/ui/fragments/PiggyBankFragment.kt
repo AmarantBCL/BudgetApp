@@ -19,7 +19,9 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 
 class PiggyBankFragment : Fragment() {
 
@@ -65,7 +67,8 @@ class PiggyBankFragment : Fragment() {
         val buttonItem = menu.findItem(R.id.action_button_item)
         val button = buttonItem.actionView?.findViewById<MaterialButton>(R.id.menu_button)
         button?.setOnClickListener {
-
+            val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment()
+            findNavController().navigate(action)
         }
     }
 
@@ -88,6 +91,11 @@ class PiggyBankFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        piggyBankViewModel.getAllSavings().observe(viewLifecycleOwner) {
+            savingsAdapter.submitList(it)
+            binding.imgGoal.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            binding.lblEmptyEntries.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+        }
 //        piggyBankViewModel.getPiggyBank().observe(viewLifecycleOwner) {
 //            binding.editCurrencySaved.setText(it.currencySaved.toString())
 //            binding.editHryvniaSaved.setText(it.hryvniaSaved.toString())

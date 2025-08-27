@@ -93,6 +93,6 @@
     <string name="no_entries_add_entry">No entries for this date.\nTap \'+ Add\' to get started!</string>
     <string name="no_entries_for_this_period">No entries for this period.</string>
     <string name="all">All</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_target">Add Target</string>
+    <string name="select_target_date">Select target date</string>
 </resources>

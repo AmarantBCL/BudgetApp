@@ -25,6 +25,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
+import com.amarant.apps.budgetapp.util.KeyboardUtils.hideKeyboardFrom
 import com.amarant.apps.budgetapp.util.MessageUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.absoluteValue
@@ -84,6 +85,14 @@ class AddEntryFragment : Fragment() {
         binding.recyclerQuickCategories.adapter = quickCategoriesAdapter
         quickCategoriesAdapter.onCategoryClickListener = { name ->
             entryViewModel.selectCategory(name)
+            if (binding.editAmount.isFocused) {
+                binding.editAmount.clearFocus()
+                hideKeyboardFrom(binding.editAmount)
+            }
+            if (binding.editName.isFocused) {
+                binding.editName.clearFocus()
+                hideKeyboardFrom(binding.editName)
+            }
         }
     }
 
@@ -133,11 +142,6 @@ class AddEntryFragment : Fragment() {
             }
             return@setOnEditorActionListener false
         }
-    }
-
-    private fun hideKeyboardFrom(view: View) {
-        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun observeViewModel() {

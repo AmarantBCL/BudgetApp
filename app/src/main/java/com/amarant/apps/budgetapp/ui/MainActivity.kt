@@ -88,7 +88,8 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.hide()
                     binding.bottomNavBar.visibility = View.GONE
                 }
-                R.id.fragmentAddEntry -> {
+                R.id.fragmentAddEntry,
+                R.id.addSavingFragment -> {
                     binding.bottomNavBar.visibility = View.GONE
                 }
                 else -> {
@@ -122,23 +123,23 @@ class MainActivity : AppCompatActivity() {
 
     // TODO Just for testing, needs to be reworked for specific EditText elements.
     // TODO HOWEVER! This seems to be a good solution to focusing issue and is considered optimal.
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_DOWN) {
-            val v = currentFocus
-            if (v is EditText) {
-                val outRect = Rect()
-                v.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
-                    v.hideKeyboard()
-                    v.clearFocus()
-                }
-            }
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-
-    private fun View.hideKeyboard() {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-    }
+//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+//        if (ev?.action == MotionEvent.ACTION_DOWN) {
+//            val v = currentFocus
+//            if (v is EditText) {
+//                val outRect = Rect()
+//                v.getGlobalVisibleRect(outRect)
+//                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+//                    v.hideKeyboard()
+//                    v.clearFocus()
+//                }
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
+//
+//    private fun View.hideKeyboard() {
+//        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+//    }
 }
