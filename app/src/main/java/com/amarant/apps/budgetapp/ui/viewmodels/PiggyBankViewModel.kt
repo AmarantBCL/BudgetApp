@@ -40,11 +40,12 @@ class PiggyBankViewModel @Inject constructor(
         }
     }
 
-    fun tryToAddSaving(goalName: String, amount: String, currency: String, date: Long, color: Int, id: Int): Boolean {
+    fun tryToAddSaving(goalName: String, amount: String, saved: Float, currency: String, date: Long, color: Int, id: Int): Boolean {
         if (goalName.isNotEmpty() && amount.isNotEmpty() && currency.isNotEmpty()) {
+            if (saved > amount.toInt()) return false // TODO Different notification should be displayed
             addSaving(
                 Saving(
-                    id, goalName, amount.toFloat(), 0f, currency, date, color
+                    id, goalName, amount.toFloat(), saved, currency, date, color
                 )
             )
             return true

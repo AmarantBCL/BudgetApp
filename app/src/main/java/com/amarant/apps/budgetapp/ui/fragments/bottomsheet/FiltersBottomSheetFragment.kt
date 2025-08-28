@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.amarant.apps.budgetapp.databinding.FiltersBottomSheetBinding
+import com.amarant.apps.budgetapp.databinding.BottomSheetFiltersBinding
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
@@ -16,9 +16,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private var _binding: FiltersBottomSheetBinding? = null
-    private val binding: FiltersBottomSheetBinding
-        get() = _binding ?: throw RuntimeException("FiltersBottomSheetBinding == null")
+    private var _binding: BottomSheetFiltersBinding? = null
+    private val binding: BottomSheetFiltersBinding
+        get() = _binding ?: throw RuntimeException("BottomSheetFiltersBinding == null")
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
 
@@ -31,7 +31,7 @@ class FiltersBottomSheetFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FiltersBottomSheetBinding.inflate(inflater, container, false)
+        _binding = BottomSheetFiltersBinding.inflate(inflater, container, false)
         return binding.root
     }
 

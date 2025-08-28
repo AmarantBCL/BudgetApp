@@ -134,12 +134,13 @@ class AddSavingFragment : Fragment() {
             val saving = args.saving
             val goalName = binding.editGoalName.text.toString()
             val amount = binding.editAmount.text.toString()
+            val saved = saving?.saved ?: 0f
             val currency = binding.editCurrency.text.toString()
             val color = colorPaletteAdapter.currentList.find { it.isSelected }?.color
                 ?: R.color.positive_green
             if (saving == null) {
                 val wasAdded = piggyBankViewModel.tryToAddSaving(
-                    goalName, amount, currency, dateSelection, color, 0
+                    goalName, amount, saved, currency, dateSelection, color, 0
                 )
                 if (wasAdded) {
                     MessageUtils.showSnackbarMessage(
@@ -157,7 +158,7 @@ class AddSavingFragment : Fragment() {
                 }
             } else {
                 val wasAdded = piggyBankViewModel.tryToAddSaving(
-                    goalName, amount, currency, dateSelection, color, args.saving?.id ?: 0
+                    goalName, amount, saved, currency, dateSelection, color, args.saving?.id ?: 0
                 )
                 if (wasAdded) {
                     MessageUtils.showSnackbarMessage(

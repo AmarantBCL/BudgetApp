@@ -19,6 +19,7 @@ import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.entities.Saving
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.SavingsAdapter
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.UpdateSavingBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
@@ -82,6 +83,14 @@ class PiggyBankFragment : Fragment() {
         savingsAdapter.onSavingLongClickListener = {
             val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment(it)
             findNavController().navigate(action)
+        }
+        savingsAdapter.onSavingAddClickListener = {
+            val bottomSheetDialog = UpdateSavingBottomSheetFragment.newInstance(it)
+            bottomSheetDialog.show(requireActivity().supportFragmentManager, UpdateSavingBottomSheetFragment.TAG)
+        }
+        savingsAdapter.onSavingSubtractClickListener = {
+            val bottomSheetDialog = UpdateSavingBottomSheetFragment.newInstance(it, isSubtract = true)
+            bottomSheetDialog.show(requireActivity().supportFragmentManager, UpdateSavingBottomSheetFragment.TAG)
         }
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

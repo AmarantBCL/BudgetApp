@@ -40,4 +40,7 @@
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
     <color name="button_inactive">#222131</color>
+
+    <!-- Technical colors -->
+<!--    <color name="mtrl_textinput_default_box_stroke_color">#6B6B6C</color>-->
 </resources>

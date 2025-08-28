@@ -112,4 +112,7 @@
     <string name="progress">Progress</string>
     <string name="to_go">" to go"</string>
     <string name="days_left">" days left"</string>
+    <string name="withdraw_money">Withdraw Money</string>
+    <string name="deposit_money">Deposit Money</string>
+    <string name="enter_correct_amount">Enter correct amount.</string>
 </resources>

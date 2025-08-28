@@ -14,6 +14,8 @@ import com.amarant.apps.budgetapp.util.NumberUtils
 class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(SavingDiffItemCallback()) {
 
     var onSavingLongClickListener: ((Saving) -> Unit)? = null
+    var onSavingAddClickListener: ((Saving) -> Unit)? = null
+    var onSavingSubtractClickListener: ((Saving) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavingViewHolder {
         val binding = ListItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -40,6 +42,12 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
             cardSaving.setOnLongClickListener {
                 onSavingLongClickListener?.invoke(item)
                 true
+            }
+            btnAdd.setOnClickListener {
+                onSavingAddClickListener?.invoke(item)
+            }
+            btnSubtract.setOnClickListener {
+                onSavingSubtractClickListener?.invoke(item)
             }
         }
     }
