@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/piggyBankFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.PiggyBankFragment"
-        android:label="Piggy bank"
+        android:label="@string/savings"
         tools:layout="@layout/fragment_piggy_bank" >
         <action
             android:id="@+id/action_piggyBankFragment_to_addSavingFragment"
@@ -149,5 +149,10 @@
         android:id="@+id/addSavingFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.AddSavingFragment"
         android:label="@string/add_target"
-        tools:layout="@layout/fragment_add_saving" />
+        tools:layout="@layout/fragment_add_saving" >
+        <argument
+            android:name="saving"
+            app:argType="com.amarant.apps.budgetapp.entities.Saving"
+            app:nullable="true" />
+    </fragment>
 </navigation>

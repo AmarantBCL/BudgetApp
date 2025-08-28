@@ -38,7 +38,7 @@
     <string name="category_placeholder">%s :</string>
     <string name="piggy_bank">Piggy bank</string>
     <string name="saved">Collected</string>
-    <string name="currency">Currency $</string>
+    <string name="currency">Currency</string>
     <string name="hryvnia">Hryvnia ₴</string>
     <string name="taken">Taken</string>
     <string name="balance_updated">Balance updated</string>
@@ -94,5 +94,22 @@
     <string name="no_entries_for_this_period">No entries for this period.</string>
     <string name="all">All</string>
     <string name="add_target">Add Target</string>
+    <string name="edit_target">Edit Target</string>
     <string name="select_target_date">Select target date</string>
+    <string name="savings">Savings</string>
+    <string name="total_saved">Total Saved</string>
+    <string name="total_target">Total Target</string>
+    <string name="no_goals_set">No goals set.</string>
+    <string name="goal_name">Goal name</string>
+    <string name="e_g_new_phone">e.g. New phone</string>
+    <string name="target_amount">Target amount</string>
+    <string name="_0_0">0.0</string>
+    <string name="select_date">Select date</string>
+    <string name="target_date">Target date</string>
+    <string name="color">Color</string>
+    <string name="add_goal">Add Goal</string>
+    <string name="added_new_goal">Added new goal.</string>
+    <string name="progress">Progress</string>
+    <string name="to_go">" to go"</string>
+    <string name="days_left">" days left"</string>
 </resources>

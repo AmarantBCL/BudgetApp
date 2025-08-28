@@ -24,5 +24,5 @@ interface PiggyBankDao {
     suspend fun addSaving(saving: Saving)
 
     @Query("DELETE FROM savings WHERE id = :id")
-    fun deleteSaving(id: Int)
+    suspend fun deleteSaving(id: Int)
 }

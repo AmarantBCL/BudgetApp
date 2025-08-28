@@ -1,8 +1,11 @@
 package com.amarant.apps.budgetapp.entities
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "savings")
 data class Saving(
     @PrimaryKey(autoGenerate = true)
@@ -13,4 +16,4 @@ data class Saving(
     val currency: String,
     val dueTo: Long,
     val circleColor: Int
-)
+) : Parcelable

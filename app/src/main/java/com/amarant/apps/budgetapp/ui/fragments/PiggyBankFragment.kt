@@ -10,10 +10,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentPiggyBankBinding
 import com.amarant.apps.budgetapp.entities.PiggyBank
+import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.entities.Saving
+import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.SavingsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
@@ -67,32 +71,55 @@ class PiggyBankFragment : Fragment() {
         val buttonItem = menu.findItem(R.id.action_button_item)
         val button = buttonItem.actionView?.findViewById<MaterialButton>(R.id.menu_button)
         button?.setOnClickListener {
-            val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment()
+            val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment(null)
             findNavController().navigate(action)
         }
     }
 
     private fun initViews() {
         savingsAdapter = SavingsAdapter()
-//        val items = listOf(
-//            Saving(1, "Новый ноутбук", 40000f, 500f, "HRN ₴",
-//                1767268800000L, R.color.positive_green),
-//            Saving(2, "Выезд за кордон", 10000f, 8500f, "USD $",
-//                1772366400000L, R.color.blue),
-//            Saving(3, "Отдых", 20000f, 2000f, "HRN ₴",
-//                1780346881000L, R.color.amber)
-//        )
         binding.recyclerSavings.adapter = savingsAdapter
-//        savingsAdapter.submitList(items)
-//        val totalSaved = items.sumOf { it.saved.toDouble() }
-//        val totalTarget = items.sumOf { it.target.toDouble() }
-//        binding.tvTotalSaved.text = NumberUtils.formatNumberWithThousandsSeparator(NumberUtils.formatDecimal(totalSaved).toDouble())
-//        binding.tvTotalTarget.text = NumberUtils.formatNumberWithThousandsSeparator(NumberUtils.formatDecimal(totalTarget).toDouble())
+        savingsAdapter.onSavingLongClickListener = {
+            val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment(it)
+            findNavController().navigate(action)
+        }
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val saving = savingsAdapter.currentList[position]
+                piggyBankViewModel.deleteSaving(saving.id)
+                Snackbar.make(requireView(), getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                    setAction(getString(R.string.undo)) {
+                        piggyBankViewModel.addSaving(saving)
+                    }
+                    show()
+                }
+            }
+
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                return if (viewHolder.itemViewType == ReportsAdapter.VIEW_TYPE_DATE) {
+                    0
+                } else {
+                    super.getSwipeDirs(recyclerView, viewHolder)
+                }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.recyclerSavings)
     }
 
     private fun observeViewModel() {
         piggyBankViewModel.getAllSavings().observe(viewLifecycleOwner) {
             savingsAdapter.submitList(it)
+            calculateSavings(it)
             binding.imgGoal.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             binding.lblEmptyEntries.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
@@ -103,6 +130,15 @@ class PiggyBankFragment : Fragment() {
 //            binding.editHryvniaTaken.setText(it.hryvniaTaken.toString())
 //            piggyBankId = it.id
 //        }
+    }
+
+    private fun calculateSavings(items: List<Saving>) {
+        val totalSaved = items.sumOf { it.saved.toDouble() }
+        val totalTarget = items.sumOf { it.target.toDouble() }
+        val formattedTotalSavedAsDouble = NumberUtils.formatDecimal(totalSaved).toDouble()
+        val formattedTotalTargetAsDouble = NumberUtils.formatDecimal(totalTarget).toDouble()
+        binding.tvTotalSaved.text = NumberUtils.formatNumberWithThousandsSeparator(formattedTotalSavedAsDouble)
+        binding.tvTotalTarget.text = NumberUtils.formatNumberWithThousandsSeparator(formattedTotalTargetAsDouble)
     }
 
     private fun setClickListeners() {

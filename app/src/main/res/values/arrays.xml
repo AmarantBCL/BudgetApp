@@ -13,9 +13,9 @@
     </string-array>
 
     <string-array name="currency">
-        <item>$ Dollar</item>
-        <item>€ Euro</item>
-        <item>₴ Hryvnia</item>
+        <item>$ USD</item>
+        <item>€ EUR</item>
+        <item>₴ HRN</item>
     </string-array>
 
     <string-array name="categories">

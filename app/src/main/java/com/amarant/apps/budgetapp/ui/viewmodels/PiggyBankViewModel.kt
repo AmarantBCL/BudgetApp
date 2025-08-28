@@ -1,12 +1,15 @@
 package com.amarant.apps.budgetapp.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.entities.ColorPalette
 import com.amarant.apps.budgetapp.entities.PiggyBank
+import com.amarant.apps.budgetapp.entities.Saving
 import com.amarant.apps.budgetapp.repository.PiggyBankRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +30,33 @@ class PiggyBankViewModel @Inject constructor(
         piggyBankRepository.updatePiggyBank(piggyBank)
     }
 
-    fun getAllSavings() = piggyBankRepository.getAllSavings()
+    fun getAllSavings() = piggyBankRepository.getAllSavings().map {
+        it.reversed()
+    }
+
+    fun addSaving(saving: Saving) {
+        viewModelScope.launch {
+            piggyBankRepository.addSaving(saving)
+        }
+    }
+
+    fun tryToAddSaving(goalName: String, amount: String, currency: String, date: Long, color: Int, id: Int): Boolean {
+        if (goalName.isNotEmpty() && amount.isNotEmpty() && currency.isNotEmpty()) {
+            addSaving(
+                Saving(
+                    id, goalName, amount.toFloat(), 0f, currency, date, color
+                )
+            )
+            return true
+        }
+        return false
+    }
+
+    fun deleteSaving(id: Int) {
+        viewModelScope.launch {
+            piggyBankRepository.deleteSaving(id)
+        }
+    }
 
     fun initColorPalette() {
         if (colorPalette.value == null) {
@@ -52,10 +81,10 @@ class PiggyBankViewModel @Inject constructor(
     fun selectColorPalette(color: Int) {
         colorPalette.value?.let { colors ->
             val updatedList = colors.map {
-                if (it.isSelected) {
-                    it.copy(isSelected = false)
-                } else if (it.color == color) {
+                if (it.color == color) {
                     it.copy(isSelected = true)
+                } else if (it.isSelected) {
+                    it.copy(isSelected = false)
                 } else {
                     it
                 }

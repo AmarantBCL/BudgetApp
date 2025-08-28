@@ -6,10 +6,8 @@
     android:background="@color/window_black"
     android:gravity="center">
 
-    <TextView
+    <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/loading"
-        android:textAppearance="@style/Text.Heading" />
+        android:layout_gravity="center" />
 </FrameLayout>

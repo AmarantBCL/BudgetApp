@@ -13,6 +13,8 @@ import com.amarant.apps.budgetapp.util.NumberUtils
 
 class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(SavingDiffItemCallback()) {
 
+    var onSavingLongClickListener: ((Saving) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavingViewHolder {
         val binding = ListItemTargetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SavingViewHolder(binding)
@@ -31,10 +33,14 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
             chipCurrency.text = item.currency
             tvProgress.text = "${NumberUtils.formatNumberWithThousandsSeparator(item.saved.toDouble())} / ${NumberUtils.formatNumberWithThousandsSeparator(item.target.toDouble())}"
             tvPercent.text = NumberUtils.formatDecimal(percent) + "%"
-            tvToGo.text = toGo + " to go"
-            tvDaysLeft.text = Math.round(dueTo).toString() + " days left"
+            tvToGo.text = item.currency.first() + " " + toGo + holder.itemView.context.getString(R.string.to_go)
+            tvDaysLeft.text = Math.round(dueTo).toString() + holder.itemView.context.getString(R.string.days_left)
             pbProgress.progress = percent.toInt()
             imgColorCircle.setImageDrawable(drawable)
+            cardSaving.setOnLongClickListener {
+                onSavingLongClickListener?.invoke(item)
+                true
+            }
         }
     }
 

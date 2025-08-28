@@ -17,5 +17,5 @@ class PiggyBankRepository @Inject constructor(
 
     suspend fun addSaving(saving: Saving) = piggyBankDao.addSaving(saving)
 
-    fun deleteSaving(id: Int) = piggyBankDao.deleteSaving(id)
+    suspend fun deleteSaving(id: Int) = piggyBankDao.deleteSaving(id)
 }
