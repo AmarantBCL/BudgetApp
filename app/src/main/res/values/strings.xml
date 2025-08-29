@@ -68,14 +68,14 @@
     <string name="success">Success!</string>
     <string name="incorrect_pin">Incorrect PIN.</string>
     <string name="i_don_t_have_pin">I don\'t have PIN.</string>
-    <string name="apply_filters">Apply filters</string>
+    <string name="apply_filters">Apply</string>
     <string name="filters">Filters</string>
     <string name="no_filters">No filters</string>
 
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
     <string name="number_of_entries">%1$d entries</string>
-    <string name="placeholder_plus">+%1$s</string>
+    <string name="plus_placeholder">+%1$s</string>
     <string name="type">Type</string>
     <string name="expense">Expense</string>
     <string name="income">Income</string>
@@ -88,13 +88,13 @@
     <string name="net">Net</string>
     <string name="add">Add</string>
     <string name="loading">Loading...</string>
-    <string name="edit_entry">Edit Entry</string>
+    <string name="edit_entry">Edit</string>
     <string name="entry_edited">Entry edited</string>
     <string name="no_entries_add_entry">No entries for this date.\nTap \'+ Add\' to get started!</string>
     <string name="no_entries_for_this_period">No entries for this period.</string>
     <string name="all">All</string>
     <string name="add_target">Add Target</string>
-    <string name="edit_target">Edit Target</string>
+    <string name="edit_target">Edit</string>
     <string name="select_target_date">Select target date</string>
     <string name="savings">Savings</string>
     <string name="total_saved">Total Saved</string>
@@ -107,12 +107,20 @@
     <string name="select_date">Select date</string>
     <string name="target_date">Target date</string>
     <string name="color">Color</string>
-    <string name="add_goal">Add Goal</string>
+    <string name="add_goal">Add</string>
     <string name="added_new_goal">Added new goal.</string>
     <string name="progress">Progress</string>
-    <string name="to_go">" to go"</string>
-    <string name="days_left">" days left"</string>
+    <string name="days_left_placeholder">%1$s d. left</string>
     <string name="withdraw_money">Withdraw Money</string>
     <string name="deposit_money">Deposit Money</string>
     <string name="enter_correct_amount">Enter correct amount.</string>
+    <string name="current">Current:</string>
+    <string name="target">Target:</string>
+    <string name="take_money">Take</string>
+    <string name="add_money">Add</string>
+    <string name="currency_and_amount_to_go_placeholder">%1$s %2$s to go</string>
+    <string name="currency_and_amount_placeholder">%1$s %2$s</string>
+    <string name="percent_placeholder">%1$s %%</string>
+    <string name="saving_progress_placeholder">%1$s / %2$s</string>
+    <string name="add_button">Add</string>
 </resources>

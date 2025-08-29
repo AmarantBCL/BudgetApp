@@ -54,7 +54,7 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                         binding.tvAmount.text = formattedAmount
                         if (budgetItem.budget.creditOrDebit == Constants.CREDIT) {
                             binding.tvAmount.text = context.resources.getString(
-                                R.string.placeholder_plus,
+                                R.string.plus_placeholder,
                                 formattedAmount
                             )
                         } else {
@@ -77,7 +77,7 @@ class ReportsAdapter : ListAdapter<ReportsItem, RecyclerView.ViewHolder>(Reports
                         if (budgetItem.budget.creditOrDebit == Constants.CREDIT) {
                             binding.tvAmount.setTextColor(greenColor)
                             binding.tvAmount.text = context.resources.getString(
-                                R.string.placeholder_plus,
+                                R.string.plus_placeholder,
                                 formattedAmount
                             )
                         } else {

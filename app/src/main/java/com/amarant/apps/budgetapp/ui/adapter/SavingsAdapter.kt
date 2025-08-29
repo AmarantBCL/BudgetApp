@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ListItemTargetBinding
 import com.amarant.apps.budgetapp.entities.Saving
-import com.amarant.apps.budgetapp.util.NumberUtils
+import com.amarant.apps.budgetapp.util.NumberUtils.formatDecimal
+import com.amarant.apps.budgetapp.util.NumberUtils.formatNumberWithThousandsSeparator
 
 class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(SavingDiffItemCallback()) {
 
@@ -24,19 +25,23 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
 
     override fun onBindViewHolder(holder: SavingViewHolder, position: Int) {
         val item = getItem(position)
+        val currentSum = formatNumberWithThousandsSeparator(item.saved.toDouble())
+        val targetSum = formatNumberWithThousandsSeparator(item.target.toDouble())
+        val percent = item.saved / item.target * 100.0
+        val currencySymbol = item.currency.first()
+        val toGo = formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
+        val currentTimestamp = System.currentTimeMillis()
+        val dueTo = (item.dueTo - currentTimestamp).toFloat() / 1000 / 60 / 60 / 24
         with(holder.binding) {
-            val percent = item.saved / item.target * 100.0
-            val toGo = NumberUtils.formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
-            val currentTimestamp = System.currentTimeMillis()
-            val dueTo = (item.dueTo - currentTimestamp).toFloat() / 1000 / 60 / 60 / 24
-            val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.shape_color_circle)
-            drawable?.setTint(ContextCompat.getColor(holder.itemView.context, item.circleColor))
+            val context = holder.itemView.context
+            val drawable = ContextCompat.getDrawable(context, R.drawable.shape_color_circle)
+            drawable?.setTint(ContextCompat.getColor(context, item.circleColor))
             tvTargetName.text = item.title
             chipCurrency.text = item.currency
-            tvProgress.text = "${NumberUtils.formatNumberWithThousandsSeparator(item.saved.toDouble())} / ${NumberUtils.formatNumberWithThousandsSeparator(item.target.toDouble())}"
-            tvPercent.text = NumberUtils.formatDecimal(percent) + "%"
-            tvToGo.text = item.currency.first() + " " + toGo + holder.itemView.context.getString(R.string.to_go)
-            tvDaysLeft.text = Math.round(dueTo).toString() + holder.itemView.context.getString(R.string.days_left)
+            tvProgress.text = context.getString(R.string.saving_progress_placeholder, currentSum, targetSum)
+            tvPercent.text = context.getString(R.string.percent_placeholder, formatDecimal(percent))
+            tvToGo.text = context.getString(R.string.currency_and_amount_to_go_placeholder, currencySymbol, toGo)
+            tvDaysLeft.text = context.getString(R.string.days_left_placeholder, Math.round(dueTo).toString())
             pbProgress.progress = percent.toInt()
             imgColorCircle.setImageDrawable(drawable)
             cardSaving.setOnLongClickListener {

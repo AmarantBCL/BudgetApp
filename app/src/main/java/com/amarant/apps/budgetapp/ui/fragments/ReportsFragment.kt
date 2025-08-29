@@ -1,12 +1,10 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -39,13 +37,6 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
-import androidx.transition.ChangeBounds
-import androidx.transition.ChangeTransform
-import androidx.transition.Fade
-import androidx.transition.TransitionManager
-import com.amarant.apps.budgetapp.ui.MainActivity
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.MaterialToolbar
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment() {
@@ -235,7 +226,7 @@ class ReportsFragment : Fragment() {
         val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
         val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
         binding.tvIncome.text =
-            if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
+            if (totalIncome > 0) getString(R.string.plus_placeholder, formattedIncome) else formattedIncome
         binding.tvExpenses.text = formattedExpenses
         setHiddenIncomeExpensesViews(isHiddenIncome, isHiddenExpenses)
     }

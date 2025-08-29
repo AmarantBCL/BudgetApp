@@ -41,7 +41,7 @@ class TodayBudgetAdapter :
             if (item.budget.creditOrDebit == Constants.CREDIT) {
                 binding.tvAmount.setTextColor(greenColor)
                 binding.tvAmount.text = context.resources.getString(
-                    R.string.placeholder_plus,
+                    R.string.plus_placeholder,
                     formattedAmount
                 )
             } else {

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PiggyBankFragment : Fragment() {
 
     private var _binding: FragmentPiggyBankBinding? = null
@@ -35,8 +38,6 @@ class PiggyBankFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentPiggyBankBinding == null")
 
     private val piggyBankViewModel: PiggyBankViewModel by activityViewModels()
-
-    private var piggyBankId = 0
 
     private lateinit var savingsAdapter: SavingsAdapter
 
@@ -55,10 +56,8 @@ class PiggyBankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        activity?.title = getString(R.string.piggy_bank)
         initViews()
         observeViewModel()
-        setClickListeners()
     }
 
     override fun onDestroyView() {
@@ -132,13 +131,6 @@ class PiggyBankFragment : Fragment() {
             binding.imgGoal.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
             binding.lblEmptyEntries.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
-//        piggyBankViewModel.getPiggyBank().observe(viewLifecycleOwner) {
-//            binding.editCurrencySaved.setText(it.currencySaved.toString())
-//            binding.editHryvniaSaved.setText(it.hryvniaSaved.toString())
-//            binding.editCurrencyTaken.setText(it.currencyTaken.toString())
-//            binding.editHryvniaTaken.setText(it.hryvniaTaken.toString())
-//            piggyBankId = it.id
-//        }
     }
 
     private fun calculateSavings(items: List<Saving>) {
@@ -148,39 +140,5 @@ class PiggyBankFragment : Fragment() {
         val formattedTotalTargetAsDouble = NumberUtils.formatDecimal(totalTarget).toDouble()
         binding.tvTotalSaved.text = NumberUtils.formatNumberWithThousandsSeparator(formattedTotalSavedAsDouble)
         binding.tvTotalTarget.text = NumberUtils.formatNumberWithThousandsSeparator(formattedTotalTargetAsDouble)
-    }
-
-    private fun setClickListeners() {
-//        binding.btnUpdateMoney.setOnClickListener {
-//            if (binding.editCurrencySaved.text.toString()
-//                    .isNotEmpty() && binding.editHryvniaSaved.text.toString()
-//                    .isNotEmpty() && binding.editCurrencyTaken.text.toString()
-//                    .isNotEmpty() && binding.editHryvniaTaken.text.toString().isNotEmpty()
-//            ) {
-//                val currencySaved = binding.editCurrencySaved.text.toString().toInt()
-//                val hryvniaSaved = binding.editHryvniaSaved.text.toString().toInt()
-//                val currencyTaken = binding.editCurrencyTaken.text.toString().toInt()
-//                val hryvniaTaken = binding.editHryvniaTaken.text.toString().toInt()
-//                val piggyBank =
-//                    PiggyBank(piggyBankId, currencySaved, hryvniaSaved, currencyTaken, hryvniaTaken)
-//                piggyBankViewModel.updatePiggyBank(piggyBank)
-//                val snackbar = Snackbar.make(
-//                    binding.piggyBankConstraint,
-//                    getString(R.string.balance_updated),
-//                    Snackbar.LENGTH_SHORT
-//                )
-//                snackbar.setAction(getString(R.string.hide)) {
-//                    snackbar.dismiss()
-//                }
-//                snackbar.show()
-//                findNavController().popBackStack()
-//            } else {
-//                Snackbar.make(
-//                    binding.piggyBankConstraint,
-//                    getString(R.string.field_must_not_be_empty),
-//                    Snackbar.LENGTH_SHORT
-//                ).show()
-//            }
-//        }
     }
 }

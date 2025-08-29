@@ -3,35 +3,27 @@ package com.amarant.apps.budgetapp.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.text.SpannableString
-import android.text.Spanned
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
-import android.text.style.SubscriptSpan
-import android.text.style.SuperscriptSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Fade
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentCalendarBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
-import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.CalendarViewModel
@@ -45,13 +37,11 @@ import com.amarant.apps.budgetapp.util.DateUtils.getTimestampFromDate
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Date
-import kotlin.math.absoluteValue
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
@@ -60,10 +50,10 @@ class CalendarFragment : Fragment() {
     private val binding: FragmentCalendarBinding
         get() = _binding ?: throw RuntimeException("FragmentCalendarBinding == null")
 
-    private val profileViewModel: ProfileViewModel by viewModels()
-    private val piggyBankViewModel: PiggyBankViewModel by viewModels()
-    private val budgetViewModel: BudgetViewModel by viewModels()
-    private val calendarViewModel: CalendarViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by activityViewModels()
+    private val piggyBankViewModel: PiggyBankViewModel by activityViewModels()
+    private val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
 
     private lateinit var todayBudgetAdapter: TodayBudgetAdapter
 
@@ -238,7 +228,7 @@ class CalendarFragment : Fragment() {
         val formattedIncome = NumberUtils.formatNumberWithThousandsSeparator(totalIncome)
         val formattedExpenses = NumberUtils.formatNumberWithThousandsSeparator(totalExpenses)
         binding.tvIncome.text =
-            if (totalIncome > 0) getString(R.string.placeholder_plus, formattedIncome) else formattedIncome
+            if (totalIncome > 0) getString(R.string.plus_placeholder, formattedIncome) else formattedIncome
         binding.tvExpenses.text = formattedExpenses
         setHiddenIncomeExpensesViews(isHiddenIncome, isHiddenExpenses)
     }
