@@ -79,6 +79,7 @@ class CalendarFragment : Fragment() {
         initViews()
         observeViewModel()
         setCalendarListeners()
+        setClickListeners()
     }
 
     override fun onDestroyView() {
@@ -211,6 +212,16 @@ class CalendarFragment : Fragment() {
             val displayedDate = getFormattedDate(calendar.timeInMillis)
             binding.tvTodayDate.text = displayedDate
             calendarViewModel.setSelectedDate(calendar.timeInMillis)
+        }
+    }
+
+    private fun setClickListeners() {
+        binding.scrollableContentContainer.setOnClickListener {
+            val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
+                selectedDate = currentDateMillis,
+                budgetEntry = null
+            )
+            findNavController().navigate(action)
         }
     }
 
