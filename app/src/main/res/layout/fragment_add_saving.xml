@@ -134,7 +134,7 @@
                 android:id="@+id/edit_currency"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="$ USD"
+                android:hint="@string/default_currency"
                 android:inputType="none"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"

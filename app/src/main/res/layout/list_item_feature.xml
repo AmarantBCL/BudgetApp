@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/card_background"
@@ -29,12 +30,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="Track Expenses"
             android:textAppearance="@style/Text.Heading.Small"
             app:layout_constraintBottom_toTopOf="@id/lbl_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_feature"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Track Expenses" />
 
         <TextView
             android:id="@+id/lbl_description"
@@ -42,12 +43,12 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
-            android:text="Monitor your daily spending"
             android:textAppearance="@style/Text.Secondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_feature"
-            app:layout_constraintTop_toBottomOf="@id/lbl_title" />
+            app:layout_constraintTop_toBottomOf="@id/lbl_title"
+            tools:text="Monitor your daily spending" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

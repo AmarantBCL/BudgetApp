@@ -196,7 +196,7 @@
             android:id="@+id/scrollable_content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true">
 

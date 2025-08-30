@@ -12,7 +12,7 @@
         android:layout_width="@dimen/step_icon_size"
         android:layout_height="@dimen/step_icon_size"
         android:layout_marginTop="@dimen/large_margin"
-        android:contentDescription="icon"
+        android:contentDescription="@string/icon"
         app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/large_margin"
         android:layout_marginTop="@dimen/large_margin"
-        android:text="You're All Set!"
+        android:text="@string/you_re_all_set"
         android:textAlignment="center"
         android:textAppearance="@style/Text.Heading"
         app:layout_constraintBottom_toTopOf="@id/lbl_description"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/large_margin"
         android:layout_marginTop="@dimen/regular_margin"
-        android:text="Your budget tracker is ready. Start managing your finances today!"
+        android:text="@string/your_budget_tracker_is_ready_start_managing_your_finances_today"
         android:textAlignment="center"
         android:textAppearance="@style/Text.Primary"
         app:layout_constraintBottom_toTopOf="@id/card_details"
@@ -76,9 +76,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/large_margin"
                 android:layout_marginTop="@dimen/large_margin"
-                android:text="Profile Summary"
+                android:text="@string/profile_summary"
                 android:textAlignment="center"
                 android:textAppearance="@style/Text.Secondary.Bold"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -89,8 +90,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/large_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="Name:"
+                android:text="@string/name_semicolon"
                 android:textAppearance="@style/Text.Secondary"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lbl_profile_summary" />
 
@@ -100,11 +102,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="Vados"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/light_gray"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/lbl_name"
-                app:layout_constraintTop_toBottomOf="@id/lbl_profile_summary" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_profile_summary"
+                tools:text="Vados" />
 
             <TextView
                 android:id="@+id/lbl_currency"
@@ -112,8 +115,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/large_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="Currency:"
+                android:text="@string/currency_semicolon"
                 android:textAppearance="@style/Text.Secondary"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lbl_name" />
 
@@ -123,11 +127,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="USD"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/light_gray"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/lbl_currency"
-                app:layout_constraintTop_toBottomOf="@id/lbl_name" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_name"
+                tools:text="USD" />
 
             <TextView
                 android:id="@+id/lbl_income"
@@ -135,8 +140,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/large_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="Monthly Income:"
+                android:text="@string/monthly_income_semicolon"
                 android:textAppearance="@style/Text.Secondary"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lbl_currency" />
 
@@ -146,11 +152,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="$2500"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/light_gray"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/lbl_income"
-                app:layout_constraintTop_toBottomOf="@id/lbl_currency" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_currency"
+                tools:text="$ 2500" />
 
             <TextView
                 android:id="@+id/lbl_categories"
@@ -159,8 +166,9 @@
                 android:layout_marginStart="@dimen/large_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:paddingBottom="@dimen/large_margin"
-                android:text="Categories:"
+                android:text="@string/categories_semicolon"
                 android:textAppearance="@style/Text.Secondary"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lbl_income" />
 
@@ -170,11 +178,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/regular_margin"
                 android:layout_marginTop="@dimen/small_margin"
-                android:text="4 Selected"
                 android:textAppearance="@style/Text.Secondary"
                 android:textColor="@color/light_gray"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/lbl_categories"
-                app:layout_constraintTop_toBottomOf="@id/lbl_income" />
+                app:layout_constraintTop_toBottomOf="@id/lbl_income"
+                tools:text="4 Selected" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

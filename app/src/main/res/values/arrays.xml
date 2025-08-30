@@ -22,15 +22,16 @@
         <item>All</item>
         <item>Groceries</item>
         <item>Restaurants</item>
-        <item>Cash</item>
+        <item>Transfers</item>
+        <item>Income</item>
         <item>Utilities</item>
         <item>Clothes</item>
-        <item>House</item>
-        <item>Car</item>
+        <item>Home</item>
+        <item>Transportation</item>
         <item>Beauty</item>
         <item>Health</item>
         <item>Pets</item>
-        <item>Taxi</item>
+        <item>Subscriptions</item>
         <item>Entertainment</item>
         <item>Education</item>
         <item>Traveling</item>
@@ -38,6 +39,7 @@
         <item>Charity</item>
         <item>Taxes</item>
         <item>Rent</item>
+        <item>Children</item>
     </string-array>
 
     <string-array name="operation_types">

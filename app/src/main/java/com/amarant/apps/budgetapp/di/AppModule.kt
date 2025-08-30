@@ -25,13 +25,22 @@ object AppModule {
         context,
         BudgetDatabase::class.java,
         DATABASE_NAME
-    ).addMigrations(MIGRATION_5_6).build()
+    ).addMigrations(MIGRATION_5_6).addMigrations(MIGRATION_7_8).build()
 
     private val MIGRATION_5_6: Migration = object : Migration(5, 6) {
         override fun migrate(db: SupportSQLiteDatabase) {
             db.execSQL("CREATE TABLE IF NOT EXISTS `new_history` (`entry` TEXT PRIMARY KEY NOT NULL, `category` INTEGER NOT NULL)")
             db.execSQL("DROP TABLE history")
             db.execSQL("ALTER TABLE new_history RENAME TO history")
+        }
+    }
+
+    private val MIGRATION_7_8: Migration = object : Migration(7, 8) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("UPDATE `budget` SET category = 'Transfers' WHERE category = 'Cash'")
+            db.execSQL("UPDATE `budget` SET category = 'Home' WHERE category = 'House'")
+            db.execSQL("UPDATE `budget` SET category = 'Transportation' WHERE category = 'Car'")
+            db.execSQL("UPDATE `budget` SET category = 'Subscriptions' WHERE category = 'Taxi'")
         }
     }
 

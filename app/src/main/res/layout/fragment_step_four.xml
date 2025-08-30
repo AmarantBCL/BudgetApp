@@ -12,7 +12,7 @@
         android:layout_width="@dimen/step_icon_size"
         android:layout_height="@dimen/step_icon_size"
         android:layout_marginTop="@dimen/large_margin"
-        android:contentDescription="icon"
+        android:contentDescription="@string/icon"
         app:layout_constraintBottom_toTopOf="@id/lbl_welcome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/large_margin"
         android:layout_marginTop="@dimen/large_margin"
-        android:text="Budget Categories"
+        android:text="@string/budget_categories"
         android:textAlignment="center"
         android:textAppearance="@style/Text.Heading"
         app:layout_constraintBottom_toTopOf="@id/lbl_description"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/large_margin"
         android:layout_marginTop="@dimen/regular_margin"
-        android:text="Choose categories you want to track"
+        android:text="@string/choose_categories_you_want_to_track"
         android:textAlignment="center"
         android:textAppearance="@style/Text.Primary"
         app:layout_constraintBottom_toTopOf="@id/recycler_categories"
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/large_margin"
-            android:text="You can always add or remove categories later in the settings."
+            android:text="@string/you_can_always_add_or_remove_categories_later_in_the_settings"
             android:textAppearance="@style/Text.Secondary" />
 
     </com.google.android.material.card.MaterialCardView>

@@ -4,15 +4,16 @@
         <item>Все</item>
         <item>Продукты</item>
         <item>Рестораны</item>
-        <item>Наличные</item>
+        <item>Переводы</item>
+        <item>Доход</item>
         <item>Коммуналка</item>
         <item>Одежда</item>
         <item>Дом</item>
-        <item>Автомобиль</item>
+        <item>Транспорт</item>
         <item>Красота</item>
         <item>Здоровье</item>
         <item>Питомцы</item>
-        <item>Такси</item>
+        <item>Подписки</item>
         <item>Развлечения</item>
         <item>Образование</item>
         <item>Путешествия</item>
@@ -20,5 +21,6 @@
         <item>Донат</item>
         <item>Налоги</item>
         <item>Аренда</item>
+        <item>Дети</item>
     </string-array>
 </resources>

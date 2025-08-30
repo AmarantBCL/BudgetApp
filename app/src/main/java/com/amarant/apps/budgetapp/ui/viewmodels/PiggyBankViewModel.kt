@@ -30,9 +30,9 @@ class PiggyBankViewModel @Inject constructor(
 //        piggyBankRepository.updatePiggyBank(piggyBank)
 //    }
 
-    fun getAllSavings() = piggyBankRepository.getAllSavings()//.map {
-        //it.reversed()
-    //}
+    fun getAllSavings() = piggyBankRepository.getAllSavings().map {
+        it.reversed()
+    }
 
     fun addSaving(saving: Saving) {
         viewModelScope.launch {
