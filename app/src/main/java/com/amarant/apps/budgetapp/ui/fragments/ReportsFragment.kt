@@ -37,6 +37,7 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
+import androidx.fragment.app.viewModels
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment() {

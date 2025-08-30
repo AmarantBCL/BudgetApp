@@ -50,10 +50,10 @@ class CalendarFragment : Fragment() {
     private val binding: FragmentCalendarBinding
         get() = _binding ?: throw RuntimeException("FragmentCalendarBinding == null")
 
-    private val profileViewModel: ProfileViewModel by activityViewModels()
-    private val piggyBankViewModel: PiggyBankViewModel by activityViewModels()
-    private val budgetViewModel: BudgetViewModel by activityViewModels()
-    private val calendarViewModel: CalendarViewModel by activityViewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
+    private val piggyBankViewModel: PiggyBankViewModel by viewModels()
+    private val budgetViewModel: BudgetViewModel by viewModels()
+    private val calendarViewModel: CalendarViewModel by viewModels()
 
     private lateinit var todayBudgetAdapter: TodayBudgetAdapter
 

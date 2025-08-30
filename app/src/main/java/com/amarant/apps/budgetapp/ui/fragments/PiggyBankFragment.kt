@@ -37,7 +37,7 @@ class PiggyBankFragment : Fragment() {
     private val binding: FragmentPiggyBankBinding
         get() = _binding ?: throw RuntimeException("FragmentPiggyBankBinding == null")
 
-    private val piggyBankViewModel: PiggyBankViewModel by activityViewModels()
+    private val piggyBankViewModel: PiggyBankViewModel by viewModels()
 
     private lateinit var savingsAdapter: SavingsAdapter
 

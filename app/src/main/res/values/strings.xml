@@ -99,7 +99,7 @@
     <string name="savings">Savings</string>
     <string name="total_saved">Total Saved</string>
     <string name="total_target">Total Target</string>
-    <string name="no_goals_set">No goals set.</string>
+    <string name="no_goals_set">No goals set.\nTap \'+ Add\' to create a new target.</string>
     <string name="goal_name">Goal name</string>
     <string name="e_g_new_phone">e.g. New phone</string>
     <string name="target_amount">Target amount</string>

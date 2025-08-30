@@ -98,7 +98,7 @@
     <string name="savings">Копилка</string>
     <string name="total_saved">Накоплено</string>
     <string name="total_target">Общая цель</string>
-    <string name="no_goals_set">Целей не установлено.</string>
+    <string name="no_goals_set">Целей не установлено.\nНажмите \'+ Доб.\' чтобы создать новую.</string>
     <string name="goal_name">Название цели</string>
     <string name="e_g_new_phone">напр. Новый телефон</string>
     <string name="target_amount">Необходимая сумма</string>
