@@ -24,15 +24,15 @@ class PiggyBankViewModel @Inject constructor(
     val colorPalette: LiveData<List<ColorPalette>>
         get() = _colorPalette
 
-    fun getPiggyBank() = piggyBankRepository.getPiggyBank()
+//    fun getPiggyBank() = piggyBankRepository.getPiggyBank()
 
-    fun updatePiggyBank(piggyBank: PiggyBank) = viewModelScope.launch {
-        piggyBankRepository.updatePiggyBank(piggyBank)
-    }
+//    fun updatePiggyBank(piggyBank: PiggyBank) = viewModelScope.launch {
+//        piggyBankRepository.updatePiggyBank(piggyBank)
+//    }
 
-    fun getAllSavings() = piggyBankRepository.getAllSavings().map {
-        it.reversed()
-    }
+    fun getAllSavings() = piggyBankRepository.getAllSavings()//.map {
+        //it.reversed()
+    //}
 
     fun addSaving(saving: Saving) {
         viewModelScope.launch {
@@ -42,7 +42,7 @@ class PiggyBankViewModel @Inject constructor(
 
     fun tryToAddSaving(goalName: String, amount: String, saved: Float, currency: String, date: Long, color: Int, id: Int): Boolean {
         if (goalName.isNotEmpty() && amount.isNotEmpty() && currency.isNotEmpty()) {
-            if (saved > amount.toInt()) return false // TODO Different notification should be displayed
+            if (saved > amount.toFloat()) return false // TODO Different notification should be displayed
             addSaving(
                 Saving(
                     id, goalName, amount.toFloat(), saved, currency, date, color

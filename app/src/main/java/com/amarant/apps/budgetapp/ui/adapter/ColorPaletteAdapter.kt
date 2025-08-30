@@ -1,9 +1,11 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
+import android.content.res.ColorStateList
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +24,8 @@ class ColorPaletteAdapter : ListAdapter<ColorPalette, ColorPaletteAdapter.ColorP
 
     override fun onBindViewHolder(holder: ColorPaletteViewHolder, position: Int) {
         val item = getItem(position)
-        val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.shape_color_circle)
-        drawable?.setTint(ContextCompat.getColor(holder.itemView.context, item.color))
-        holder.binding.imgCircle.setImageDrawable(drawable)
+        val color = ContextCompat.getColor(holder.itemView.context, item.color)
+        ImageViewCompat.setImageTintList(holder.binding.imgCircle, ColorStateList.valueOf(color))
         if (item.isSelected) {
             holder.binding.imgCircle.setBackgroundResource(R.drawable.frame_selected_category)
         } else {

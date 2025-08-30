@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.amarant.apps.budgetapp.R
@@ -77,15 +79,14 @@ class UpdateSavingBottomSheetFragment : BottomSheetDialogFragment() {
         val imageRes = if (isSubtract) ContextCompat.getDrawable(requireContext(), R.drawable.ic_expenses)
             else ContextCompat.getDrawable(requireContext(), R.drawable.ic_trend)
         val buttonIcon = if (isSubtract) R.drawable.ic_minus else R.drawable.ic_plus
-        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.shape_color_circle)
-        drawable?.setTint(ContextCompat.getColor(requireContext(), savingItem.circleColor))
+        val color = ContextCompat.getColor(requireContext(), savingItem.circleColor)
+        ImageViewCompat.setImageTintList(binding.imgColorCircle, ColorStateList.valueOf(color))
         currencySymbol = savingItem.currency.first().toString()
         currentBalance = savingItem.saved.toDouble()
         targetBalance = savingItem.target.toDouble()
         updatedBalance = currentBalance
         binding.lblHeader.text = if (isSubtract) getString(R.string.withdraw_money) else getString(R.string.deposit_money)
         binding.imgIcon.setImageDrawable(imageRes)
-        binding.imgColorCircle.setImageDrawable(drawable)
         binding.tvGoalName.text = savingItem.title
         binding.tvCurrentAmount.text = getString(R.string.currency_and_amount_placeholder, currencySymbol, saved)
         binding.tvTargetAmount.text = getString(R.string.currency_and_amount_placeholder, currencySymbol, target)
@@ -116,13 +117,29 @@ class UpdateSavingBottomSheetFragment : BottomSheetDialogFragment() {
         binding.btnAddEntry.setOnClickListener {
             val amount = binding.editAmount.text.toString()
             if (amount.toDoubleOrNull() != null && updatedBalance >= 0 && updatedBalance <= targetBalance) {
-                piggyBankViewModel.addSaving(savingItem.copy(saved = updatedBalance.toFloat()))
-                MessageUtils.showSnackbarMessage(
-                    binding.coordinator,
-                    getString(R.string.entry_added),
-                    getString(R.string.hide)
+                val wasAdded = piggyBankViewModel.tryToAddSaving(
+                    goalName = savingItem.title,
+                    amount = savingItem.target.toString(),
+                    saved = updatedBalance.toFloat(),
+                    currency = savingItem.currency,
+                    date = savingItem.dueTo,
+                    color = savingItem.circleColor,
+                    id = savingItem.id
                 )
-                dialog?.dismiss()
+                if (wasAdded) {
+                    MessageUtils.showSnackbarMessage(
+                        binding.coordinator,
+                        getString(R.string.entry_added),
+                        getString(R.string.hide)
+                    )
+                    dialog?.dismiss()
+                } else {
+                    MessageUtils.showSnackbarMessage(
+                        binding.coordinator,
+                        getString(R.string.enter_correct_amount),
+                        getString(R.string.hide)
+                    )
+                }
             } else {
                 MessageUtils.showSnackbarMessage(
                     binding.coordinator,

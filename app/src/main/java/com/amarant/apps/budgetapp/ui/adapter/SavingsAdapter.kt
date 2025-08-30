@@ -1,8 +1,13 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,10 +37,10 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
         val toGo = formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
         val currentTimestamp = System.currentTimeMillis()
         val dueTo = (item.dueTo - currentTimestamp).toFloat() / 1000 / 60 / 60 / 24
+        val color = ContextCompat.getColor(holder.itemView.context, item.circleColor)
         with(holder.binding) {
             val context = holder.itemView.context
-            val drawable = ContextCompat.getDrawable(context, R.drawable.shape_color_circle)
-            drawable?.setTint(ContextCompat.getColor(context, item.circleColor))
+            ImageViewCompat.setImageTintList(imgColorCircle, ColorStateList.valueOf(color))
             tvTargetName.text = item.title
             chipCurrency.text = item.currency
             tvProgress.text = context.getString(R.string.saving_progress_placeholder, currentSum, targetSum)
@@ -43,7 +48,6 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
             tvToGo.text = context.getString(R.string.currency_and_amount_to_go_placeholder, currencySymbol, toGo)
             tvDaysLeft.text = context.getString(R.string.days_left_placeholder, Math.round(dueTo).toString())
             pbProgress.progress = percent.toInt()
-            imgColorCircle.setImageDrawable(drawable)
             cardSaving.setOnLongClickListener {
                 onSavingLongClickListener?.invoke(item)
                 true

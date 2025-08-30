@@ -79,6 +79,7 @@ class PiggyBankFragment : Fragment() {
     private fun initViews() {
         savingsAdapter = SavingsAdapter()
         binding.recyclerSavings.adapter = savingsAdapter
+        binding.recyclerSavings.setHasFixedSize(true)
         savingsAdapter.onSavingLongClickListener = {
             val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment(it)
             findNavController().navigate(action)

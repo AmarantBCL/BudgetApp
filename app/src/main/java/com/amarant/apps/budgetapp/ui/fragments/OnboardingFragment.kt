@@ -78,14 +78,14 @@ class OnboardingFragment : Fragment() {
                 val profile = onboardingViewModel.buildAndSaveUserProfile()
                 if (profile != null) {
                     profileViewModel.insertProfileData(profile)
-                    piggyBankViewModel.updatePiggyBank(
-                        PiggyBank(
-                        1,
-                        0,
-                        0,
-                        0,
-                        0)
-                    )
+//                    piggyBankViewModel.updatePiggyBank(
+//                        PiggyBank(
+//                        1,
+//                        0,
+//                        0,
+//                        0,
+//                        0)
+//                    )
                     findNavController().graph.setStartDestination(R.id.calendarFragment)
                     findNavController().navigate(
                         OnboardingFragmentDirections.actionOnboardingFragmentToCalendarFragment()
