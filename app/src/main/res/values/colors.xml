@@ -9,20 +9,20 @@
     <color name="red">#FA0505</color>
 
     <!-- New colors -->
-    <color name="secondary_gray">#656467</color>
+    <color name="secondary_gray">#626260</color>
     <color name="background_dark_purple">#C8A1F8</color>
-    <color name="accent_purple">#7118DC</color>
-    <color name="primary_white">#161415</color>
+    <color name="accent_purple">#A55AE8</color>
+    <color name="primary_white">#030405</color>
     <color name="auxiliary_smoke_gray">#1B1B1E</color>
     <color name="positive_green">#22C55E</color>
     <color name="negative_red">#E34234</color>
     <color name="window_black">#FFFEFB</color>
     <color name="card_background">#F9F6FF</color>
-    <color name="light_gray">#7E7E7C</color>
+    <color name="light_gray">#4E4D4F</color>
     <color name="dark_green">#2B5D3D</color>
 
     <!-- Category colors -->
-    <color name="category_background">#222131</color>
+    <color name="category_background">#F9F6FF</color>
     <color name="orange">#E24F06</color>
     <color name="pink">#E224A8</color>
     <color name="blue">#215BED</color>

@@ -59,6 +59,8 @@
         android:text="@string/apply_filters"
         android:textAppearance="@style/Text.Button"
         app:cornerRadius="8dp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

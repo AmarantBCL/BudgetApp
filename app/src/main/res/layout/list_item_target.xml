@@ -56,7 +56,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_target_name"
             app:layout_constraintEnd_toStartOf="@id/btn_subtract"
             app:layout_constraintTop_toTopOf="@id/tv_target_name"
-            app:tint="@color/primary_white" />
+            app:tint="@color/button_active" />
 
         <ImageButton
             android:id="@+id/btn_subtract"
@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_target_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_target_name"
-            app:tint="@color/primary_white" />
+            app:tint="@color/button_active" />
 
         <TextView
             android:id="@+id/lbl_progress"
