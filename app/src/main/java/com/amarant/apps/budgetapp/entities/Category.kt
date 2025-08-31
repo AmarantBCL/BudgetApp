@@ -6,30 +6,31 @@ import com.amarant.apps.budgetapp.R
 
 enum class Category(
     val dbName: String,
-    @DrawableRes val iconRes: Int
+    @DrawableRes val iconRes: Int,
+    @DrawableRes val rawIconRes: Int
 ) {
 
-    ALL("", R.drawable.circle_all),
-    GROCERIES("Groceries", R.drawable.circle_shopping),
-    RESTAURANTS("Restaurants", R.drawable.circle_cafe),
-    TRANSFERS("Transfers", R.drawable.circle_transfer), // form. Cash
-    INCOME("Income", R.drawable.circle_income), // NEW
-    UTILITIES("Utilities", R.drawable.circle_utilities),
-    CLOTHING("Clothes", R.drawable.circle_clothing),
-    HOME("Home", R.drawable.circle_housing), // form. House
-    TRANSPORT("Transportation", R.drawable.circle_transportation), // form. Car
-    CARE("Beauty", R.drawable.circle_personal_care),
-    HEALTH("Health", R.drawable.circle_health),
-    PETS("Pets", R.drawable.circle_pets),
-    SUBSCRIPTIONS("Subscriptions", R.drawable.circle_subscriptions), // form. Taxi
-    ENTERTAINMENT("Entertainment", R.drawable.circle_entertainment),
-    EDUCATION("Education", R.drawable.circle_education),
-    TRAVELING("Traveling", R.drawable.circle_traveling),
-    GIFTS("Gifts", R.drawable.circle_gifts),
-    CHARITY("Charity", R.drawable.circle_charity),
-    TAXES("Taxes", R.drawable.circle_taxes),
-    RENT("Rent", R.drawable.circle_rental),
-    CHILDREN("Children", R.drawable.circle_children);
+    ALL("", R.drawable.circle_all, R.drawable.ic_all),
+    GROCERIES("Groceries", R.drawable.circle_shopping, R.drawable.ic_shopping),
+    RESTAURANTS("Restaurants", R.drawable.circle_cafe, R.drawable.ic_coffee),
+    TRANSFERS("Transfers", R.drawable.circle_transfer, R.drawable.ic_credit_card), // form. Cash
+    INCOME("Income", R.drawable.circle_income, R.drawable.ic_trend), // NEW
+    UTILITIES("Utilities", R.drawable.circle_utilities, R.drawable.ic_thunder),
+    CLOTHING("Clothes", R.drawable.circle_clothing, R.drawable.ic_tshirt),
+    HOME("Home", R.drawable.circle_housing, R.drawable.ic_home), // form. House
+    TRANSPORT("Transportation", R.drawable.circle_transportation, R.drawable.ic_car), // form. Car
+    CARE("Beauty", R.drawable.circle_personal_care, R.drawable.ic_scissors),
+    HEALTH("Health", R.drawable.circle_health, R.drawable.ic_heart),
+    PETS("Pets", R.drawable.circle_pets, R.drawable.ic_pets),
+    SUBSCRIPTIONS("Subscriptions", R.drawable.circle_subscriptions, R.drawable.ic_smartphone), // form. Taxi
+    ENTERTAINMENT("Entertainment", R.drawable.circle_entertainment, R.drawable.ic_joystick),
+    EDUCATION("Education", R.drawable.circle_education, R.drawable.ic_graduation),
+    TRAVELING("Traveling", R.drawable.circle_traveling, R.drawable.ic_plane),
+    GIFTS("Gifts", R.drawable.circle_gifts, R.drawable.ic_gift),
+    CHARITY("Charity", R.drawable.circle_charity, R.drawable.ic_hand_heart),
+    TAXES("Taxes", R.drawable.circle_taxes, R.drawable.ic_document),
+    RENT("Rent", R.drawable.circle_rental, R.drawable.ic_key),
+    CHILDREN("Children", R.drawable.circle_children, R.drawable.ic_baby);
 
     fun getLocalizedName(context: Context): String {
         val array = context.resources.getStringArray(R.array.categories)

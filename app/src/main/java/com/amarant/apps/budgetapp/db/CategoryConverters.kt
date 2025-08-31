@@ -8,7 +8,6 @@ class CategoryConverters {
 
     @TypeConverter
     fun fromDbName(dbName: String?): Category? {
-        Log.e("WTF", "$dbName")
         return dbName?.let { Category.fromDbName(it) }
     }
 

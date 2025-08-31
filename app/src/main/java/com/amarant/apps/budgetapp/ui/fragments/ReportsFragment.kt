@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -52,7 +53,7 @@ class ReportsFragment : Fragment() {
 
     private var reportsMenu: Menu? = null
     private var searchItem: MenuItem? = null
-    private var filterItem: MenuItem? = null
+//    private var filterItem: MenuItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,7 +82,7 @@ class ReportsFragment : Fragment() {
         inflater.inflate(R.menu.reports_menu, menu)
         reportsMenu = menu
         searchItem = menu.findItem(R.id.search)
-        filterItem = menu.findItem(R.id.filters)
+//        filterItem = menu.findItem(R.id.filters)
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as? SearchView
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -96,8 +97,8 @@ class ReportsFragment : Fragment() {
                 return false
             }
         })
-        updateSearchIcon(budgetViewModel.searchQuery.value ?: "")
-        updateFilterIcon(budgetViewModel.appliedFilter.value ?: Category.ALL)
+//        updateSearchIcon(budgetViewModel.searchQuery.value ?: "")
+//        updateFilterIcon(budgetViewModel.appliedFilter.value ?: Category.ALL)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -108,10 +109,10 @@ class ReportsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.filters) {
-            val bottomSheet = FiltersBottomSheetFragment.newInstance()
-            bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
-        }
+//        if (item.itemId == R.id.filters) {
+//            val bottomSheet = FiltersBottomSheetFragment.newInstance()
+//            bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
+//        }
         if (item.itemId == R.id.sort) {
             budgetViewModel.setSearchQuery("")
         }
@@ -183,7 +184,7 @@ class ReportsFragment : Fragment() {
             binding.lblEmptyEntries.visibility = if (reports.isNotEmpty()) View.GONE else View.VISIBLE
         }
         budgetViewModel.searchQuery.observe(viewLifecycleOwner) {
-            updateSearchIcon(it)
+//            updateSearchIcon(it)
             if (it.isNotEmpty()) {
                 activity?.title = it
                 requireActivity().invalidateOptionsMenu()
@@ -193,25 +194,32 @@ class ReportsFragment : Fragment() {
             }
         }
         budgetViewModel.appliedFilter.observe(viewLifecycleOwner) {
-            updateFilterIcon(it)
+//            updateFilterIcon(it)
+            binding.chipFilter.chipIcon = ContextCompat.getDrawable(requireContext(), it.rawIconRes)
+            binding.chipFilter.text = it.getLocalizedName(requireContext())
+            if (it != Category.ALL) {
+                binding.chipFilter.setChipBackgroundColorResource(R.color.background_dark_purple)
+            } else {
+                binding.chipFilter.setChipBackgroundColorResource(R.color.card_background)
+            }
         }
     }
 
-    private fun updateSearchIcon(query: String) {
-        if (query.isNotEmpty()) {
-            searchItem?.icon?.setTintList(ColorStateList.valueOf("#793CC9".toColorInt()))
-        } else {
-            searchItem?.icon?.setTintList(null)
-        }
-    }
+//    private fun updateSearchIcon(query: String) {
+//        if (query.isNotEmpty()) {
+//            searchItem?.icon?.setTintList(ColorStateList.valueOf("#793CC9".toColorInt()))
+//        } else {
+//            searchItem?.icon?.setTintList(null)
+//        }
+//    }
 
-    private fun updateFilterIcon(filter: Category) {
-        if (filter != Category.ALL) {
-            filterItem?.icon?.setTintList(ColorStateList.valueOf("#793CC9".toColorInt()))
-        } else {
-            filterItem?.icon?.setTintList(null)
-        }
-    }
+//    private fun updateFilterIcon(filter: Category) {
+//        if (filter != Category.ALL) {
+//            filterItem?.icon?.setTintList(ColorStateList.valueOf("#793CC9".toColorInt()))
+//        } else {
+//            filterItem?.icon?.setTintList(null)
+//        }
+//    }
 
     private fun setIncomeExpensesViews(reports: List<BudgetUI>) {
         val totalIncome = reports.filter { !it.isHidden && it.budget.creditOrDebit == Constants.CREDIT }.sumOf {
@@ -266,6 +274,10 @@ class ReportsFragment : Fragment() {
             }
         }
         binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
+        binding.chipFilter.setOnClickListener {
+            val bottomSheet = FiltersBottomSheetFragment.newInstance()
+            bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
+        }
     }
 
     private fun setSpinnerValues() {
