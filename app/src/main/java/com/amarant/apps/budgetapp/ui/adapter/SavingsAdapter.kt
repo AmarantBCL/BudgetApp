@@ -48,6 +48,13 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
             tvToGo.text = context.getString(R.string.currency_and_amount_to_go_placeholder, currencySymbol, toGo)
             tvDaysLeft.text = context.getString(R.string.days_left_placeholder, Math.round(dueTo).toString())
             pbProgress.progress = percent.toInt()
+//            if (item.saved >= item.target) {
+//                tvProgress.setTextColor(ContextCompat.getColor(context, R.color.positive_green))
+//            } else if (item.saved > 0) {
+//                tvProgress.setTextColor(ContextCompat.getColor(context, R.color.amber))
+//            } else {
+//                tvProgress.setTextColor(ContextCompat.getColor(context, R.color.primary_white))
+//            }
             cardSaving.setOnLongClickListener {
                 onSavingLongClickListener?.invoke(item)
                 true

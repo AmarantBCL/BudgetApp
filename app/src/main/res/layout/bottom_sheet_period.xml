@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/lbl_period"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="@string/period"
+        android:textAppearance="@style/Text.Secondary.Bold"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/tv_selected_period"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_selected_period"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:textAppearance="@style/Text.Secondary.Bold"
+        android:textColor="@color/accent_purple"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/lbl_period"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Today" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_period"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:paddingHorizontal="16dp"
+        app:chipSpacing="8dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_apply_filters"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_period"
+        app:selectionRequired="true"
+        app:singleLine="false"
+        app:singleSelection="true">
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_apply_filters"
+        style="@style/ActiveButtonStyle"
+        android:layout_width="300dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:includeFontPadding="false"
+        android:text="@string/apply_filters"
+        android:textAppearance="@style/Text.Button"
+        app:cornerRadius="8dp"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chip_group_period" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

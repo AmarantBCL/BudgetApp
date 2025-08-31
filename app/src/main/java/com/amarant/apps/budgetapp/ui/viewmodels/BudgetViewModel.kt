@@ -40,6 +40,10 @@ class BudgetViewModel @Inject constructor(
     private val dateRange: LiveData<Pair<Long, Long>>
         get() = _dateRange
 
+    private val _period = MutableLiveData(PERIOD_THIS_MONTH)
+    val period: LiveData<Int>
+        get() = _period
+
     private val _appliedFilter = MutableLiveData(Category.ALL)
     val appliedFilter: LiveData<Category>
         get() = _appliedFilter
@@ -120,7 +124,7 @@ class BudgetViewModel @Inject constructor(
         return budgetRepository.getTotalCreditForPeriod(start, end)
     }
 
-    fun getSpendingsByCategory(period: Int): LiveData<List<BudgetCategoryDetails>> {
+    fun getSpendingByCategory(period: Int): LiveData<List<BudgetCategoryDetails>> {
         val start = calculateStartPeriod(period)
         val end = calculateEndPeriod(period)
         return budgetRepository.getSpendingsByCategory(start, end)
@@ -176,6 +180,7 @@ class BudgetViewModel @Inject constructor(
         val start = calculateStartPeriod(position)
         val end = calculateEndPeriod(position)
         setReportsBetweenDates(start, end)
+        _period.value = position
     }
 
     private fun calculateStartPeriod(period: Int): Long {
@@ -202,8 +207,8 @@ class BudgetViewModel @Inject constructor(
             PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfWeek() - 1000
             PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfMonth() - 1000
             else -> {
-                val dateInMillies = Calendar.getInstance().timeInMillis
-                val startDate = dateMillisToString(dateInMillies)
+                val dateInMillis = Calendar.getInstance().timeInMillis
+                val startDate = dateMillisToString(dateInMillis)
                 UtilityFunctions.dateStringToMillis(startDate)
             }
         }

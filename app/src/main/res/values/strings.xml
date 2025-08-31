@@ -44,25 +44,6 @@
     <string name="balance_updated">Balance updated</string>
     <string name="field_must_not_be_empty">Field must not be empty</string>
     <string name="update_balance">Update balance</string>
-
-    <string-array name="debit_or_credit">
-        <item>Debit</item>
-        <item>Credit</item>
-    </string-array>
-
-    <string-array name="periods">
-        <item>Today</item>
-        <item>Yesterday</item>
-        <item>Last 2 days</item>
-        <item>This week</item>
-        <item>Last week</item>
-        <item>Last 2 weeks</item>
-        <item>This month</item>
-        <item>Last month</item>
-        <item>Last 2 months</item>
-        <item>Show All</item>
-    </string-array>
-
     <string name="enter_your_pin">Enter your PIN:</string>
     <string name="pin">PIN</string>
     <string name="success">Success!</string>
@@ -71,7 +52,6 @@
     <string name="apply_filters">Apply</string>
     <string name="filters">Filters</string>
     <string name="no_filters">No filters</string>
-
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
     <string name="number_of_entries">%1$d entries</string>
@@ -150,4 +130,5 @@
     <string name="currency_semicolon">Currency:</string>
     <string name="monthly_income_semicolon">Monthly Income:</string>
     <string name="categories_semicolon">Categories:</string>
+    <string name="period">Period</string>
 </resources>

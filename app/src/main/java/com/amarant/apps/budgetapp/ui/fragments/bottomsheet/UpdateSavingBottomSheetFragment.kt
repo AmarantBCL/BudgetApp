@@ -8,15 +8,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.BottomSheetUpdateSavingBinding
 import com.amarant.apps.budgetapp.entities.Saving
-import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.util.MessageUtils
 import com.amarant.apps.budgetapp.util.NumberUtils

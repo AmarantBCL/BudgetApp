@@ -69,7 +69,7 @@ class StatisticsBottomSheetFragment : BottomSheetDialogFragment() {
                 binding.totalSpending.text = (-1 * it).toString()
             }
         }
-        budgetViewModel.getSpendingsByCategory(period).observe(viewLifecycleOwner) {
+        budgetViewModel.getSpendingByCategory(period).observe(viewLifecycleOwner) {
             detailsAdapter.differ.submitList(it)
         }
     }

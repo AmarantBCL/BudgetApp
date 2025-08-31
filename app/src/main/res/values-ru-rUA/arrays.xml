@@ -23,4 +23,22 @@
         <item>Аренда</item>
         <item>Дети</item>
     </string-array>
+
+    <string-array name="debit_or_credit">
+        <item>Дебет</item>
+        <item>Кредит</item>
+    </string-array>
+
+    <string-array name="periods">
+        <item>Сегодня</item>
+        <item>Вчера</item>
+        <item>Посл. 2 дня</item>
+        <item>Эта неделя</item>
+        <item>Прош. неделя</item>
+        <item>Посл. 2 недели</item>
+        <item>Этот месяц</item>
+        <item>Прош. месяц</item>
+        <item>Посл. 2 месяца</item>
+        <item>Все</item>
+    </string-array>
 </resources>

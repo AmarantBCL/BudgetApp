@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -39,6 +40,10 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment() {
@@ -203,6 +208,14 @@ class ReportsFragment : Fragment() {
                 binding.chipFilter.setChipBackgroundColorResource(R.color.card_background)
             }
         }
+        budgetViewModel.period.observe(viewLifecycleOwner) {
+            binding.chipPeriod.text = resources.getStringArray(R.array.periods)[it]
+            if (it < PERIOD_SHOW_ALL) {
+                binding.chipPeriod.setChipBackgroundColorResource(R.color.background_dark_purple)
+            } else {
+                binding.chipPeriod.setChipBackgroundColorResource(R.color.card_background)
+            }
+        }
     }
 
 //    private fun updateSearchIcon(query: String) {
@@ -264,19 +277,24 @@ class ReportsFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        binding.spinnerDateRange.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                budgetViewModel.changeDateRange(position)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-        binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
+//        binding.spinnerDateRange.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                budgetViewModel.changeDateRange(position)
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//
+//            }
+//        }
+//        binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
+//        budgetViewModel.changeDateRange(PERIOD_THIS_MONTH)
         binding.chipFilter.setOnClickListener {
             val bottomSheet = FiltersBottomSheetFragment.newInstance()
             bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
+        }
+        binding.chipPeriod.setOnClickListener {
+            val bottomSheet = PeriodBottomSheetFragment.newInstance()
+            bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
         }
     }
 

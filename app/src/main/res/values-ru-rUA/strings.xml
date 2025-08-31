@@ -37,24 +37,6 @@
     <string name="undo">Вернуть</string>
     <string name="fill_in_all_fields">Заполните все необходимые поля</string>
     <string name="category_placeholder">%s :</string>
-
-    <string-array name="debit_or_credit">
-        <item>Дебет</item>
-        <item>Кредит</item>
-    </string-array>
-
-    <string-array name="periods">
-        <item>Сегодня</item>
-        <item>Вчера</item>
-        <item>Посл. 2 дня</item>
-        <item>Эта неделя</item>
-        <item>Прошлая неделя</item>
-        <item>Посл. 2 недели</item>
-        <item>Этот месяц</item>
-        <item>Прошлый месяц</item>
-        <item>Посл. 2 месяца</item>
-        <item>Показать все</item>
-    </string-array>
     <string name="piggy_bank">Копилка</string>
     <string name="saved">Накоплено</string>
     <string name="currency">Валюта</string>
@@ -122,4 +104,32 @@
     <string name="percent_placeholder">%1$s %%</string>
     <string name="saving_progress_placeholder">%1$s / %2$s</string>
     <string name="add_button">Добавить</string>
+    <string name="default_currency">$ USD</string>
+    <string name="monthly_income">Ежемес. доход</string>
+    <string name="enter_your_monthly_income">Введите ваш ежемес. доход</string>
+    <string name="monthly_savings_goal_optional">Ежемес. цель для сбережений (Опц.)</string>
+    <string name="how_much_do_you_want_to_save_monthly">Сколько вы хотите экономить ежемесячно?</string>
+    <string name="set_up_your_financial_preferences">Настройте ваши финансовые предпочтения</string>
+    <string name="preferred_currency">Предпочитаемая валюта</string>
+    <string name="budget_preferences">Бюджетные предпочтения</string>
+    <string name="icon">иконка</string>
+    <string name="welcome_to_budget_tracker">Добро пожаловать в трекер бюджета</string>
+    <string name="take_control_of_your_finances_with_our_comprehesive_budget_tracking_app">Контролируйте свои финансы с нашим приложением по отслеживанию бюджета</string>
+    <string name="personal_information">Личная информация</string>
+    <string name="let_s_get_to_know_you_better">Давайте узнаем вас поближе</string>
+    <string name="full_name">Полное имя</string>
+    <string name="enter_your_full_name">Введите ваше полное имя</string>
+    <string name="email_address">Адрес электронной почты</string>
+    <string name="enter_your_email">Введите ваш адрес электронной почты</string>
+    <string name="budget_categories">Категории бюджета</string>
+    <string name="choose_categories_you_want_to_track">Выберите категории какие хотите отслеживать</string>
+    <string name="you_can_always_add_or_remove_categories_later_in_the_settings">Вы всегда можете добавить или убрать категории позже в настройках.</string>
+    <string name="you_re_all_set">Все готово!</string>
+    <string name="your_budget_tracker_is_ready_start_managing_your_finances_today">Ваш трекер бюджета готов. Приступайте к управлению вашими финансами прямо сегодня!</string>
+    <string name="profile_summary">Сводка по профилю</string>
+    <string name="name_semicolon">Имя:</string>
+    <string name="currency_semicolon">Валюта:</string>
+    <string name="monthly_income_semicolon">Ежемесячный доход:</string>
+    <string name="categories_semicolon">Категории:</string>
+    <string name="period">Период</string>
 </resources>
