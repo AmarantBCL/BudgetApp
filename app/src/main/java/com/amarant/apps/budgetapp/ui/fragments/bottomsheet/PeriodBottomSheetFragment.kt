@@ -15,7 +15,11 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
@@ -27,6 +31,9 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
     private val budgetViewModel: BudgetViewModel by activityViewModels()
 
     private var selectedPeriod = 0
+    private var customStartDate = System.currentTimeMillis()
+    private var customEndDate = System.currentTimeMillis()
+    private var customRangeText = "Custom"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +58,32 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun initViews() {
         val periods = resources.getStringArray(R.array.periods)
-        for (period in periods) {
-            val chip = createChip(requireContext(), period)
+        for ((index, period) in periods.withIndex()) {
+            val chip = if (index == 10) {
+                val customChip = createChip(requireContext(), period)
+                customChip.setOnClickListener {
+                    // Создаём date range picker
+                    val builder = MaterialDatePicker.Builder.dateRangePicker()
+                    builder.setTitleText(getString(R.string.select_range))
+                    val picker = builder.build()
+                    // Обработка выбранного диапазона
+                    picker.addOnPositiveButtonClickListener { selection ->
+                        customStartDate = selection.first
+                        customEndDate = selection.second
+                        val startText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customStartDate))
+                        val endText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customEndDate))
+                        customRangeText = "$startText - $endText"
+                        customChip.text = customRangeText
+                    }
+                    picker.addOnNegativeButtonClickListener {
+                        customChip.text = resources.getStringArray(R.array.periods)[index]
+                    }
+                    picker.show(requireActivity().supportFragmentManager, "DATE_RANGE_PICKER")
+                }
+                customChip
+            } else {
+                createChip(requireContext(), period)
+            }
             binding.chipGroupPeriod.addView(chip)
         }
     }
@@ -63,6 +94,12 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
             chip.isChecked = true
             selectedPeriod = it
             binding.tvSelectedPeriod.text = chip.text
+        }
+        budgetViewModel.customRangeText.observe(viewLifecycleOwner) {
+            if (it != "") {
+                val chip = binding.chipGroupPeriod.getChildAt(10) as Chip
+                chip.text = it
+            }
         }
     }
 
@@ -75,6 +112,12 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
         }
         binding.btnApplyFilters.setOnClickListener {
             budgetViewModel.changeDateRange(selectedPeriod)
+            if (selectedPeriod == 10) {
+                budgetViewModel.setReportsBetweenDates(customStartDate, customEndDate)
+                budgetViewModel.setCustomRangeDisplayedText(customRangeText)
+            } else {
+                budgetViewModel.setCustomRangeDisplayedText("")
+            }
             dialog?.dismiss()
         }
     }

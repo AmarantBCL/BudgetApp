@@ -172,7 +172,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sort"
+                android:text="@string/sort"
                 android:textColor="@color/primary_white"
                 app:chipBackgroundColor="@color/card_background"
                 app:chipIcon="@drawable/ic_sorting"
@@ -205,7 +205,7 @@
         app:layout_constraintBottom_toTopOf="@id/lbl_empty_entries"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner_date_range"
+        app:layout_constraintTop_toBottomOf="@id/scroll_horizontal"
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/circle_dollar"
         tools:visibility="visible" />

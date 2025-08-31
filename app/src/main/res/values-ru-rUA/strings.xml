@@ -132,4 +132,6 @@
     <string name="monthly_income_semicolon">Ежемесячный доход:</string>
     <string name="categories_semicolon">Категории:</string>
     <string name="period">Период</string>
+    <string name="sort">Сорт.</string>
+    <string name="select_range">Выберите период</string>
 </resources>

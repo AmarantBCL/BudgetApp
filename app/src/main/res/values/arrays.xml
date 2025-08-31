@@ -63,5 +63,6 @@
         <item>Last month</item>
         <item>Last 2 months</item>
         <item>All</item>
+        <item>Custom</item>
     </string-array>
 </resources>

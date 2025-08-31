@@ -41,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -180,6 +181,7 @@ class ReportsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+//        budgetViewModel.changeDateRange(PERIOD_THIS_MONTH)
         budgetViewModel.groupedEntries.observe(viewLifecycleOwner) { groupedReports ->
             reportsAdapter.submitList(groupedReports)
         }
@@ -210,10 +212,15 @@ class ReportsFragment : Fragment() {
         }
         budgetViewModel.period.observe(viewLifecycleOwner) {
             binding.chipPeriod.text = resources.getStringArray(R.array.periods)[it]
-            if (it < PERIOD_SHOW_ALL) {
+            if (it != PERIOD_SHOW_ALL) {
                 binding.chipPeriod.setChipBackgroundColorResource(R.color.background_dark_purple)
             } else {
                 binding.chipPeriod.setChipBackgroundColorResource(R.color.card_background)
+            }
+        }
+        budgetViewModel.customRangeText.observe(viewLifecycleOwner) {
+            if (it != "") {
+                binding.chipPeriod.text = it
             }
         }
     }
@@ -287,7 +294,6 @@ class ReportsFragment : Fragment() {
 //            }
 //        }
 //        binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
-//        budgetViewModel.changeDateRange(PERIOD_THIS_MONTH)
         binding.chipFilter.setOnClickListener {
             val bottomSheet = FiltersBottomSheetFragment.newInstance()
             bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)

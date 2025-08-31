@@ -36,13 +36,20 @@ class BudgetViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
-    private val _dateRange = MutableLiveData(Pair(0L, System.currentTimeMillis()))
+    private val _dateRange = MutableLiveData(Pair(
+        calculateStartPeriod(DEFAULT_PERIOD),
+        calculateEndPeriod(DEFAULT_PERIOD))
+    )
     private val dateRange: LiveData<Pair<Long, Long>>
         get() = _dateRange
 
-    private val _period = MutableLiveData(PERIOD_THIS_MONTH)
+    private val _period = MutableLiveData(DEFAULT_PERIOD)
     val period: LiveData<Int>
         get() = _period
+
+    private val _customRangeText = MutableLiveData<String>()
+    val customRangeText: LiveData<String>
+        get() = _customRangeText
 
     private val _appliedFilter = MutableLiveData(Category.ALL)
     val appliedFilter: LiveData<Category>
@@ -53,6 +60,10 @@ class BudgetViewModel @Inject constructor(
         get() = _searchQuery
 
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
+
+    fun setCustomRangeDisplayedText(text: String) {
+        _customRangeText.value = text
+    }
 
     val groupedEntries: LiveData<List<ReportsItem>> = getBudgetEntriesBetweenDates().map { reports ->
         val groupedList = mutableListOf<ReportsItem>()
@@ -213,5 +224,9 @@ class BudgetViewModel @Inject constructor(
             }
         }
         return end
+    }
+
+    private companion object {
+        private const val DEFAULT_PERIOD = PERIOD_THIS_MONTH
     }
 }

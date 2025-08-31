@@ -40,5 +40,6 @@
         <item>Прош. месяц</item>
         <item>Посл. 2 месяца</item>
         <item>Все</item>
+        <item>Свой</item>
     </string-array>
 </resources>
