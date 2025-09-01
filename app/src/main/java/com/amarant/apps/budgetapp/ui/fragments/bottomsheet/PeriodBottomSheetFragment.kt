@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.BottomSheetPeriodBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.util.MessageUtils
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -31,9 +33,10 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
     private val budgetViewModel: BudgetViewModel by activityViewModels()
 
     private var selectedPeriod = 0
-    private var customStartDate = System.currentTimeMillis()
-    private var customEndDate = System.currentTimeMillis()
-    private var customRangeText = "Custom"
+    private var customStartDate = 0L
+    private var customEndDate = 0L
+    private var customRangeText = ""
+    private var isCustomDateSet = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,26 +62,10 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
     private fun initViews() {
         val periods = resources.getStringArray(R.array.periods)
         for ((index, period) in periods.withIndex()) {
-            val chip = if (index == 10) {
+            val chip = if (index == CUSTOM_DATE_RANGE_ID) {
                 val customChip = createChip(requireContext(), period)
                 customChip.setOnClickListener {
-                    // Создаём date range picker
-                    val builder = MaterialDatePicker.Builder.dateRangePicker()
-                    builder.setTitleText(getString(R.string.select_range))
-                    val picker = builder.build()
-                    // Обработка выбранного диапазона
-                    picker.addOnPositiveButtonClickListener { selection ->
-                        customStartDate = selection.first
-                        customEndDate = selection.second
-                        val startText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customStartDate))
-                        val endText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customEndDate))
-                        customRangeText = "$startText - $endText"
-                        customChip.text = customRangeText
-                    }
-                    picker.addOnNegativeButtonClickListener {
-                        customChip.text = resources.getStringArray(R.array.periods)[index]
-                    }
-                    picker.show(requireActivity().supportFragmentManager, "DATE_RANGE_PICKER")
+                    initDateRangePicker(customChip)
                 }
                 customChip
             } else {
@@ -97,9 +84,16 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
         }
         budgetViewModel.customRangeText.observe(viewLifecycleOwner) {
             if (it != "") {
-                val chip = binding.chipGroupPeriod.getChildAt(10) as Chip
+                val chip = binding.chipGroupPeriod.getChildAt(CUSTOM_DATE_RANGE_ID) as Chip
+                isCustomDateSet = true
                 chip.text = it
             }
+            customRangeText = it
+        }
+        budgetViewModel.dateRange.observe(viewLifecycleOwner) {
+//            Log.d("WTF", "dateRange: $it")
+            customStartDate = it.first
+            customEndDate = it.second
         }
     }
 
@@ -111,11 +105,23 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
             binding.tvSelectedPeriod.text = selectedOption
         }
         binding.btnApplyFilters.setOnClickListener {
-            budgetViewModel.changeDateRange(selectedPeriod)
-            if (selectedPeriod == 10) {
+//            Log.d("WTF", "start: $customStartDate, end: $customEndDate")
+            if (selectedPeriod == CUSTOM_DATE_RANGE_ID) {
+//                val defaultText = resources.getStringArray(R.array.periods)[CUSTOM_DATE_RANGE_ID]
+                if (!isCustomDateSet) {
+//                if (customRangeText.isEmpty() || customRangeText == defaultText) {
+                    MessageUtils.showSnackbarMessage(
+                        binding.root,
+                        getString(R.string.select_range),
+                        getString(R.string.hide)
+                    )
+                    return@setOnClickListener
+                }
+                budgetViewModel.changeDateRange(selectedPeriod, isPeriodOnly = true)
                 budgetViewModel.setReportsBetweenDates(customStartDate, customEndDate)
                 budgetViewModel.setCustomRangeDisplayedText(customRangeText)
             } else {
+                budgetViewModel.changeDateRange(selectedPeriod)
                 budgetViewModel.setCustomRangeDisplayedText("")
             }
             dialog?.dismiss()
@@ -133,7 +139,28 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
         return chip
     }
 
+    private fun initDateRangePicker(chip: Chip) {
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText(getString(R.string.select_range))
+            .build()
+        picker.addOnPositiveButtonClickListener { selection ->
+            customStartDate = selection.first
+            customEndDate = selection.second
+            val startText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customStartDate))
+            val endText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customEndDate))
+            customRangeText = "$startText - $endText"
+            isCustomDateSet = true
+            chip.text = customRangeText
+        }
+//        picker.addOnNegativeButtonClickListener {
+//            chip.text = resources.getStringArray(R.array.periods)[CUSTOM_DATE_RANGE_ID]
+//        }
+        picker.show(requireActivity().supportFragmentManager, "DATE_RANGE_PICKER")
+    }
+
     companion object {
+
+        private const val CUSTOM_DATE_RANGE_ID = PERIOD_CUSTOM
 
         const val TAG = "PeriodBottomSheet"
 

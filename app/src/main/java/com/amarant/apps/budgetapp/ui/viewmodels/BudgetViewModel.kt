@@ -40,7 +40,7 @@ class BudgetViewModel @Inject constructor(
         calculateStartPeriod(DEFAULT_PERIOD),
         calculateEndPeriod(DEFAULT_PERIOD))
     )
-    private val dateRange: LiveData<Pair<Long, Long>>
+    val dateRange: LiveData<Pair<Long, Long>>
         get() = _dateRange
 
     private val _period = MutableLiveData(DEFAULT_PERIOD)
@@ -104,10 +104,10 @@ class BudgetViewModel @Inject constructor(
 
     fun getBudgetEntriesBetweenDates(): LiveData<List<BudgetUI>> {
         val result = MediatorLiveData<List<BudgetUI>>()
-        val dbSource = dateRange.switchMap { dateRange ->
+        val dbSource = dateRange.switchMap { range ->
             appliedFilter.switchMap { filter ->
                 searchQuery.switchMap { query ->
-                    budgetRepository.getBudgetEntriesBetweenDates(dateRange.first, dateRange.second, filter, query)
+                    budgetRepository.getBudgetEntriesBetweenDates(range.first, range.second, filter, query)
                 }
             }
         }
@@ -187,11 +187,15 @@ class BudgetViewModel @Inject constructor(
         }
     }
 
-    fun changeDateRange(position: Int) {
-        val start = calculateStartPeriod(position)
-        val end = calculateEndPeriod(position)
-        setReportsBetweenDates(start, end)
-        _period.value = position
+    fun changeDateRange(position: Int, isPeriodOnly: Boolean = false) {
+        if (isPeriodOnly) {
+            _period.value = position
+        } else {
+            val start = calculateStartPeriod(position)
+            val end = calculateEndPeriod(position)
+            setReportsBetweenDates(start, end)
+            _period.value = position
+        }
     }
 
     private fun calculateStartPeriod(period: Int): Long {
