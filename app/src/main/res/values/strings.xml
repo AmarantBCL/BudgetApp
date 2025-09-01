@@ -133,4 +133,8 @@
     <string name="period">Period</string>
     <string name="sort">Sort</string>
     <string name="select_range">Select range</string>
+    <string name="sort_by">Sort by</string>
+    <string name="date">Date</string>
+    <string name="descending_order">Descending order</string>
+    <string name="sum">Amount</string>
 </resources>

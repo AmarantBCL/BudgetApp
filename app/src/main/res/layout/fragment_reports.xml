@@ -178,6 +178,9 @@
                 app:chipIcon="@drawable/ic_sorting"
                 app:chipIconEnabled="true"
                 app:chipIconTint="@color/accent_purple"
+                app:closeIcon="@drawable/ic_desc"
+                app:closeIconTint="@color/accent_purple"
+                app:closeIconVisible="true"
                 app:iconStartPadding="4dp" />
 
         </com.google.android.material.chip.ChipGroup>

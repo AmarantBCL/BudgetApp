@@ -40,7 +40,9 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
+import com.amarant.apps.budgetapp.entities.SortOrder
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.SortingBottomSheetFragment
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.google.android.material.chip.Chip
@@ -223,6 +225,13 @@ class ReportsFragment : Fragment() {
                 binding.chipPeriod.text = it
             }
         }
+        budgetViewModel.sorting.observe(viewLifecycleOwner) {
+            val sortArr = resources.getStringArray(R.array.sorting)
+            binding.chipSort.text = sortArr[it.field.ordinal]
+            val iconRes = if (it.order == SortOrder.DESC) R.drawable.ic_desc else R.drawable.ic_asc
+            val drawable = ContextCompat.getDrawable(requireContext(), iconRes)
+            binding.chipSort.closeIcon = drawable
+        }
     }
 
 //    private fun updateSearchIcon(query: String) {
@@ -301,6 +310,10 @@ class ReportsFragment : Fragment() {
         binding.chipPeriod.setOnClickListener {
             val bottomSheet = PeriodBottomSheetFragment.newInstance()
             bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
+        }
+        binding.chipSort.setOnClickListener {
+            val bottomSheet = SortingBottomSheetFragment.newInstance()
+            bottomSheet.show(requireActivity().supportFragmentManager, SortingBottomSheetFragment.TAG)
         }
     }
 

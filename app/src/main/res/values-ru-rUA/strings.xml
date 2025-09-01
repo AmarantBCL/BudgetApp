@@ -134,4 +134,8 @@
     <string name="period">Период</string>
     <string name="sort">Сорт.</string>
     <string name="select_range">Выберите период</string>
+    <string name="sort_by">Сортировка</string>
+    <string name="date">Дата</string>
+    <string name="descending_order">По убыванию</string>
+    <string name="sum">Сумма</string>
 </resources>
