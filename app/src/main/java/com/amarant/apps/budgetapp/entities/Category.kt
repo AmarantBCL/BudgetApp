@@ -30,7 +30,10 @@ enum class Category(
     CHARITY("Charity", R.drawable.circle_charity, R.drawable.ic_hand_heart),
     TAXES("Taxes", R.drawable.circle_taxes, R.drawable.ic_document),
     RENT("Rent", R.drawable.circle_rental, R.drawable.ic_key),
-    CHILDREN("Children", R.drawable.circle_children, R.drawable.ic_baby);
+    CHILDREN("Children", R.drawable.circle_children, R.drawable.ic_baby),
+    SPORTS("Sports", R.drawable.circle_sports, R.drawable.ic_dumbbell),
+    MUSIC("Music", R.drawable.circle_music, R.drawable.ic_note),
+    APPLIANCES("Appliances", R.drawable.circle_appliances, R.drawable.ic_tv);
 
     fun getLocalizedName(context: Context): String {
         val array = context.resources.getStringArray(R.array.categories)

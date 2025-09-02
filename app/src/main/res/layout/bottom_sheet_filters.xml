@@ -36,7 +36,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_categories"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         android:layout_marginVertical="8dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/btn_apply_filters"
@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lbl_category"
         app:spanCount="4"
-        tools:itemCount="12"
+        tools:itemCount="16"
         tools:listitem="@layout/list_item_quick_category" />
 
     <com.google.android.material.button.MaterialButton
