@@ -15,6 +15,7 @@ import com.amarant.apps.budgetapp.entities.SortOrder
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
+@Deprecated("Sorting was rejected in favor of type")
 class SortingBottomSheetFragment: BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetSortingBinding? = null

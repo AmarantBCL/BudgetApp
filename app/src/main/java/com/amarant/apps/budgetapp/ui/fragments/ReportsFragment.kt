@@ -40,8 +40,10 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.viewModels
+import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.SortOrder
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.SortingBottomSheetFragment
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
@@ -225,12 +227,28 @@ class ReportsFragment : Fragment() {
                 binding.chipPeriod.text = it
             }
         }
-        budgetViewModel.sorting.observe(viewLifecycleOwner) {
-            val sortArr = resources.getStringArray(R.array.sorting)
-            binding.chipSort.text = sortArr[it.field.ordinal]
-            val iconRes = if (it.order == SortOrder.DESC) R.drawable.ic_desc else R.drawable.ic_asc
+//        budgetViewModel.sorting.observe(viewLifecycleOwner) {
+//            val sortArr = resources.getStringArray(R.array.sorting)
+//            binding.chipSort.text = sortArr[it.field.ordinal]
+//            val iconRes = if (it.order == SortOrder.DESC) R.drawable.ic_desc else R.drawable.ic_asc
+//            val drawable = ContextCompat.getDrawable(requireContext(), iconRes)
+//            binding.chipSort.closeIcon = drawable
+//        }
+        budgetViewModel.reportType.observe(viewLifecycleOwner) {
+            val typeArr = resources.getStringArray(R.array.report_types)
+            binding.chipType.text = typeArr[it.ordinal]
+            val iconRes = when(it) {
+                ReportType.INCOME -> R.drawable.ic_trend
+                ReportType.EXPENSE -> R.drawable.ic_expenses
+                else -> R.drawable.ic_loop
+            }
             val drawable = ContextCompat.getDrawable(requireContext(), iconRes)
-            binding.chipSort.closeIcon = drawable
+            binding.chipType.chipIcon = drawable
+            if (it != ReportType.ALL) {
+                binding.chipType.setChipBackgroundColorResource(R.color.background_dark_purple)
+            } else {
+                binding.chipType.setChipBackgroundColorResource(R.color.card_background)
+            }
         }
     }
 
@@ -311,9 +329,13 @@ class ReportsFragment : Fragment() {
             val bottomSheet = PeriodBottomSheetFragment.newInstance()
             bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
         }
-        binding.chipSort.setOnClickListener {
-            val bottomSheet = SortingBottomSheetFragment.newInstance()
-            bottomSheet.show(requireActivity().supportFragmentManager, SortingBottomSheetFragment.TAG)
+//        binding.chipSort.setOnClickListener {
+//            val bottomSheet = SortingBottomSheetFragment.newInstance()
+//            bottomSheet.show(requireActivity().supportFragmentManager, SortingBottomSheetFragment.TAG)
+//        }
+        binding.chipType.setOnClickListener {
+            val bottomSheet = ReportTypeBottomSheetFragment.newInstance()
+            bottomSheet.show(requireActivity().supportFragmentManager, ReportTypeBottomSheetFragment.TAG)
         }
     }
 

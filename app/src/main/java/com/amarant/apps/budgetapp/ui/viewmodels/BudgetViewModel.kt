@@ -11,6 +11,7 @@ import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.entities.SortField
 import com.amarant.apps.budgetapp.entities.SortOption
@@ -66,6 +67,10 @@ class BudgetViewModel @Inject constructor(
     val sorting: LiveData<SortOption>
         get() = _sorting
 
+    private val _reportType = MutableLiveData(ReportType.ALL)
+    val reportType: LiveData<ReportType>
+        get() = _reportType
+
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
 
     fun setCustomRangeDisplayedText(text: String) {
@@ -76,29 +81,12 @@ class BudgetViewModel @Inject constructor(
         val groupedList = mutableListOf<ReportsItem>()
         reports.groupBy { it.budget.date }.forEach { (date, items) ->
             groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-//            items.forEach { budgetUI ->
             items.reversed().forEach { budgetUI ->
                 groupedList.add(ReportsItem.Entry(budgetUI))
             }
         }
         groupedList
     }
-
-//    val groupedEntries: LiveData<List<ReportsItem>> = getBudgetEntriesBetweenDates().map { reports ->
-//        val groupedList = mutableListOf<ReportsItem>()
-//        var lastDate: String? = null
-//        for (item in reports) {
-//            val currentDate = item.budget.date
-//            if (currentDate != lastDate) {
-//                groupedList.add(
-//                    ReportsItem.DateHeader(DateUtils.getFormattedDate(currentDate.toLong()))
-//                )
-//                lastDate = currentDate
-//            }
-//            groupedList.add(ReportsItem.Entry(item))
-//        }
-//        groupedList
-//    }
 
     fun insertBudget(budget: Budget) = viewModelScope.launch {
         budgetRepository.insertBudget(budget)
@@ -135,28 +123,22 @@ class BudgetViewModel @Inject constructor(
                 }
             }
         }
-        fun update(budgets: List<Budget>?, selected: Set<Int>?, sort: SortOption?) {
-            if (budgets != null && selected != null && sort != null) {
-                val baseComparator: Comparator<Budget> = when (sort.field) {
-                    SortField.DATE -> compareBy { it.date.toLong() }
-                    SortField.AMOUNT -> compareBy { it.amount }
-                    SortField.CATEGORY -> compareBy { it.category }
-                    SortField.TYPE -> compareBy { it.creditOrDebit }
+        fun update(budgets: List<Budget>?, selected: Set<Int>?, type: ReportType?) {
+            if (budgets != null && selected != null && type != null) {
+                val filtered = when (type) {
+                    ReportType.ALL -> budgets
+                    ReportType.INCOME -> budgets.filter { it.amount > 0 }
+                    ReportType.EXPENSE -> budgets.filter { it.amount < 0 }
                 }
-                val finalComparator = if (sort.order == SortOrder.DESC) {
-                    baseComparator.reversed()
-                } else {
-                    baseComparator
-                }
-                val sorted = budgets.sortedWith(finalComparator)
-                result.value = sorted.map { budget ->
+                result.value = filtered.map { budget ->
                     BudgetUI(budget, isHidden = budget.id in selected)
                 }
             }
         }
-        result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value, sorting.value) }
-        result.addSource(selectedIds) { selected -> update(dbSource.value, selected, sorting.value) }
-        result.addSource(sorting) { sort -> update(dbSource.value, selectedIds.value, sort) }
+        result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value, reportType.value) }
+        result.addSource(selectedIds) { selected -> update(dbSource.value, selected, reportType.value) }
+//        result.addSource(sorting) { sort -> update(dbSource.value, selectedIds.value, sort) }
+        result.addSource(reportType) { type -> update(dbSource.value, selectedIds.value, type) }
         return result
     }
 
@@ -239,10 +221,8 @@ class BudgetViewModel @Inject constructor(
         _sorting.value = SortOption(field, order)
     }
 
-    fun toggleSortOrder() {
-        val current = _sorting.value ?: return
-        val newOrder = if (current.order == SortOrder.ASC) SortOrder.DESC else SortOrder.ASC
-        _sorting.value = current.copy(order = newOrder)
+    fun setType(type: ReportType) {
+        _reportType.value = type
     }
 
     private fun calculateStartPeriod(period: Int): Long {

@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/regular_margin"
                     android:paddingTop="@dimen/regular_margin"
-                    android:text="@string/income"
+                    android:text="@string/income_s"
                     android:textAppearance="@style/Text.Secondary"
                     android:textColor="@color/light_gray"
                     android:textSize="14sp"
