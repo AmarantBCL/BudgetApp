@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_black"
+    tools:context=".ui.fragments.StatsFragment">
+
+    <TextView
+        android:id="@+id/lbl_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/total"
+        android:textAppearance="@style/Text.Heading.Medium"
+        android:textColor="@color/light_gray"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:textAppearance="@style/Text.Heading.Small"
+        android:textColor="@color/negative_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lbl_total"
+        tools:text="-35,453" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_total" />
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="3dp"
+        android:src="@drawable/circle_shopping"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintEnd_toEndOf="@id/pie_chart"
+        app:layout_constraintBottom_toTopOf="@id/tv_category"
+        app:layout_constraintStart_toStartOf="@id/pie_chart"
+        app:layout_constraintTop_toTopOf="@id/pie_chart" />
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingHorizontal="124dp"
+        android:textAppearance="@style/Text.Heading.Small"
+        app:layout_constraintBottom_toTopOf="@id/tv_sum"
+        app:layout_constraintEnd_toEndOf="@id/pie_chart"
+        app:layout_constraintStart_toStartOf="@id/pie_chart"
+        app:layout_constraintTop_toBottomOf="@id/img_icon"
+        tools:text="Transportation" />
+
+    <TextView
+        android:id="@+id/tv_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingHorizontal="124dp"
+        android:textAppearance="@style/Text.Heading.Small"
+        android:textColor="@color/negative_red"
+        app:layout_constraintBottom_toTopOf="@id/tv_percent"
+        app:layout_constraintEnd_toEndOf="@id/pie_chart"
+        app:layout_constraintStart_toStartOf="@id/pie_chart"
+        app:layout_constraintTop_toBottomOf="@id/tv_category"
+        tools:text="-345" />
+
+    <TextView
+        android:id="@+id/tv_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingHorizontal="124dp"
+        android:textAppearance="@style/Text.Secondary"
+        android:textColor="@color/secondary_gray"
+        app:layout_constraintBottom_toBottomOf="@id/pie_chart"
+        app:layout_constraintEnd_toEndOf="@id/pie_chart"
+        app:layout_constraintStart_toStartOf="@id/pie_chart"
+        app:layout_constraintTop_toBottomOf="@id/tv_sum"
+        tools:text="23.5%" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,8 +18,8 @@ enum class Category(
     UTILITIES("Utilities", R.drawable.circle_utilities, R.drawable.ic_thunder),
     CLOTHING("Clothes", R.drawable.circle_clothing, R.drawable.ic_tshirt),
     HOME("Home", R.drawable.circle_housing, R.drawable.ic_home), // form. House
-    TRANSPORT("Transportation", R.drawable.circle_transportation, R.drawable.ic_car), // form. Car
-    CARE("Beauty", R.drawable.circle_personal_care, R.drawable.ic_scissors),
+    TRANSPORTATION("Transportation", R.drawable.circle_transportation, R.drawable.ic_car), // form. Car
+    BEAUTY("Beauty", R.drawable.circle_personal_care, R.drawable.ic_scissors),
     HEALTH("Health", R.drawable.circle_health, R.drawable.ic_heart),
     PETS("Pets", R.drawable.circle_pets, R.drawable.ic_pets),
     SUBSCRIPTIONS("Subscriptions", R.drawable.circle_subscriptions, R.drawable.ic_smartphone), // form. Taxi

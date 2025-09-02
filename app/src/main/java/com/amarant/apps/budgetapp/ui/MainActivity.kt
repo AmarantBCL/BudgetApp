@@ -45,7 +45,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.calendarFragment, R.id.piggyBankFragment, R.id.reportsFragment))
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.calendarFragment,
+            R.id.piggyBankFragment,
+            R.id.statsFragment,
+            R.id.reportsFragment
+        ))
         toolbar.setupWithNavController(navController, appBarConfiguration)
         setBottomNavigation()
 //        checkProfileData()

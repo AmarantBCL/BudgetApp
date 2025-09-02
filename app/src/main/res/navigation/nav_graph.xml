@@ -155,4 +155,9 @@
             app:argType="com.amarant.apps.budgetapp.entities.Saving"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.StatsFragment"
+        android:label="@string/stats"
+        tools:layout="@layout/fragment_stats" />
 </navigation>

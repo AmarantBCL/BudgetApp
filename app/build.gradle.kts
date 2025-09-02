@@ -77,6 +77,9 @@ dependencies {
     // MaterialCalendarView
     implementation("com.applandeo:material-calendar-view:1.9.2")
 
+    // MP Android Chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")

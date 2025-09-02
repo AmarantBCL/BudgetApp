@@ -137,4 +137,6 @@
     <string name="date">Date</string>
     <string name="descending_order">Descending order</string>
     <string name="sum">Amount</string>
+    <string name="stats">Stats</string>
+    <string name="total">Total</string>
 </resources>

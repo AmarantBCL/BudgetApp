@@ -138,4 +138,6 @@
     <string name="date">Дата</string>
     <string name="descending_order">По убыванию</string>
     <string name="sum">Сумма</string>
+    <string name="stats">Статистика</string>
+    <string name="total">Общая сумма</string>
 </resources>
