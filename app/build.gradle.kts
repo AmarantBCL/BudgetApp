@@ -74,6 +74,9 @@ dependencies {
     // Flow with LiveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
 
+    // MaterialCalendarView
+    implementation("com.applandeo:material-calendar-view:1.9.2")
+
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")

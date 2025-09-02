@@ -20,9 +20,25 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
+            android:visibility="visible"
             app:cardCornerRadius="16dp"
             app:cardElevation="10dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <!--                        <com.applandeo.materialcalendarview.CalendarView-->
+            <!--                            android:id="@+id/new_calendar_view"-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            app:abbreviationsBarColor="@color/card_background"-->
+            <!--                            app:abbreviationsLabelsColor="@color/secondary_gray"-->
+            <!--                            app:daysLabelsColor="@color/primary_white"-->
+            <!--                            app:eventsEnabled="true"-->
+            <!--                            app:headerColor="@color/card_background"-->
+            <!--                            app:headerLabelColor="@color/primary_white"-->
+            <!--                            app:pagesColor="@color/card_background"-->
+            <!--                            app:selectionColor="@color/accent_purple"-->
+            <!--                            app:todayLabelColor="@color/accent_purple"-->
+            <!--                            app:type="one_day_picker" />-->
 
             <CalendarView
                 android:id="@+id/calendar_view"
