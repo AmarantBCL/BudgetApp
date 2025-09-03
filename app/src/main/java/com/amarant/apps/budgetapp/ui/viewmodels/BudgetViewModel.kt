@@ -137,7 +137,6 @@ class BudgetViewModel @Inject constructor(
         }
         result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value, reportType.value) }
         result.addSource(selectedIds) { selected -> update(dbSource.value, selected, reportType.value) }
-//        result.addSource(sorting) { sort -> update(dbSource.value, selectedIds.value, sort) }
         result.addSource(reportType) { type -> update(dbSource.value, selectedIds.value, type) }
         return result
     }
