@@ -146,7 +146,6 @@ class AddEntryFragment : Fragment() {
         entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categories ->
 //        entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categoryStats ->
 //            entryViewModel.initCategories(Category.entries, categoryStats)
-            Log.d("WTF", "getCategoryStats: $categories")
             entryViewModel.simpleInitCategories(categories)
             args.budgetEntry?.let {
                 entryViewModel.selectCategory(it.budget.category)
@@ -170,7 +169,7 @@ class AddEntryFragment : Fragment() {
 //            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
         }
         entryViewModel.selectedCategories.observe(viewLifecycleOwner) {
-            Log.d("WTF", "Cats: $it")
+//            Log.d("WTF", "Cats: $it") // TODO Continue with selected categories
         }
     }
 

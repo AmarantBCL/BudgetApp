@@ -11,6 +11,7 @@ import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetCategoryDetails
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.entities.CategoryExpense
 import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.entities.SortField
@@ -30,10 +31,12 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
+import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class BudgetViewModel @Inject constructor(
@@ -72,6 +75,22 @@ class BudgetViewModel @Inject constructor(
         get() = _reportType
 
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
+
+    val testCategoryData = getBudgetEntriesBetweenDates().map { budgets ->
+        val list = mutableListOf<CategoryExpense>()
+        val totalSum = budgets.sumOf { it.budget.amount.toInt() }
+        budgets.filter { it.budget.creditOrDebit == "Debit" }
+            .groupBy { it.budget.category }.forEach { (category, items) ->
+            val amount = items.sumOf { it.budget.amount.toInt() }.toFloat()
+                list.add(CategoryExpense(
+                    category,
+                    items.size,
+                    amount,
+                    amount / totalSum * 100.0
+                ))
+            }
+        list.sortedBy { it.amount }
+    }
 
     fun setCustomRangeDisplayedText(text: String) {
         _customRangeText.value = text

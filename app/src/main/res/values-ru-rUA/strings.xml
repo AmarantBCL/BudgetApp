@@ -140,4 +140,5 @@
     <string name="sum">Сумма</string>
     <string name="stats">Статистика</string>
     <string name="total">Общая сумма</string>
+    <string name="category_expenses">Траты по категориям</string>
 </resources>

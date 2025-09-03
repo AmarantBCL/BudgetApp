@@ -118,14 +118,11 @@ class EntryViewModel @Inject constructor(
 
     private fun sortCategories(categories: List<Category>, stats: List<CategoryStat>): List<Category> {
         val statsMap = stats.associate { it.category to it.count }
-        Log.e("WTF", "statsMap: $statsMap")
         val positionMap = categories.withIndex().associate { it.value.dbName to it.index }
-        Log.e("WTF", "positionMap: $positionMap")
         val sortedList = categories.sortedWith(
             compareByDescending<Category> { statsMap[it.dbName] ?: 0 }//DEFAULT_CATEGORY_ID }
                 .thenBy { positionMap[it.dbName] ?: 0 }//Int.MAX_VALUE }
         )
-        Log.d("WTF", "Sorted List: $sortedList")
         return sortedList
     }
 

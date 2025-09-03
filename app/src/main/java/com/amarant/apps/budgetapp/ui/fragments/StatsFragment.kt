@@ -2,6 +2,7 @@ package com.amarant.apps.budgetapp.ui.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentStatsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.github.mikephil.charting.data.Entry
@@ -31,6 +35,8 @@ class StatsFragment : Fragment() {
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
 
+    private lateinit var categoryExpenseAdapter: CategoryExpenseAdapter
+
     private var totalSum = 0
 
     override fun onCreateView(
@@ -44,6 +50,7 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initPieChart()
+        initRecyclerView()
         observeViewModel()
         setClickListeners()
     }
@@ -71,6 +78,9 @@ class StatsFragment : Fragment() {
             binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             initDataSet(prepareDataSet(reports))
         }
+        budgetViewModel.testCategoryData.observe(viewLifecycleOwner) {
+            categoryExpenseAdapter.submitList(it)
+        }
     }
 
     private fun initDataSet(entries: List<PieEntry>) {
@@ -91,6 +101,16 @@ class StatsFragment : Fragment() {
         }
         binding.imgDollar.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
         binding.lblEmptyEntries.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
+    }
+
+    private fun initRecyclerView() {
+        categoryExpenseAdapter = CategoryExpenseAdapter()
+        val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        binding.recyclerCategoryExpenses.addItemDecoration(divider)
+        binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
+        categoryExpenseAdapter.onCategoryExpenseClickListener = {
+
+        }
     }
 
     private fun setClickListeners() {

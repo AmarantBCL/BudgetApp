@@ -15,60 +15,71 @@
         android:layout_height="36dp"
         android:layout_marginVertical="@dimen/regular_margin"
         android:layout_marginStart="@dimen/regular_margin"
-        android:alpha="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/circle_shopping" />
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/regular_margin"
-        android:layout_marginTop="@dimen/regular_margin"
-        android:alpha="0.5"
-        android:fontFamily="@font/rubik"
-        android:textColor="@color/secondary_gray"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tv_category"
-        app:layout_constraintEnd_toStartOf="@id/tv_amount"
-        app:layout_constraintStart_toEndOf="@id/img_category"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Morning Coffee" />
+        tools:src="@drawable/circle_transportation" />
 
     <TextView
         android:id="@+id/tv_category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/regular_margin"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:fontFamily="@font/rubik"
+        android:textColor="@color/primary_white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_entries"
+        app:layout_constraintEnd_toStartOf="@id/tv_amount"
+        app:layout_constraintStart_toEndOf="@id/img_category"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Transportation" />
+
+    <TextView
+        android:id="@+id/tv_entries"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/regular_margin"
         android:layout_marginBottom="@dimen/regular_margin"
-        android:alpha="0.5"
         android:fontFamily="@font/rubik"
         android:textColor="@color/secondary_gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_amount"
+        app:layout_constraintEnd_toStartOf="@id/tv_percent"
         app:layout_constraintStart_toEndOf="@id/img_category"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        tools:text="Food" />
+        app:layout_constraintTop_toBottomOf="@id/tv_category"
+        tools:text="3 entries" />
 
     <TextView
         android:id="@+id/tv_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/regular_margin"
-        android:alpha="0.5"
+        android:fontFamily="@font/rubik"
+        android:includeFontPadding="false"
+        android:textColor="@color/negative_red"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/tv_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_category"
+        app:layout_constraintTop_toTopOf="@id/tv_category"
+        tools:text="-275.0" />
+
+    <TextView
+        android:id="@+id/tv_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/regular_margin"
         android:fontFamily="@font/rubik"
         android:includeFontPadding="false"
         android:textColor="@color/secondary_gray"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_entries"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_category"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="-75.0" />
+        app:layout_constraintStart_toEndOf="@id/tv_entries"
+        app:layout_constraintTop_toTopOf="@id/tv_entries"
+        tools:text="18.25%" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

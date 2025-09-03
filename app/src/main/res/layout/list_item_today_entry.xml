@@ -27,14 +27,14 @@
         android:layout_marginHorizontal="@dimen/regular_margin"
         android:layout_marginTop="@dimen/regular_margin"
         android:fontFamily="@font/rubik"
-        android:text="Morning Coffee"
         android:textColor="@color/primary_white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tv_category"
         app:layout_constraintEnd_toStartOf="@id/tv_amount"
         app:layout_constraintStart_toEndOf="@id/img_category"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Morning Coffee" />
 
     <TextView
         android:id="@+id/tv_category"
@@ -43,13 +43,13 @@
         android:layout_marginHorizontal="@dimen/regular_margin"
         android:layout_marginBottom="@dimen/regular_margin"
         android:fontFamily="@font/rubik"
-        android:text="Food"
         android:textColor="@color/secondary_gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_amount"
         app:layout_constraintStart_toEndOf="@id/img_category"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:text="Food" />
 
     <TextView
         android:id="@+id/tv_amount"
@@ -58,13 +58,13 @@
         android:layout_marginEnd="@dimen/regular_margin"
         android:fontFamily="@font/rubik"
         android:includeFontPadding="false"
-        android:text="-75.0"
         android:textColor="@color/negative_red"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_category"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="-75.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,132 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_black"
-    tools:context=".ui.fragments.StatsFragment">
+    android:background="@color/window_black">
 
-    <TextView
-        android:id="@+id/lbl_total"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/total"
-        android:textAppearance="@style/Text.Heading.Medium"
-        android:textColor="@color/light_gray"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/window_black"
+        app:liftOnScroll="true">
 
-    <TextView
-        android:id="@+id/tv_total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textAppearance="@style/Text.Heading.Small"
-        android:textColor="@color/negative_red"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lbl_total"
-        tools:text="-35,453" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/window_black"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            tools:context=".ui.fragments.StatsFragment">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pie_chart"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_marginHorizontal="16dp"
+            <TextView
+                android:id="@+id/lbl_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/rubik"
+                android:text="@string/total"
+                android:textColor="@color/light_gray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:textAppearance="@style/Text.Heading.Small"
+                android:textColor="@color/negative_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_total"
+                tools:text="-35,453" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart"
+                android:layout_width="324dp"
+                android:layout_height="324dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_total" />
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="3dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_category"
+                app:layout_constraintEnd_toEndOf="@id/pie_chart"
+                app:layout_constraintStart_toStartOf="@id/pie_chart"
+                app:layout_constraintTop_toTopOf="@id/pie_chart"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:src="@drawable/circle_shopping" />
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:paddingHorizontal="124dp"
+                android:textAppearance="@style/Text.Heading.Small"
+                app:layout_constraintBottom_toTopOf="@id/tv_sum"
+                app:layout_constraintEnd_toEndOf="@id/pie_chart"
+                app:layout_constraintStart_toStartOf="@id/pie_chart"
+                app:layout_constraintTop_toBottomOf="@id/img_icon"
+                tools:text="Transportation" />
+
+            <TextView
+                android:id="@+id/tv_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:paddingHorizontal="124dp"
+                android:textAppearance="@style/Text.Heading.Small"
+                android:textColor="@color/negative_red"
+                app:layout_constraintBottom_toTopOf="@id/tv_percent"
+                app:layout_constraintEnd_toEndOf="@id/pie_chart"
+                app:layout_constraintStart_toStartOf="@id/pie_chart"
+                app:layout_constraintTop_toBottomOf="@id/tv_category"
+                tools:text="-345" />
+
+            <TextView
+                android:id="@+id/tv_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:paddingHorizontal="124dp"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/secondary_gray"
+                app:layout_constraintBottom_toBottomOf="@id/pie_chart"
+                app:layout_constraintEnd_toEndOf="@id/pie_chart"
+                app:layout_constraintStart_toStartOf="@id/pie_chart"
+                app:layout_constraintTop_toBottomOf="@id/tv_sum"
+                tools:text="23.5%" />
+
+            <!--        <androidx.recyclerview.widget.RecyclerView-->
+            <!--            android:id="@+id/recycler_category_expenses"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="0dp"-->
+            <!--            android:layout_marginTop="8dp"-->
+            <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintStart_toStartOf="parent"-->
+            <!--            app:layout_constraintTop_toBottomOf="@id/pie_chart" />-->
+
+            <ImageView
+                android:id="@+id/img_dollar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/regular_margin"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/lbl_empty_entries"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_total"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:srcCompat="@drawable/circle_dollar"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/lbl_empty_entries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="@dimen/regular_margin"
+                android:text="@string/no_entries_for_this_period"
+                android:textAlignment="center"
+                android:textAppearance="@style/Text.Secondary"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_dollar"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_today_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/regular_margin"
+                android:text="@string/category_expenses"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/primary_white"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_expenses"
+                app:drawableTint="@color/primary_white" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_category_expenses"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_total" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <ImageView
-        android:id="@+id/img_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="3dp"
-        app:layout_constraintBottom_toTopOf="@id/tv_category"
-        app:layout_constraintEnd_toEndOf="@id/pie_chart"
-        app:layout_constraintStart_toStartOf="@id/pie_chart"
-        app:layout_constraintTop_toTopOf="@id/pie_chart"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:src="@drawable/circle_shopping" />
-
-    <TextView
-        android:id="@+id/tv_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:paddingHorizontal="124dp"
-        android:textAppearance="@style/Text.Heading.Small"
-        app:layout_constraintBottom_toTopOf="@id/tv_sum"
-        app:layout_constraintEnd_toEndOf="@id/pie_chart"
-        app:layout_constraintStart_toStartOf="@id/pie_chart"
-        app:layout_constraintTop_toBottomOf="@id/img_icon"
-        tools:text="Transportation" />
-
-    <TextView
-        android:id="@+id/tv_sum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:paddingHorizontal="124dp"
-        android:textAppearance="@style/Text.Heading.Small"
-        android:textColor="@color/negative_red"
-        app:layout_constraintBottom_toTopOf="@id/tv_percent"
-        app:layout_constraintEnd_toEndOf="@id/pie_chart"
-        app:layout_constraintStart_toStartOf="@id/pie_chart"
-        app:layout_constraintTop_toBottomOf="@id/tv_category"
-        tools:text="-345" />
-
-    <TextView
-        android:id="@+id/tv_percent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:paddingHorizontal="124dp"
-        android:textAppearance="@style/Text.Secondary"
-        android:textColor="@color/secondary_gray"
-        app:layout_constraintBottom_toBottomOf="@id/pie_chart"
-        app:layout_constraintEnd_toEndOf="@id/pie_chart"
-        app:layout_constraintStart_toStartOf="@id/pie_chart"
-        app:layout_constraintTop_toBottomOf="@id/tv_sum"
-        tools:text="23.5%" />
-
-    <ImageView
-        android:id="@+id/img_dollar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/regular_margin"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/lbl_empty_entries"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lbl_total"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/circle_dollar"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/lbl_empty_entries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="@dimen/regular_margin"
-        android:text="@string/no_entries_for_this_period"
-        android:textAlignment="center"
-        android:textAppearance="@style/Text.Secondary"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_dollar"
-        tools:visibility="visible" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
