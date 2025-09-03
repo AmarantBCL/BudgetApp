@@ -78,7 +78,8 @@ class BudgetViewModel @Inject constructor(
 
     val testCategoryData = getBudgetEntriesBetweenDates().map { budgets ->
         val list = mutableListOf<CategoryExpense>()
-        val totalSum = budgets.sumOf { it.budget.amount.toInt() }
+        val totalSum = budgets.filter { it.budget.creditOrDebit == "Debit" }
+            .sumOf { it.budget.amount.toInt() }
         budgets.filter { it.budget.creditOrDebit == "Debit" }
             .groupBy { it.budget.category }.forEach { (category, items) ->
             val amount = items.sumOf { it.budget.amount.toInt() }.toFloat()

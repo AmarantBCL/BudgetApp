@@ -278,7 +278,7 @@ class CalendarFragment : Fragment() {
     private fun setAppBarScrolling(calendarView: CardView, isEnabled: Boolean) {
         val params = calendarView.layoutParams as AppBarLayout.LayoutParams
         params.scrollFlags = if (isEnabled) {
-            AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+            AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
         } else {
             0
         }

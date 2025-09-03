@@ -2,12 +2,10 @@ package com.amarant.apps.budgetapp.ui.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -62,6 +60,7 @@ class StatsFragment : Fragment() {
 
     private fun initPieChart() {
         with(binding.pieChart) {
+            setNoDataText("")
             isRotationEnabled = false
             description.isEnabled = false
             legend.isEnabled = false
@@ -99,8 +98,7 @@ class StatsFragment : Fragment() {
             binding.pieChart.highlightValue(0f, 0)
             initSelectedSection(entries.first())
         }
-        binding.imgDollar.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
-        binding.lblEmptyEntries.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
+        initVisibility(entries.isEmpty())
     }
 
     private fun initRecyclerView() {
@@ -122,6 +120,14 @@ class StatsFragment : Fragment() {
             override fun onNothingSelected() {
             }
         })
+    }
+
+    private fun initVisibility(isEntriesEmpty: Boolean) {
+        binding.lblTotal.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.tvTotal.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.llNoEntries.visibility = if (isEntriesEmpty) View.VISIBLE else View.GONE
+        binding.lblCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
     }
 
     private fun getTotalSum(reports: List<BudgetUI>): Int {
