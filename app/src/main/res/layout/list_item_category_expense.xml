@@ -27,6 +27,8 @@
         android:layout_marginHorizontal="@dimen/regular_margin"
         android:layout_marginTop="@dimen/regular_margin"
         android:fontFamily="@font/rubik"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textColor="@color/primary_white"
         android:textSize="16sp"
         android:textStyle="bold"
