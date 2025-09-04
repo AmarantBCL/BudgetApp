@@ -31,12 +31,10 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
-import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @HiltViewModel
 class BudgetViewModel @Inject constructor(
@@ -76,7 +74,7 @@ class BudgetViewModel @Inject constructor(
 
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
 
-    val testCategoryData = getBudgetEntriesBetweenDates().map { budgets ->
+    val categoryExpenses = getBudgetEntriesBetweenDates().map { budgets ->
         val list = mutableListOf<CategoryExpense>()
         val totalSum = budgets.filter { it.budget.creditOrDebit == "Debit" }
             .sumOf { it.budget.amount.toInt() }
@@ -91,6 +89,19 @@ class BudgetViewModel @Inject constructor(
                 ))
             }
         list.sortedBy { it.amount }
+    }
+
+    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
+        return getBudgetEntriesBetweenDates().map { reports ->
+            val groupedList = mutableListOf<ReportsItem>()
+            reports.filter { it.budget.category == category }.groupBy { it.budget.date }.forEach { (date, items) ->
+                groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+                items.reversed().forEach { budgetUI ->
+                    groupedList.add(ReportsItem.Entry(budgetUI))
+                }
+            }
+            groupedList
+        }
     }
 
     fun setCustomRangeDisplayedText(text: String) {

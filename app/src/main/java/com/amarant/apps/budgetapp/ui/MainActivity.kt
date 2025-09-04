@@ -94,7 +94,8 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavBar.visibility = View.GONE
                 }
                 R.id.fragmentAddEntry,
-                R.id.addSavingFragment -> {
+                R.id.addSavingFragment,
+                R.id.expensesFragment -> {
                     binding.bottomNavBar.visibility = View.GONE
                 }
                 else -> {

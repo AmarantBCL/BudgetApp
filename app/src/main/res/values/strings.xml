@@ -60,7 +60,7 @@
     <string name="expense">Expense</string>
     <string name="income">Income</string>
     <string name="category">Category</string>
-    <string name="add_entry">Add Entry</string>
+    <string name="add_entry">Entry</string>
     <string name="calendar">Calendar</string>
     <string name="on_date">On %1$s</string>
     <string name="income_s">Income</string>
@@ -73,7 +73,7 @@
     <string name="no_entries_add_entry">No entries for this date.\nTap \'+ Add\' to get started!</string>
     <string name="no_entries_for_this_period">No entries for this period.</string>
     <string name="all">All</string>
-    <string name="add_target">Add Target</string>
+    <string name="add_target">Target</string>
     <string name="edit_target">Edit</string>
     <string name="select_target_date">Select target date</string>
     <string name="savings">Savings</string>
@@ -140,4 +140,5 @@
     <string name="stats">Stats</string>
     <string name="total">Total</string>
     <string name="category_expenses">Category Expenses</string>
+    <string name="total_in_category">Total on \"%1$s\"</string>
 </resources>

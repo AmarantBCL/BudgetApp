@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
@@ -77,7 +78,7 @@ class StatsFragment : Fragment() {
             binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             initDataSet(prepareDataSet(reports))
         }
-        budgetViewModel.testCategoryData.observe(viewLifecycleOwner) {
+        budgetViewModel.categoryExpenses.observe(viewLifecycleOwner) {
             categoryExpenseAdapter.submitList(it)
         }
     }
@@ -107,7 +108,8 @@ class StatsFragment : Fragment() {
         binding.recyclerCategoryExpenses.addItemDecoration(divider)
         binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
         categoryExpenseAdapter.onCategoryExpenseClickListener = {
-
+            val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(it)
+            findNavController().navigate(action)
         }
     }
 

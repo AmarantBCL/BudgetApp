@@ -159,5 +159,22 @@
         android:id="@+id/statsFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.StatsFragment"
         android:label="@string/stats"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_statsFragment_to_expensesFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:destination="@id/expensesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.ExpensesFragment"
+        android:label="@string/expenses"
+        tools:layout="@layout/fragment_expenses" >
+        <argument
+            android:name="category"
+            app:argType="com.amarant.apps.budgetapp.entities.Category" />
+    </fragment>
 </navigation>

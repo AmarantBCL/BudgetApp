@@ -61,7 +61,7 @@
     <string name="expense">Расход</string>
     <string name="income">Доход</string>
     <string name="category">Категория</string>
-    <string name="add_entry">Добавить запись</string>
+    <string name="add_entry">Запись</string>
     <string name="calendar">Календарь</string>
     <string name="on_date">На %1$s</string>
     <string name="income_s">Доходы</string>
@@ -74,7 +74,7 @@
     <string name="no_entries_add_entry">Нет записей на эту дату.\nНажмите \'+ Доб.\' чтобы начать!</string>
     <string name="no_entries_for_this_period">Нет записей за этот период.</string>
     <string name="all">Все</string>
-    <string name="add_target">Добавить цель</string>
+    <string name="add_target">Цель</string>
     <string name="edit_target">Обновить</string>
     <string name="select_target_date">Укажите дату</string>
     <string name="savings">Копилка</string>
@@ -140,5 +140,6 @@
     <string name="sum">Сумма</string>
     <string name="stats">Статистика</string>
     <string name="total">Общая сумма</string>
-    <string name="category_expenses">Траты по категориям</string>
+    <string name="category_expenses">Категории трат</string>
+    <string name="total_in_category">Всего на \"%1$s\"</string>
 </resources>
