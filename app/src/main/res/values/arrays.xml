@@ -65,6 +65,10 @@
         <item>This month</item>
         <item>Last month</item>
         <item>Last 2 months</item>
+        <item>Last quarter</item>
+        <item>Last 6 months</item>
+        <item>This year</item>
+        <item>Last 2 years</item>
         <item>All</item>
         <item>Custom</item>
     </string-array>

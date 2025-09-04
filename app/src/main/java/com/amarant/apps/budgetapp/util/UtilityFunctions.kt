@@ -94,4 +94,49 @@ object UtilityFunctions {
         calendar.set(Calendar.MILLISECOND, 0)
         return calendar.timeInMillis
     }
+
+    fun getStartOfLastThreeMonths(): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -2)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
+
+    fun getStartOfLastSixMonths(): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, -5)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
+
+    fun getStartOfYear(): Long {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, Calendar.JANUARY)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
+
+    fun getStartOfLastTwoYears(): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.YEAR, -1)
+        calendar.set(Calendar.MONTH, Calendar.JANUARY)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
 }

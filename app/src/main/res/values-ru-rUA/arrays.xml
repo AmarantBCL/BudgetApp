@@ -42,6 +42,10 @@
         <item>Этот месяц</item>
         <item>Прош. месяц</item>
         <item>Посл. 2 месяца</item>
+        <item>Посл. квартал</item>
+        <item>Полгода</item>
+        <item>Этот год</item>
+        <item>Посл. 2 года</item>
         <item>Все</item>
         <item>Свой</item>
     </string-array>

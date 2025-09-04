@@ -11,6 +11,10 @@ object PeriodUtils {
     const val PERIOD_THIS_MONTH = 6
     const val PERIOD_LAST_MONTH = 7
     const val PERIOD_LAST_TWO_MONTHS = 8
-    const val PERIOD_SHOW_ALL = 9
-    const val PERIOD_CUSTOM = 10
+    const val PERIOD_LAST_THREE_MONTHS = 9
+    const val PERIOD_LAST_SIX_MONTHS = 10
+    const val PERIOD_THIS_YEAR = 11
+    const val PERIOD_LAST_TWO_YEARS = 12
+    const val PERIOD_SHOW_ALL = 13
+    const val PERIOD_CUSTOM = 14
 }

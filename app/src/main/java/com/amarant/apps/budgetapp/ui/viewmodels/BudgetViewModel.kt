@@ -21,12 +21,16 @@ import com.amarant.apps.budgetapp.repository.BudgetRepository
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_SIX_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_THREE_MONTHS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_YEARS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_WEEK
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_YEAR
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
@@ -266,6 +270,10 @@ class BudgetViewModel @Inject constructor(
             PERIOD_THIS_MONTH -> UtilityFunctions.getStartOfMonth()
             PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfLastMonth()
             PERIOD_LAST_TWO_MONTHS -> UtilityFunctions.getStartOfLastMonth()
+            PERIOD_LAST_THREE_MONTHS -> UtilityFunctions.getStartOfLastThreeMonths()
+            PERIOD_LAST_SIX_MONTHS -> UtilityFunctions.getStartOfLastSixMonths()
+            PERIOD_THIS_YEAR -> UtilityFunctions.getStartOfYear()
+            PERIOD_LAST_TWO_YEARS -> UtilityFunctions.getStartOfLastTwoYears()
             else -> {
                 0L
             }
