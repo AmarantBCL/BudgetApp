@@ -98,12 +98,14 @@ class BudgetViewModel @Inject constructor(
     fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
         return getBudgetEntriesBetweenDates().map { reports ->
             val groupedList = mutableListOf<ReportsItem>()
-            reports.filter { it.budget.category == category }.groupBy { it.budget.date }.forEach { (date, items) ->
-                groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-                items.reversed().forEach { budgetUI ->
-                    groupedList.add(ReportsItem.Entry(budgetUI))
+            reports.filter { it.budget.category == category && it.budget.creditOrDebit == "Debit" }
+                .groupBy { it.budget.date }
+                .forEach { (date, items) ->
+                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+                    items.reversed().forEach { budgetUI ->
+                        groupedList.add(ReportsItem.Entry(budgetUI))
+                    }
                 }
-            }
             groupedList
         }
     }

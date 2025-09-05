@@ -154,7 +154,7 @@ class AddEntryFragment : Fragment() {
         entryViewModel.categories.observe(viewLifecycleOwner) {
             quickCategoriesAdapter.submitList(it) {
                 binding.scrollView.post {
-                    val top = binding.lblCategory.top
+                    val top = binding.btnAddEntry.top
                     binding.scrollView.smoothScrollTo(0, top)
                 }
             }

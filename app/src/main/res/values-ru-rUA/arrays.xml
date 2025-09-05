@@ -25,6 +25,8 @@
         <item>Спорт</item>
         <item>Музыка</item>
         <item>Техника</item>
+        <item>Ремонт</item>
+        <item>Цветы</item>
     </string-array>
 
     <string-array name="debit_or_credit">

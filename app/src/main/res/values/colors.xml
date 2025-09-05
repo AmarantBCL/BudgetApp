@@ -6,7 +6,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#32FA05</color>
-    <color name="red">#FA0505</color>
 
     <!-- New colors -->
     <color name="secondary_gray">#626260</color>
@@ -22,25 +21,32 @@
     <color name="dark_green">#2B5D3D</color>
 
     <!-- Category colors -->
+    <color name="red">#F44336</color>
     <color name="category_background">#F9F6FF</color>
-    <color name="orange">#E24F06</color>
-    <color name="pink">#E224A8</color>
-    <color name="blue">#215BED</color>
-    <color name="forest_green">#43A047</color>
-<!--    <color name="forest_green">#56C82C</color>-->
-    <color name="state_gray">#778899</color>
-    <color name="violet">#936AFE</color>
-    <color name="amber">#FFBF00</color>
-    <color name="indigo">#8F00FF</color>
-    <color name="rose">#FF1D8D</color>
+    <color name="orange">#FF9800</color>
+    <color name="pink">#7E57C2</color>
+    <color name="blue">#673AB7</color>
+    <color name="forest_green">#7CB342</color>
+    <color name="state_gray">#6D4C41</color>
+    <color name="violet">#7986CB</color>
+    <color name="amber">#FBC02D</color>
+    <color name="indigo">#9C27B0</color>
+    <color name="rose">#F06292</color>
     <color name="teal">#069494</color>
-    <color name="sky">#81D4FA</color>
-    <color name="light_orange">#FFA500</color>
+    <color name="sky">#29B6F6</color>
+    <color name="light_orange">#FDD835</color>
     <color name="cyan">#00BCD4</color>
-    <color name="brown">#8D6E63</color>
-<!--    <color name="brown">#9F2D01</color>-->
-    <color name="body">#FF6467</color>
+    <color name="brown">#FF5722</color>
+    <color name="body">#FF8A65</color>
     <color name="deep_blue">#2196F3</color>
+    <color name="alternative_gray">#757575</color>
+    <color name="lime">#C0CA33</color>
+    <color name="black_white">#3F51B5</color>
+    <color name="gray_hound">#757575</color>
+    <color name="light_green">#4CAF50</color>
+    <color name="beauty">#EC407A</color>
+    <color name="flowers">#E57373</color>
+    <color name="deep_orange">#607D8B</color>
 
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>

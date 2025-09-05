@@ -43,6 +43,8 @@
         <item>Sports</item>
         <item>Music</item>
         <item>Appliances</item>
+        <item>Renovation</item>
+        <item>Flowers</item>
     </string-array>
 
     <string-array name="operation_types">
