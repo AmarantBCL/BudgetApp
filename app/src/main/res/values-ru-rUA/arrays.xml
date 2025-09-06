@@ -3,14 +3,14 @@
     <string-array name="categories">
         <item>Все</item>
         <item>Продукты</item>
-        <item>Рестораны</item>
+        <item>Рестораны и кафе</item>
         <item>Переводы</item>
         <item>Доход</item>
         <item>Коммуналка</item>
         <item>Одежда</item>
         <item>Дом</item>
         <item>Транспорт</item>
-        <item>Красота</item>
+        <item>Красота и уход</item>
         <item>Здоровье</item>
         <item>Питомцы</item>
         <item>Подписки</item>
@@ -19,14 +19,19 @@
         <item>Путешествия</item>
         <item>Подарки</item>
         <item>Благотворительность</item>
-        <item>Налоги</item>
-        <item>Аренда</item>
+        <item>Налоги и штрафы</item>
+        <item>Жильё и аренда</item>
         <item>Дети</item>
         <item>Спорт</item>
         <item>Музыка</item>
         <item>Техника</item>
         <item>Ремонт</item>
         <item>Цветы</item>
+        <item>Кредиты и займы</item>
+        <item>Мебель</item>
+        <item>Работа и бизнес</item>
+        <item>Сбережения</item>
+        <item>События</item>
     </string-array>
 
     <string-array name="debit_or_credit">

@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.entities
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.amarant.apps.budgetapp.R
@@ -16,7 +17,7 @@ enum class Category(
     GROCERIES("Groceries", R.drawable.circle_shopping, R.drawable.ic_shopping, R.color.light_green),
     RESTAURANTS("Restaurants", R.drawable.circle_cafe, R.drawable.ic_coffee, R.color.orange),
     TRANSFERS("Transfers", R.drawable.circle_transfer, R.drawable.ic_credit_card, R.color.black_white), // form. Cash
-    INCOME("Income", R.drawable.circle_income, R.drawable.ic_trend, R.color.positive_green), // NEW
+    INCOME("Income", R.drawable.circle_income, R.drawable.ic_income, R.color.income), // NEW
     UTILITIES("Utilities", R.drawable.circle_utilities, R.drawable.ic_thunder, R.color.amber),
     CLOTHING("Clothes", R.drawable.circle_clothing, R.drawable.ic_tshirt, R.color.violet),
     HOME("Home", R.drawable.circle_housing, R.drawable.ic_home, R.color.forest_green), // form. House
@@ -37,11 +38,17 @@ enum class Category(
     MUSIC("Music", R.drawable.circle_music, R.drawable.ic_note, R.color.indigo),
     APPLIANCES("Appliances", R.drawable.circle_appliances, R.drawable.ic_tv, R.color.gray_hound),
     RENOVATION("Renovation", R.drawable.circle_renovation, R.drawable.ic_hammer, R.color.brown),
-    FLOWERS("Flowers", R.drawable.circle_flowers, R.drawable.ic_flower, R.color.flowers);
+    FLOWERS("Flowers", R.drawable.circle_flowers, R.drawable.ic_flower, R.color.flowers),
+    LOANS("Loans", R.drawable.circle_loans, R.drawable.ic_loan, R.color.loan),
+    FURNITURE("Furniture", R.drawable.circle_furniture, R.drawable.ic_sofa, R.color.furniture),
+    WORK_BUSINESS("Work_Business", R.drawable.circle_business, R.drawable.ic_briefcase, R.color.business),
+    SAVINGS("Savings", R.drawable.circle_savings, R.drawable.ic_savings, R.color.savings),
+    EVENTS("Events", R.drawable.circle_events, R.drawable.ic_event, R.color.event);
 
     fun getLocalizedName(context: Context): String {
         val array = context.resources.getStringArray(R.array.categories)
         val index = this.ordinal
+        Log.e("WTF", this.toString())
         return array[index]
     }
 

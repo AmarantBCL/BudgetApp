@@ -21,18 +21,18 @@
     <color name="dark_green">#2B5D3D</color>
 
     <!-- Category colors -->
-    <color name="red">#F44336</color>
     <color name="category_background">#F9F6FF</color>
+    <color name="red">#D32F2F</color>
     <color name="orange">#FF9800</color>
-    <color name="pink">#7E57C2</color>
+    <color name="pink">#9575CD</color>
     <color name="blue">#673AB7</color>
-    <color name="forest_green">#7CB342</color>
+    <color name="forest_green">#8BC34A</color>
     <color name="state_gray">#6D4C41</color>
     <color name="violet">#7986CB</color>
     <color name="amber">#FBC02D</color>
     <color name="indigo">#9C27B0</color>
     <color name="rose">#F06292</color>
-    <color name="teal">#069494</color>
+    <color name="teal">#81C784</color>
     <color name="sky">#29B6F6</color>
     <color name="light_orange">#FDD835</color>
     <color name="cyan">#00BCD4</color>
@@ -45,14 +45,17 @@
     <color name="gray_hound">#757575</color>
     <color name="light_green">#4CAF50</color>
     <color name="beauty">#EC407A</color>
-    <color name="flowers">#E57373</color>
+    <color name="flowers">#EF9A9A</color>
     <color name="deep_orange">#607D8B</color>
+    <color name="income">#009688</color>
+    <color name="loan">#B0BEC5</color>
+    <color name="furniture">#8D6E63</color>
+    <color name="business">#1565C0</color>
+    <color name="savings">#4DB6AC</color>
+    <color name="event">#BA68C8</color>
 
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
     <color name="button_inactive">#F7F3F0</color>
     <color name="divider_color">#55656467</color>
-
-    <!-- Technical colors -->
-<!--    <color name="mtrl_textinput_default_box_stroke_color">#6B6B6C</color>-->
 </resources>

@@ -94,54 +94,6 @@ class AddEntryFragment : Fragment() {
         }
     }
 
-    private fun setClickListeners() {
-        binding.lblShowMore.setOnClickListener {
-            entryViewModel.changeExpandedState()
-        }
-        binding.btnAddEntry.setOnClickListener {
-            val isDebit = binding.btnExpense.isChecked
-            val amount = binding.tilAmount.editText?.text.toString()
-            val purpose = binding.tilName.editText?.text.toString()
-            val budgetEntry = args.budgetEntry
-            var wasEntrySubmitted = false
-            var message = getString(R.string.entry_added)
-            if (budgetEntry == null) {
-                val selectedDate = args.selectedDate
-                wasEntrySubmitted = budgetViewModel.validateAndAddEntries(
-                    isDebit,
-                    amount,
-                    purpose,
-                    selectedDate,
-                    selectedCategory
-                )
-            } else {
-                val id = budgetEntry.budget.id ?: -1
-                wasEntrySubmitted = budgetViewModel.validateAndEditEntries(
-                    id,
-                    isDebit,
-                    amount,
-                    purpose,
-                    selectedCategory
-                )
-                message = getString(R.string.entry_edited)
-            }
-            submitEntry(wasEntrySubmitted, purpose, message)
-        }
-        binding.editName.onItemClickListener = AdapterView.OnItemClickListener {
-                _, _, _, _ ->
-                binding.editName.clearFocus()
-                hideKeyboardFrom(binding.editName)
-        }
-        binding.editName.setOnEditorActionListener { textView, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboardFrom(textView)
-                textView.clearFocus()
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-    }
-
     private fun observeViewModel() {
         entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categories ->
 //        entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categoryStats ->
@@ -170,6 +122,54 @@ class AddEntryFragment : Fragment() {
         }
         entryViewModel.selectedCategories.observe(viewLifecycleOwner) {
 //            Log.d("WTF", "Cats: $it") // TODO Continue with selected categories
+        }
+    }
+
+    private fun setClickListeners() {
+        binding.lblShowMore.setOnClickListener {
+            entryViewModel.changeExpandedState()
+        }
+        binding.btnAddEntry.setOnClickListener {
+            val isDebit = binding.btnExpense.isChecked
+            val amount = binding.tilAmount.editText?.text.toString()
+            val purpose = binding.tilName.editText?.text.toString()
+            val budgetEntry = args.budgetEntry
+            val wasEntrySubmitted: Boolean
+            var message = getString(R.string.entry_added)
+            if (budgetEntry == null) {
+                val selectedDate = args.selectedDate
+                wasEntrySubmitted = budgetViewModel.validateAndAddEntries(
+                    isDebit,
+                    amount,
+                    purpose,
+                    selectedDate,
+                    selectedCategory
+                )
+            } else {
+                val id = budgetEntry.budget.id ?: -1
+                wasEntrySubmitted = budgetViewModel.validateAndEditEntries(
+                    id,
+                    isDebit,
+                    amount,
+                    purpose,
+                    selectedCategory
+                )
+                message = getString(R.string.entry_edited)
+            }
+            submitEntry(wasEntrySubmitted, purpose, message)
+        }
+        binding.editName.onItemClickListener = AdapterView.OnItemClickListener {
+                _, _, _, _ ->
+            binding.editName.clearFocus()
+            hideKeyboardFrom(binding.editName)
+        }
+        binding.editName.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboardFrom(textView)
+                textView.clearFocus()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
     }
 
