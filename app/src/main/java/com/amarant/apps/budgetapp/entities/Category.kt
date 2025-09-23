@@ -43,7 +43,8 @@ enum class Category(
     FURNITURE("Furniture", R.drawable.circle_furniture, R.drawable.ic_sofa, R.color.furniture),
     WORK_BUSINESS("Work_Business", R.drawable.circle_business, R.drawable.ic_briefcase, R.color.business),
     SAVINGS("Savings", R.drawable.circle_savings, R.drawable.ic_savings, R.color.savings),
-    EVENTS("Events", R.drawable.circle_events, R.drawable.ic_event, R.color.event);
+    EVENTS("Events", R.drawable.circle_events, R.drawable.ic_event, R.color.event),
+    OTHER("Other", R.drawable.circle_other, R.drawable.ic_other, R.color.primary_white);
 
     fun getLocalizedName(context: Context): String {
         val array = context.resources.getStringArray(R.array.categories)

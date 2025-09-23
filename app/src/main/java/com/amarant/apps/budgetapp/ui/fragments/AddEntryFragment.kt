@@ -17,6 +17,7 @@ import com.amarant.apps.budgetapp.databinding.FragmentAddEntryBinding
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.EntryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
@@ -128,6 +129,9 @@ class AddEntryFragment : Fragment() {
     private fun setClickListeners() {
         binding.lblShowMore.setOnClickListener {
             entryViewModel.changeExpandedState()
+            // TODO Next step is to support BottomSheetDialog for all categories and their selection
+//            val bottomSheet = FiltersBottomSheetFragment.newInstance()
+//            bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
         }
         binding.btnAddEntry.setOnClickListener {
             val isDebit = binding.btnExpense.isChecked

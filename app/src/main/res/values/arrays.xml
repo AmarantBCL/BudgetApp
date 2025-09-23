@@ -50,6 +50,7 @@
         <item>Work &amp; business</item>
         <item>Savings</item>
         <item>Events</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="operation_types">

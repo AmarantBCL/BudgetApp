@@ -32,6 +32,7 @@
         <item>Работа и бизнес</item>
         <item>Сбережения</item>
         <item>События</item>
+        <item>Другое</item>
     </string-array>
 
     <string-array name="debit_or_credit">
