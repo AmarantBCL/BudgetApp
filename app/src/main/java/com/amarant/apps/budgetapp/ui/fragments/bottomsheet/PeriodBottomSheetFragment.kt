@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.BottomSheetPeriodBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.MessageUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -144,7 +145,7 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
             .setTitleText(getString(R.string.select_range))
             .build()
         picker.addOnPositiveButtonClickListener { selection ->
-            customStartDate = selection.first
+            customStartDate = DateUtils.toLocalStartOfDay(selection.first)
             customEndDate = selection.second
             val startText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customStartDate))
             val endText = SimpleDateFormat("d MMM", Locale.getDefault()).format(Date(customEndDate))
