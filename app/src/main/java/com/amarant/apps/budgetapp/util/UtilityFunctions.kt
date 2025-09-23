@@ -1,5 +1,18 @@
 package com.amarant.apps.budgetapp.util
 
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_SIX_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_THREE_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_YEARS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_WEEK
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_YEAR
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -16,6 +29,42 @@ object UtilityFunctions {
         val cal = Calendar.getInstance()
         cal.timeInMillis = dateInMillis
         return dateFormat.format(cal.time)
+    }
+
+    fun calculateStartPeriod(period: Int): Long {
+        val start = when (period) {
+            PERIOD_TODAY -> getToday()
+            PERIOD_YESTERDAY -> getYesterday()
+            PERIOD_LAST_TWO_DAYS -> getYesterday()
+            PERIOD_THIS_WEEK -> getStartOfWeek()
+            PERIOD_LAST_WEEK -> getStartOfPreviousWeek()
+            PERIOD_LAST_TWO_WEEKS -> getStartOfPreviousWeek()
+            PERIOD_THIS_MONTH -> getStartOfMonth()
+            PERIOD_LAST_MONTH -> getStartOfLastMonth()
+            PERIOD_LAST_TWO_MONTHS -> getStartOfLastMonth()
+            PERIOD_LAST_THREE_MONTHS -> getStartOfLastThreeMonths()
+            PERIOD_LAST_SIX_MONTHS -> getStartOfLastSixMonths()
+            PERIOD_THIS_YEAR -> getStartOfYear()
+            PERIOD_LAST_TWO_YEARS -> getStartOfLastTwoYears()
+            else -> {
+                0L
+            }
+        }
+        return start
+    }
+
+    fun calculateEndPeriod(period: Int): Long {
+        val end = when (period) {
+            PERIOD_YESTERDAY -> getToday() - 1000
+            PERIOD_LAST_WEEK -> getStartOfWeek() - 1000
+            PERIOD_LAST_MONTH -> getStartOfMonth() - 1000
+            else -> {
+                val dateInMillis = Calendar.getInstance().timeInMillis
+                val startDate = dateMillisToString(dateInMillis)
+                dateStringToMillis(startDate)
+            }
+        }
+        return end
     }
 
     fun getEndDate(daysToCount: Int): String {

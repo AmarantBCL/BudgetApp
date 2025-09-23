@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.BottomSheetPeriodBinding
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.DateUtils
 import com.amarant.apps.budgetapp.util.MessageUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
@@ -32,12 +33,30 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
         get() = _binding ?: throw RuntimeException("BottomSheetPeriodBinding == null")
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val statsViewModel: StatsViewModel by activityViewModels()
 
     private var selectedPeriod = 0
     private var customStartDate = 0L
     private var customEndDate = 0L
     private var customRangeText = ""
     private var isCustomDateSet = false
+    private var isStats = false
+
+    var periodSelectionListener: PeriodSelectionListener? = null
+
+    interface PeriodSelectionListener {
+        fun onPeriodSelected(
+            periodId: Int,
+            customStart: Long,
+            customEnd: Long,
+            customText: String
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isStats = requireArguments().getBoolean(KEY_IS_STATS)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,24 +96,44 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun observeViewModel() {
-        budgetViewModel.period.observe(viewLifecycleOwner) {
-            val chip = binding.chipGroupPeriod.getChildAt(it) as Chip
-            chip.isChecked = true
-            selectedPeriod = it
-            binding.tvSelectedPeriod.text = chip.text
-        }
-        budgetViewModel.customRangeText.observe(viewLifecycleOwner) {
-            if (it != "") {
-                val chip = binding.chipGroupPeriod.getChildAt(CUSTOM_DATE_RANGE_ID) as Chip
-                isCustomDateSet = true
-                chip.text = it
+        if (isStats) {
+            statsViewModel.period.observe(viewLifecycleOwner) {
+                val chip = binding.chipGroupPeriod.getChildAt(it) as Chip
+                chip.isChecked = true
+                selectedPeriod = it
+                binding.tvSelectedPeriod.text = chip.text
             }
-            customRangeText = it
-        }
-        budgetViewModel.dateRange.observe(viewLifecycleOwner) {
-//            Log.d("WTF", "dateRange: $it")
-            customStartDate = it.first
-            customEndDate = it.second
+            statsViewModel.customRangeText.observe(viewLifecycleOwner) {
+                if (it != "") {
+                    val chip = binding.chipGroupPeriod.getChildAt(CUSTOM_DATE_RANGE_ID) as Chip
+                    isCustomDateSet = true
+                    chip.text = it
+                }
+                customRangeText = it
+            }
+            statsViewModel.dateRange.observe(viewLifecycleOwner) {
+                customStartDate = it.first
+                customEndDate = it.second
+            }
+        } else {
+            budgetViewModel.period.observe(viewLifecycleOwner) {
+                val chip = binding.chipGroupPeriod.getChildAt(it) as Chip
+                chip.isChecked = true
+                selectedPeriod = it
+                binding.tvSelectedPeriod.text = chip.text
+            }
+            budgetViewModel.customRangeText.observe(viewLifecycleOwner) {
+                if (it != "") {
+                    val chip = binding.chipGroupPeriod.getChildAt(CUSTOM_DATE_RANGE_ID) as Chip
+                    isCustomDateSet = true
+                    chip.text = it
+                }
+                customRangeText = it
+            }
+            budgetViewModel.dateRange.observe(viewLifecycleOwner) {
+                customStartDate = it.first
+                customEndDate = it.second
+            }
         }
     }
 
@@ -118,13 +157,14 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
                     )
                     return@setOnClickListener
                 }
-                budgetViewModel.changeDateRange(selectedPeriod, isPeriodOnly = true)
-                budgetViewModel.setReportsBetweenDates(customStartDate, customEndDate)
-                budgetViewModel.setCustomRangeDisplayedText(customRangeText)
+//                budgetViewModel.changeDateRange(selectedPeriod, isPeriodOnly = true)
+//                budgetViewModel.setReportsBetweenDates(customStartDate, customEndDate)
+//                budgetViewModel.setCustomRangeDisplayedText(customRangeText)
             } else {
-                budgetViewModel.changeDateRange(selectedPeriod)
-                budgetViewModel.setCustomRangeDisplayedText("")
+//                budgetViewModel.changeDateRange(selectedPeriod)
+//                budgetViewModel.setCustomRangeDisplayedText("")
             }
+            periodSelectionListener?.onPeriodSelected(selectedPeriod, customStartDate, customEndDate, customRangeText)
             dialog?.dismiss()
         }
     }
@@ -161,12 +201,18 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
 
     companion object {
 
-        private const val CUSTOM_DATE_RANGE_ID = PERIOD_CUSTOM
+        const val CUSTOM_DATE_RANGE_ID = PERIOD_CUSTOM
 
         const val TAG = "PeriodBottomSheet"
 
-        fun newInstance(): PeriodBottomSheetFragment {
-            return PeriodBottomSheetFragment()
+        private const val KEY_IS_STATS = "stats"
+
+        fun newInstance(isStats: Boolean): PeriodBottomSheetFragment {
+            return PeriodBottomSheetFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(KEY_IS_STATS, isStats)
+                }
+            }
         }
     }
 }

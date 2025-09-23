@@ -1,24 +1,21 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentExpensesBinding
-import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
-import com.amarant.apps.budgetapp.ui.adapter.TodayBudgetAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
-import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
 
 class ExpensesFragment : Fragment() {
@@ -29,7 +26,7 @@ class ExpensesFragment : Fragment() {
     private val binding: FragmentExpensesBinding
         get() = _binding ?: throw RuntimeException("FragmentExpensesBinding == null")
 
-    private val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val statsViewModel: StatsViewModel by activityViewModels()
 
     private lateinit var budgetAdapter: ReportsAdapter
 
@@ -65,7 +62,7 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        budgetViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
+        statsViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
             val totalSum = reports.filterIsInstance<ReportsItem.Entry>()
                 .sumOf { it.entry.budget.amount.toInt() }.toFloat().toString()
             budgetAdapter.submitList(reports)

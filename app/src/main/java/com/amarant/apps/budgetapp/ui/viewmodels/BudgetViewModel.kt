@@ -34,6 +34,8 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_YEAR
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_TODAY
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_YESTERDAY
 import com.amarant.apps.budgetapp.util.UtilityFunctions
+import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateEndPeriod
+import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateStartPeriod
 import com.amarant.apps.budgetapp.util.UtilityFunctions.dateMillisToString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -95,20 +97,20 @@ class BudgetViewModel @Inject constructor(
         list.sortedBy { it.amount }
     }
 
-    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
-        return getBudgetEntriesBetweenDates().map { reports ->
-            val groupedList = mutableListOf<ReportsItem>()
-            reports.filter { it.budget.category == category && it.budget.creditOrDebit == "Debit" }
-                .groupBy { it.budget.date }
-                .forEach { (date, items) ->
-                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-                    items.reversed().forEach { budgetUI ->
-                        groupedList.add(ReportsItem.Entry(budgetUI))
-                    }
-                }
-            groupedList
-        }
-    }
+//    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
+//        return getBudgetEntriesBetweenDates().map { reports ->
+//            val groupedList = mutableListOf<ReportsItem>()
+//            reports.filter { it.budget.category == category && it.budget.creditOrDebit == "Debit" }
+//                .groupBy { it.budget.date }
+//                .forEach { (date, items) ->
+//                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+//                    items.reversed().forEach { budgetUI ->
+//                        groupedList.add(ReportsItem.Entry(budgetUI))
+//                    }
+//                }
+//            groupedList
+//        }
+//    }
 
     fun setCustomRangeDisplayedText(text: String) {
         _customRangeText.value = text
@@ -261,41 +263,41 @@ class BudgetViewModel @Inject constructor(
         _reportType.value = type
     }
 
-    private fun calculateStartPeriod(period: Int): Long {
-        val start = when (period) {
-            PERIOD_TODAY -> UtilityFunctions.getToday()
-            PERIOD_YESTERDAY -> UtilityFunctions.getYesterday()
-            PERIOD_LAST_TWO_DAYS -> UtilityFunctions.getYesterday()
-            PERIOD_THIS_WEEK -> UtilityFunctions.getStartOfWeek()
-            PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfPreviousWeek()
-            PERIOD_LAST_TWO_WEEKS -> UtilityFunctions.getStartOfPreviousWeek()
-            PERIOD_THIS_MONTH -> UtilityFunctions.getStartOfMonth()
-            PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfLastMonth()
-            PERIOD_LAST_TWO_MONTHS -> UtilityFunctions.getStartOfLastMonth()
-            PERIOD_LAST_THREE_MONTHS -> UtilityFunctions.getStartOfLastThreeMonths()
-            PERIOD_LAST_SIX_MONTHS -> UtilityFunctions.getStartOfLastSixMonths()
-            PERIOD_THIS_YEAR -> UtilityFunctions.getStartOfYear()
-            PERIOD_LAST_TWO_YEARS -> UtilityFunctions.getStartOfLastTwoYears()
-            else -> {
-                0L
-            }
-        }
-        return start
-    }
+//    private fun calculateStartPeriod(period: Int): Long {
+//        val start = when (period) {
+//            PERIOD_TODAY -> UtilityFunctions.getToday()
+//            PERIOD_YESTERDAY -> UtilityFunctions.getYesterday()
+//            PERIOD_LAST_TWO_DAYS -> UtilityFunctions.getYesterday()
+//            PERIOD_THIS_WEEK -> UtilityFunctions.getStartOfWeek()
+//            PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfPreviousWeek()
+//            PERIOD_LAST_TWO_WEEKS -> UtilityFunctions.getStartOfPreviousWeek()
+//            PERIOD_THIS_MONTH -> UtilityFunctions.getStartOfMonth()
+//            PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfLastMonth()
+//            PERIOD_LAST_TWO_MONTHS -> UtilityFunctions.getStartOfLastMonth()
+//            PERIOD_LAST_THREE_MONTHS -> UtilityFunctions.getStartOfLastThreeMonths()
+//            PERIOD_LAST_SIX_MONTHS -> UtilityFunctions.getStartOfLastSixMonths()
+//            PERIOD_THIS_YEAR -> UtilityFunctions.getStartOfYear()
+//            PERIOD_LAST_TWO_YEARS -> UtilityFunctions.getStartOfLastTwoYears()
+//            else -> {
+//                0L
+//            }
+//        }
+//        return start
+//    }
 
-    private fun calculateEndPeriod(period: Int): Long {
-        val end = when (period) {
-            PERIOD_YESTERDAY -> UtilityFunctions.getToday() - 1000
-            PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfWeek() - 1000
-            PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfMonth() - 1000
-            else -> {
-                val dateInMillis = Calendar.getInstance().timeInMillis
-                val startDate = dateMillisToString(dateInMillis)
-                UtilityFunctions.dateStringToMillis(startDate)
-            }
-        }
-        return end
-    }
+//    private fun calculateEndPeriod(period: Int): Long {
+//        val end = when (period) {
+//            PERIOD_YESTERDAY -> UtilityFunctions.getToday() - 1000
+//            PERIOD_LAST_WEEK -> UtilityFunctions.getStartOfWeek() - 1000
+//            PERIOD_LAST_MONTH -> UtilityFunctions.getStartOfMonth() - 1000
+//            else -> {
+//                val dateInMillis = Calendar.getInstance().timeInMillis
+//                val startDate = dateMillisToString(dateInMillis)
+//                UtilityFunctions.dateStringToMillis(startDate)
+//            }
+//        }
+//        return end
+//    }
 
     private companion object {
         private const val DEFAULT_PERIOD = PERIOD_THIS_MONTH

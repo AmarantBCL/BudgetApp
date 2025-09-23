@@ -15,9 +15,13 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentStatsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -32,7 +36,8 @@ class StatsFragment : Fragment() {
     private val binding: FragmentStatsBinding
         get() = _binding ?: throw RuntimeException("FragmentStatsBinding == null")
 
-    private val budgetViewModel: BudgetViewModel by activityViewModels()
+//    private val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val statsViewModel: StatsViewModel by activityViewModels()
 
     private lateinit var categoryExpenseAdapter: CategoryExpenseAdapter
 
@@ -73,13 +78,50 @@ class StatsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
+        statsViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             totalSum = getTotalSum(reports)
             binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             initDataSet(prepareDataSet(reports))
         }
-        budgetViewModel.categoryExpenses.observe(viewLifecycleOwner) {
+//        budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
+//            totalSum = getTotalSum(reports)
+//            binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+//            initDataSet(prepareDataSet(reports))
+//        }
+        statsViewModel.categoryExpenses.observe(viewLifecycleOwner) {
             categoryExpenseAdapter.submitList(it)
+        }
+//        budgetViewModel.categoryExpenses.observe(viewLifecycleOwner) {
+//            categoryExpenseAdapter.submitList(it)
+//        }
+        statsViewModel.period.observe(viewLifecycleOwner) {
+            binding.chipPeriod.text = resources.getStringArray(R.array.periods)[it]
+            if (it != PERIOD_SHOW_ALL) {
+                binding.chipPeriod.setChipBackgroundColorResource(R.color.background_dark_purple)
+            } else {
+                binding.chipPeriod.setChipBackgroundColorResource(R.color.card_background)
+            }
+        }
+        statsViewModel.customRangeText.observe(viewLifecycleOwner) {
+            if (it != "") {
+                binding.chipPeriod.text = it
+            }
+        }
+        statsViewModel.reportType.observe(viewLifecycleOwner) {
+            val typeArr = resources.getStringArray(R.array.report_types)
+            binding.chipType.text = typeArr[it.ordinal]
+            val iconRes = when(it) {
+                ReportType.INCOME -> R.drawable.ic_trend
+                ReportType.EXPENSE -> R.drawable.ic_expenses
+                else -> R.drawable.ic_loop
+            }
+            val drawable = ContextCompat.getDrawable(requireContext(), iconRes)
+            binding.chipType.chipIcon = drawable
+            if (it != ReportType.ALL) {
+                binding.chipType.setChipBackgroundColorResource(R.color.background_dark_purple)
+            } else {
+                binding.chipType.setChipBackgroundColorResource(R.color.card_background)
+            }
         }
     }
 
@@ -122,6 +164,22 @@ class StatsFragment : Fragment() {
             override fun onNothingSelected() {
             }
         })
+        binding.chipPeriod.setOnClickListener {
+            val bottomSheet = PeriodBottomSheetFragment.newInstance(isStats = true)
+            bottomSheet.periodSelectionListener = object : PeriodBottomSheetFragment.PeriodSelectionListener {
+                override fun onPeriodSelected(periodId: Int, customStart: Long, customEnd: Long, customText: String) {
+                    if (periodId == PeriodBottomSheetFragment.CUSTOM_DATE_RANGE_ID) {
+                        statsViewModel.changeDateRange(periodId, isPeriodOnly = true)
+                        statsViewModel.setReportsBetweenDates(customStart, customEnd)
+                        statsViewModel.setCustomRangeDisplayedText(customText)
+                    } else {
+                        statsViewModel.changeDateRange(periodId)
+                        statsViewModel.setCustomRangeDisplayedText("")
+                    }
+                }
+            }
+            bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
+        }
     }
 
     private fun initVisibility(isEntriesEmpty: Boolean) {
@@ -130,6 +188,12 @@ class StatsFragment : Fragment() {
         binding.llNoEntries.visibility = if (isEntriesEmpty) View.VISIBLE else View.GONE
         binding.lblCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
         binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+//        binding.chipGroupFilters.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.pieChart.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.imgIcon.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.tvCategory.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.tvSum.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.tvPercent.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
     }
 
     private fun getTotalSum(reports: List<BudgetUI>): Int {

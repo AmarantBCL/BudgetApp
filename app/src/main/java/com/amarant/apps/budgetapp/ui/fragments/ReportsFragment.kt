@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -12,10 +11,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -28,27 +25,19 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentReportsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.util.Constants
 import com.amarant.apps.budgetapp.util.NumberUtils
-import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.core.graphics.toColorInt
-import androidx.fragment.app.viewModels
-import com.amarant.apps.budgetapp.entities.ReportType
-import com.amarant.apps.budgetapp.entities.SortOrder
-import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
-import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
-import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.SortingBottomSheetFragment
-import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_CUSTOM
-import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 
 @AndroidEntryPoint
 class ReportsFragment : Fragment() {
@@ -326,7 +315,19 @@ class ReportsFragment : Fragment() {
             bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
         }
         binding.chipPeriod.setOnClickListener {
-            val bottomSheet = PeriodBottomSheetFragment.newInstance()
+            val bottomSheet = PeriodBottomSheetFragment.newInstance(isStats = false)
+            bottomSheet.periodSelectionListener = object : PeriodBottomSheetFragment.PeriodSelectionListener {
+                override fun onPeriodSelected(periodId: Int, customStart: Long, customEnd: Long, customText: String) {
+                    if (periodId == PeriodBottomSheetFragment.CUSTOM_DATE_RANGE_ID) {
+                        budgetViewModel.changeDateRange(periodId, isPeriodOnly = true)
+                        budgetViewModel.setReportsBetweenDates(customStart, customEnd)
+                        budgetViewModel.setCustomRangeDisplayedText(customText)
+                    } else {
+                        budgetViewModel.changeDateRange(periodId)
+                        budgetViewModel.setCustomRangeDisplayedText("")
+                    }
+                }
+            }
             bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
         }
 //        binding.chipSort.setOnClickListener {

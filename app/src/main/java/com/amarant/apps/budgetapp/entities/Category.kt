@@ -49,7 +49,7 @@ enum class Category(
     fun getLocalizedName(context: Context): String {
         val array = context.resources.getStringArray(R.array.categories)
         val index = this.ordinal
-        Log.e("WTF", this.toString())
+//        Log.e("WTF", this.toString())
         return array[index]
     }
 

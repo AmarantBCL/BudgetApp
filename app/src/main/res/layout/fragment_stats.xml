@@ -5,7 +5,8 @@
     android:id="@+id/constraint_stats"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_black">
+    android:background="@color/window_black"
+    tools:context=".ui.fragments.StatsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -18,15 +19,83 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/window_black"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            tools:context=".ui.fragments.StatsFragment">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_filters"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                app:chipSpacing="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:singleLine="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_period"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This Month"
+                    android:textColor="@color/primary_white"
+                    app:chipBackgroundColor="@color/card_background"
+                    app:chipIcon="@drawable/ic_calendar"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="@color/accent_purple"
+                    app:iconStartPadding="4dp" />
+
+                <!--                <com.google.android.material.chip.Chip-->
+                <!--                    android:id="@+id/chip_filter"-->
+                <!--                    style="@style/Widget.MaterialComponents.Chip.Action"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:textColor="@color/primary_white"-->
+                <!--                    app:chipBackgroundColor="@color/card_background"-->
+                <!--                    app:chipIcon="@drawable/ic_all"-->
+                <!--                    app:chipIconEnabled="true"-->
+                <!--                    app:chipIconTint="@color/accent_purple"-->
+                <!--                    app:iconStartPadding="4dp"-->
+                <!--                    tools:text="Все" />-->
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_sort"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sort"
+                    android:textColor="@color/primary_white"
+                    android:visibility="gone"
+                    app:chipBackgroundColor="@color/card_background"
+                    app:chipIcon="@drawable/ic_sorting"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="@color/accent_purple"
+                    app:closeIcon="@drawable/ic_desc"
+                    app:closeIconTint="@color/accent_purple"
+                    app:closeIconVisible="true"
+                    app:iconStartPadding="4dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_type"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_white"
+                    app:chipBackgroundColor="@color/card_background"
+                    app:chipIcon="@drawable/ic_loop"
+                    app:chipIconEnabled="true"
+                    app:chipIconTint="@color/accent_purple"
+                    app:iconStartPadding="4dp"
+                    tools:text="Все" />
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/lbl_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/rubik"
                 android:text="@string/total"
                 android:textColor="@color/light_gray"
@@ -34,7 +103,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/chip_group_filters" />
 
             <TextView
                 android:id="@+id/tv_total"
