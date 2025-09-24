@@ -2,6 +2,7 @@ package com.amarant.apps.budgetapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -26,12 +27,22 @@ class CategoryExpenseAdapter : ListAdapter<CategoryExpense, CategoryExpenseAdapt
         with(holder.binding) {
             val entriesString = context.resources.getQuantityString(R.plurals.entries_count,
                 item.entries, item.entries)
+            val formattedAmount = NumberUtils.formatNumberWithThousandsSeparator(item.amount.toDouble())
             imgCategory.setImageResource(item.category.iconRes)
             tvCategory.text = item.category.getLocalizedName(context)
             tvEntries.text = entriesString
-            tvAmount.text = NumberUtils.formatNumberWithThousandsSeparator(item.amount.toDouble())
             tvPercent.text = context.resources.getString(R.string.percent_placeholder,
                 NumberUtils.formatDecimal(item.percent))
+            if (item.amount > 0) {
+                tvAmount.text = context.resources.getString(
+                    R.string.plus_placeholder,
+                    formattedAmount
+                )
+                tvAmount.setTextColor(ContextCompat.getColor(context, R.color.positive_green))
+            } else {
+                tvAmount.text = formattedAmount
+                tvAmount.setTextColor(ContextCompat.getColor(context, R.color.negative_red))
+            }
             root.setOnClickListener {
                 onCategoryExpenseClickListener?.invoke(item.category)
             }

@@ -80,22 +80,22 @@ class BudgetViewModel @Inject constructor(
 
     private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
 
-    val categoryExpenses = getBudgetEntriesBetweenDates().map { budgets ->
-        val list = mutableListOf<CategoryExpense>()
-        val totalSum = budgets.filter { it.budget.creditOrDebit == "Debit" }
-            .sumOf { it.budget.amount.toInt() }
-        budgets.filter { it.budget.creditOrDebit == "Debit" }
-            .groupBy { it.budget.category }.forEach { (category, items) ->
-            val amount = items.sumOf { it.budget.amount.toInt() }.toFloat()
-                list.add(CategoryExpense(
-                    category,
-                    items.size,
-                    amount,
-                    amount / totalSum * 100.0
-                ))
-            }
-        list.sortedBy { it.amount }
-    }
+//    val categoryExpenses = getBudgetEntriesBetweenDates().map { budgets ->
+//        val list = mutableListOf<CategoryExpense>()
+//        val totalSum = budgets.filter { it.budget.creditOrDebit == "Debit" }
+//            .sumOf { it.budget.amount.toInt() }
+//        budgets.filter { it.budget.creditOrDebit == "Debit" }
+//            .groupBy { it.budget.category }.forEach { (category, items) ->
+//            val amount = items.sumOf { it.budget.amount.toInt() }.toFloat()
+//                list.add(CategoryExpense(
+//                    category,
+//                    items.size,
+//                    amount,
+//                    amount / totalSum * 100.0
+//                ))
+//            }
+//        list.sortedBy { it.amount }
+//    }
 
 //    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
 //        return getBudgetEntriesBetweenDates().map { reports ->

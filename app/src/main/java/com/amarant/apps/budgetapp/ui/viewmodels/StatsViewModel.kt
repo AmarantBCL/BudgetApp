@@ -47,9 +47,9 @@ class StatsViewModel @Inject constructor(
 
     val categoryExpenses = getBudgetEntriesBetweenDates().map { budgets ->
         val list = mutableListOf<CategoryExpense>()
-        val totalSum = budgets.filter { it.budget.creditOrDebit == "Debit" }
+        val totalSum = budgets//.filter { it.budget.creditOrDebit == "Debit" }
             .sumOf { it.budget.amount.toInt() }
-        budgets.filter { it.budget.creditOrDebit == "Debit" }
+        budgets//.filter { it.budget.creditOrDebit == "Debit" }
             .groupBy { it.budget.category }.forEach { (category, items) ->
                 val amount = items.sumOf { it.budget.amount.toInt() }.toFloat()
                 list.add(
@@ -73,28 +73,28 @@ class StatsViewModel @Inject constructor(
 //                }
 //            }
         }
-        fun update(budgets: List<Budget>?, selected: Set<Int>?, type: ReportType?) {
-            if (budgets != null && selected != null && type != null) {
+        fun update(budgets: List<Budget>?, type: ReportType?) {
+            if (budgets != null && type != null) {
                 val filtered = when (type) {
                     ReportType.ALL -> budgets
                     ReportType.INCOME -> budgets.filter { it.amount > 0 }
                     ReportType.EXPENSE -> budgets.filter { it.amount < 0 }
                 }
                 result.value = filtered.map { budget ->
-                    BudgetUI(budget, isHidden = budget.id in selected)
+                    BudgetUI(budget, isHidden = false)
                 }
             }
         }
-        result.addSource(dbSource) { budgets -> update(budgets, emptySet(), reportType.value) }
+        result.addSource(dbSource) { budgets -> update(budgets, reportType.value) }
 //        result.addSource(selectedIds) { selected -> update(dbSource.value, selected, reportType.value) }
-        result.addSource(reportType) { type -> update(dbSource.value, emptySet(), type) }
+        result.addSource(reportType) { type -> update(dbSource.value, type) }
         return result
     }
 
     fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
         return getBudgetEntriesBetweenDates().map { reports ->
             val groupedList = mutableListOf<ReportsItem>()
-            reports.filter { it.budget.category == category && it.budget.creditOrDebit == "Debit" }
+            reports.filter { it.budget.category == category }// && it.budget.creditOrDebit == "Debit" }
                 .groupBy { it.budget.date }
                 .forEach { (date, items) ->
                     groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
@@ -125,7 +125,11 @@ class StatsViewModel @Inject constructor(
         _customRangeText.value = text
     }
 
+    fun setType(type: ReportType) {
+        _reportType.value = type
+    }
+
     private companion object {
-        private const val DEFAULT_PERIOD = PERIOD_THIS_WEEK
+        private const val DEFAULT_PERIOD = PERIOD_THIS_MONTH
     }
 }

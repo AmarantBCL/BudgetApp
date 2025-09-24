@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,12 +65,19 @@ class ExpensesFragment : Fragment() {
     private fun observeViewModel() {
         statsViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
             val totalSum = reports.filterIsInstance<ReportsItem.Entry>()
-                .sumOf { it.entry.budget.amount.toInt() }.toFloat().toString()
+                .sumOf { it.entry.budget.amount.toInt() }.toFloat()
+            val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             budgetAdapter.submitList(reports)
             val resId = args.category.rawIconRes
             binding.imgCategory.setImageResource(resId)
             binding.lblCategory.text = getString(R.string.total_in_category, args.category.getLocalizedName(requireContext()))
-            binding.tvAmount.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+            if (totalSum > 0) {
+                binding.tvAmount.text = getString(R.string.plus_placeholder, formattedSum)
+                binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+            } else {
+                binding.tvAmount.text = formattedSum
+                binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            }
         }
     }
 }

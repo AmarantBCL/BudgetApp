@@ -2,6 +2,7 @@ package com.amarant.apps.budgetapp.ui.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
@@ -42,6 +44,7 @@ class StatsFragment : Fragment() {
     private lateinit var categoryExpenseAdapter: CategoryExpenseAdapter
 
     private var totalSum = 0
+    private var isIncome = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,7 +83,14 @@ class StatsFragment : Fragment() {
     private fun observeViewModel() {
         statsViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             totalSum = getTotalSum(reports)
-            binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+            val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+            if (totalSum > 0) {
+                binding.tvTotal.text = getString(R.string.plus_placeholder, formattedSum)
+                binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+            } else {
+                binding.tvTotal.text = formattedSum
+                binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            }
             initDataSet(prepareDataSet(reports))
         }
 //        budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
@@ -108,8 +118,8 @@ class StatsFragment : Fragment() {
             }
         }
         statsViewModel.reportType.observe(viewLifecycleOwner) {
-            val typeArr = resources.getStringArray(R.array.report_types)
-            binding.chipType.text = typeArr[it.ordinal]
+            val allReportTypes = resources.getStringArray(R.array.report_types)
+            binding.chipType.text = allReportTypes[it.ordinal]
             val iconRes = when(it) {
                 ReportType.INCOME -> R.drawable.ic_trend
                 ReportType.EXPENSE -> R.drawable.ic_expenses
@@ -122,6 +132,7 @@ class StatsFragment : Fragment() {
             } else {
                 binding.chipType.setChipBackgroundColorResource(R.color.card_background)
             }
+            isIncome = it == ReportType.INCOME
         }
     }
 
@@ -180,6 +191,15 @@ class StatsFragment : Fragment() {
             }
             bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
         }
+        binding.chipType.setOnClickListener {
+            val bottomSheet = ReportTypeBottomSheetFragment.newInstance(isStats = true)
+            bottomSheet.reportTypeSelectionListener = object : ReportTypeBottomSheetFragment.ReportTypeSelectionListener {
+                override fun onTypeSelected(type: ReportType) {
+                    statsViewModel.setType(type)
+                }
+            }
+            bottomSheet.show(requireActivity().supportFragmentManager, ReportTypeBottomSheetFragment.TAG)
+        }
     }
 
     private fun initVisibility(isEntriesEmpty: Boolean) {
@@ -197,13 +217,13 @@ class StatsFragment : Fragment() {
     }
 
     private fun getTotalSum(reports: List<BudgetUI>): Int {
-        return reports.filter { it.budget.creditOrDebit == "Debit" }
+        return reports//.filter { it.budget.creditOrDebit == "Debit" }
             .sumOf { it.budget.amount.toInt() }
     }
 
     private fun prepareDataSet(reports: List<BudgetUI>): List<PieEntry> {
         val list = mutableListOf<PieEntry>()
-        reports.filter { it.budget.creditOrDebit == "Debit" }
+        reports//.filter { it.budget.creditOrDebit == "Debit" }
             .groupBy { it.budget.category }
             .forEach { (category, items) ->
                 list.add(PieEntry(
@@ -220,7 +240,13 @@ class StatsFragment : Fragment() {
         val percent = NumberUtils.formatDecimal((value / totalSum.absoluteValue) * 100.0)
         binding.imgIcon.setImageResource(category.iconRes)
         binding.tvCategory.text = category.getLocalizedName(requireContext())
-        binding.tvSum.text = NumberUtils.formatNumberWithThousandsSeparator(value * -1.0)
+        if (isIncome) {
+            binding.tvSum.text = getString(R.string.plus_placeholder, NumberUtils.formatNumberWithThousandsSeparator(value * 1.0))
+            binding.tvSum.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+        } else {
+            binding.tvSum.text = NumberUtils.formatNumberWithThousandsSeparator(value * -1.0)
+            binding.tvSum.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+        }
         binding.tvPercent.text = getString(R.string.percent_placeholder, percent)
     }
 }

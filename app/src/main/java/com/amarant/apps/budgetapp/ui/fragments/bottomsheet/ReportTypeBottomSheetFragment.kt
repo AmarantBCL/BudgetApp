@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,8 @@ import androidx.fragment.app.activityViewModels
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.BottomSheetReportTypeBinding
 import com.amarant.apps.budgetapp.entities.ReportType
-import com.amarant.apps.budgetapp.entities.SortField
-import com.amarant.apps.budgetapp.entities.SortOrder
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ReportTypeBottomSheetFragment: BottomSheetDialogFragment() {
@@ -22,8 +20,21 @@ class ReportTypeBottomSheetFragment: BottomSheetDialogFragment() {
         get() = _binding ?: throw RuntimeException("BottomSheetReportTypeBinding == null")
 
     private val budgetViewModel: BudgetViewModel by activityViewModels()
+    private val statsViewModel: StatsViewModel by activityViewModels()
 
     private var reportType = ReportType.ALL
+    private var isStats = false
+
+    var reportTypeSelectionListener: ReportTypeSelectionListener? = null
+
+    interface ReportTypeSelectionListener {
+        fun onTypeSelected(type: ReportType)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isStats = requireArguments().getBoolean(KEY_IS_STATS)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +47,7 @@ class ReportTypeBottomSheetFragment: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         observeViewModel()
         setClickListeners()
     }
@@ -45,15 +57,31 @@ class ReportTypeBottomSheetFragment: BottomSheetDialogFragment() {
         _binding = null
     }
 
+    private fun initViews() {
+        binding.radioAll.visibility = if (isStats) View.GONE else View.VISIBLE
+    }
+
     private fun observeViewModel() {
-        budgetViewModel.reportType.observe(viewLifecycleOwner) {
-            when (it) {
-                ReportType.INCOME -> binding.radioIncome.isChecked = true
-                ReportType.EXPENSE -> binding.radioExpenses.isChecked = true
-                else -> binding.radioAll.isChecked = true
+        if (isStats) {
+            statsViewModel.reportType.observe(viewLifecycleOwner) {
+                when (it) {
+                    ReportType.INCOME -> binding.radioIncome.isChecked = true
+                    ReportType.EXPENSE -> binding.radioExpenses.isChecked = true
+                    else -> binding.radioAll.isChecked = true
+                }
+                reportType = it
+                initSelectedReportType()
             }
-            reportType = it
-            initSelectedReportType()
+        } else {
+            budgetViewModel.reportType.observe(viewLifecycleOwner) {
+                when (it) {
+                    ReportType.INCOME -> binding.radioIncome.isChecked = true
+                    ReportType.EXPENSE -> binding.radioExpenses.isChecked = true
+                    else -> binding.radioAll.isChecked = true
+                }
+                reportType = it
+                initSelectedReportType()
+            }
         }
     }
 
@@ -68,7 +96,8 @@ class ReportTypeBottomSheetFragment: BottomSheetDialogFragment() {
             initSelectedReportType()
         }
         binding.btnApplyFilters.setOnClickListener {
-            budgetViewModel.setType(reportType)
+//            budgetViewModel.setType(reportType)
+            reportTypeSelectionListener?.onTypeSelected(reportType)
             dialog?.dismiss()
         }
     }
@@ -89,8 +118,14 @@ class ReportTypeBottomSheetFragment: BottomSheetDialogFragment() {
 
         const val TAG = "ReportTypeBottomSheet"
 
-        fun newInstance(): ReportTypeBottomSheetFragment {
-            return ReportTypeBottomSheetFragment()
+        private const val KEY_IS_STATS = "stats"
+
+        fun newInstance(isStats: Boolean): ReportTypeBottomSheetFragment {
+            return ReportTypeBottomSheetFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(KEY_IS_STATS, isStats)
+                }
+            }
         }
     }
 }

@@ -224,8 +224,8 @@ class ReportsFragment : Fragment() {
 //            binding.chipSort.closeIcon = drawable
 //        }
         budgetViewModel.reportType.observe(viewLifecycleOwner) {
-            val typeArr = resources.getStringArray(R.array.report_types)
-            binding.chipType.text = typeArr[it.ordinal]
+            val allReportTypes = resources.getStringArray(R.array.report_types)
+            binding.chipType.text = allReportTypes[it.ordinal]
             val iconRes = when(it) {
                 ReportType.INCOME -> R.drawable.ic_trend
                 ReportType.EXPENSE -> R.drawable.ic_expenses
@@ -335,7 +335,12 @@ class ReportsFragment : Fragment() {
 //            bottomSheet.show(requireActivity().supportFragmentManager, SortingBottomSheetFragment.TAG)
 //        }
         binding.chipType.setOnClickListener {
-            val bottomSheet = ReportTypeBottomSheetFragment.newInstance()
+            val bottomSheet = ReportTypeBottomSheetFragment.newInstance(isStats = false)
+            bottomSheet.reportTypeSelectionListener = object : ReportTypeBottomSheetFragment.ReportTypeSelectionListener {
+                override fun onTypeSelected(type: ReportType) {
+                    budgetViewModel.setType(type)
+                }
+            }
             bottomSheet.show(requireActivity().supportFragmentManager, ReportTypeBottomSheetFragment.TAG)
         }
     }
