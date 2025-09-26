@@ -3,6 +3,7 @@ package com.amarant.apps.budgetapp.ui
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -87,6 +88,9 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
         binding.bottomNavBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id != R.id.reportsFragment) {
+                supportActionBar?.title = destination.label
+            }
             when (destination.id) {
                 R.id.onboardingFragment,
                 R.id.splashFragment -> {

@@ -21,10 +21,10 @@
         <action
             android:id="@+id/action_calendarFragment_to_fragmentAddEntry"
             app:destination="@id/fragmentAddEntry"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/budgetEntryFragment"
@@ -54,10 +54,10 @@
         <action
             android:id="@+id/action_reportsFragment_to_fragmentAddEntry"
             app:destination="@id/fragmentAddEntry"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
     </fragment>
     <action
         android:id="@+id/action_global_profileFragment"
@@ -70,10 +70,10 @@
         <action
             android:id="@+id/action_piggyBankFragment_to_addSavingFragment"
             app:destination="@id/addSavingFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/pinFragment"
@@ -135,10 +135,10 @@
         <action
             android:id="@+id/action_fragmentAddEntry_to_allCategoriesFragment"
             app:destination="@id/allCategoriesFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/allCategoriesFragment"
@@ -162,10 +162,10 @@
         tools:layout="@layout/fragment_stats" >
         <action
             android:id="@+id/action_statsFragment_to_expensesFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit"
             app:destination="@id/expensesFragment" />
     </fragment>
     <fragment
