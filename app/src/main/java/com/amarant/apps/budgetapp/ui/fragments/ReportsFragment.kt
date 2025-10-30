@@ -27,6 +27,7 @@ import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.ReportsItem
+import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
@@ -185,11 +186,12 @@ class ReportsFragment : Fragment() {
         }
         budgetViewModel.searchQuery.observe(viewLifecycleOwner) {
 //            updateSearchIcon(it)
+            val activity = requireActivity() as MainActivity
             if (it.isNotEmpty()) {
-                activity?.title = it
+                activity.setActionBarTitle(it)
                 requireActivity().invalidateOptionsMenu()
             } else {
-                activity?.title = getString(R.string.spending_reports)
+                activity.setActionBarTitle(getString(R.string.spending_reports))
                 requireActivity().invalidateOptionsMenu()
             }
         }

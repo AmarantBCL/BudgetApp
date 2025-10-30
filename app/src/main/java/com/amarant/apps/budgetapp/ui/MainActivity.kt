@@ -83,6 +83,10 @@ class MainActivity : AppCompatActivity() {
         snackbar.show()
     }
 
+    fun setActionBarTitle(text: String) {
+        supportActionBar?.title = text
+    }
+
     private fun setBottomNavigation() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
