@@ -54,6 +54,12 @@
     <color name="savings">#4DB6AC</color>
     <color name="event">#BA68C8</color>
 
+    <!-- Chip colors -->
+    <color name="complete_background">#003D29</color>
+    <color name="complete_text">#22C55E</color>
+    <color name="overdue_background">#4D2C00</color>
+    <color name="overdue_text">#FFA500</color>
+
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
     <color name="button_inactive">#F7F3F0</color>

@@ -102,7 +102,7 @@
     <string name="currency_and_amount_to_go_placeholder">%1$s %2$s до цели</string>
     <string name="currency_and_amount_placeholder">%1$s %2$s</string>
     <string name="percent_placeholder">%1$s %%</string>
-    <string name="saving_progress_placeholder">%1$s / %2$s</string>
+    <string name="saving_progress_placeholder">%1$s %2$s / %3$s</string>
     <string name="add_button">Добавить</string>
     <string name="default_currency">$ USD</string>
     <string name="monthly_income">Ежемес. доход</string>
@@ -142,4 +142,7 @@
     <string name="total">Общая сумма</string>
     <string name="category_expenses">Категории трат</string>
     <string name="total_in_category">Всего на \"%1$s\"</string>
+    <string name="completed">Выполнено</string>
+    <string name="overdue">Просрочено</string>
+    <string name="in_progress">В процессе</string>
 </resources>

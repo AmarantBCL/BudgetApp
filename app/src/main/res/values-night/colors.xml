@@ -23,6 +23,12 @@
     <!-- Category colors -->
     <color name="category_background">#222131</color>
 
+    <!-- Chip colors -->
+    <color name="complete_background">#003D29</color>
+    <color name="complete_text">#22C55E</color>
+    <color name="overdue_background">#4D2C00</color>
+    <color name="overdue_text">#FFA500</color>
+
     <!-- Same colors -->
     <color name="button_active">#FFFFFF</color>
     <color name="button_inactive">#222131</color>

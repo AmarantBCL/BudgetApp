@@ -101,7 +101,7 @@
     <string name="currency_and_amount_to_go_placeholder">%1$s %2$s to go</string>
     <string name="currency_and_amount_placeholder">%1$s %2$s</string>
     <string name="percent_placeholder">%1$s %%</string>
-    <string name="saving_progress_placeholder">%1$s / %2$s</string>
+    <string name="saving_progress_placeholder">%1$s %2$s / %3$s</string>
     <string name="add_button">Add</string>
     <string name="default_currency">$ USD</string>
     <string name="monthly_income">Monthly Income</string>
@@ -141,4 +141,7 @@
     <string name="total">Total</string>
     <string name="category_expenses">Category Expenses</string>
     <string name="total_in_category">Total on \"%1$s\"</string>
+    <string name="completed">Completed</string>
+    <string name="overdue">Overdue</string>
+    <string name="in_progress">In progress</string>
 </resources>
