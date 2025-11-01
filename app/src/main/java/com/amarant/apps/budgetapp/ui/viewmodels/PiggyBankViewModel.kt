@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.R
+import com.amarant.apps.budgetapp.entities.CircleColor
 import com.amarant.apps.budgetapp.entities.ColorPalette
 import com.amarant.apps.budgetapp.entities.PiggyBank
 import com.amarant.apps.budgetapp.entities.Saving
@@ -40,17 +41,15 @@ class PiggyBankViewModel @Inject constructor(
         }
     }
 
-    fun tryToAddSaving(goalName: String, amount: String, saved: Float, currency: String, date: Long, color: Int, id: Int): Boolean {
-        if (goalName.isNotEmpty() && amount.isNotEmpty() && currency.isNotEmpty()) {
-            if (saved > amount.toFloat()) return false // TODO Different notification should be displayed
-            addSaving(
-                Saving(
-                    id, goalName, amount.toFloat(), saved, currency, date, color
-                )
-            )
-            return true
+    fun tryToAddSaving(goalName: String, amount: String, saved: Float, currency: String, date: Long, color: CircleColor, id: Int): Boolean {
+        if (goalName.isEmpty() || amount.isEmpty() || currency.isEmpty()) {
+            return false
         }
-        return false
+        if (saved > amount.toFloat()) {
+            return false // TODO Different notification should be displayed
+        }
+        addSaving(Saving(id, goalName, amount.toFloat(), saved, currency, date, color))
+        return true
     }
 
     fun deleteSaving(id: Int) {
@@ -61,25 +60,29 @@ class PiggyBankViewModel @Inject constructor(
 
     fun initColorPalette() {
         if (colorPalette.value == null) {
-            val colors = listOf(
-                ColorPalette(R.color.positive_green, true),
-                ColorPalette(R.color.negative_red),
-                ColorPalette(R.color.blue),
-                ColorPalette(R.color.amber),
-                ColorPalette(R.color.accent_purple),
-                ColorPalette(R.color.sky),
-                ColorPalette(R.color.violet),
-                ColorPalette(R.color.teal),
-                ColorPalette(R.color.pink),
-                ColorPalette(R.color.state_gray),
-                ColorPalette(R.color.orange),
-                ColorPalette(R.color.white)
-            )
+//            val colors = listOf(
+//                ColorPalette(R.color.positive_green, true),
+//                ColorPalette(R.color.negative_red),
+//                ColorPalette(R.color.blue),
+//                ColorPalette(R.color.amber),
+//                ColorPalette(R.color.accent_purple),
+//                ColorPalette(R.color.sky),
+//                ColorPalette(R.color.violet),
+//                ColorPalette(R.color.teal),
+//                ColorPalette(R.color.pink),
+//                ColorPalette(R.color.state_gray),
+//                ColorPalette(R.color.orange),
+//                ColorPalette(R.color.white)
+//            )
+            val colors = mutableListOf<ColorPalette>()
+            for (color in CircleColor.entries) {
+                colors.add(ColorPalette(color))
+            }
             _colorPalette.value = colors
         }
     }
 
-    fun selectColorPalette(color: Int) {
+    fun selectColorPalette(color: CircleColor) {
         colorPalette.value?.let { colors ->
             val updatedList = colors.map {
                 if (it.color == color) {

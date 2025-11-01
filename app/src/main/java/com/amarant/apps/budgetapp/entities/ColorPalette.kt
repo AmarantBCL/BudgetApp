@@ -1,6 +1,6 @@
 package com.amarant.apps.budgetapp.entities
 
 data class ColorPalette(
-    val color: Int,
+    val color: CircleColor,
     val isSelected: Boolean = false
 )

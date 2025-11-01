@@ -76,7 +76,7 @@ class UpdateSavingBottomSheetFragment : BottomSheetDialogFragment() {
         val imageRes = if (isSubtract) ContextCompat.getDrawable(requireContext(), R.drawable.ic_expenses)
             else ContextCompat.getDrawable(requireContext(), R.drawable.ic_trend)
         val buttonIcon = if (isSubtract) R.drawable.ic_minus else R.drawable.ic_plus
-        val color = ContextCompat.getColor(requireContext(), savingItem.circleColor)
+        val color = ContextCompat.getColor(requireContext(), savingItem.circleColor.colorId)
         ImageViewCompat.setImageTintList(binding.imgColorCircle, ColorStateList.valueOf(color))
         currencySymbol = savingItem.currency.first().toString()
         currentBalance = savingItem.saved.toDouble()

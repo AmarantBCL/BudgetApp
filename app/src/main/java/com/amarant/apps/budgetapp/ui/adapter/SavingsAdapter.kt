@@ -37,7 +37,7 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
         val toGo = formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
         val currentTimestamp = System.currentTimeMillis()
         val dueTo = (item.dueTo - currentTimestamp).toFloat() / 1000 / 60 / 60 / 24
-        val color = ContextCompat.getColor(holder.itemView.context, item.circleColor)
+        val color = ContextCompat.getColor(holder.itemView.context, item.circleColor.colorId)
         with(holder.binding) {
             val context = holder.itemView.context
             ImageViewCompat.setImageTintList(imgColorCircle, ColorStateList.valueOf(color))

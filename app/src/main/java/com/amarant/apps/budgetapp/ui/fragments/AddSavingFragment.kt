@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentAddSavingBinding
+import com.amarant.apps.budgetapp.entities.CircleColor
 import com.amarant.apps.budgetapp.ui.adapter.ColorPaletteAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.util.DateUtils
@@ -80,15 +81,16 @@ class AddSavingFragment : Fragment() {
         }
         piggyBankViewModel.initColorPalette()
         if (args.saving != null) {
-            val saving = args.saving
-            binding.editGoalName.setText(saving?.title)
-            binding.editAmount.setText(saving?.target?.toInt()?.absoluteValue.toString())
-            binding.editCurrency.setText(saving?.currency)
-            dateSelection = saving?.dueTo ?: System.currentTimeMillis()
-            binding.editTargetDate.setText(DateUtils.getFormattedDate(dateSelection))
-            piggyBankViewModel.selectColorPalette(saving?.circleColor ?: R.color.positive_green)
-            binding.btnAddEntry.text = getString(R.string.edit_target)
-            binding.btnAddEntry.setIconResource(R.drawable.ic_edit)
+            args.saving?.let {
+                binding.editGoalName.setText(it.title)
+                binding.editAmount.setText(it.target.toInt()?.absoluteValue.toString())
+                binding.editCurrency.setText(it.currency)
+                dateSelection = it.dueTo
+                binding.editTargetDate.setText(DateUtils.getFormattedDate(dateSelection))
+                piggyBankViewModel.selectColorPalette(it.circleColor)
+                binding.btnAddEntry.text = getString(R.string.edit_target)
+                binding.btnAddEntry.setIconResource(R.drawable.ic_edit)
+            }
         } else {
             binding.btnAddEntry.text = getString(R.string.add_target)
         }
@@ -136,8 +138,9 @@ class AddSavingFragment : Fragment() {
             val amount = binding.editAmount.text.toString()
             val saved = saving?.saved ?: 0f
             val currency = binding.editCurrency.text.toString()
-            val color = colorPaletteAdapter.currentList.find { it.isSelected }?.color
-                ?: R.color.positive_green
+//            val color = colorPaletteAdapter.currentList.find { it.isSelected }?.color
+//                ?: R.color.positive_green
+            val color = colorPaletteAdapter.currentList.find { it.isSelected }?.color ?: CircleColor.BLUE
             if (saving == null) {
                 val wasAdded = piggyBankViewModel.tryToAddSaving(
                     goalName, amount, saved, currency, dateSelection, color, 0

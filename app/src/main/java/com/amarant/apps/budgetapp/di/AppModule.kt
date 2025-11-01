@@ -25,7 +25,8 @@ object AppModule {
         context,
         BudgetDatabase::class.java,
         DATABASE_NAME
-    ).addMigrations(MIGRATION_5_6).addMigrations(MIGRATION_7_8).build()
+    ).addMigrations(MIGRATION_5_6).addMigrations(MIGRATION_7_8)
+        .addMigrations(MIGRATION_8_9).build()
 
     private val MIGRATION_5_6: Migration = object : Migration(5, 6) {
         override fun migrate(db: SupportSQLiteDatabase) {
@@ -41,6 +42,15 @@ object AppModule {
             db.execSQL("UPDATE `budget` SET category = 'Home' WHERE category = 'House'")
             db.execSQL("UPDATE `budget` SET category = 'Transportation' WHERE category = 'Car'")
             db.execSQL("UPDATE `budget` SET category = 'Subscriptions' WHERE category = 'Taxi'")
+        }
+    }
+
+    private val MIGRATION_8_9 = object : Migration(8, 9) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS `new_savings` (`id` INTEGER PRIMARY KEY NOT NULL, `title` TEXT NOT NULL, `target` DOUBLE NOT NULL, `saved` DOUBLE NOT NULL, `currency` TEXT NOT NULL, `dueTo` INTEGER NOT NULL, `circleColor` TEXT NOT NULL)")
+            db.execSQL("INSERT INTO new_savings (id, title, target, saved, currency, dueTo, circleColor) SELECT id, title, target, saved, currency, dueTo, 'BLUE' FROM savings")
+            db.execSQL("DROP TABLE savings")
+            db.execSQL("ALTER TABLE new_savings RENAME TO savings")
         }
     }
 

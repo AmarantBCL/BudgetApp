@@ -15,5 +15,5 @@ data class Saving(
     val saved: Float,
     val currency: String,
     val dueTo: Long,
-    val circleColor: Int
+    val circleColor: CircleColor
 ) : Parcelable
