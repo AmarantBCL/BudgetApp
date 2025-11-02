@@ -20,6 +20,7 @@ import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateEndPeriod
 import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateStartPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.collections.contains
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
@@ -44,6 +45,8 @@ class StatsViewModel @Inject constructor(
     private val _reportType = MutableLiveData(ReportType.EXPENSE)
     val reportType: LiveData<ReportType>
         get() = _reportType
+
+    private val selectedIds = MutableLiveData<Set<Int>>(emptySet())
 
     val categoryExpenses = getBudgetEntriesBetweenDates().map { budgets ->
         val list = mutableListOf<CategoryExpense>()
@@ -73,21 +76,21 @@ class StatsViewModel @Inject constructor(
 //                }
 //            }
         }
-        fun update(budgets: List<Budget>?, type: ReportType?) {
-            if (budgets != null && type != null) {
+        fun update(budgets: List<Budget>?, selected: Set<Int>?, type: ReportType?) {
+            if (budgets != null && selected != null && type != null) {
                 val filtered = when (type) {
                     ReportType.ALL -> budgets
                     ReportType.INCOME -> budgets.filter { it.amount > 0 }
                     ReportType.EXPENSE -> budgets.filter { it.amount < 0 }
                 }
                 result.value = filtered.map { budget ->
-                    BudgetUI(budget, isHidden = false)
+                    BudgetUI(budget, isHidden = budget.id in selected)
                 }
             }
         }
-        result.addSource(dbSource) { budgets -> update(budgets, reportType.value) }
-//        result.addSource(selectedIds) { selected -> update(dbSource.value, selected, reportType.value) }
-        result.addSource(reportType) { type -> update(dbSource.value, type) }
+        result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value, reportType.value) }
+        result.addSource(selectedIds) { selected -> update(dbSource.value, selected, reportType.value) }
+        result.addSource(reportType) { type -> update(dbSource.value, selectedIds.value, type) }
         return result
     }
 
@@ -108,6 +111,15 @@ class StatsViewModel @Inject constructor(
 
     fun setReportsBetweenDates(startDate: Long, endDate: Long) {
         _dateRange.value = Pair(startDate, endDate)
+    }
+
+    fun toggleSelection(id: Int) {
+        val current = selectedIds.value ?: emptySet()
+        selectedIds.value = if (current.contains(id)) {
+            current - id
+        } else {
+            current + id
+        }
     }
 
     fun changeDateRange(position: Int, isPeriodOnly: Boolean = false) {

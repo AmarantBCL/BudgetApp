@@ -67,12 +67,16 @@ class ExpensesFragment : Fragment() {
             val defaultDivider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             binding.recyclerExpenses.addItemDecoration(defaultDivider)
         }
+        budgetAdapter.onItemClickListener = {
+            statsViewModel.toggleSelection(it.budget.id ?: -1)
+        }
         binding.recyclerExpenses.adapter = budgetAdapter
     }
 
     private fun observeViewModel() {
         statsViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
             val totalSum = reports.filterIsInstance<ReportsItem.Entry>()
+                .filter { !it.entry.isHidden }
                 .sumOf { it.entry.budget.amount.toInt() }.toFloat()
             val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             budgetAdapter.submitList(reports)
