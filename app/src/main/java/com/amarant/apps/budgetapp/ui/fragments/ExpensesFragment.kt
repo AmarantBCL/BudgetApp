@@ -1,6 +1,9 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -82,7 +85,6 @@ class ExpensesFragment : Fragment() {
             budgetAdapter.submitList(reports)
             val resId = args.category.rawIconRes
             binding.imgCategory.setImageResource(resId)
-            binding.lblCategory.text = getString(R.string.total_in_category, args.category.getLocalizedName(requireContext()))
             if (totalSum > 0) {
                 binding.tvAmount.text = getString(R.string.plus_placeholder, formattedSum)
                 binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
@@ -90,6 +92,20 @@ class ExpensesFragment : Fragment() {
                 binding.tvAmount.text = formattedSum
                 binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
             }
+            setHiddenViews(reports.filterIsInstance<ReportsItem.Entry>().any { it.entry.isHidden })
+        }
+    }
+
+    private fun setHiddenViews(isHidden: Boolean) {
+        val spanIncome = SpannableString("${getString(R.string.total_in_category, args.category.getLocalizedName(requireContext()))} ⬤")
+        spanIncome.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.accent_purple)),
+            spanIncome.length - 1, spanIncome.length, SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        if (isHidden) {
+            binding.lblCategory.text = spanIncome
+        } else {
+            binding.lblCategory.text = getString(R.string.total_in_category, args.category.getLocalizedName(requireContext()))
         }
     }
 }
