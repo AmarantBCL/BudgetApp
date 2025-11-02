@@ -140,7 +140,7 @@
     <string name="sum">Сумма</string>
     <string name="stats">Статистика</string>
     <string name="total">Общая сумма</string>
-    <string name="category_expenses">Категории трат</string>
+    <string name="category_expenses">Список категорий</string>
     <string name="total_in_category">Всего на \"%1$s\"</string>
     <string name="completed">Выполнено</string>
     <string name="overdue">Просрочено</string>

@@ -171,10 +171,13 @@
     <fragment
         android:id="@+id/expensesFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.ExpensesFragment"
-        android:label="@string/expenses"
+        android:label=""
         tools:layout="@layout/fragment_expenses" >
         <argument
             android:name="category"
             app:argType="com.amarant.apps.budgetapp.entities.Category" />
+        <argument
+            android:name="isIncome"
+            app:argType="boolean" />
     </fragment>
 </navigation>

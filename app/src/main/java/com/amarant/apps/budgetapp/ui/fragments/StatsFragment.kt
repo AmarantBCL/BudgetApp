@@ -1,8 +1,9 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
+import android.R.attr.action
+import android.R.attr.text
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,6 @@ import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
-import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
@@ -161,7 +161,7 @@ class StatsFragment : Fragment() {
         binding.recyclerCategoryExpenses.addItemDecoration(divider)
         binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
         categoryExpenseAdapter.onCategoryExpenseClickListener = {
-            val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(it)
+            val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(it, isIncome)
             findNavController().navigate(action)
         }
     }

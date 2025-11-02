@@ -139,7 +139,7 @@
     <string name="sum">Amount</string>
     <string name="stats">Stats</string>
     <string name="total">Total</string>
-    <string name="category_expenses">Category Expenses</string>
+    <string name="category_expenses">Category List</string>
     <string name="total_in_category">Total on \"%1$s\"</string>
     <string name="completed">Completed</string>
     <string name="overdue">Overdue</string>

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentExpensesBinding
 import com.amarant.apps.budgetapp.entities.ReportsItem
+import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
@@ -41,6 +42,7 @@ class ExpensesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initActionBar()
         initViews()
         observeViewModel()
     }
@@ -48,6 +50,12 @@ class ExpensesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initActionBar() {
+        val activity = (requireActivity() as MainActivity)
+        val title = if (args.isIncome) getString(R.string.income_s) else getString(R.string.expenses)
+        activity.setActionBarTitle(title)
     }
 
     private fun initViews() {
