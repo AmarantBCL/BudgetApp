@@ -145,4 +145,5 @@
     <string name="completed">Выполнено</string>
     <string name="overdue">Просрочено</string>
     <string name="in_progress">В процессе</string>
+    <string name="cant_hide_more_categories">Нельзя скрыть больше категорий.</string>
 </resources>

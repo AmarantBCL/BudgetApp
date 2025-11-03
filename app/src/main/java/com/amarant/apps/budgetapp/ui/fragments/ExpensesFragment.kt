@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +70,7 @@ class ExpensesFragment : Fragment() {
             binding.recyclerExpenses.addItemDecoration(defaultDivider)
         }
         budgetAdapter.onItemClickListener = {
-            statsViewModel.toggleSelection(it.budget.id ?: -1)
+            statsViewModel.toggleBudgetSelection(it.budget.id ?: -1)
         }
         binding.recyclerExpenses.adapter = budgetAdapter
     }

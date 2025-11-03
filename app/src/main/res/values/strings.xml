@@ -144,4 +144,5 @@
     <string name="completed">Completed</string>
     <string name="overdue">Overdue</string>
     <string name="in_progress">In progress</string>
+    <string name="cant_hide_more_categories">You can\'t hide more categories.</string>
 </resources>

@@ -18,6 +18,7 @@ import com.amarant.apps.budgetapp.databinding.FragmentStatsBinding
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.ReportType
+import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
@@ -81,7 +82,8 @@ class StatsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        statsViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
+        statsViewModel.getPieChartEntries().observe(viewLifecycleOwner) { reports ->
+//        statsViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
             totalSum = getTotalSum(reports)
             val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             if (totalSum > 0) {
@@ -163,6 +165,21 @@ class StatsFragment : Fragment() {
         categoryExpenseAdapter.onCategoryExpenseClickListener = {
             val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(it, isIncome)
             findNavController().navigate(action)
+        }
+        categoryExpenseAdapter.onCategoryExpenseLongClickListener = { category, isHidden ->
+            val currentItems = categoryExpenseAdapter.currentList.size
+            val hiddenItems = categoryExpenseAdapter.currentList.filter { it.isHidden }.size
+            if (!isHidden) {
+                if (currentItems - 1 > hiddenItems) {
+                    statsViewModel.toggleCategorySelection(category)
+                } else {
+                    (requireActivity() as MainActivity).showSnackbarMessage(
+                        binding.root, getString(R.string.cant_hide_more_categories)
+                    )
+                }
+            } else {
+                statsViewModel.toggleCategorySelection(category)
+            }
         }
     }
 
