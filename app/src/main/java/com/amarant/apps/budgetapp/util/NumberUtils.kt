@@ -15,14 +15,7 @@ object NumberUtils {
 
     fun formatDecimal(value: Double): String {
         val df = DecimalFormat("#.##")
-        df.roundingMode = RoundingMode.HALF_UP
+        df.roundingMode = RoundingMode.DOWN
         return df.format(value)
-    }
-
-    fun formatCurrency(amount: Double, currencySymbol: String): String {
-        val formatter = NumberFormat.getCurrencyInstance(Locale.getDefault())
-        val currency = Currency.getInstance(currencySymbol)
-        formatter.currency = currency
-        return formatter.format(amount)
     }
 }

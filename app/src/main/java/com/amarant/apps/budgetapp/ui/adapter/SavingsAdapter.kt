@@ -1,12 +1,10 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -15,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ListItemTargetBinding
 import com.amarant.apps.budgetapp.entities.Saving
-import com.amarant.apps.budgetapp.util.NumberUtils.formatCurrency
 import com.amarant.apps.budgetapp.util.NumberUtils.formatDecimal
 import com.amarant.apps.budgetapp.util.NumberUtils.formatNumberWithThousandsSeparator
-import androidx.core.graphics.toColorInt
 import kotlin.math.roundToInt
 
 class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(SavingDiffItemCallback()) {
@@ -37,6 +33,7 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
         val currentSum = formatNumberWithThousandsSeparator(item.saved.toDouble())
         val targetSum = formatNumberWithThousandsSeparator(item.target.toDouble())
         val percent = item.saved / item.target * 100.0
+        Log.d("WTF", "Percent: $percent")
         val currencySymbol = item.currency.first()
         val toGo = formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
         val currentTimestamp = System.currentTimeMillis()
