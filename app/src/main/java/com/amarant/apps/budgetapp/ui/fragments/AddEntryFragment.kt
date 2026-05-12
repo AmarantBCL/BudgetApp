@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.ui.adapter.HistoryAdapter
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.CategoriesBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.EntryViewModel
@@ -65,6 +67,17 @@ class AddEntryFragment : Fragment() {
         readHistory()
         setClickListeners()
         observeViewModel()
+        setupFragmentResultListeners()
+    }
+
+    private fun setupFragmentResultListeners() {
+        setFragmentResultListener(CategoriesBottomSheetFragment.REQUEST_KEY) { _, bundle ->
+            val categoryOrdinal = bundle.getInt(CategoriesBottomSheetFragment.BUNDLE_KEY_CATEGORY, -1)
+            if (categoryOrdinal != -1) {
+                val category = Category.entries[categoryOrdinal]
+                entryViewModel.selectCategory(category)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -115,9 +128,6 @@ class AddEntryFragment : Fragment() {
                 }
             }
         }
-        entryViewModel.isExpanded.observe(viewLifecycleOwner) {
-            binding.lblShowMore.text = if (it) getString(R.string.show_less) else getString(R.string.show_more)
-        }
         entryViewModel.selectedCategory.observe(viewLifecycleOwner) {
             val category = entryViewModel.getSelectedCategoryName()
             selectedCategory = category
@@ -131,10 +141,8 @@ class AddEntryFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.lblShowMore.setOnClickListener {
-            entryViewModel.changeExpandedState()
-            // TODO Next step is to support BottomSheetDialog for all categories and their selection
-//            val bottomSheet = FiltersBottomSheetFragment.newInstance()
-//            bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
+            val bottomSheet = CategoriesBottomSheetFragment.newInstance()
+            bottomSheet.show(childFragmentManager, CategoriesBottomSheetFragment.TAG)
         }
         binding.btnAddEntry.setOnClickListener {
             val isDebit = binding.btnExpense.isChecked
