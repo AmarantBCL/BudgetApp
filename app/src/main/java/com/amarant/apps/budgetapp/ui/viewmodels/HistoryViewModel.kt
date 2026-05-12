@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.amarant.apps.budgetapp.entities.HistoryItem
@@ -21,7 +22,9 @@ class HistoryViewModel @Inject constructor(
     private val categoryId: LiveData<Int>
         get() = _categoryId
 
-    fun getAllHistory() = historyRepository.getAllHistory()
+    fun getAllHistory() = historyRepository.getAllHistory().map {
+        it.toSet()
+    }
 
     fun getHistory() = categoryId.switchMap {
         historyRepository.getHistory(it)
@@ -33,6 +36,10 @@ class HistoryViewModel @Inject constructor(
 
     fun updateHistory(history: HistoryItem) = viewModelScope.launch {
         historyRepository.updateHistory(history)
+    }
+
+    fun deleteFromHistory(entry: String) = viewModelScope.launch {
+        historyRepository.deleteFromHistory(entry)
     }
 
     fun switchHistoryCategory(categoryId: Int) {

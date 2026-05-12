@@ -22,4 +22,7 @@ interface HistoryDao {
 
     @Update
     suspend fun updateHistory(history: HistoryItem)
+
+    @Query("DELETE FROM history WHERE entry = :entry")
+    suspend fun deleteFromHistory(entry: String)
 }

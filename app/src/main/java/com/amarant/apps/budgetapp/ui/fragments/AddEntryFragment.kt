@@ -1,5 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
+import android.R.attr.entries
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +11,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentAddEntryBinding
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.HistoryItem
+import com.amarant.apps.budgetapp.ui.adapter.HistoryAdapter
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
@@ -204,20 +207,37 @@ class AddEntryFragment : Fragment() {
     private fun saveHistory(purpose: String) {
         historyViewModel.addHistory(
             HistoryItem(
-                purpose,
+                purpose.trim(),
                 selectedCategory.ordinal
             )
         )
     }
 
+    private lateinit var historyAdapter: HistoryAdapter
+
     private fun readHistory() {
         historyViewModel.getAllHistory().observe(viewLifecycleOwner) { history ->
-            val adapter = ArrayAdapter(
+//            val adapter = ArrayAdapter(
+//                requireContext(),
+//                android.R.layout.simple_dropdown_item_1line,
+//                history.map { it.entry }
+//            )
+            historyAdapter = HistoryAdapter(
                 requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                history.map { it.entry }
+                history.map { it.entry }.toMutableList(),
+                onDeleteClickListener = { itemToDelete ->
+                    deleteFromHistory(itemToDelete)
+                }
             )
-            binding.editName.setAdapter(adapter)
+            binding.editName.setAdapter(historyAdapter)
         }
+    }
+
+    fun deleteFromHistory(itemToDelete: String) {
+        historyViewModel.deleteFromHistory(itemToDelete)
+//        binding.editName.showDropDown()
+        binding.editName.setText("")
+//        historyAdapter.notifyDataSetChanged()
+//        binding.editName.setAdapter(historyAdapter)
     }
 }
