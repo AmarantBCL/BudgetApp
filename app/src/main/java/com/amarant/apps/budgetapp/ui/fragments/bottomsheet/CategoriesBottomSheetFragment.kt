@@ -46,7 +46,7 @@ class CategoriesBottomSheetFragment : BottomSheetDialogFragment() {
         adapter.submitList(categories)
 
         adapter.onCategoryClickListener = { category ->
-            setFragmentResult(REQUEST_KEY, bundleOf(BUNDLE_KEY_CATEGORY to category.ordinal))
+            parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(BUNDLE_KEY_CATEGORY to category.ordinal))
             dismiss()
         }
     }

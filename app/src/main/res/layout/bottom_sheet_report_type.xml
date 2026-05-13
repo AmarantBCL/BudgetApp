@@ -9,6 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <View
+            android:id="@+id/view_drag_handle"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/secondary_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/lbl_report_type"
             android:layout_width="0dp"
@@ -20,7 +30,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@id/tv_report_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/view_drag_handle" />
 
         <TextView
             android:id="@+id/tv_report_type"
@@ -36,7 +46,7 @@
             app:drawableStartCompat="@drawable/ic_loop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/lbl_report_type"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_drag_handle"
             tools:text="All" />
 
         <RadioGroup

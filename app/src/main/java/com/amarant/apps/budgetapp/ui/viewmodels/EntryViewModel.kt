@@ -63,7 +63,7 @@ class EntryViewModel @Inject constructor(
             QuickCategoryItem(it)
         }
         allCategories = combinedList
-        
+
         if (_selectedCategory.value == null) {
             setCategorySelected(0)
         } else {
@@ -89,22 +89,22 @@ class EntryViewModel @Inject constructor(
 
     private fun setCategorySelected(index: Int) {
         if (index !in allCategories.indices) return
-        
+
         val listWithSelection = allCategories.mapIndexed { i, item ->
             item.copy(isSelected = i == index)
         }
-        
+
         allCategories = listWithSelection // Update the master list
-        
+
         // Always show only a subset in the main fragment
         val displayedList = if (index < DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES) {
             listWithSelection.take(DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES)
         } else {
-            // If the selected category is not in the top N, 
+            // If the selected category is not in the top N,
             // we show top N-1 and the selected category as the last one.
             listWithSelection.take(DEFAULT_NUMBER_OF_DISPLAYED_CATEGORIES - 1) + listWithSelection[index]
         }
-        
+
         _categories.value = displayedList
         _selectedCategory.value = index
     }

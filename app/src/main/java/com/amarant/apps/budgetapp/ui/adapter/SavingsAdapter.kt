@@ -33,7 +33,7 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
         val currentSum = formatNumberWithThousandsSeparator(item.saved.toDouble())
         val targetSum = formatNumberWithThousandsSeparator(item.target.toDouble())
         val percent = item.saved / item.target * 100.0
-        Log.d("WTF", "Percent: $percent")
+//        Log.d("WTF", "Percent: $percent")
         val currencySymbol = item.currency.first()
         val toGo = formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
         val currentTimestamp = System.currentTimeMillis()

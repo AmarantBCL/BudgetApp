@@ -1,6 +1,5 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
-import android.R.attr.entries
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
@@ -22,7 +19,6 @@ import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.ui.adapter.HistoryAdapter
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.CategoriesBottomSheetFragment
-import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.FiltersBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.EntryViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.HistoryViewModel
@@ -71,7 +67,7 @@ class AddEntryFragment : Fragment() {
     }
 
     private fun setupFragmentResultListeners() {
-        setFragmentResultListener(CategoriesBottomSheetFragment.REQUEST_KEY) { _, bundle ->
+        childFragmentManager.setFragmentResultListener(CategoriesBottomSheetFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             val categoryOrdinal = bundle.getInt(CategoriesBottomSheetFragment.BUNDLE_KEY_CATEGORY, -1)
             if (categoryOrdinal != -1) {
                 val category = Category.entries[categoryOrdinal]
