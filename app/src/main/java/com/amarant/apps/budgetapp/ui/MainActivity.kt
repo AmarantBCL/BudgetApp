@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity() {
         val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val savedPin = sharedPrefs.getString(PREFERENCE_PIN_VALUE_KEY, null)
         val isPinEntered = sharedPrefs.getBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false)
-
         if (savedPin != null && !isPinEntered) {
             val currentDest = destinationId ?: navController.currentDestination?.id
             if (currentDest != R.id.pinFragment &&

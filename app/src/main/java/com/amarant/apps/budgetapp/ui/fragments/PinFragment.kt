@@ -63,7 +63,9 @@ class PinFragment : Fragment() {
         val activity = requireActivity() as MainActivity
         val bottomNavBar = activity.findViewById<BottomNavigationView>(R.id.bottomNavBar)
         val bottomMenu = bottomNavBar.menu
+        bottomMenu.findItem(R.id.calendarFragment).isEnabled = !hide
         bottomMenu.findItem(R.id.piggyBankFragment).isEnabled = !hide
+        bottomMenu.findItem(R.id.statsFragment).isEnabled = !hide
         bottomMenu.findItem(R.id.reportsFragment).isEnabled = !hide
     }
 
