@@ -48,6 +48,9 @@
     <string name="pin">PIN</string>
     <string name="success">Success!</string>
     <string name="incorrect_pin">Incorrect PIN.</string>
+    <string name="set_pin">Set PIN</string>
+    <string name="confirm_pin">Confirm PIN</string>
+    <string name="pin_saved">PIN saved successfully</string>
     <string name="i_don_t_have_pin">I don\'t have PIN.</string>
     <string name="apply_filters">Apply</string>
     <string name="filters">Filters</string>

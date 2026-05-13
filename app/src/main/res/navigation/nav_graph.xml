@@ -79,7 +79,12 @@
         android:id="@+id/pinFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.PinFragment"
         android:label="fragment_pin"
-        tools:layout="@layout/fragment_pin" />
+        tools:layout="@layout/fragment_pin">
+        <argument
+            android:name="isSettingPin"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.SplashFragment"

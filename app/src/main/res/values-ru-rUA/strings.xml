@@ -49,6 +49,9 @@
     <string name="pin">PIN</string>
     <string name="success">Успешный вход!</string>
     <string name="incorrect_pin">Неверный PIN</string>
+    <string name="set_pin">Установить PIN</string>
+    <string name="confirm_pin">Подтвердите PIN</string>
+    <string name="pin_saved">PIN-код успешно сохранен</string>
     <string name="i_don_t_have_pin">У меня нет PIN.</string>
     <string name="apply_filters">Применить</string>
     <string name="filters">Фильтры</string>

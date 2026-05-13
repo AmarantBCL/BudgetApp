@@ -6,6 +6,7 @@ object Constants {
     const val PREFERENCE_NAME = "profile_preference"
     const val PREFERENCE_PROFILE_EXISTENCE_KEY = "PREFERENCE_PROFILE_EXISTENCE_KEY"
     const val PREFERENCE_IS_PIN_ENTERED_KEY = "IS_PIN_ENTERED"
+    const val PREFERENCE_PIN_VALUE_KEY = "PREFERENCE_PIN_VALUE_KEY"
 
     const val DEBIT = "Debit"
     const val CREDIT = "Credit"

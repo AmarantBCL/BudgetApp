@@ -162,7 +162,7 @@ class CalendarFragment : Fragment() {
 //                    }
 //                })
             } else {
-//                checkPin()
+                // Pin check is now handled globally by MainActivity
             }
         }
 //        // TODO DEL Temp for testing
@@ -214,6 +214,11 @@ class CalendarFragment : Fragment() {
             val displayedDate = getFormattedDate(calendar.timeInMillis)
             binding.tvTodayDate.text = displayedDate
             calendarViewModel.setSelectedDate(calendar.timeInMillis)
+        }
+        binding.tvTodayDate.setOnClickListener {
+            // Example: Navigate to set a new PIN
+            val action = CalendarFragmentDirections.actionCalendarFragmentToPinFragment(isSettingPin = true)
+            findNavController().navigate(action)
         }
     }
 
@@ -286,13 +291,8 @@ class CalendarFragment : Fragment() {
         calendarView.layoutParams = params
     }
 
-    private fun checkPin() {
-        val sharedPrefs =
-            requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
-        val isPinEntered = sharedPrefs.getBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false)
-        Log.e("WTF", "Check PIN: $isPinEntered")
-        if (!isPinEntered) {
-            findNavController().navigate(R.id.action_calendarFragment_to_pinFragment)
-        }
+    override fun onResume() {
+        super.onResume()
     }
+
 }

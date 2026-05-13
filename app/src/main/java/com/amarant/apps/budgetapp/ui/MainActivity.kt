@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui
 
 import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -25,6 +24,7 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_PIN_VALUE_KEY
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        resetPinCode()
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -66,9 +67,16 @@ class MainActivity : AppCompatActivity() {
 //        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 //    }
 
-    override fun onDestroy() { // TODO Monitor the frequency of PIN prompting
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         resetPinCode()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::navController.isInitialized) {
+            checkPin()
+        }
     }
 
     fun showSnackbarMessage(view: View, message: String) {
@@ -92,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
         binding.bottomNavBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            checkPin(destination.id)
             if (destination.id != R.id.reportsFragment) {
                 supportActionBar?.title = destination.label
             }
@@ -127,12 +136,26 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private fun resetPinCode() {
-        val bottomNavBar = findViewById<BottomNavigationView>(R.id.bottomNavBar)
-        val bottomMenu = bottomNavBar.menu
+        val bottomMenu = binding.bottomNavBar.menu
         bottomMenu.findItem(R.id.piggyBankFragment).isEnabled = true
         bottomMenu.findItem(R.id.reportsFragment).isEnabled = true
         val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false).apply()
+    }
+
+    private fun checkPin(destinationId: Int? = null) {
+        val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val savedPin = sharedPrefs.getString(PREFERENCE_PIN_VALUE_KEY, null)
+        val isPinEntered = sharedPrefs.getBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, false)
+
+        if (savedPin != null && !isPinEntered) {
+            val currentDest = destinationId ?: navController.currentDestination?.id
+            if (currentDest != R.id.pinFragment &&
+                currentDest != R.id.splashFragment &&
+                currentDest != R.id.onboardingFragment) {
+                navController.navigate(R.id.pinFragment)
+            }
+        }
     }
 
     // TODO Just for testing, needs to be reworked for specific EditText elements.

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,16 @@ import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentPinBinding
 import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_PIN_VALUE_KEY
 import com.amarant.apps.budgetapp.util.Constants.SNACKBAR_PIN_DURATION
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import java.util.Calendar
 
 class PinFragment : Fragment() {
 
@@ -28,9 +30,10 @@ class PinFragment : Fragment() {
     private val binding: FragmentPinBinding
         get() = _binding ?: throw RuntimeException("FragmentPinBinding == null")
 
-    private var digitEditTexts = mutableListOf<EditText>()
+    private val args by navArgs<PinFragmentArgs>()
 
-    private var enteredDigits = "****"
+    private var digitEditTexts = mutableListOf<EditText>()
+    private var enteredDigitsArray = arrayOfNulls<String>(4)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +45,9 @@ class PinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toggleBottomNavigationMenu(true)
+        if (!args.isSettingPin) {
+            toggleBottomNavigationMenu(true)
+        }
         initViews()
         setClickListeners()
     }
@@ -67,10 +72,22 @@ class PinFragment : Fragment() {
         digitEditTexts.add(1, binding.editPin2)
         digitEditTexts.add(2, binding.editPin3)
         digitEditTexts.add(3, binding.editPin4)
+        
+        binding.lblPin.text = if (args.isSettingPin) {
+            getString(R.string.set_pin)
+        } else {
+            getString(R.string.enter_your_pin)
+        }
+
         binding.editPin1.requestFocus()
+        
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().finish()
+                if (args.isSettingPin) {
+                    findNavController().popBackStack()
+                } else {
+                    requireActivity().finish()
+                }
             }
         })
     }
@@ -78,83 +95,85 @@ class PinFragment : Fragment() {
     private fun setClickListeners() {
         for ((index, editText) in digitEditTexts.withIndex()) {
             editText.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
-                }
-
-                override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(editable: Editable?) {
-                    val enteredPin = editable.toString()
-                    if (enteredPin.isNotEmpty()) {
+                    val input = editable.toString()
+                    if (input.isNotEmpty()) {
+                        enteredDigitsArray[index] = input
                         if (index < digitEditTexts.size - 1) {
-                            replaceCharAtIndex(index, enteredPin)
                             digitEditTexts[index + 1].requestFocus()
                         } else {
-                            replaceCharAtIndex(index, enteredPin)
-                            if (isPinCorrect(enteredDigits)) {
-                                for (e in digitEditTexts) {
-                                    e.isEnabled = false
-                                }
-                                toggleBottomNavigationMenu(false)
-                                saveEnteredPin()
-                                findNavController().popBackStack()
-                                Snackbar.make(
-                                    binding.constraintPin,
-                                    getString(R.string.success),
-                                    SNACKBAR_PIN_DURATION
-                                ).apply {
-                                    setAction(getString(R.string.hide)) {
-                                        dismiss()
-                                    }
-                                }.show()
-                            } else {
-                                resetIncorrectPin()
-                                Snackbar.make(
-                                    binding.constraintPin,
-                                    getString(R.string.incorrect_pin),
-                                    SNACKBAR_PIN_DURATION
-                                ).apply {
-                                    setAction(getString(R.string.hide)) {
-                                        dismiss()
-                                    }
-                                }.show()
-                            }
+                            processPinEntry()
                         }
                     }
                 }
             })
+
+            editText.setOnKeyListener { _, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN) {
+                    if (editText.text.isEmpty() && index > 0) {
+                        digitEditTexts[index - 1].requestFocus()
+                        digitEditTexts[index - 1].text = null
+                        enteredDigitsArray[index - 1] = null
+                        return@setOnKeyListener true
+                    } else {
+                        enteredDigitsArray[index] = null
+                    }
+                }
+                false
+            }
         }
     }
 
-    fun replaceCharAtIndex(index: Int, newChar: String) {
-        val str = enteredDigits
-        enteredDigits = str.substring(0, index) + newChar + str.substring(index + 1)
+    private fun processPinEntry() {
+        val enteredPin = enteredDigitsArray.joinToString("")
+        if (args.isSettingPin) {
+            savePin(enteredPin)
+            markPinAsEntered()
+            showSnackbar(getString(R.string.pin_saved))
+            findNavController().popBackStack()
+        } else {
+            if (isPinCorrect(enteredPin)) {
+                for (e in digitEditTexts) e.isEnabled = false
+                toggleBottomNavigationMenu(false)
+                markPinAsEntered()
+                findNavController().popBackStack()
+                showSnackbar(getString(R.string.success))
+            } else {
+                resetIncorrectPin()
+                showSnackbar(getString(R.string.incorrect_pin))
+            }
+        }
     }
 
     private fun isPinCorrect(pin: String): Boolean {
-        return pin == getCurrentDayAndMonth()
+        val sharedPrefs = requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val savedPin = sharedPrefs.getString(PREFERENCE_PIN_VALUE_KEY, null)
+        // Fallback to day/month if no PIN is set, or just return false
+        return pin == savedPin
     }
 
-    private fun saveEnteredPin() {
-        val sharedPrefs = requireContext().getSharedPreferences(
-            PREFERENCE_NAME,
-            Context.MODE_PRIVATE
-        )
+    private fun savePin(pin: String) {
+        val sharedPrefs = requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        sharedPrefs.edit().putString(PREFERENCE_PIN_VALUE_KEY, pin).apply()
+    }
+
+    private fun markPinAsEntered() {
+        val sharedPrefs = requireContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         sharedPrefs.edit().putBoolean(PREFERENCE_IS_PIN_ENTERED_KEY, true).apply()
     }
 
     private fun resetIncorrectPin() {
-        for (editText in digitEditTexts) {
-            editText.text = null
-        }
+        for (editText in digitEditTexts) editText.text = null
+        enteredDigitsArray = arrayOfNulls(4)
         digitEditTexts[0].requestFocus()
     }
 
-    private fun getCurrentDayAndMonth(): String {
-        val calendar = Calendar.getInstance()
-        val day = String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH))
-        val month = String.format("%02d", calendar.get(Calendar.MONTH) + 1)
-        return "$month$day"
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.constraintPin, message, SNACKBAR_PIN_DURATION).apply {
+            setAction(getString(R.string.hide)) { dismiss() }
+        }.show()
     }
 }
