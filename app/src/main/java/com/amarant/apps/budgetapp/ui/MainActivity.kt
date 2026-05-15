@@ -22,7 +22,9 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
+import com.amarant.apps.budgetapp.util.Constants.PIN_LOCK_TIMEOUT_MILLIS
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
+import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_LAST_ACTIVE_TIME_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_PIN_VALUE_KEY
 import com.google.android.material.appbar.MaterialToolbar
@@ -69,12 +71,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        resetPinCode()
+        val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        sharedPrefs.edit().putLong(PREFERENCE_LAST_ACTIVE_TIME_KEY, System.currentTimeMillis()).apply()
     }
 
     override fun onResume() {
         super.onResume()
         if (::navController.isInitialized) {
+            val sharedPrefs = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+            val lastActiveTime = sharedPrefs.getLong(PREFERENCE_LAST_ACTIVE_TIME_KEY, 0)
+            val currentTime = System.currentTimeMillis()
+
+            if (currentTime - lastActiveTime > PIN_LOCK_TIMEOUT_MILLIS) {
+                resetPinCode()
+            }
             checkPin()
         }
     }
