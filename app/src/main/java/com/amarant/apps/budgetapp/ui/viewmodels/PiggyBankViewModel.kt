@@ -25,6 +25,14 @@ class PiggyBankViewModel @Inject constructor(
     val colorPalette: LiveData<List<ColorPalette>>
         get() = _colorPalette
 
+    private val _selectedTab = MutableLiveData(0)
+    val selectedTab: LiveData<Int>
+        get() = _selectedTab
+
+    fun selectTab(position: Int) {
+        _selectedTab.value = position
+    }
+
 //    fun getPiggyBank() = piggyBankRepository.getPiggyBank()
 
 //    fun updatePiggyBank(piggyBank: PiggyBank) = viewModelScope.launch {

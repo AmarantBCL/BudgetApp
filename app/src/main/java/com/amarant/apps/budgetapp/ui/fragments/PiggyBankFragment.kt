@@ -25,9 +25,8 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetViewModel
 import com.amarant.apps.budgetapp.ui.viewmodels.PiggyBankViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,9 +36,10 @@ class PiggyBankFragment : Fragment() {
     private val binding: FragmentPiggyBankBinding
         get() = _binding ?: throw RuntimeException("FragmentPiggyBankBinding == null")
 
-    private val piggyBankViewModel: PiggyBankViewModel by viewModels()
+    private val piggyBankViewModel: PiggyBankViewModel by activityViewModels()
 
     private lateinit var savingsAdapter: SavingsAdapter
+    private var allSavings: List<Saving> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,6 +80,16 @@ class PiggyBankFragment : Fragment() {
         savingsAdapter = SavingsAdapter()
         binding.recyclerSavings.adapter = savingsAdapter
         binding.recyclerSavings.setHasFixedSize(true)
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.position?.let { piggyBankViewModel.selectTab(it) }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
         savingsAdapter.onSavingLongClickListener = {
             val action = PiggyBankFragmentDirections.actionPiggyBankFragmentToAddSavingFragment(it)
             findNavController().navigate(action)
@@ -127,10 +137,34 @@ class PiggyBankFragment : Fragment() {
 
     private fun observeViewModel() {
         piggyBankViewModel.getAllSavings().observe(viewLifecycleOwner) {
-            savingsAdapter.submitList(it)
+            allSavings = it
+            updateFilteredList()
             calculateSavings(it)
-            binding.imgGoal.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-            binding.lblEmptyEntries.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+        }
+        piggyBankViewModel.selectedTab.observe(viewLifecycleOwner) { position ->
+            if (binding.tabLayout.selectedTabPosition != position) {
+                binding.tabLayout.getTabAt(position)?.select()
+            }
+            updateFilteredList()
+        }
+    }
+
+    private fun updateFilteredList() {
+        val selectedTab = piggyBankViewModel.selectedTab.value ?: 0
+        val filteredList = if (selectedTab == 0) {
+            allSavings.filter { it.saved < it.target }
+        } else {
+            allSavings.filter { it.saved >= it.target }
+        }
+        savingsAdapter.submitList(filteredList)
+        binding.imgGoal.visibility = if (filteredList.isEmpty()) View.VISIBLE else View.GONE
+        binding.lblEmptyEntries.visibility = if (filteredList.isEmpty()) View.VISIBLE else View.GONE
+
+        if (filteredList.isEmpty()) {
+            binding.lblEmptyEntries.text = if (selectedTab == 0)
+                getString(R.string.no_goals_set)
+            else
+                getString(R.string.no_completed_goals)
         }
     }
 
