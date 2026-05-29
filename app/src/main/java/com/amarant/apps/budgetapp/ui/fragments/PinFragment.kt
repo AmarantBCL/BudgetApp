@@ -68,6 +68,7 @@ class PinFragment : Fragment() {
         bottomMenu.findItem(R.id.piggyBankFragment).isEnabled = !hide
         bottomMenu.findItem(R.id.statsFragment).isEnabled = !hide
         bottomMenu.findItem(R.id.reportsFragment).isEnabled = !hide
+        bottomMenu.findItem(R.id.budgetPlanningFragment).isEnabled = !hide
     }
 
     private fun initViews() {

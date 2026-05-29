@@ -1,7 +1,10 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +41,16 @@ class BudgetPlanningAdapter(
                 
                 tvProgressPercent.text = String.format(Locale.getDefault(), "%.1f%%", item.progress)
                 pbProgress.progress = item.progress.toInt()
+
+                if (item.spent > item.budget.amountLimit) {
+                    pbProgress.progressTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(pbProgress.context, R.color.accent_purple)
+                    )
+                } else {
+                    pbProgress.progressTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(pbProgress.context, R.color.positive_green)
+                    )
+                }
                 
 //                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.spent)
 //                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.budget.amountLimit)
