@@ -26,7 +26,7 @@ object AppModule {
         BudgetDatabase::class.java,
         DATABASE_NAME
     ).addMigrations(MIGRATION_5_6).addMigrations(MIGRATION_7_8)
-        .addMigrations(MIGRATION_8_9).build()
+        .addMigrations(MIGRATION_8_9).addMigrations(MIGRATION_9_10).build()
 
     private val MIGRATION_5_6: Migration = object : Migration(5, 6) {
         override fun migrate(db: SupportSQLiteDatabase) {
@@ -54,6 +54,12 @@ object AppModule {
         }
     }
 
+    private val MIGRATION_9_10 = object : Migration(9, 10) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("CREATE TABLE IF NOT EXISTS `category_budgets` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category` TEXT NOT NULL, `amountLimit` REAL NOT NULL, `period` TEXT NOT NULL, `startDate` INTEGER NOT NULL)")
+        }
+    }
+
     @Provides
     @Singleton
     fun provideProfileDao(db: BudgetDatabase) = db.getProfileDao()
@@ -69,4 +75,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideHistoryDao(db: BudgetDatabase) = db.getHistoryDao()
+
+    @Provides
+    @Singleton
+    fun provideCategoryBudgetDao(db: BudgetDatabase) = db.getCategoryBudgetDao()
 }

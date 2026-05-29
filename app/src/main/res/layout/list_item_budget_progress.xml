@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/card_background"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/iv_category_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/circle_shopping" />
+
+        <TextView
+            android:id="@+id/tv_category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/primary_white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/iv_category_icon"
+            app:layout_constraintTop_toTopOf="@+id/iv_category_icon"
+            tools:text="Shopping" />
+
+        <TextView
+            android:id="@+id/tv_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_period_chip"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:textColor="@color/light_gray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_category_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_category_name"
+            tools:text="monthly" />
+
+        <ImageButton
+            android:id="@+id/btn_delete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_clear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/light_gray" />
+
+        <ImageButton
+            android:id="@+id/btn_edit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/tv_label_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Progress"
+            android:textColor="@color/light_gray"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_category_icon" />
+
+        <TextView
+            android:id="@+id/tv_progress_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/positive_green"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_label_progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_label_progress"
+            tools:text="5.3%" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:indicatorColor="@color/positive_green"
+            app:layout_constraintTop_toBottomOf="@+id/tv_label_progress"
+            app:trackColor="@color/auxiliary_smoke_gray"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="6dp"
+            tools:progress="5" />
+
+        <TextView
+            android:id="@+id/tv_label_spent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Spent"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_label_limit"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+
+        <TextView
+            android:id="@+id/tv_spent_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_label_spent"
+            app:layout_constraintStart_toStartOf="@+id/tv_label_spent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_label_spent"
+            tools:text="USD 400.00" />
+
+        <TextView
+            android:id="@+id/tv_label_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Limit"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_label_remaining"
+            app:layout_constraintStart_toEndOf="@+id/tv_label_spent"
+            app:layout_constraintTop_toTopOf="@+id/tv_label_spent" />
+
+        <TextView
+            android:id="@+id/tv_limit_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_label_limit"
+            app:layout_constraintStart_toStartOf="@+id/tv_label_limit"
+            app:layout_constraintTop_toBottomOf="@+id/tv_label_limit"
+            tools:text="USD 7500.00" />
+
+        <TextView
+            android:id="@+id/tv_label_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remaining"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_label_limit"
+            app:layout_constraintTop_toTopOf="@+id/tv_label_spent" />
+
+        <TextView
+            android:id="@+id/tv_remaining_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/positive_green"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_label_remaining"
+            app:layout_constraintStart_toStartOf="@+id/tv_label_remaining"
+            app:layout_constraintTop_toBottomOf="@+id/tv_label_remaining"
+            tools:text="USD 7100.00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

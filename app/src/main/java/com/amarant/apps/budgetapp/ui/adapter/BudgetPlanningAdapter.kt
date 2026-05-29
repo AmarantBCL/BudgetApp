@@ -1,0 +1,56 @@
+package com.amarant.apps.budgetapp.ui.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.amarant.apps.budgetapp.databinding.ListItemBudgetProgressBinding
+import com.amarant.apps.budgetapp.entities.BudgetWithProgress
+import com.amarant.apps.budgetapp.entities.CategoryBudget
+import java.util.Locale
+
+class BudgetPlanningAdapter(
+    private val onDeleteClick: (CategoryBudget) -> Unit,
+    private val onEditClick: (CategoryBudget) -> Unit
+) : ListAdapter<BudgetWithProgress, BudgetPlanningAdapter.ViewHolder>(DiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ListItemBudgetProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    inner class ViewHolder(private val binding: ListItemBudgetProgressBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: BudgetWithProgress) {
+            binding.apply {
+                ivCategoryIcon.setImageResource(item.budget.category.iconRes)
+                tvCategoryName.text = item.budget.category.dbName
+                tvPeriod.text = item.budget.period.lowercase()
+                
+                tvProgressPercent.text = String.format(Locale.getDefault(), "%.1f%%", item.progress)
+                progressBar.progress = item.progress.toInt()
+                
+                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.spent)
+                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.budget.amountLimit)
+                tvRemainingAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.remaining)
+                
+                btnDelete.setOnClickListener { onDeleteClick(item.budget) }
+                btnEdit.setOnClickListener { onEditClick(item.budget) }
+            }
+        }
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<BudgetWithProgress>() {
+        override fun areItemsTheSame(oldItem: BudgetWithProgress, newItem: BudgetWithProgress): Boolean {
+            return oldItem.budget.id == newItem.budget.id
+        }
+
+        override fun areContentsTheSame(oldItem: BudgetWithProgress, newItem: BudgetWithProgress): Boolean {
+            return oldItem == newItem
+        }
+    }
+}

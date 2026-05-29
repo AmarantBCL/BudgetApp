@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity() {
             R.id.calendarFragment,
             R.id.piggyBankFragment,
             R.id.statsFragment,
-            R.id.reportsFragment
+            R.id.reportsFragment,
+            R.id.budgetPlanningFragment
         ))
         toolbar.setupWithNavController(navController, appBarConfiguration)
         setBottomNavigation()
