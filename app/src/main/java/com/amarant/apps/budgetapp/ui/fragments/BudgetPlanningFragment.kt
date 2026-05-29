@@ -13,6 +13,7 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentBudgetPlanningBinding
 import com.amarant.apps.budgetapp.ui.adapter.BudgetPlanningAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetPlanningViewModel
+import com.amarant.apps.budgetapp.util.NumberUtils.formatNumberWithThousandsSeparator
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -87,6 +88,8 @@ class BudgetPlanningFragment : Fragment() {
 //                tvTotalSpent.text = String.format(Locale.getDefault(), "USD %.2f", summary.totalSpent)
 //                tvProgressPercent.text = String.format(Locale.getDefault(), "%.1f%%", summary.overallProgress)
 //                progressOverall.progress = summary.overallProgress.toInt()
+                tvTotalBudgeted.text = formatNumberWithThousandsSeparator(summary.totalBudgeted) //String.format(Locale.getDefault(), "USD %.2f", summary.totalBudgeted)
+                tvTotalSpent.text = formatNumberWithThousandsSeparator(summary.totalSpent) //String.format(Locale.getDefault(), "USD %.2f", summary.totalSpent)
             }
         }
     }

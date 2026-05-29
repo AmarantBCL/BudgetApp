@@ -152,4 +152,6 @@
     <string name="no_completed_goals">У вас пока нет выполненных целей.</string>
     <string name="budget">Бюджет</string>
     <string name="remaining">%1$s осталось</string>
+    <string name="total_budgeted">Общий бюджет</string>
+    <string name="total_spent">Потрачено</string>
 </resources>

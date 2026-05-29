@@ -151,4 +151,6 @@
     <string name="no_completed_goals">No completed goals yet.</string>
     <string name="budget">Budget</string>
     <string name="remaining">%1$s remaining</string>
+    <string name="total_budgeted">Total Budgeted</string>
+    <string name="total_spent">Total Spent</string>
 </resources>

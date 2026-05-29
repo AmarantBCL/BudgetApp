@@ -7,6 +7,125 @@
     android:background="@color/window_black"
     tools:context=".ui.fragments.BudgetPlanningFragment">
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_total_budget"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_budget_target"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintBottom_toBottomOf="@id/lbl_total_budgeted"
+                app:layout_constraintEnd_toStartOf="@id/lbl_total_budgeted"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/lbl_total_budgeted"
+                app:srcCompat="@drawable/ic_target"
+                app:tint="@color/positive_green" />
+
+            <TextView
+                android:id="@+id/lbl_total_budgeted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingTop="@dimen/regular_margin"
+                android:text="@string/total_budgeted"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@id/divider"
+                app:layout_constraintStart_toEndOf="@id/img_budget_target"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total_budgeted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:text="0"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/primary_white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/lbl_total_budgeted"
+                app:layout_constraintStart_toStartOf="@id/img_budget_target"
+                app:layout_constraintTop_toBottomOf="@id/lbl_total_budgeted" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/divider_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/img_spent"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintBottom_toBottomOf="@id/lbl_total_spent"
+                app:layout_constraintEnd_toStartOf="@id/lbl_total_spent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="@id/divider"
+                app:layout_constraintTop_toTopOf="@id/lbl_total_spent"
+                app:srcCompat="@drawable/ic_dollar"
+                app:tint="@color/negative_red" />
+
+            <TextView
+                android:id="@+id/lbl_total_spent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingTop="@dimen/regular_margin"
+                android:text="@string/total_spent"
+                android:textAlignment="center"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_spent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total_spent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:paddingHorizontal="@dimen/regular_margin"
+                android:paddingBottom="@dimen/small_margin"
+                android:text="0"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/primary_white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/lbl_total_spent"
+                app:layout_constraintStart_toStartOf="@id/img_spent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_total_budgeted" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 <!--    <TextView-->
 <!--        android:id="@+id/tv_title"-->
 <!--        android:layout_width="wrap_content"-->
@@ -168,12 +287,12 @@
         android:id="@+id/rv_budgets"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:clipToPadding="false"
+        android:layout_marginHorizontal="8dp"
         android:paddingBottom="80dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_total_budget"
         tools:visibility="gone"
         tools:listitem="@layout/list_item_budget_progress" />
 
@@ -192,7 +311,7 @@
         android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_total_budget"
         app:srcCompat="@drawable/ic_target"
         app:tint="@color/light_gray" />
 
