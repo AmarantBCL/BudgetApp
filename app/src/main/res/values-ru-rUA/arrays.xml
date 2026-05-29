@@ -63,4 +63,9 @@
         <item>Доход</item>
         <item>Расход</item>
     </string-array>
+
+    <string-array name="budget_periods">
+        <item>Неделя</item>
+        <item>Месяц</item>
+    </string-array>
 </resources>

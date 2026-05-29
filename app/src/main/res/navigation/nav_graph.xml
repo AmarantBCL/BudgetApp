@@ -188,6 +188,6 @@
     <fragment
         android:id="@+id/budgetPlanningFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetPlanningFragment"
-        android:label="Budget Planning"
+        android:label="@string/budget"
         tools:layout="@layout/fragment_budget_planning" />
 </navigation>

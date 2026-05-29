@@ -93,4 +93,9 @@
         <item>Income</item>
         <item>Expense</item>
     </string-array>
+
+    <string-array name="budget_periods">
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
 </resources>

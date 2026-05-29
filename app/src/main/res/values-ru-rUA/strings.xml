@@ -150,4 +150,6 @@
     <string name="in_progress">В процессе</string>
     <string name="cant_hide_more_categories">Нельзя скрыть больше категорий.</string>
     <string name="no_completed_goals">У вас пока нет выполненных целей.</string>
+    <string name="budget">Бюджет</string>
+    <string name="remaining">%1$s осталось</string>
 </resources>

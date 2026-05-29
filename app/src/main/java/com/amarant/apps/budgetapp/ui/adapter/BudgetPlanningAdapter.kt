@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.databinding.ListItemBudgetProgressBinding
 import com.amarant.apps.budgetapp.entities.BudgetWithProgress
 import com.amarant.apps.budgetapp.entities.CategoryBudget
+import com.amarant.apps.budgetapp.util.NumberUtils.formatNumberWithThousandsSeparator
+import com.amarant.apps.budgetapp.R
 import java.util.Locale
 
 class BudgetPlanningAdapter(
@@ -26,11 +28,13 @@ class BudgetPlanningAdapter(
 
     inner class ViewHolder(private val binding: ListItemBudgetProgressBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BudgetWithProgress) {
+            val context = binding.root.context
             binding.apply {
                 ivCategoryIcon.setImageResource(item.budget.category.iconRes)
-                tvCategoryName.text = item.budget.category.dbName
+                tvCategoryName.text = item.budget.category.getLocalizedName(context)
 //                tvPeriod.text = item.budget.period.lowercase()
-                chipPeriod.text = item.budget.period
+                val periodIndex = if (item.budget.period == "Weekly") 0 else 1
+                chipPeriod.text = context.resources.getStringArray(R.array.budget_periods)[periodIndex]
                 
                 tvProgressPercent.text = String.format(Locale.getDefault(), "%.1f%%", item.progress)
                 pbProgress.progress = item.progress.toInt()
@@ -38,10 +42,13 @@ class BudgetPlanningAdapter(
 //                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.spent)
 //                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.budget.amountLimit)
 //                tvRemainingAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.remaining)
-                val spent = String.format(Locale.getDefault(), "%.0f", item.spent)
-                val limit = String.format(Locale.getDefault(), "%.0f", item.budget.amountLimit)
+                val spent = formatNumberWithThousandsSeparator(item.spent)// String.format(Locale.getDefault(), "%.0f", item.spent)
+                val limit = formatNumberWithThousandsSeparator(item.budget.amountLimit) //String.format(Locale.getDefault(), "%.0f", item.budget.amountLimit)
                 tvProgress.text = "$spent / $limit"
-                tvRemaining.text = "${String.format(Locale.getDefault(), "%.0f", item.remaining)} remaining"
+                tvRemaining.text = context.getString(
+                    R.string.remaining,
+                    formatNumberWithThousandsSeparator(item.remaining)
+                )//"${String.format(Locale.getDefault(), "%.0f", item.remaining)} remaining"
                 
                 btnDelete.setOnClickListener { onDeleteClick(item.budget) }
                 btnEdit.setOnClickListener { onEditClick(item.budget) }

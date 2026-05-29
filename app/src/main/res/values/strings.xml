@@ -149,4 +149,6 @@
     <string name="in_progress">In progress</string>
     <string name="cant_hide_more_categories">You can\'t hide more categories.</string>
     <string name="no_completed_goals">No completed goals yet.</string>
+    <string name="budget">Budget</string>
+    <string name="remaining">%1$s remaining</string>
 </resources>
