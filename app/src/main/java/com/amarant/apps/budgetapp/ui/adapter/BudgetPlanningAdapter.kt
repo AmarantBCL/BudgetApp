@@ -29,14 +29,19 @@ class BudgetPlanningAdapter(
             binding.apply {
                 ivCategoryIcon.setImageResource(item.budget.category.iconRes)
                 tvCategoryName.text = item.budget.category.dbName
-                tvPeriod.text = item.budget.period.lowercase()
+//                tvPeriod.text = item.budget.period.lowercase()
+                chipPeriod.text = item.budget.period
                 
                 tvProgressPercent.text = String.format(Locale.getDefault(), "%.1f%%", item.progress)
-                progressBar.progress = item.progress.toInt()
+                pbProgress.progress = item.progress.toInt()
                 
-                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.spent)
-                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.budget.amountLimit)
-                tvRemainingAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.remaining)
+//                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.spent)
+//                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.budget.amountLimit)
+//                tvRemainingAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.remaining)
+                val spent = String.format(Locale.getDefault(), "%.0f", item.spent)
+                val limit = String.format(Locale.getDefault(), "%.0f", item.budget.amountLimit)
+                tvProgress.text = "$spent / $limit"
+                tvRemaining.text = "${String.format(Locale.getDefault(), "%.0f", item.remaining)} remaining"
                 
                 btnDelete.setOnClickListener { onDeleteClick(item.budget) }
                 btnEdit.setOnClickListener { onEditClick(item.budget) }
