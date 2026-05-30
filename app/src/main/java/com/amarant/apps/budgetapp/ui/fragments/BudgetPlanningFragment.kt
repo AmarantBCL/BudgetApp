@@ -1,6 +1,7 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,14 +10,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentBudgetPlanningBinding
 import com.amarant.apps.budgetapp.ui.adapter.BudgetPlanningAdapter
+import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetPlanningViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils.formatNumberWithThousandsSeparator
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
 class BudgetPlanningFragment : Fragment() {
@@ -25,7 +29,7 @@ class BudgetPlanningFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: BudgetPlanningViewModel by viewModels()
-    private lateinit var adapter: BudgetPlanningAdapter
+    private lateinit var budgetPlanningAdapter: BudgetPlanningAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,18 +69,51 @@ class BudgetPlanningFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = BudgetPlanningAdapter(
+        budgetPlanningAdapter = BudgetPlanningAdapter(
             onDeleteClick = { budget -> viewModel.deleteBudget(budget) },
             onEditClick = { budget -> 
                 // TODO: Open edit dialog
+                Log.d("WTF", "onEditClick")
+                findNavController().navigate(BudgetPlanningFragmentDirections.actionBudgetPlanningFragmentToAddBudgetFragment())
             }
         )
-        binding.rvBudgets.adapter = adapter
+        binding.rvBudgets.adapter = budgetPlanningAdapter
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val budget = budgetPlanningAdapter.currentList[position]
+                viewModel.deleteBudget(budget.budget)
+                Snackbar.make(requireView(), getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                    setAction(getString(R.string.undo)) {
+                        viewModel.insertBudget(budget.budget)
+                    }
+                    show()
+                }
+            }
+
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                return if (viewHolder.itemViewType == ReportsAdapter.VIEW_TYPE_DATE) {
+                    0
+                } else {
+                    super.getSwipeDirs(recyclerView, viewHolder)
+                }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.rvBudgets)
     }
 
     private fun observeViewModel() {
         viewModel.budgetListWithProgress.observe(viewLifecycleOwner) { budgets ->
-            adapter.submitList(budgets)
+            budgetPlanningAdapter.submitList(budgets)
             binding.groupEmptyState.visibility = if (budgets.isEmpty()) View.VISIBLE else View.GONE
             binding.rvBudgets.visibility = if (budgets.isEmpty()) View.GONE else View.VISIBLE
 //            binding.cardSummary.visibility = if (budgets.isEmpty()) View.GONE else View.VISIBLE
@@ -98,9 +135,9 @@ class BudgetPlanningFragment : Fragment() {
 //        binding.btnAddBudget.setOnClickListener {
 //            showCreateBudgetDialog()
 //        }
-        binding.btnCreateFirstBudget.setOnClickListener {
-            showCreateBudgetDialog()
-        }
+//        binding.btnCreateFirstBudget.setOnClickListener {
+//            showCreateBudgetDialog()
+//        }
     }
 
     private fun showCreateBudgetDialog() {

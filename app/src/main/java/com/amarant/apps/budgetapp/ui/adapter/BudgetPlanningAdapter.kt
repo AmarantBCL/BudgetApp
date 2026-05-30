@@ -64,7 +64,11 @@ class BudgetPlanningAdapter(
                 )//"${String.format(Locale.getDefault(), "%.0f", item.remaining)} remaining"
                 
                 btnDelete.setOnClickListener { onDeleteClick(item.budget) }
-                btnEdit.setOnClickListener { onEditClick(item.budget) }
+//                btnEdit.setOnClickListener { onEditClick(item.budget) }
+                cardBudget.setOnLongClickListener {
+                    onEditClick(item.budget)
+                    true
+                }
             }
         }
     }

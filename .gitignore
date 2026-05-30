@@ -1,15 +1,27 @@
+# Built artifacts
+bin/
+build/
+gen/
+out/
+.gradle/
+app/build/
+
+# Android Studio / IntelliJ IDEA
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+*.ipr
+*.iws
+
+# Локальные конфиги (токены, пути к SDK)
 local.properties
+.DS_Store
+
+# Внутренний мусор Gradle, который у тебя вылез в корень
+.tmp/
+caches/
+daemon/
+jdks/
+kotlin-profile/
+native/
+wrapper/
+android/

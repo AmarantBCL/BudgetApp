@@ -47,31 +47,29 @@
             android:id="@+id/btn_add"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginHorizontal="8dp"
-            android:background="@drawable/bg_mini_button"
-            android:backgroundTint="@color/accent_purple"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="centerInside"
             android:soundEffectsEnabled="true"
             android:src="@drawable/ic_plus"
             app:layout_constraintBottom_toBottomOf="@id/tv_target_name"
             app:layout_constraintEnd_toStartOf="@id/btn_subtract"
             app:layout_constraintTop_toTopOf="@id/tv_target_name"
-            app:tint="@color/button_active" />
+            app:tint="@color/positive_green" />
 
         <ImageButton
             android:id="@+id/btn_subtract"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@drawable/bg_mini_button"
-            android:backgroundTint="@color/accent_purple"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="centerInside"
             android:soundEffectsEnabled="true"
             android:src="@drawable/ic_minus"
             app:layout_constraintBottom_toBottomOf="@id/tv_target_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_target_name"
-            app:tint="@color/button_active" />
+            app:tint="@color/negative_red" />
 
         <TextView
             android:id="@+id/lbl_progress"

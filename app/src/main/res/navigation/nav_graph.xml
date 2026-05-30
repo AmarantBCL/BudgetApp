@@ -189,5 +189,18 @@
         android:id="@+id/budgetPlanningFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetPlanningFragment"
         android:label="@string/budget"
-        tools:layout="@layout/fragment_budget_planning" />
+        tools:layout="@layout/fragment_budget_planning" >
+        <action
+            android:id="@+id/action_budgetPlanningFragment_to_addBudgetFragment"
+            app:destination="@id/addBudgetFragment"
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/addBudgetFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.AddBudgetFragment"
+        android:label="fragment_add_budget"
+        tools:layout="@layout/fragment_add_budget" />
 </navigation>

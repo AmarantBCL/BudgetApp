@@ -304,55 +304,86 @@
         tools:visibility="visible"
         app:constraint_referenced_ids="iv_empty,tv_empty_title,tv_empty_desc,btn_create_first_budget" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/iv_empty"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_marginTop="64dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/card_total_budget"-->
+<!--        app:srcCompat="@drawable/ic_target"-->
+<!--        app:tint="@color/light_gray" />-->
+
     <ImageView
         android:id="@+id/iv_empty"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/regular_margin"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/lbl_empty_entries"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_total_budget"
-        app:srcCompat="@drawable/ic_target"
-        app:tint="@color/light_gray" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/circle_goal"
+        tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/tv_empty_title"
+        android:id="@+id/lbl_empty_entries"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="No Budgets Yet"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:textColor="@color/primary_white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_empty" />
-
-    <TextView
-        android:id="@+id/tv_empty_desc"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="48dp"
         android:layout_marginTop="8dp"
-        android:text="Create your first budget to start tracking your spending"
+        android:padding="@dimen/regular_margin"
+        android:text="@string/no_budgets_set"
         android:textAlignment="center"
-        android:textColor="@color/light_gray"
+        android:textAppearance="@style/Text.Secondary"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_empty_title" />
+        app:layout_constraintTop_toBottomOf="@id/iv_empty"
+        tools:visibility="visible" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_create_first_budget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/accent_purple"
-        android:paddingHorizontal="24dp"
-        android:text="Create Budget"
-        android:textAllCaps="false"
-        app:cornerRadius="12dp"
-        app:icon="@drawable/ic_plus"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_empty_desc" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_empty_title"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="No Budgets Yet"-->
+<!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"-->
+<!--        android:textColor="@color/primary_white"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/iv_empty" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_empty_desc"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="48dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:text="Create your first budget to start tracking your spending"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@color/light_gray"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_empty_title" />-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/btn_create_first_budget"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:backgroundTint="@color/accent_purple"-->
+<!--        android:paddingHorizontal="24dp"-->
+<!--        android:text="Create Budget"-->
+<!--        android:textAllCaps="false"-->
+<!--        app:cornerRadius="12dp"-->
+<!--        app:icon="@drawable/ic_plus"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_empty_desc" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

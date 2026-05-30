@@ -6,14 +6,14 @@
         android:title="@string/calendar" />
 
     <item
-        android:id="@+id/piggyBankFragment"
-        android:icon="@drawable/ic_piggy_bank"
-        android:title="@string/piggy_bank" />
-
-    <item
         android:id="@+id/budgetPlanningFragment"
         android:icon="@drawable/ic_target"
         android:title="@string/budget" />
+
+    <item
+        android:id="@+id/piggyBankFragment"
+        android:icon="@drawable/ic_piggy_bank"
+        android:title="@string/piggy_bank" />
 
     <item
         android:id="@+id/statsFragment"

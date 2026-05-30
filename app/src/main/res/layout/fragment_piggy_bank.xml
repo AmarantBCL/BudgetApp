@@ -257,13 +257,21 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_total_savings"
-            app:tabIndicatorColor="@color/accent_purple"
-            app:tabSelectedTextColor="@color/accent_purple"
+            app:tabIndicator="@drawable/tab_indicator_pill"
+            app:tabIndicatorAnimationMode="linear"
+            app:tabIndicatorColor="@null"
+            app:tabIndicatorGravity="stretch"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextAppearance="@style/CustomTabTextStyle"
             app:tabTextColor="@color/light_gray">
 
             <com.google.android.material.tabs.TabItem
@@ -302,7 +310,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tab_layout"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/circle_goal"
+            app:srcCompat="@drawable/circle_saving"
             tools:visibility="visible" />
 
         <TextView

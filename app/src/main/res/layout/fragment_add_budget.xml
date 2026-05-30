@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.fragments.AddBudgetFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/window_black"
+        tools:context=".ui.fragments.AddSavingFragment">
+
+        <TextView
+            android:id="@+id/lbl_goal_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:paddingTop="16dp"
+            android:text="@string/goal_name"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_goal_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            app:boxBackgroundColor="@color/card_background"
+            app:endIconDrawable="@drawable/ic_clear"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/secondary_gray"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_goal_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_goal_name"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:drawableStart="@drawable/ic_target"
+                android:drawablePadding="@dimen/regular_margin"
+                android:drawableTint="@color/secondary_gray"
+                android:hint="@string/e_g_new_phone"
+                android:inputType="textCapSentences"
+                android:maxLength="96"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/secondary_gray"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/target_amount"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_goal_name" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_amount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            app:boxBackgroundColor="@color/card_background"
+            app:endIconDrawable="@drawable/ic_clear"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/secondary_gray"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_amount">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_amount"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:drawableStart="@drawable/ic_dollar"
+                android:drawablePadding="@dimen/regular_margin"
+                android:drawableTint="@color/secondary_gray"
+                android:hint="@string/_0_0"
+                android:inputType="number"
+                android:maxLength="12"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/secondary_gray"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/currency"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/til_currency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_amount" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_currency"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            app:boxBackgroundColor="@color/card_background"
+            app:endIconTint="@color/secondary_gray"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_currency">
+
+            <AutoCompleteTextView
+                android:id="@+id/edit_currency"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/default_currency"
+                android:inputType="none"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/secondary_gray" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_target_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/target_date"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_currency" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_target_date"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            app:boxBackgroundColor="@color/card_background"
+            app:endIconMode="custom"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_target_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_target_date"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:cursorVisible="false"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="@dimen/regular_margin"
+                android:drawableTint="@color/secondary_gray"
+                android:focusable="false"
+                android:hint="@string/select_date"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp"
+                android:textColorHint="@color/secondary_gray"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lbl_color_palette"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/color"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_target_date" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_color_palette"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_color_palette"
+            app:spanCount="6"
+            tools:itemCount="12"
+            tools:listitem="@layout/list_item_color_palette" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_entry"
+            style="@style/ActiveButtonStyle"
+            android:layout_width="300dp"
+            android:layout_height="56dp"
+            android:layout_margin="@dimen/large_margin"
+            android:includeFontPadding="false"
+            android:text="@string/add_button"
+            android:textAppearance="@style/Text.Button"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_plus"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_color_palette"
+            app:layout_constraintVertical_bias="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
