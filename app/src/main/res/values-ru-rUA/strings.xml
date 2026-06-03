@@ -158,4 +158,7 @@
     <string name="budget_entry">Бюджетная запись</string>
     <string name="budget_name">Название бюджета</string>
     <string name="limit_amount">Лимит</string>
+    <string name="budget_added">Бюджет добавлен</string>
+    <string name="budget_updated">Бюджет обновлен</string>
+    <string name="complete_all_required_fields">Заполните все необходимые поля</string>
 </resources>

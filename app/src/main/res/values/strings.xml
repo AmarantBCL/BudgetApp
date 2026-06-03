@@ -157,4 +157,7 @@
     <string name="budget_entry">Budget Entry</string>
     <string name="budget_name">Budget name</string>
     <string name="limit_amount">Budget limit</string>
+    <string name="budget_added">Budget added</string>
+    <string name="budget_updated">Budget updated</string>
+    <string name="complete_all_required_fields">Complete all required fields</string>
 </resources>

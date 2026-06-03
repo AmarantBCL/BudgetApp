@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +38,9 @@ class AddBudgetFragment : Fragment() {
 
     private var selectedCategory = Category.GROCERIES
 
+    // Non-localized values for the database
+    private val periodDbValues = listOf("Weekly", "Monthly")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,14 +67,15 @@ class AddBudgetFragment : Fragment() {
             binding.editBudgetName.setText(it.category.getLocalizedName(requireContext()))
             binding.editLimitAmount.setText(it.amountLimit.toString())
             selectedCategory = it.category
-            // Set selection for period if needed
-            val periods = listOf("Monthly", "Weekly")
-            val periodIndex = periods.indexOf(it.period)
-            if (periodIndex != -1) {
-                // For AutoCompleteTextView, we might need to set it differently if using Exposed Dropdown
-                binding.editPeriod.setText(it.period, false)
+            
+            // Set selection for period from DB (English) to Localized
+            val periods = resources.getStringArray(R.array.budget_periods)
+            val periodIndex = periodDbValues.indexOf(it.period)
+            if (periodIndex != -1 && periodIndex < periods.size) {
+                binding.editPeriod.setText(periods[periodIndex], false)
             }
             binding.btnAddEntry.text = getString(R.string.edit_target)
+            binding.btnAddEntry.setIconResource(R.drawable.ic_edit)
         }
     }
 
@@ -97,27 +100,33 @@ class AddBudgetFragment : Fragment() {
     private fun setClickListeners() {
         binding.btnAddEntry.setOnClickListener {
             val limit = binding.editLimitAmount.text.toString().toDoubleOrNull()
-            val period = binding.editPeriod.text.toString()
+            val periodText = binding.editPeriod.text.toString()
             
-            if (limit != null && period.isNotEmpty()) {
+            val periods = resources.getStringArray(R.array.budget_periods)
+            val periodIndex = periods.indexOf(periodText)
+            
+            if (limit != null && periodIndex != -1) {
+                // Map localized period back to English for DB
+                val dbPeriod = periodDbValues[periodIndex]
+                
                 val budget = CategoryBudget(
                     id = args.budget?.id ?: 0,
                     category = selectedCategory,
                     amountLimit = limit,
-                    period = period,
+                    period = dbPeriod,
                     startDate = args.budget?.startDate ?: System.currentTimeMillis()
                 )
                 budgetPlanningViewModel.insertBudget(budget)
                 MessageUtils.showSnackbarMessage(
                     binding.btnAddEntry,
-                    if (args.budget == null) "Budget added" else "Budget updated",
+                    if (args.budget == null) getString(R.string.budget_added) else getString(R.string.budget_updated),
                     getString(R.string.hide)
                 )
                 findNavController().popBackStack()
             } else {
                 MessageUtils.showSnackbarMessage(
                     binding.btnAddEntry,
-                    "Complete all required fields",
+                    getString(R.string.complete_all_required_fields),
                     getString(R.string.hide)
                 )
             }
@@ -125,7 +134,7 @@ class AddBudgetFragment : Fragment() {
     }
 
     private fun initAutoCompleteTextViews() {
-        val periods = listOf("Monthly", "Weekly")
+        val periods = resources.getStringArray(R.array.budget_periods)
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.list_item_exposed_dropdown,
@@ -134,8 +143,7 @@ class AddBudgetFragment : Fragment() {
         autoCompleteTextView = (binding.tilPeriod.editText as AutoCompleteTextView)
         autoCompleteTextView.setAdapter(adapter)
         autoCompleteTextView.onItemClickListener = AdapterView.OnItemClickListener {
-                parent, view, position, id ->
-            val selectedPeriod = parent.getItemAtPosition(position).toString()
+                _, _, _, _ ->
             binding.editPeriod.clearFocus()
             hideKeyboardFrom(binding.editPeriod)
         }
