@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -10,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/window_black"
-        tools:context=".ui.fragments.AddSavingFragment">
+        android:background="@color/window_black">
 
         <TextView
             android:id="@+id/lbl_budget_name"
@@ -57,8 +57,7 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:textColorHint="@color/secondary_gray"
-                android:textSize="16sp"
-                android:visibility="gone" />
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,12 +188,11 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:textColorHint="@color/secondary_gray"
-                android:textSize="16sp"
-                android:visibility="gone" />
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/lbl_categories"
+            android:id="@+id/lbl_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
@@ -202,9 +200,24 @@
             android:text="@string/category"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_selected_category"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_start_date" />
+
+        <TextView
+            android:id="@+id/tv_selected_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textColor="@color/accent_purple"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lbl_category"
+            app:layout_constraintTop_toBottomOf="@id/til_start_date"
+            tools:text="Shopping" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_categories"
@@ -216,10 +229,25 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_categories"
-            app:spanCount="6"
-            tools:itemCount="12"
+            app:layout_constraintTop_toBottomOf="@id/lbl_category"
+            app:spanCount="4"
+            tools:itemCount="8"
             tools:listitem="@layout/list_item_quick_category" />
+
+        <TextView
+            android:id="@+id/lbl_show_more"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:fontFamily="@font/rubik"
+            android:text="@string/show_more"
+            android:textColor="@color/accent_purple"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_categories" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_entry"
@@ -236,7 +264,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_categories"
+            app:layout_constraintTop_toBottomOf="@id/lbl_show_more"
             app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

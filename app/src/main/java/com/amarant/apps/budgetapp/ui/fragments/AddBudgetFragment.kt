@@ -15,9 +15,10 @@ import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentAddBudgetBinding
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.CategoryBudget
-import com.amarant.apps.budgetapp.entities.QuickCategoryItem
 import com.amarant.apps.budgetapp.ui.adapter.QuickCategoriesAdapter
+import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.CategoriesBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetPlanningViewModel
+import com.amarant.apps.budgetapp.ui.viewmodels.EntryViewModel
 import com.amarant.apps.budgetapp.util.KeyboardUtils.hideKeyboardFrom
 import com.amarant.apps.budgetapp.util.MessageUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,7 @@ class AddBudgetFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentAddBudgetBinding == null")
 
     private val budgetPlanningViewModel: BudgetPlanningViewModel by viewModels()
+    private val entryViewModel: EntryViewModel by viewModels()
 
     private lateinit var autoCompleteTextView: AutoCompleteTextView
     private lateinit var categoriesAdapter: QuickCategoriesAdapter
@@ -54,7 +56,9 @@ class AddBudgetFragment : Fragment() {
         initViews()
         initAutoCompleteTextViews()
         initCategoriesRecyclerView()
+        observeViewModel()
         setClickListeners()
+        setupFragmentResultListeners()
     }
 
     override fun onDestroyView() {
@@ -62,11 +66,21 @@ class AddBudgetFragment : Fragment() {
         _binding = null
     }
 
+    private fun setupFragmentResultListeners() {
+        childFragmentManager.setFragmentResultListener(CategoriesBottomSheetFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
+            val categoryOrdinal = bundle.getInt(CategoriesBottomSheetFragment.BUNDLE_KEY_CATEGORY, -1)
+            if (categoryOrdinal != -1) {
+                val category = Category.entries[categoryOrdinal]
+                entryViewModel.selectCategory(category)
+            }
+        }
+    }
+
     private fun initViews() {
         args.budget?.let {
-            binding.editBudgetName.setText(it.category.getLocalizedName(requireContext()))
             binding.editLimitAmount.setText(it.amountLimit.toString())
             selectedCategory = it.category
+            entryViewModel.selectCategory(it.category)
             
             // Set selection for period from DB (English) to Localized
             val periods = resources.getStringArray(R.array.budget_periods)
@@ -83,21 +97,33 @@ class AddBudgetFragment : Fragment() {
         categoriesAdapter = QuickCategoriesAdapter()
         binding.recyclerCategories.adapter = categoriesAdapter
         
-        val categories = Category.entries.filter { it != Category.ALL }.map { 
-            QuickCategoryItem(it, isSelected = it == selectedCategory) 
-        }
-        categoriesAdapter.submitList(categories)
-
         categoriesAdapter.onCategoryClickListener = { category ->
-            selectedCategory = category
-            val updatedList = categoriesAdapter.currentList.map { 
-                it.copy(isSelected = it.category == category) 
+            entryViewModel.selectCategory(category)
+        }
+    }
+
+    private fun observeViewModel() {
+        entryViewModel.getCategoryStats().observe(viewLifecycleOwner) { categories ->
+            entryViewModel.simpleInitCategories(categories)
+            args.budget?.let {
+                entryViewModel.selectCategory(it.category)
             }
-            categoriesAdapter.submitList(updatedList)
+        }
+        entryViewModel.categories.observe(viewLifecycleOwner) {
+            categoriesAdapter.submitList(it)
+        }
+        entryViewModel.selectedCategory.observe(viewLifecycleOwner) {
+            val category = entryViewModel.getSelectedCategoryName()
+            selectedCategory = category
+            binding.tvSelectedCategory.text = category.getLocalizedName(requireContext())
         }
     }
 
     private fun setClickListeners() {
+        binding.lblShowMore.setOnClickListener {
+            val bottomSheet = CategoriesBottomSheetFragment.newInstance()
+            bottomSheet.show(childFragmentManager, CategoriesBottomSheetFragment.TAG)
+        }
         binding.btnAddEntry.setOnClickListener {
             val limit = binding.editLimitAmount.text.toString().toDoubleOrNull()
             val periodText = binding.editPeriod.text.toString()
