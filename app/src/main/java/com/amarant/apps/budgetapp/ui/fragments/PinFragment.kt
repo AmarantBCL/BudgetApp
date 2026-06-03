@@ -144,7 +144,7 @@ class PinFragment : Fragment() {
                 toggleBottomNavigationMenu(false)
                 markPinAsEntered()
                 findNavController().popBackStack()
-                showSnackbar(getString(R.string.success))
+//                showSnackbar(getString(R.string.success))
             } else {
                 resetIncorrectPin()
                 showSnackbar(getString(R.string.incorrect_pin))

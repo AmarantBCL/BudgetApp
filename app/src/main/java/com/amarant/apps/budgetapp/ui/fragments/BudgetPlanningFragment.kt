@@ -64,17 +64,16 @@ class BudgetPlanningFragment : Fragment() {
 //                budgetEntry = null
 //            )
 //            findNavController().navigate(action)
-            showCreateBudgetDialog()
+//            showCreateBudgetDialog()
+            findNavController().navigate(BudgetPlanningFragmentDirections.actionBudgetPlanningFragmentToAddBudgetFragment(null))
         }
     }
 
     private fun setupRecyclerView() {
         budgetPlanningAdapter = BudgetPlanningAdapter(
             onDeleteClick = { budget -> viewModel.deleteBudget(budget) },
-            onEditClick = { budget -> 
-                // TODO: Open edit dialog
-                Log.d("WTF", "onEditClick")
-                findNavController().navigate(BudgetPlanningFragmentDirections.actionBudgetPlanningFragmentToAddBudgetFragment())
+            onEditClick = { budget ->
+                findNavController().navigate(BudgetPlanningFragmentDirections.actionBudgetPlanningFragmentToAddBudgetFragment(budget))
             }
         )
         binding.rvBudgets.adapter = budgetPlanningAdapter

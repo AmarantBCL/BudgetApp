@@ -14,25 +14,27 @@
         tools:context=".ui.fragments.AddSavingFragment">
 
         <TextView
-            android:id="@+id/lbl_goal_name"
+            android:id="@+id/lbl_budget_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/regular_margin"
             android:paddingTop="16dp"
-            android:text="@string/goal_name"
+            android:text="@string/budget_name"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_goal_name"
+            android:id="@+id/til_budget_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
+            android:visibility="gone"
             app:boxBackgroundColor="@color/card_background"
             app:endIconDrawable="@drawable/ic_clear"
             app:endIconMode="clear_text"
@@ -40,10 +42,10 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_goal_name">
+            app:layout_constraintTop_toBottomOf="@id/lbl_budget_name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_goal_name"
+                android:id="@+id/edit_budget_name"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:drawableStart="@drawable/ic_target"
@@ -55,25 +57,26 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:textColorHint="@color/secondary_gray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/lbl_amount"
+            android:id="@+id/lbl_limit_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/target_amount"
+            android:text="@string/limit_amount"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_goal_name" />
+            app:layout_constraintTop_toBottomOf="@id/til_budget_name" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_amount"
+            android:id="@+id/til_limit_amount"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -85,10 +88,10 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_amount">
+            app:layout_constraintTop_toBottomOf="@id/lbl_limit_amount">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_amount"
+                android:id="@+id/edit_limit_amount"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:drawableStart="@drawable/ic_dollar"
@@ -105,21 +108,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/lbl_currency"
+            android:id="@+id/lbl_period"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/currency"
+            android:text="@string/period"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/til_currency"
+            app:layout_constraintBottom_toTopOf="@id/til_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_amount" />
+            app:layout_constraintTop_toBottomOf="@id/til_limit_amount" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_currency"
+            android:id="@+id/til_period"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -129,13 +132,13 @@
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_currency">
+            app:layout_constraintTop_toBottomOf="@id/lbl_period">
 
             <AutoCompleteTextView
-                android:id="@+id/edit_currency"
+                android:id="@+id/edit_period"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/default_currency"
+                android:hint="Monthly"
                 android:inputType="none"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
@@ -144,33 +147,35 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/lbl_target_date"
+            android:id="@+id/lbl_start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/target_date"
+            android:text="Starting date"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_currency" />
+            app:layout_constraintTop_toBottomOf="@id/til_period" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_target_date"
+            android:id="@+id/til_start_date"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:visibility="gone"
             app:boxBackgroundColor="@color/card_background"
             app:endIconMode="custom"
             app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_target_date">
+            app:layout_constraintTop_toBottomOf="@id/lbl_start_date">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_target_date"
+                android:id="@+id/edit_start_date"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:cursorVisible="false"
@@ -184,24 +189,25 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:textColorHint="@color/secondary_gray"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/lbl_color_palette"
+            android:id="@+id/lbl_categories"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/color"
+            android:text="@string/category"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_target_date" />
+            app:layout_constraintTop_toBottomOf="@id/til_start_date" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_color_palette"
+            android:id="@+id/recycler_categories"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
@@ -210,10 +216,10 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_color_palette"
+            app:layout_constraintTop_toBottomOf="@id/lbl_categories"
             app:spanCount="6"
             tools:itemCount="12"
-            tools:listitem="@layout/list_item_color_palette" />
+            tools:listitem="@layout/list_item_quick_category" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_entry"
@@ -230,7 +236,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_color_palette"
+            app:layout_constraintTop_toBottomOf="@id/recycler_categories"
             app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

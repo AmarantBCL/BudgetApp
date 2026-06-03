@@ -66,6 +66,11 @@ class AddEntryFragment : Fragment() {
         setupFragmentResultListeners()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupFragmentResultListeners() {
         childFragmentManager.setFragmentResultListener(CategoriesBottomSheetFragment.REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             val categoryOrdinal = bundle.getInt(CategoriesBottomSheetFragment.BUNDLE_KEY_CATEGORY, -1)
@@ -74,11 +79,6 @@ class AddEntryFragment : Fragment() {
                 entryViewModel.selectCategory(category)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun initViews() {
@@ -142,8 +142,8 @@ class AddEntryFragment : Fragment() {
         }
         binding.btnAddEntry.setOnClickListener {
             val isDebit = binding.btnExpense.isChecked
-            val amount = binding.tilAmount.editText?.text.toString()
-            val purpose = binding.tilName.editText?.text.toString()
+            val amount = binding.tilAmount.editText?.text.toString().trim()
+            val purpose = binding.tilName.editText?.text.toString().trim()
             val budgetEntry = args.budgetEntry
             val wasEntrySubmitted: Boolean
             var message = getString(R.string.entry_added)

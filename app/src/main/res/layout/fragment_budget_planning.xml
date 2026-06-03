@@ -302,7 +302,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         tools:visibility="visible"
-        app:constraint_referenced_ids="iv_empty,tv_empty_title,tv_empty_desc,btn_create_first_budget" />
+        app:constraint_referenced_ids="iv_empty,lbl_empty_entries" />
 
 <!--    <ImageView-->
 <!--        android:id="@+id/iv_empty"-->

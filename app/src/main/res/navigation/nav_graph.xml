@@ -201,6 +201,11 @@
     <fragment
         android:id="@+id/addBudgetFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.AddBudgetFragment"
-        android:label="fragment_add_budget"
-        tools:layout="@layout/fragment_add_budget" />
+        android:label="@string/budget_entry"
+        tools:layout="@layout/fragment_add_budget" >
+        <argument
+            android:name="budget"
+            app:argType="com.amarant.apps.budgetapp.entities.CategoryBudget"
+            app:nullable="true" />
+    </fragment>
 </navigation>

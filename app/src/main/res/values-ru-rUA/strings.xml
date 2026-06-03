@@ -85,6 +85,7 @@
     <string name="total_target">Общая цель</string>
     <string name="no_goals_set">Целей не установлено.\nНажмите \'+ Доб.\' чтобы создать новую.</string>
     <string name="goal_name">Название цели</string>
+    <string name="no_budgets_set">Не назначено бюджетов. Нажмите \'+ Доб.\' чтобы создать новый бюджет.</string>
     <string name="e_g_new_phone">напр. Новый телефон</string>
     <string name="target_amount">Необходимая сумма</string>
     <string name="_0_0">0.0</string>
@@ -154,4 +155,7 @@
     <string name="remaining">%1$s осталось</string>
     <string name="total_budgeted">Общий бюджет</string>
     <string name="total_spent">Потрачено</string>
+    <string name="budget_entry">Бюджетная запись</string>
+    <string name="budget_name">Название бюджета</string>
+    <string name="limit_amount">Лимит</string>
 </resources>

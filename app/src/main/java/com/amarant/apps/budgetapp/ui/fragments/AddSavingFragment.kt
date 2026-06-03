@@ -134,8 +134,8 @@ class AddSavingFragment : Fragment() {
         }
         binding.btnAddEntry.setOnClickListener {
             val saving = args.saving
-            val goalName = binding.editGoalName.text.toString()
-            val amount = binding.editAmount.text.toString()
+            val goalName = binding.editGoalName.text.toString().trim()
+            val amount = binding.editAmount.text.toString().trim()
             val saved = saving?.saved ?: 0f
             val currency = binding.editCurrency.text.toString()
 //            val color = colorPaletteAdapter.currentList.find { it.isSelected }?.color

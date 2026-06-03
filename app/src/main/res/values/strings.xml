@@ -154,6 +154,7 @@
     <string name="remaining">%1$s remaining</string>
     <string name="total_budgeted">Total Budgeted</string>
     <string name="total_spent">Total Spent</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="budget_entry">Budget Entry</string>
+    <string name="budget_name">Budget name</string>
+    <string name="limit_amount">Budget limit</string>
 </resources>

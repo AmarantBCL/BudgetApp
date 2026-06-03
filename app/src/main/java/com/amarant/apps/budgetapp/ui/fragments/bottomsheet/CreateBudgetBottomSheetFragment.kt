@@ -13,6 +13,7 @@ import com.amarant.apps.budgetapp.ui.viewmodels.BudgetPlanningViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+@Deprecated("Replaced with AddBudgetFragment")
 @AndroidEntryPoint
 class CreateBudgetBottomSheetFragment : BottomSheetDialogFragment() {
 
