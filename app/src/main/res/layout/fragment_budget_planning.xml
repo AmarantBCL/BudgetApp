@@ -71,12 +71,23 @@
                 android:id="@+id/divider"
                 android:layout_width="1dp"
                 android:layout_height="0dp"
-                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
                 android:background="@color/divider_color"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/lbl_overall_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/horizontal_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"
+                android:layout_marginHorizontal="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
 
             <ImageView
                 android:id="@+id/img_spent"
@@ -122,198 +133,243 @@
                 app:layout_constraintStart_toStartOf="@id/img_spent"
                 app:layout_constraintTop_toBottomOf="@id/lbl_total_budgeted" />
 
+            <TextView
+                android:id="@+id/lbl_overall_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/regular_margin"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/rubik"
+                android:text="@string/overall_progress"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/light_gray"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_total_spent" />
+
+            <TextView
+                android:id="@+id/tv_progress_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/regular_margin"
+                android:fontFamily="@font/rubik"
+                android:text="0%"
+                android:textAppearance="@style/Text.Secondary"
+                android:textColor="@color/primary_white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/lbl_overall_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/lbl_overall_progress" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_overall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/regular_margin"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="@dimen/regular_margin"
+                android:progress="0"
+                app:indicatorColor="@color/accent_purple"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lbl_overall_progress"
+                app:trackColor="@color/background_dark_purple"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="8dp"
+                tools:progress="15" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_title"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="Budget Planning"-->
-<!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"-->
-<!--        android:textColor="@color/primary_white"-->
-<!--        android:textStyle="bold"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_title"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="16dp"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:text="Budget Planning"-->
+    <!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"-->
+    <!--        android:textColor="@color/primary_white"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_subtitle"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="4dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:text="Track your spending limits and progress"-->
-<!--        android:textAppearance="@style/Text.Secondary"-->
-<!--        android:textColor="@color/light_gray"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/btn_add_budget"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/tv_title"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_title" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_subtitle"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="4dp"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:text="Track your spending limits and progress"-->
+    <!--        android:textAppearance="@style/Text.Secondary"-->
+    <!--        android:textColor="@color/light_gray"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/btn_add_budget"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/tv_title"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_title" />-->
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/btn_add_budget"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:backgroundTint="@color/accent_purple"-->
-<!--        android:text="Add Budget"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        app:cornerRadius="8dp"-->
-<!--        app:icon="@drawable/ic_plus"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/tv_title" />-->
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/btn_add_budget"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="16dp"-->
+    <!--        android:backgroundTint="@color/accent_purple"-->
+    <!--        android:text="Add Budget"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        app:cornerRadius="8dp"-->
+    <!--        app:icon="@drawable/ic_plus"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/tv_title" />-->
 
-<!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:id="@+id/card_summary"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="16dp"-->
-<!--        app:cardBackgroundColor="@color/card_background"-->
-<!--        app:cardCornerRadius="12dp"-->
-<!--        app:cardElevation="0dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_subtitle">-->
+    <!--    <com.google.android.material.card.MaterialCardView-->
+    <!--        android:id="@+id/card_summary"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_margin="16dp"-->
+    <!--        app:cardBackgroundColor="@color/card_background"-->
+    <!--        app:cardCornerRadius="12dp"-->
+    <!--        app:cardElevation="0dp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_subtitle">-->
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="16dp">-->
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:padding="16dp">-->
 
-<!--            <ImageView-->
-<!--                android:id="@+id/iv_summary_icon"-->
-<!--                android:layout_width="24dp"-->
-<!--                android:layout_height="24dp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:srcCompat="@drawable/ic_target" />-->
+    <!--            <ImageView-->
+    <!--                android:id="@+id/iv_summary_icon"-->
+    <!--                android:layout_width="24dp"-->
+    <!--                android:layout_height="24dp"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:srcCompat="@drawable/ic_target" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_summary_title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="12dp"-->
-<!--                android:text="Overall Budget Summary"-->
-<!--                android:textAppearance="@style/Text.Secondary"-->
-<!--                android:textColor="@color/primary_white"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/iv_summary_icon"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/iv_summary_icon"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/iv_summary_icon" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_summary_title"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="12dp"-->
+    <!--                android:text="Overall Budget Summary"-->
+    <!--                android:textAppearance="@style/Text.Secondary"-->
+    <!--                android:textColor="@color/primary_white"-->
+    <!--                android:textStyle="bold"-->
+    <!--                app:layout_constraintBottom_toBottomOf="@+id/iv_summary_icon"-->
+    <!--                app:layout_constraintStart_toEndOf="@+id/iv_summary_icon"-->
+    <!--                app:layout_constraintTop_toTopOf="@+id/iv_summary_icon" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_label_budgeted"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="24dp"-->
-<!--                android:text="Total Budgeted"-->
-<!--                android:textColor="@color/light_gray"-->
-<!--                android:textSize="14sp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/iv_summary_icon" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_label_budgeted"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="24dp"-->
+    <!--                android:text="Total Budgeted"-->
+    <!--                android:textColor="@color/light_gray"-->
+    <!--                android:textSize="14sp"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/iv_summary_icon" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_total_budgeted"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="USD 0.00"-->
-<!--                android:textColor="@color/primary_white"-->
-<!--                android:textSize="16sp"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintStart_toStartOf="@+id/tv_label_budgeted"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/tv_label_budgeted" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_total_budgeted"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="USD 0.00"-->
+    <!--                android:textColor="@color/primary_white"-->
+    <!--                android:textSize="16sp"-->
+    <!--                android:textStyle="bold"-->
+    <!--                app:layout_constraintStart_toStartOf="@+id/tv_label_budgeted"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_label_budgeted" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_label_spent"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Total Spent"-->
-<!--                android:textColor="@color/light_gray"-->
-<!--                android:textSize="14sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/tv_label_budgeted" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_label_spent"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="Total Spent"-->
+    <!--                android:textColor="@color/light_gray"-->
+    <!--                android:textSize="14sp"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="@+id/tv_label_budgeted" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_total_spent"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="USD 0.00"-->
-<!--                android:textColor="@color/primary_white"-->
-<!--                android:textSize="16sp"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintEnd_toEndOf="@+id/tv_label_spent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/tv_label_spent" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_total_spent"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="USD 0.00"-->
+    <!--                android:textColor="@color/primary_white"-->
+    <!--                android:textSize="16sp"-->
+    <!--                android:textStyle="bold"-->
+    <!--                app:layout_constraintEnd_toEndOf="@+id/tv_label_spent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_label_spent" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_label_progress"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:text="Overall Progress"-->
-<!--                android:textColor="@color/light_gray"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/tv_total_budgeted" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_label_progress"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="16dp"-->
+    <!--                android:text="Overall Progress"-->
+    <!--                android:textColor="@color/light_gray"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_total_budgeted" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_progress_percent"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="0.0%"-->
-<!--                android:textColor="@color/positive_green"-->
-<!--                android:textStyle="bold"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/tv_label_progress"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/tv_label_progress" />-->
+    <!--            <TextView-->
+    <!--                android:id="@+id/tv_progress_percent"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="0.0%"-->
+    <!--                android:textColor="@color/positive_green"-->
+    <!--                android:textStyle="bold"-->
+    <!--                app:layout_constraintBottom_toBottomOf="@+id/tv_label_progress"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="@+id/tv_label_progress" />-->
 
-<!--            <com.google.android.material.progressindicator.LinearProgressIndicator-->
-<!--                android:id="@+id/progress_overall"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:progress="0"-->
-<!--                app:indicatorColor="@color/positive_green"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/tv_label_progress"-->
-<!--                app:trackColor="@color/auxiliary_smoke_gray"-->
-<!--                app:trackCornerRadius="4dp"-->
-<!--                app:trackThickness="8dp" />-->
+    <!--            <com.google.android.material.progressindicator.LinearProgressIndicator-->
+    <!--                android:id="@+id/progress_overall"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginTop="8dp"-->
+    <!--                android:progress="0"-->
+    <!--                app:indicatorColor="@color/positive_green"-->
+    <!--                app:layout_constraintTop_toBottomOf="@+id/tv_label_progress"-->
+    <!--                app:trackColor="@color/auxiliary_smoke_gray"-->
+    <!--                app:trackCornerRadius="4dp"-->
+    <!--                app:trackThickness="8dp" />-->
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-<!--    </com.google.android.material.card.MaterialCardView>-->
+    <!--    </com.google.android.material.card.MaterialCardView>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_budgets"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
         android:layout_marginHorizontal="8dp"
+        android:clipToPadding="false"
         android:paddingBottom="80dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_total_budget"
-        tools:visibility="gone"
-        tools:listitem="@layout/list_item_budget_progress" />
+        tools:listitem="@layout/list_item_budget_progress"
+        tools:visibility="gone" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_empty_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:constraint_referenced_ids="iv_empty,lbl_empty_entries" />
+        app:constraint_referenced_ids="iv_empty,lbl_empty_entries"
+        tools:visibility="visible" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/iv_empty"-->
-<!--        android:layout_width="80dp"-->
-<!--        android:layout_height="80dp"-->
-<!--        android:layout_marginTop="64dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/card_total_budget"-->
-<!--        app:srcCompat="@drawable/ic_target"-->
-<!--        app:tint="@color/light_gray" />-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/iv_empty"-->
+    <!--        android:layout_width="80dp"-->
+    <!--        android:layout_height="80dp"-->
+    <!--        android:layout_marginTop="64dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/card_total_budget"-->
+    <!--        app:srcCompat="@drawable/ic_target"-->
+    <!--        app:tint="@color/light_gray" />-->
 
     <ImageView
         android:id="@+id/iv_empty"
@@ -346,44 +402,44 @@
         app:layout_constraintTop_toBottomOf="@id/iv_empty"
         tools:visibility="visible" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_empty_title"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:text="No Budgets Yet"-->
-<!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"-->
-<!--        android:textColor="@color/primary_white"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/iv_empty" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_empty_title"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:text="No Budgets Yet"-->
+    <!--        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"-->
+    <!--        android:textColor="@color/primary_white"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/iv_empty" />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/tv_empty_desc"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginHorizontal="48dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:text="Create your first budget to start tracking your spending"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textColor="@color/light_gray"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_empty_title" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_empty_desc"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginHorizontal="48dp"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:text="Create your first budget to start tracking your spending"-->
+    <!--        android:textAlignment="center"-->
+    <!--        android:textColor="@color/light_gray"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_empty_title" />-->
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/btn_create_first_budget"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:backgroundTint="@color/accent_purple"-->
-<!--        android:paddingHorizontal="24dp"-->
-<!--        android:text="Create Budget"-->
-<!--        android:textAllCaps="false"-->
-<!--        app:cornerRadius="12dp"-->
-<!--        app:icon="@drawable/ic_plus"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_empty_desc" />-->
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/btn_create_first_budget"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="24dp"-->
+    <!--        android:backgroundTint="@color/accent_purple"-->
+    <!--        android:paddingHorizontal="24dp"-->
+    <!--        android:text="Create Budget"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        app:cornerRadius="12dp"-->
+    <!--        app:icon="@drawable/ic_plus"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_empty_desc" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

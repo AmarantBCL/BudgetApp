@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import java.util.Locale
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -126,6 +127,8 @@ class BudgetPlanningFragment : Fragment() {
 //                progressOverall.progress = summary.overallProgress.toInt()
                 tvTotalBudgeted.text = formatNumberWithThousandsSeparator(summary.totalBudgeted) //String.format(Locale.getDefault(), "USD %.2f", summary.totalBudgeted)
                 tvTotalSpent.text = formatNumberWithThousandsSeparator(summary.totalSpent) //String.format(Locale.getDefault(), "USD %.2f", summary.totalSpent)
+                tvProgressPercent.text = String.format(Locale.getDefault(), "%.2f%%", summary.overallProgress)
+                progressOverall.progress = summary.overallProgress.toInt()
             }
         }
     }

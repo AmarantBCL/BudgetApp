@@ -161,4 +161,5 @@
     <string name="budget_added">Бюджет добавлен</string>
     <string name="budget_updated">Бюджет обновлен</string>
     <string name="complete_all_required_fields">Заполните все необходимые поля</string>
+    <string name="overall_progress">Общий прогресс</string>
 </resources>
