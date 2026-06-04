@@ -167,4 +167,5 @@
     <string name="spent_semicolon">Spent:</string>
     <string name="kept">KEPT</string>
     <string name="exceeded">EXCEEDED</string>
+    <string name="monthly">Monthly</string>
 </resources>

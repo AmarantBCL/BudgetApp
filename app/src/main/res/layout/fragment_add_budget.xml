@@ -137,7 +137,7 @@
                 android:id="@+id/edit_period"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Monthly"
+                android:hint="@string/monthly"
                 android:inputType="none"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"

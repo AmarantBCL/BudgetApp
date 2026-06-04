@@ -100,6 +100,14 @@ class AddBudgetFragment : Fragment() {
         
         categoriesAdapter.onCategoryClickListener = { category ->
             entryViewModel.selectCategory(category)
+            if (binding.editLimitAmount.isFocused) {
+                binding.editLimitAmount.clearFocus()
+                hideKeyboardFrom(binding.editLimitAmount)
+            }
+            if (binding.editPeriod.isFocused) {
+                binding.editPeriod.clearFocus()
+                hideKeyboardFrom(binding.editPeriod)
+            }
         }
     }
 

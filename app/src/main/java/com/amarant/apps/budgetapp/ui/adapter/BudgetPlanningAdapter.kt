@@ -61,7 +61,9 @@ class BudgetPlanningAdapter(
                     R.string.remaining,
                     formatNumberWithThousandsSeparator(item.remaining)
                 )//"${String.format(Locale.getDefault(), "%.0f", item.remaining)} remaining"
-                
+
+                cboxRepeat.isChecked = item.budget.isRecursive
+
                 btnDelete.setOnClickListener { onDeleteClick(item.budget) }
 //                btnEdit.setOnClickListener { onEditClick(item.budget) }
                 cardBudget.setOnLongClickListener {
