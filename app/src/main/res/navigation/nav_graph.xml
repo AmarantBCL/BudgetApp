@@ -218,6 +218,6 @@
     <fragment
         android:id="@+id/budgetHistoryFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetHistoryFragment"
-        android:label="Budget History"
+        android:label="@string/budget_history"
         tools:layout="@layout/fragment_budget_history" />
 </navigation>

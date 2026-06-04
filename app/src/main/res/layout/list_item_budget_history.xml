@@ -12,23 +12,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/iv_category_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/circle_shopping" />
 
         <TextView
             android:id="@+id/tv_category_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:textAppearance="@style/Text.Secondary.Bold"
+            android:layout_marginEnd="12dp"
+            android:textAppearance="@style/Text.Primary"
             android:textColor="@color/primary_white"
+            app:layout_constraintEnd_toStartOf="@id/tv_status"
             app:layout_constraintStart_toEndOf="@+id/iv_category_icon"
             app:layout_constraintTop_toTopOf="@+id/iv_category_icon"
             tools:text="Shopping" />
@@ -37,8 +39,7 @@
             android:id="@+id/tv_period_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_gray"
-            android:textSize="12sp"
+            android:textAppearance="@style/Text.Secondary"
             app:layout_constraintStart_toStartOf="@+id/tv_category_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_category_name"
             tools:text="May 2024" />
@@ -47,6 +48,7 @@
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
             android:textColor="@color/white"
@@ -61,32 +63,37 @@
             android:id="@+id/tv_spent_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Spent:"
-            android:textColor="@color/light_gray"
+            android:layout_margin="12dp"
+            android:includeFontPadding="false"
+            android:text="@string/spent_semicolon"
+            android:textAppearance="@style/Text.Secondary"
+            android:textColor="@color/secondary_gray"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_category_icon" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_period_name" />
 
         <TextView
             android:id="@+id/tv_spent_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:includeFontPadding="false"
             android:textColor="@color/primary_white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv_spent_label"
             app:layout_constraintStart_toEndOf="@+id/tv_spent_label"
             app:layout_constraintTop_toTopOf="@+id/tv_spent_label"
-            tools:text="USD 450.00" />
+            tools:text="450" />
 
         <TextView
             android:id="@+id/tv_limit_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Limit:"
-            android:textColor="@color/light_gray"
+            android:includeFontPadding="false"
+            android:text="@string/limit_semicolon"
+            android:textAppearance="@style/Text.Secondary"
+            android:textColor="@color/secondary_gray"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_spent_label"
             app:layout_constraintStart_toEndOf="@+id/tv_spent_amount"
@@ -97,12 +104,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:includeFontPadding="false"
             android:textColor="@color/primary_white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv_limit_label"
             app:layout_constraintStart_toEndOf="@+id/tv_limit_label"
             app:layout_constraintTop_toTopOf="@+id/tv_limit_label"
-            tools:text="USD 500.00" />
+            tools:text="500" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

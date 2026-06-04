@@ -161,4 +161,10 @@
     <string name="budget_updated">Budget updated</string>
     <string name="complete_all_required_fields">Complete all required fields</string>
     <string name="overall_progress">Overall Progress</string>
+    <string name="repeat_every_period">Repeat</string>
+    <string name="budget_history">Budget History</string>
+    <string name="limit_semicolon">Limit:</string>
+    <string name="spent_semicolon">Spent:</string>
+    <string name="kept">KEPT</string>
+    <string name="exceeded">EXCEEDED</string>
 </resources>

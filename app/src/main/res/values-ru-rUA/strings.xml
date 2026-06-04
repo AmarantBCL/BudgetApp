@@ -162,4 +162,10 @@
     <string name="budget_updated">Бюджет обновлен</string>
     <string name="complete_all_required_fields">Заполните все необходимые поля</string>
     <string name="overall_progress">Общий прогресс</string>
+    <string name="repeat_every_period">Повтор</string>
+    <string name="budget_history">Архив бюджетов</string>
+    <string name="limit_semicolon">Лимит:</string>
+    <string name="spent_semicolon">Потрачено:</string>
+    <string name="kept">СОХРАНЕН</string>
+    <string name="exceeded">ПРЕВЫШЕН</string>
 </resources>

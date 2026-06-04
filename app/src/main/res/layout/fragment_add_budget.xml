@@ -154,7 +154,7 @@
             android:checked="true"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:fontFamily="@font/rubik"
-            android:text="Repeat every period"
+            android:text="@string/repeat_every_period"
             android:textColor="@color/primary_white"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/til_period" />

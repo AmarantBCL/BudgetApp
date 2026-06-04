@@ -31,11 +31,13 @@ class BudgetHistoryAdapter : ListAdapter<BudgetHistory, BudgetHistoryAdapter.Vie
                 tvCategoryName.text = item.category.getLocalizedName(context)
                 tvPeriodName.text = item.periodName
                 
-                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %s", formatNumberWithThousandsSeparator(item.spentAmount))
-                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %s", formatNumberWithThousandsSeparator(item.amountLimit))
+                tvSpentAmount.text = String.format(Locale.getDefault(), "%s", formatNumberWithThousandsSeparator(item.spentAmount))
+                tvLimitAmount.text = String.format(Locale.getDefault(), "%s", formatNumberWithThousandsSeparator(item.amountLimit))
                 
                 val isSuccess = item.spentAmount <= item.amountLimit
-                tvStatus.text = if (isSuccess) "KEPT" else "EXCEEDED"
+                tvStatus.text = if (isSuccess) context.getString(R.string.kept) else context.getString(
+                    R.string.exceeded
+                )
                 tvStatus.setBackgroundResource(R.drawable.bg_period_chip)
                 tvStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(
                     ContextCompat.getColor(context, if (isSuccess) R.color.positive_green else R.color.negative_red)
