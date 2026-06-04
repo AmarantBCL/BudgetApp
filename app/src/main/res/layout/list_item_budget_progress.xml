@@ -237,12 +237,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:buttonTint="@color/secondary_gray"
             android:clickable="false"
-            android:focusable="false"
             android:enabled="false"
+            android:focusable="false"
             android:text="@string/repeat_every_period"
+            android:textColor="@color/secondary_gray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pb_progress" />
+            app:layout_constraintTop_toBottomOf="@id/pb_progress"
+            tools:checked="true" />
 
         <TextView
             android:id="@+id/tv_remaining"
