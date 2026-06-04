@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/card_background"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/iv_category_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/circle_shopping" />
+
+        <TextView
+            android:id="@+id/tv_category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:textColor="@color/primary_white"
+            app:layout_constraintStart_toEndOf="@+id/iv_category_icon"
+            app:layout_constraintTop_toTopOf="@+id/iv_category_icon"
+            tools:text="Shopping" />
+
+        <TextView
+            android:id="@+id/tv_period_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_category_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_category_name"
+            tools:text="May 2024" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/bg_period_chip"
+            tools:text="COMPLETED" />
+
+        <TextView
+            android:id="@+id/tv_spent_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Spent:"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_category_icon" />
+
+        <TextView
+            android:id="@+id/tv_spent_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primary_white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_spent_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_spent_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_spent_label"
+            tools:text="USD 450.00" />
+
+        <TextView
+            android:id="@+id/tv_limit_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Limit:"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_spent_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_spent_amount"
+            app:layout_constraintTop_toTopOf="@+id/tv_spent_label" />
+
+        <TextView
+            android:id="@+id/tv_limit_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/primary_white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_limit_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_limit_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_limit_label"
+            tools:text="USD 500.00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

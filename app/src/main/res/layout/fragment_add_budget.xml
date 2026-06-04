@@ -145,6 +145,20 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_repeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/large_margin"
+            android:layout_marginTop="@dimen/regular_margin"
+            android:checked="true"
+            android:textAppearance="@style/Text.Secondary.Bold"
+            android:fontFamily="@font/rubik"
+            android:text="Repeat every period"
+            android:textColor="@color/primary_white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/til_period" />
+
         <TextView
             android:id="@+id/lbl_start_date"
             android:layout_width="0dp"
@@ -157,7 +171,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_period" />
+            app:layout_constraintTop_toBottomOf="@id/switch_repeat" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_start_date"
@@ -264,7 +278,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lbl_show_more"
+            app:layout_constraintTop_toBottomOf="@id/switch_repeat"
             app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

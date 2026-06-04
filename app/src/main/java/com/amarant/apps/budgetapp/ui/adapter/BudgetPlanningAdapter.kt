@@ -42,15 +42,14 @@ class BudgetPlanningAdapter(
                 tvProgressPercent.text = String.format(Locale.getDefault(), "%.1f%%", item.progress)
                 pbProgress.progress = item.progress.toInt()
 
-                if (item.spent > item.budget.amountLimit) {
-                    pbProgress.progressTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(pbProgress.context, R.color.accent_purple)
-                    )
-                } else {
-                    pbProgress.progressTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(pbProgress.context, R.color.positive_green)
-                    )
+                val progressColor = when {
+                    item.progress >= 100f -> R.color.negative_red
+                    item.progress >= 90f -> R.color.amber
+                    else -> R.color.positive_green
                 }
+                pbProgress.progressTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(pbProgress.context, progressColor)
+                )
                 
 //                tvSpentAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.spent)
 //                tvLimitAmount.text = String.format(Locale.getDefault(), "USD %.2f", item.budget.amountLimit)

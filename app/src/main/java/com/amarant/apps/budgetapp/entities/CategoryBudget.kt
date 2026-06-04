@@ -13,5 +13,6 @@ data class CategoryBudget(
     val category: Category,
     val amountLimit: Double,
     val period: String, // "Monthly" or "Weekly"
-    val startDate: Long
+    val startDate: Long,
+    val isRecursive: Boolean = true
 ): Parcelable

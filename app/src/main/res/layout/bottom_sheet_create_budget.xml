@@ -83,16 +83,27 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_recursive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:checked="true"
+        android:text="Repeat every period"
+        android:textColor="@color/primary_white"
+        app:layout_constraintTop_toBottomOf="@+id/til_period" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_create"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/accent_purple"
         android:text="Create Budget"
         android:textAllCaps="false"
         app:cornerRadius="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/til_period" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_recursive" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

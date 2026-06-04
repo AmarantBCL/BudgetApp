@@ -53,20 +53,21 @@ class BudgetPlanningFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        val activity = requireActivity() as MainActivity
-//        val appBar = activity.findViewById<AppBarLayout>(R.id.app_bar)
-//        TransitionManager.beginDelayedTransition(appBar, Fade())
-        inflater.inflate(R.menu.calendar_menu, menu)
+        inflater.inflate(R.menu.budget_planning_menu, menu)
         val buttonItem = menu.findItem(R.id.action_button_item)
         val button = buttonItem.actionView?.findViewById<MaterialButton>(R.id.menu_button)
         button?.setOnClickListener {
-//            val action = CalendarFragmentDirections.actionCalendarFragmentToFragmentAddEntry(
-//                selectedDate = currentDateMillis,
-//                budgetEntry = null
-//            )
-//            findNavController().navigate(action)
-//            showCreateBudgetDialog()
             findNavController().navigate(BudgetPlanningFragmentDirections.actionBudgetPlanningFragmentToAddBudgetFragment(null))
+        }
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_budget_history -> {
+                findNavController().navigate(R.id.action_budgetPlanningFragment_to_budgetHistoryFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

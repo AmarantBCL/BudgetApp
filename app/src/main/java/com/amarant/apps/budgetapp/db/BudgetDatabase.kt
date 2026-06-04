@@ -10,6 +10,7 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.amarant.apps.budgetapp.entities.Budget
+import com.amarant.apps.budgetapp.entities.BudgetHistory
 import com.amarant.apps.budgetapp.entities.CategoryBudget
 import com.amarant.apps.budgetapp.entities.HistoryItem
 import com.amarant.apps.budgetapp.entities.PiggyBank
@@ -17,8 +18,8 @@ import com.amarant.apps.budgetapp.entities.Profile
 import com.amarant.apps.budgetapp.entities.Saving
 
 @Database(
-    entities = [Budget::class, Profile::class, PiggyBank::class, HistoryItem::class, Saving::class, CategoryBudget::class],
-    version = 10,
+    entities = [Budget::class, Profile::class, PiggyBank::class, HistoryItem::class, Saving::class, CategoryBudget::class, BudgetHistory::class],
+    version = 11,
     exportSchema = true,
     autoMigrations = [AutoMigration(from = 4, to = 5), AutoMigration(from = 6, to = 7)]
 )
@@ -34,4 +35,6 @@ abstract class BudgetDatabase : RoomDatabase() {
     abstract fun getHistoryDao(): HistoryDao
 
     abstract fun getCategoryBudgetDao(): CategoryBudgetDao
+
+    abstract fun getBudgetHistoryDao(): BudgetHistoryDao
 }

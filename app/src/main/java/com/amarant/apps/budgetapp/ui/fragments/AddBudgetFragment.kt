@@ -81,6 +81,7 @@ class AddBudgetFragment : Fragment() {
             binding.editLimitAmount.setText(it.amountLimit.toString())
             selectedCategory = it.category
             entryViewModel.selectCategory(it.category)
+            binding.switchRepeat.isChecked = it.isRecursive
             
             // Set selection for period from DB (English) to Localized
             val periods = resources.getStringArray(R.array.budget_periods)
@@ -140,7 +141,8 @@ class AddBudgetFragment : Fragment() {
                     category = selectedCategory,
                     amountLimit = limit,
                     period = dbPeriod,
-                    startDate = args.budget?.startDate ?: System.currentTimeMillis()
+                    startDate = args.budget?.startDate ?: System.currentTimeMillis(),
+                    isRecursive = binding.switchRepeat.isChecked
                 )
                 budgetPlanningViewModel.insertBudget(budget)
                 MessageUtils.showSnackbarMessage(

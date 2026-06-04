@@ -197,6 +197,13 @@
             app:exitAnim="@anim/fragment_slide_out"
             app:popEnterAnim="@anim/fragment_slide_pop_enter"
             app:popExitAnim="@anim/fragment_slide_pop_exit" />
+        <action
+            android:id="@+id/action_budgetPlanningFragment_to_budgetHistoryFragment"
+            app:destination="@id/budgetHistoryFragment"
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/addBudgetFragment"
@@ -208,4 +215,9 @@
             app:argType="com.amarant.apps.budgetapp.entities.CategoryBudget"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/budgetHistoryFragment"
+        android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetHistoryFragment"
+        android:label="Budget History"
+        tools:layout="@layout/fragment_budget_history" />
 </navigation>

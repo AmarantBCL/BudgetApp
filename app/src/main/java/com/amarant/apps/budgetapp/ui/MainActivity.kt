@@ -123,6 +123,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.fragmentAddEntry,
                 R.id.addSavingFragment,
+                R.id.addBudgetFragment,
+                R.id.budgetHistoryFragment,
                 R.id.expensesFragment -> {
                     binding.bottomNavBar.visibility = View.GONE
                 }
