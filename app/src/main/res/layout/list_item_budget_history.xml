@@ -42,6 +42,7 @@
             android:id="@+id/tv_period_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/light_gray"
             android:textAppearance="@style/Text.Secondary"
             app:layout_constraintStart_toStartOf="@+id/tv_category_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_category_name"
@@ -84,7 +85,7 @@
             android:text="@string/spent_semicolon"
             android:textAppearance="@style/Text.Secondary"
             android:textColor="@color/secondary_gray"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_period_name" />
 
@@ -110,7 +111,7 @@
             android:text="@string/limit_semicolon"
             android:textAppearance="@style/Text.Secondary"
             android:textColor="@color/secondary_gray"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_spent_label"
             app:layout_constraintStart_toEndOf="@+id/tv_spent_amount"
             app:layout_constraintTop_toTopOf="@+id/tv_spent_label" />

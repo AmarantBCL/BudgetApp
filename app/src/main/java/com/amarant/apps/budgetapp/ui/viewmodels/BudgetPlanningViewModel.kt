@@ -43,7 +43,11 @@ class BudgetPlanningViewModel @Inject constructor(
         
         // 1. Save to History
         val periodName = if (budget.period == "Monthly") {
-            SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date(budget.startDate))
+            // Using LLLL for stand-alone nominative month name
+            val sdf = SimpleDateFormat("LLLL yyyy", Locale.getDefault())
+            sdf.format(Date(budget.startDate)).replaceFirstChar { 
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() 
+            }
         } else {
             "Week " + SimpleDateFormat("ww, yyyy", Locale.getDefault()).format(Date(budget.startDate))
         }
