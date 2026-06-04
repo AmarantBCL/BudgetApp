@@ -25,6 +25,13 @@
             app:exitAnim="@anim/fragment_slide_out"
             app:popEnterAnim="@anim/fragment_slide_pop_enter"
             app:popExitAnim="@anim/fragment_slide_pop_exit" />
+        <action
+            android:id="@+id/action_calendarFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/budgetEntryFragment"
@@ -40,11 +47,14 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.amarant.apps.budgetapp.ui.fragments.ProfileFragment"
-        android:label="ProfileFragment"
+        android:label="@string/profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_pinFragment"
+            app:destination="@id/pinFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportsFragment"
@@ -200,6 +210,13 @@
         <action
             android:id="@+id/action_budgetPlanningFragment_to_budgetHistoryFragment"
             app:destination="@id/budgetHistoryFragment"
+            app:enterAnim="@anim/fragment_slide_in"
+            app:exitAnim="@anim/fragment_slide_out"
+            app:popEnterAnim="@anim/fragment_slide_pop_enter"
+            app:popExitAnim="@anim/fragment_slide_pop_exit" />
+        <action
+            android:id="@+id/action_budgetPlanningFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
             app:enterAnim="@anim/fragment_slide_in"
             app:exitAnim="@anim/fragment_slide_out"
             app:popEnterAnim="@anim/fragment_slide_pop_enter"

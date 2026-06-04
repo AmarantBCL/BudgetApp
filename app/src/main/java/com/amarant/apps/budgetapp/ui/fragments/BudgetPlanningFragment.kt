@@ -67,6 +67,10 @@ class BudgetPlanningFragment : Fragment() {
                 findNavController().navigate(R.id.action_budgetPlanningFragment_to_budgetHistoryFragment)
                 true
             }
+            R.id.action_settings -> {
+                findNavController().navigate(BudgetPlanningFragmentDirections.actionBudgetPlanningFragmentToProfileFragment())
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

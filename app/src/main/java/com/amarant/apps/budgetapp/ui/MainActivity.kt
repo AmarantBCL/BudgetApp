@@ -9,26 +9,23 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
-import androidx.transition.Fade
-import androidx.transition.TransitionManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.ActivityMainBinding
+import com.amarant.apps.budgetapp.ui.viewmodels.ProfileViewModel
 import com.amarant.apps.budgetapp.util.Constants.PIN_LOCK_TIMEOUT_MILLIS
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_IS_PIN_ENTERED_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_LAST_ACTIVE_TIME_KEY
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_PIN_VALUE_KEY
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.amarant.apps.budgetapp.util.NumberUtils
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
-//    private val profileViewModel: ProfileViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +55,16 @@ class MainActivity : AppCompatActivity() {
         ))
         toolbar.setupWithNavController(navController, appBarConfiguration)
         setBottomNavigation()
-//        checkProfileData()
+        observeProfileSettings()
+    }
+
+    private fun observeProfileSettings() {
+        profileViewModel.profileLiveData.observe(this) { profiles ->
+            if (profiles.isNotEmpty()) {
+                val profile = profiles[0]
+                NumberUtils.isHideDecimal = profile.hideDecimal
+            }
+        }
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -125,6 +131,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.addSavingFragment,
                 R.id.addBudgetFragment,
                 R.id.budgetHistoryFragment,
+                R.id.profileFragment,
+                R.id.pinFragment,
                 R.id.expensesFragment -> {
                     binding.bottomNavBar.visibility = View.GONE
                 }

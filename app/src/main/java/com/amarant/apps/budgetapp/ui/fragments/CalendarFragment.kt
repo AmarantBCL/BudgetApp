@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
@@ -102,6 +103,16 @@ class CalendarFragment : Fragment() {
                 budgetEntry = null
             )
             findNavController().navigate(action)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                findNavController().navigate(CalendarFragmentDirections.actionCalendarFragmentToProfileFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -215,11 +226,12 @@ class CalendarFragment : Fragment() {
             binding.tvTodayDate.text = displayedDate
             calendarViewModel.setSelectedDate(calendar.timeInMillis)
         }
-        binding.tvTodayDate.setOnClickListener {
-            // Example: Navigate to set a new PIN
-            val action = CalendarFragmentDirections.actionCalendarFragmentToPinFragment(isSettingPin = true)
-            findNavController().navigate(action)
-        }
+        // TODO Delete safely once it's redundant
+//        binding.tvTodayDate.setOnClickListener {
+//            // Example: Navigate to set a new PIN
+//            val action = CalendarFragmentDirections.actionCalendarFragmentToPinFragment(isSettingPin = true)
+//            findNavController().navigate(action)
+//        }
     }
 
     private fun setClickListeners() {

@@ -19,7 +19,7 @@ import com.amarant.apps.budgetapp.entities.Saving
 
 @Database(
     entities = [Budget::class, Profile::class, PiggyBank::class, HistoryItem::class, Saving::class, CategoryBudget::class, BudgetHistory::class],
-    version = 11,
+    version = 12,
     exportSchema = true,
     autoMigrations = [AutoMigration(from = 4, to = 5), AutoMigration(from = 6, to = 7)]
 )

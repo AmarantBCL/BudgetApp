@@ -13,5 +13,9 @@ data class Profile(
     val bankName: String,
     val currentBalance: Float,
     val initialBalance: Float,
-    val primaryBank: Boolean
+    val primaryBank: Boolean,
+    val currency: String = "$ USD",
+    val monthlyIncome: Double = 0.0,
+    val monthlyGoal: Double = 0.0,
+    val hideDecimal: Boolean = false
 )

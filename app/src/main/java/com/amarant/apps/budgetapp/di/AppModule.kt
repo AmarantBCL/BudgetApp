@@ -27,7 +27,7 @@ object AppModule {
         DATABASE_NAME
     ).addMigrations(MIGRATION_5_6).addMigrations(MIGRATION_7_8)
         .addMigrations(MIGRATION_8_9).addMigrations(MIGRATION_9_10)
-        .addMigrations(MIGRATION_10_11).build()
+        .addMigrations(MIGRATION_10_11).addMigrations(MIGRATION_11_12).build()
 
     private val MIGRATION_5_6: Migration = object : Migration(5, 6) {
         override fun migrate(db: SupportSQLiteDatabase) {
@@ -65,6 +65,15 @@ object AppModule {
         override fun migrate(db: SupportSQLiteDatabase) {
             db.execSQL("ALTER TABLE `category_budgets` ADD COLUMN `isRecursive` INTEGER NOT NULL DEFAULT 1")
             db.execSQL("CREATE TABLE IF NOT EXISTS `budget_history` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category` TEXT NOT NULL, `amountLimit` REAL NOT NULL, `spentAmount` REAL NOT NULL, `periodType` TEXT NOT NULL, `periodName` TEXT NOT NULL, `dateStamp` INTEGER NOT NULL)")
+        }
+    }
+
+    private val MIGRATION_11_12 = object : Migration(11, 12) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE `profile` ADD COLUMN `currency` TEXT NOT NULL DEFAULT '$ USD'")
+            db.execSQL("ALTER TABLE `profile` ADD COLUMN `monthlyIncome` REAL NOT NULL DEFAULT 0.0")
+            db.execSQL("ALTER TABLE `profile` ADD COLUMN `monthlyGoal` REAL NOT NULL DEFAULT 0.0")
+            db.execSQL("ALTER TABLE `profile` ADD COLUMN `hideDecimal` INTEGER NOT NULL DEFAULT 0")
         }
     }
 

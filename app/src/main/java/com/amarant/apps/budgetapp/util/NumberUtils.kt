@@ -8,8 +8,16 @@ import java.util.Locale
 
 object NumberUtils {
 
+    var isHideDecimal: Boolean = false
+
     fun formatNumberWithThousandsSeparator(number: Double): String {
         val formatter = NumberFormat.getNumberInstance(Locale.getDefault())
+        if (isHideDecimal) {
+            formatter.maximumFractionDigits = 0
+        } else {
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+        }
         return formatter.format(number)
     }
 

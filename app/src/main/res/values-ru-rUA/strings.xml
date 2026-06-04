@@ -169,4 +169,14 @@
     <string name="kept">Соблюден</string>
     <string name="exceeded">Превышен</string>
     <string name="monthly">Месяц</string>
+    <string name="monthly_savings_goal">Ежемес. цель</string>
+    <string name="hide_decimals">Скрывать копейки</string>
+    <string name="financial_settings">Финансовые настройки</string>
+    <string name="security">Безопасность</string>
+    <string name="use_pin_lock">Использовать PIN</string>
+    <string name="about">О приложении</string>
+    <string name="privacy_policy">Политика конфиденц.</string>
+    <string name="export_data_csv">Экспорт данных (CSV)</string>
+    <string name="app_version">Номер версии</string>
+    <string name="save_changes">Сохранить изменения</string>
 </resources>

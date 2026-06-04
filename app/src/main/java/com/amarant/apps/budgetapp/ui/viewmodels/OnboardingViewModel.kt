@@ -153,7 +153,10 @@ class OnboardingViewModel @Inject constructor(
             bankName = "",
             currentBalance = 0f,
             initialBalance = 0f,
-            primaryBank = true
+            primaryBank = true,
+            currency = temp.currency,
+            monthlyIncome = temp.monthlyIncome?.toDoubleOrNull() ?: 0.0,
+            monthlyGoal = temp.savingGoal?.toDoubleOrNull() ?: 0.0
         )
     }
 
