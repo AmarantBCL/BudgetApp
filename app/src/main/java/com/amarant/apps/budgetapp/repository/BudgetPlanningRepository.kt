@@ -26,4 +26,6 @@ class BudgetPlanningRepository @Inject constructor(
     suspend fun archiveBudget(history: BudgetHistory) = budgetHistoryDao.insertHistory(history)
 
     fun getBudgetHistory(): LiveData<List<BudgetHistory>> = budgetHistoryDao.getAllHistory()
+
+    suspend fun deleteHistory(history: BudgetHistory) = budgetHistoryDao.deleteHistory(history)
 }

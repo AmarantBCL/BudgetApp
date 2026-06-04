@@ -166,7 +166,7 @@
     <string name="budget_history">Архив бюджетов</string>
     <string name="limit_semicolon">Лимит:</string>
     <string name="spent_semicolon">Потрачено:</string>
-    <string name="kept">СОХРАНЕН</string>
-    <string name="exceeded">ПРЕВЫШЕН</string>
+    <string name="kept">Соблюден</string>
+    <string name="exceeded">Превышен</string>
     <string name="monthly">Месяц</string>
 </resources>

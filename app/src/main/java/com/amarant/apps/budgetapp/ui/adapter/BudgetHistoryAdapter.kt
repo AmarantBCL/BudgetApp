@@ -35,13 +35,20 @@ class BudgetHistoryAdapter : ListAdapter<BudgetHistory, BudgetHistoryAdapter.Vie
                 tvLimitAmount.text = String.format(Locale.getDefault(), "%s", formatNumberWithThousandsSeparator(item.amountLimit))
                 
                 val isSuccess = item.spentAmount <= item.amountLimit
-                tvStatus.text = if (isSuccess) context.getString(R.string.kept) else context.getString(
+                chipStatus.text = if (isSuccess) context.getString(R.string.kept) else context.getString(
                     R.string.exceeded
                 )
-                tvStatus.setBackgroundResource(R.drawable.bg_period_chip)
-                tvStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(
-                    ContextCompat.getColor(context, if (isSuccess) R.color.positive_green else R.color.negative_red)
-                )
+//                chipStatus.setBackgroundResource(R.drawable.bg_period_chip)
+//                chipStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(
+//                    ContextCompat.getColor(context, if (isSuccess) R.color.positive_green else R.color.negative_red)
+//                )
+
+                val bgColor = if (isSuccess) ContextCompat.getColorStateList(context, R.color.complete_background) else
+                    ContextCompat.getColorStateList(context, R.color.overdue_background)
+                val textColor = if (isSuccess) ContextCompat.getColorStateList(context, R.color.complete_text) else
+                    ContextCompat.getColorStateList(context, R.color.overdue_text)
+                chipStatus.chipBackgroundColor = bgColor
+                chipStatus.setTextColor(textColor)
             }
         }
     }

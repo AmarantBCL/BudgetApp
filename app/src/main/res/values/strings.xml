@@ -165,7 +165,7 @@
     <string name="budget_history">Budget History</string>
     <string name="limit_semicolon">Limit:</string>
     <string name="spent_semicolon">Spent:</string>
-    <string name="kept">KEPT</string>
-    <string name="exceeded">EXCEEDED</string>
+    <string name="kept">Kept</string>
+    <string name="exceeded">Exceeded</string>
     <string name="monthly">Monthly</string>
 </resources>

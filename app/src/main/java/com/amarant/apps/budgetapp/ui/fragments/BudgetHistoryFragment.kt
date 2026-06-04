@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentBudgetHistoryBinding
 import com.amarant.apps.budgetapp.ui.adapter.BudgetHistoryAdapter
+import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.viewmodels.BudgetPlanningViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +41,37 @@ class BudgetHistoryFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvHistory.adapter = historyAdapter
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val history = historyAdapter.currentList[position]
+                viewModel.deleteHistoryBudget(history)
+                Snackbar.make(requireView(), getString(R.string.item_deleted), Snackbar.LENGTH_LONG).apply {
+                    setAction(getString(R.string.undo)) {
+                        viewModel.insertHistoryBudget(history)
+                    }
+                    show()
+                }
+            }
+
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                return if (viewHolder.itemViewType == ReportsAdapter.VIEW_TYPE_DATE) {
+                    0
+                } else {
+                    super.getSwipeDirs(recyclerView, viewHolder)
+                }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.rvHistory)
     }
 
     private fun observeViewModel() {

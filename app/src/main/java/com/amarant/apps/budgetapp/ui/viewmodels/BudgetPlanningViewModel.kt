@@ -144,4 +144,12 @@ class BudgetPlanningViewModel @Inject constructor(
     fun deleteBudget(budget: CategoryBudget) = viewModelScope.launch {
         repository.deleteBudget(budget)
     }
+
+    fun deleteHistoryBudget(history: BudgetHistory) = viewModelScope.launch {
+        repository.deleteHistory(history)
+    }
+
+    fun insertHistoryBudget(history: BudgetHistory) = viewModelScope.launch {
+        repository.archiveBudget(history)
+    }
 }
