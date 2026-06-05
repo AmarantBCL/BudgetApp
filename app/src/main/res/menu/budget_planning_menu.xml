@@ -7,15 +7,17 @@
 <!--        android:title="Settings"-->
 <!--        app:showAsAction="ifRoom"-->
 <!--        app:iconTint="@color/light_gray" />-->
+
+    <item
+        android:id="@+id/action_button_item"
+        android:title="Add Budget"
+        app:actionLayout="@layout/menu_action_button"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_budget_history"
         android:icon="@drawable/ic_history"
         android:title="History"
         app:showAsAction="always"
         app:iconTint="@color/light_gray" />
-    <item
-        android:id="@+id/action_button_item"
-        android:title="Add Budget"
-        app:actionLayout="@layout/menu_action_button"
-        app:showAsAction="always" />
 </menu>

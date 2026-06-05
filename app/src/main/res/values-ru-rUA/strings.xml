@@ -178,5 +178,5 @@
     <string name="privacy_policy">Политика конфиденц.</string>
     <string name="export_data_csv">Экспорт данных (CSV)</string>
     <string name="app_version">Номер версии</string>
-    <string name="save_changes">Сохранить изменения</string>
+    <string name="save_changes">Сохр. изменения</string>
 </resources>
