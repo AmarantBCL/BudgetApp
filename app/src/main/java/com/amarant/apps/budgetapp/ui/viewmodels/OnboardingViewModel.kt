@@ -26,8 +26,8 @@ class OnboardingViewModel @Inject constructor(
         fullName = "",
         email = "",
         currency = "",
-        monthlyIncome = null,
-        savingGoal = null,
+        monthlyIncome = "",
+        savingGoal = "",
         categories = listOf()
     ))
     val tempProfile: LiveData<TempProfile>

@@ -73,6 +73,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             app:boxBackgroundColor="@color/card_background"
+            app:endIconDrawable="@drawable/ic_clear"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/secondary_gray"
             app:hintEnabled="false"
             app:layout_constraintBottom_toTopOf="@id/lbl_email"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +97,10 @@
                 android:paddingVertical="8dp"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:textColor="@color/primary_white"
-                android:textColorHint="@color/secondary_gray" />
+                android:textColorHint="@color/secondary_gray"
+                app:endIconDrawable="@drawable/ic_clear"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/secondary_gray" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,6 +125,9 @@
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginBottom="@dimen/large_margin"
             app:boxBackgroundColor="@color/card_background"
+            app:endIconDrawable="@drawable/ic_clear"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/secondary_gray"
             app:errorEnabled="true"
             app:hintEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"

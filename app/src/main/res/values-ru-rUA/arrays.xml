@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="feature_titles">
+        <item>Отслеживание расходов</item>
+        <item>Цели сбережений</item>
+        <item>Защита данных</item>
+        <item>Планирование бюджета</item>
+    </string-array>
+
+    <string-array name="feature_descriptions">
+        <item>Контролируйте свои ежедневные траты</item>
+        <item>Ставьте и достигайте финансовых целей</item>
+        <item>Защитите свои финансовые данные с помощью PIN-кода</item>
+        <item>Устанавливайте лимиты и отслеживайте их автоматически</item>
+    </string-array>
+
     <string-array name="categories">
         <item>Все</item>
         <item>Продукты</item>

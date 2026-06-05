@@ -63,6 +63,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/full_name"
+                        app:endIconDrawable="@drawable/ic_clear"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/secondary_gray"
                         app:startIconDrawable="@drawable/ic_person"
                         app:startIconTint="@color/light_gray">
 
@@ -81,6 +84,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="@string/email_address"
+                        app:endIconDrawable="@drawable/ic_clear"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/secondary_gray"
                         app:startIconDrawable="@drawable/ic_email"
                         app:startIconTint="@color/light_gray">
 
@@ -143,6 +149,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="@string/monthly_income"
+                        app:endIconDrawable="@drawable/ic_clear"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/secondary_gray"
                         app:startIconDrawable="@drawable/ic_trend"
                         app:startIconTint="@color/light_gray">
 
@@ -161,6 +170,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="@string/monthly_savings_goal"
+                        app:endIconDrawable="@drawable/ic_clear"
+                        app:endIconMode="clear_text"
+                        app:endIconTint="@color/secondary_gray"
                         app:startIconDrawable="@drawable/ic_target"
                         app:startIconTint="@color/light_gray">
 

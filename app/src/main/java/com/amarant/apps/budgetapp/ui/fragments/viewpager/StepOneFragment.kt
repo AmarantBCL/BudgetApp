@@ -45,6 +45,11 @@ class StepOneFragment : Fragment() {
                 resources.getStringArray(R.array.feature_titles)[2],
                 resources.getStringArray(R.array.feature_descriptions)[2],
                 R.drawable.ic_shield
+            ),
+            Feature(
+                resources.getStringArray(R.array.feature_titles)[3],
+                resources.getStringArray(R.array.feature_descriptions)[3],
+                R.drawable.ic_wallet
             )
         )
         val featureAdapter = FeatureAdapter()

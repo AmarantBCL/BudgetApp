@@ -3,13 +3,15 @@
     <string-array name="feature_titles">
         <item>Track Expenses</item>
         <item>Saving Goals</item>
-        <item>Tax Planning</item>
+        <item>Data Protection</item>
+        <item>Budget Planning</item>
     </string-array>
 
     <string-array name="feature_descriptions">
         <item>Monitor your daily spending</item>
         <item>Set and achieve financial targets</item>
-        <item>Prepare for quarterly taxes</item>
+        <item>Secure your financial data with PIN</item>
+        <item>Set limits and track automatically</item>
     </string-array>
 
     <string-array name="currency">

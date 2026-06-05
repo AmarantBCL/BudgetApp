@@ -166,7 +166,7 @@
                 android:layout_marginStart="@dimen/large_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:paddingBottom="@dimen/large_margin"
-                android:text="@string/categories_semicolon"
+                android:text="@string/savings_goal"
                 android:textAppearance="@style/Text.Secondary"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +183,7 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/lbl_categories"
                 app:layout_constraintTop_toBottomOf="@id/lbl_income"
-                tools:text="4 Selected" />
+                tools:text="Not Set" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

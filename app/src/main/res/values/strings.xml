@@ -168,7 +168,6 @@
     <string name="kept">Kept</string>
     <string name="exceeded">Exceeded</string>
     <string name="monthly">Monthly</string>
-    <string name="profile_settings"><![CDATA[Profile & Settings]]></string>
     <string name="monthly_savings_goal">Monthly Savings Goal</string>
     <string name="hide_decimals">Hide Decimals</string>
     <string name="financial_settings">Financial Settings</string>
@@ -179,4 +178,6 @@
     <string name="export_data_csv">Export Data (CSV)</string>
     <string name="app_version">App Version</string>
     <string name="save_changes">Save Changes</string>
+    <string name="savings_goal">Savings Goal:</string>
+    <string name="not_set">Not Set</string>
 </resources>

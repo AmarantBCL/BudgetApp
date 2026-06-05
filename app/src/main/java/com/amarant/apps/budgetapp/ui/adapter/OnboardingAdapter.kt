@@ -19,13 +19,13 @@ class OnboardingAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapte
         return when(position) {
             1 -> StepTwoFragment()
             2 -> StepThreeFragment()
-            3 -> StepFourFragment()
-            4 -> StepFiveFragment()
+//            3 -> StepFourFragment()
+            3 -> StepFiveFragment()
             else -> StepOneFragment()
         }
     }
 
     companion object {
-        private const val ONBOARDING_STEPS = 5
+        private const val ONBOARDING_STEPS = 4
     }
 }

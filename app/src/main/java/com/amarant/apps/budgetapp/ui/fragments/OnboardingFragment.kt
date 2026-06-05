@@ -57,7 +57,7 @@ class OnboardingFragment : Fragment() {
         binding.viewPagerOnboard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.btnPrevious.isEnabled = position > 0
-                binding.tvStep.text = "Step ${position + 1} of 5"
+                binding.tvStep.text = "Step ${position + 1} of 4"
                 binding.pbarStep.setProgress(position + 1, true)
                 when(position) {
                     1 -> onboardingViewModel.updateNextButtonState()
@@ -72,7 +72,7 @@ class OnboardingFragment : Fragment() {
     private fun setClickListeners() {
         binding.btnNext.setOnClickListener {
             val currentItem = binding.viewPagerOnboard.currentItem
-            if (currentItem < 4) {
+            if (currentItem < 3) {
                 binding.viewPagerOnboard.setCurrentItem(currentItem + 1, true)
             } else {
                 val profile = onboardingViewModel.buildAndSaveUserProfile()
