@@ -7,7 +7,7 @@ import com.amarant.apps.budgetapp.entities.Category
 import javax.inject.Inject
 
 class BudgetRepository @Inject constructor(
-    val budgetDao: BudgetDao
+    private val budgetDao: BudgetDao
 ) {
 
     suspend fun insertBudget(budget: Budget) = budgetDao.insertBudget(budget)

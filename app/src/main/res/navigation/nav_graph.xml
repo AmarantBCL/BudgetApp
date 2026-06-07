@@ -190,10 +190,24 @@
         tools:layout="@layout/fragment_expenses" >
         <argument
             android:name="category"
-            app:argType="com.amarant.apps.budgetapp.entities.Category" />
+            app:argType="com.amarant.apps.budgetapp.entities.Category"
+            android:defaultValue="ALL" />
         <argument
             android:name="isIncome"
             app:argType="boolean" />
+        <argument
+            android:name="startDate"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="endDate"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/budgetPlanningFragment"

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
+import com.amarant.apps.budgetapp.entities.BarChartItem
 import com.amarant.apps.budgetapp.entities.Budget
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
@@ -30,10 +31,6 @@ import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.collections.contains
-import kotlin.text.category
-import kotlin.text.toFloat
-import kotlin.text.toInt
-import kotlin.times
 
 enum class ChartType {
     PIE, BAR
@@ -42,12 +39,13 @@ enum class ChartType {
 data class BarChartData(
     val labels: List<String>,
     val incomeValues: List<Float>,
-    val expenseValues: List<Float>
+    val expenseValues: List<Float>,
+    val items: List<BarChartItem> = emptyList()
 )
 
 @HiltViewModel
 class StatsViewModel @Inject constructor(
-    private val budgetRepository: BudgetRepository
+    val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
     private val _chartType = MutableLiveData(ChartType.PIE)
@@ -166,45 +164,85 @@ class StatsViewModel @Inject constructor(
             period.map { periodId ->
                 val calendar = Calendar.getInstance()
                 val groupedData = mutableMapOf<String, Float>()
+                val entriesCount = mutableMapOf<String, Int>()
                 val keySortMap = mutableMapOf<String, Long>()
+                val dateRanges = mutableMapOf<String, Pair<Long, Long>>()
 
                 budgets.filter { !hiddenSet.contains(it.budget.category) }.forEach { item ->
                     calendar.timeInMillis = item.budget.date.toLong()
                     val label: String
                     val sortKey: Long
+                    val itemStart: Long
+                    val itemEnd: Long
                     
                     when {
                         periodId <= PERIOD_LAST_TWO_DAYS -> {
                             label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
                             sortKey = item.budget.date.toLong()
+                            itemStart = sortKey
+                            itemEnd = sortKey
                         }
                         periodId <= PERIOD_LAST_TWO_WEEKS -> {
                             label = SimpleDateFormat("EEE", Locale.getDefault()).format(calendar.time)
                             sortKey = calendar.timeInMillis
+                            
+                            val dayCal = calendar.clone() as Calendar
+                            dayCal.set(Calendar.HOUR_OF_DAY, 0)
+                            dayCal.set(Calendar.MINUTE, 0)
+                            dayCal.set(Calendar.SECOND, 0)
+                            dayCal.set(Calendar.MILLISECOND, 0)
+                            itemStart = dayCal.timeInMillis
+                            dayCal.set(Calendar.HOUR_OF_DAY, 23)
+                            dayCal.set(Calendar.MINUTE, 59)
+                            dayCal.set(Calendar.SECOND, 59)
+                            itemEnd = dayCal.timeInMillis
                         }
                         periodId <= PERIOD_LAST_TWO_MONTHS -> {
                             label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
                             sortKey = item.budget.date.toLong()
+                            itemStart = sortKey
+                            itemEnd = sortKey
                         }
                         else -> {
                             label = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
                             sortKey = calendar.get(Calendar.MONTH).toLong()
+                            
+                            val monthCal = calendar.clone() as Calendar
+                            monthCal.set(Calendar.DAY_OF_MONTH, 1)
+                            monthCal.set(Calendar.HOUR_OF_DAY, 0)
+                            itemStart = monthCal.timeInMillis
+                            monthCal.set(Calendar.DAY_OF_MONTH, monthCal.getActualMaximum(Calendar.DAY_OF_MONTH))
+                            monthCal.set(Calendar.HOUR_OF_DAY, 23)
+                            itemEnd = monthCal.timeInMillis
                         }
                     }
 
                     val current = groupedData.getOrDefault(label, 0f)
                     groupedData[label] = current + abs(item.budget.amount)
+                    entriesCount[label] = entriesCount.getOrDefault(label, 0) + 1
                     
                     if (!keySortMap.containsKey(label) || sortKey < keySortMap[label]!!) {
                         keySortMap[label] = sortKey
+                        dateRanges[label] = itemStart to itemEnd
                     }
                 }
 
                 val sortedLabels = groupedData.keys.sortedBy { keySortMap[it] }
+                val items = sortedLabels.map { label ->
+                    BarChartItem(
+                        label = label,
+                        amount = groupedData[label] ?: 0f,
+                        entries = entriesCount[label] ?: 0,
+                        startDate = dateRanges[label]?.first ?: 0L,
+                        endDate = dateRanges[label]?.second ?: 0L
+                    )
+                }.reversed() // Most recent first for the list
+
                 BarChartData(
                     sortedLabels,
                     sortedLabels.map { groupedData[it] ?: 0f },
-                    emptyList()
+                    emptyList(),
+                    items
                 )
             }
         }

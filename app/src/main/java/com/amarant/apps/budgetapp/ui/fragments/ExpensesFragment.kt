@@ -21,6 +21,10 @@ import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
+import com.amarant.apps.budgetapp.entities.ReportType
+import com.amarant.apps.budgetapp.entities.BudgetUI
+import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.util.DateUtils
 
 class ExpensesFragment : Fragment() {
 
@@ -76,23 +80,63 @@ class ExpensesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        statsViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
-            val totalSum = reports.filterIsInstance<ReportsItem.Entry>()
-                .filter { !it.entry.isHidden }
-                .sumOf { it.entry.budget.amount.toInt() }.toFloat()
-            val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
-            budgetAdapter.submitList(reports)
-            val resId = args.category.rawIconRes
-            binding.imgCategory.setImageResource(resId)
-            if (totalSum > 0) {
-                binding.tvAmount.text = getString(R.string.plus_placeholder, formattedSum)
-                binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
-            } else {
-                binding.tvAmount.text = formattedSum
-                binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+        val startDate = args.startDate
+        val endDate = args.endDate
+        val isFilteredByDate = startDate != 0L && endDate != 0L
+
+        if (isFilteredByDate) {
+            statsViewModel.budgetRepository.getBudgetEntriesBetweenDates(startDate, endDate, args.category).observe(viewLifecycleOwner) { budgets ->
+                val type = if (args.isIncome) ReportType.INCOME else ReportType.EXPENSE
+                val filtered = budgets.filter { 
+                    if (type == ReportType.INCOME) it.amount > 0 else it.amount < 0
+                }.map { BudgetUI(it, isHidden = false) }
+
+                val groupedList = mutableListOf<ReportsItem>()
+                filtered.groupBy { it.budget.date }.forEach { (date, items) ->
+                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+                    items.reversed().forEach { budgetUI ->
+                        groupedList.add(ReportsItem.Entry(budgetUI))
+                    }
+                }
+                budgetAdapter.submitList(groupedList)
+                
+                val totalSum = filtered.sumOf { it.budget.amount.toDouble() }
+                val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum)
+                
+                val resId = if (args.isIncome) Category.INCOME.rawIconRes else Category.OTHER.rawIconRes
+                binding.imgCategory.setImageResource(resId)
+                
+                if (totalSum != 0.0) {
+                    binding.tvAmount.text = if (args.isIncome) getString(R.string.plus_placeholder, formattedSum) else formattedSum
+                    binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), if (args.isIncome) R.color.positive_green else R.color.negative_red))
+                }
+                
+                initActionBar(args.title ?: args.category.getLocalizedName(requireContext()))
+                setHiddenViews(filtered.isEmpty())
             }
-            setHiddenViews(reports.filterIsInstance<ReportsItem.Entry>().any { it.entry.isHidden })
+        } else {
+            statsViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
+                val totalSum = reports.filterIsInstance<ReportsItem.Entry>()
+                    .filter { !it.entry.isHidden }
+                    .sumOf { it.entry.budget.amount.toInt() }.toFloat()
+                val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+                budgetAdapter.submitList(reports)
+                val resId = args.category.rawIconRes
+                binding.imgCategory.setImageResource(resId)
+                if (totalSum > 0) {
+                    binding.tvAmount.text = getString(R.string.plus_placeholder, formattedSum)
+                    binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                } else {
+                    binding.tvAmount.text = formattedSum
+                    binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                }
+                setHiddenViews(reports.filterIsInstance<ReportsItem.Entry>().any { it.entry.isHidden })
+            }
         }
+    }
+
+    private fun initActionBar(title: String? = null) {
+        (activity as MainActivity).setActionBarTitle(title ?: args.category.getLocalizedName(requireContext()))
     }
 
     private fun setHiddenViews(isHidden: Boolean) {

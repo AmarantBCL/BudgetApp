@@ -1,7 +1,5 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
-import android.R.attr.action
-import android.R.attr.text
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -42,6 +40,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlin.math.absoluteValue
 import androidx.core.view.get
+import com.amarant.apps.budgetapp.ui.adapter.BarChartItemAdapter
 
 
 class StatsFragment : Fragment() {
@@ -54,6 +53,7 @@ class StatsFragment : Fragment() {
     private val statsViewModel: StatsViewModel by activityViewModels()
 
     private lateinit var categoryExpenseAdapter: CategoryExpenseAdapter
+    private lateinit var barChartItemAdapter: BarChartItemAdapter
 
     private var totalSum = 0
     private var isIncome = false
@@ -192,6 +192,10 @@ class StatsFragment : Fragment() {
         }
 
         statsViewModel.barChartEntries.observe(viewLifecycleOwner) { data ->
+            // Update the new adapter with time period items
+            barChartItemAdapter.isIncome = isIncome
+            barChartItemAdapter.submitList(data.items)
+
             // Clear selection and reset header when data changes (e.g. filter/category toggle)
             binding.barChart.highlightValue(null)
             if (statsViewModel.chartType.value == ChartType.BAR) {
@@ -306,6 +310,10 @@ class StatsFragment : Fragment() {
                 binding.chipType.setChipBackgroundColorResource(R.color.card_background)
             }
             isIncome = it == ReportType.INCOME
+            // Update adapter state
+            if (::barChartItemAdapter.isInitialized) {
+                barChartItemAdapter.isIncome = isIncome
+            }
         }
     }
 
@@ -333,8 +341,11 @@ class StatsFragment : Fragment() {
         val divider = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.recyclerCategoryExpenses.addItemDecoration(divider)
         binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
-        categoryExpenseAdapter.onCategoryExpenseClickListener = {
-            val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(it, isIncome)
+        categoryExpenseAdapter.onCategoryExpenseClickListener = { category ->
+            val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(
+                category = category,
+                isIncome = isIncome
+            )
             findNavController().navigate(action)
         }
         categoryExpenseAdapter.onCategoryExpenseLongClickListener = { category, isHidden ->
@@ -351,6 +362,18 @@ class StatsFragment : Fragment() {
             } else {
                 statsViewModel.toggleCategorySelection(category)
             }
+        }
+
+        barChartItemAdapter = com.amarant.apps.budgetapp.ui.adapter.BarChartItemAdapter()
+        barChartItemAdapter.onBarChartItemClickListener = { item ->
+            val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(
+                category = Category.ALL,
+                isIncome = isIncome,
+                startDate = item.startDate,
+                endDate = item.endDate,
+                title = item.label
+            )
+            findNavController().navigate(action)
         }
     }
 
@@ -446,6 +469,16 @@ class StatsFragment : Fragment() {
         
         // Categories list visibility - ALWAYS VISIBLE if there is data
         binding.lblCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        
+        if (isPie) {
+            binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
+            binding.lblCategoryExpenses.text = getString(R.string.category_expenses)
+            binding.lblCategoryExpenses.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expenses, 0, 0, 0)
+        } else {
+            binding.recyclerCategoryExpenses.adapter = barChartItemAdapter
+            binding.lblCategoryExpenses.text = getString(R.string.period)
+            binding.lblCategoryExpenses.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_period, 0, 0, 0)
+        }
         binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
 
         binding.pieChart.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE

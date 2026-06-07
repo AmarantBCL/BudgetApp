@@ -60,6 +60,7 @@
     <string name="show_more">Показать больше</string>
     <string name="number_of_entries">%1$d записей</string>
     <string name="plus_placeholder">+%1$s</string>
+    <string name="minus_placeholder">-%1$s</string>
     <string name="type">Тип</string>
     <string name="expense">Расход</string>
     <string name="income">Доход</string>

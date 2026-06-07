@@ -59,6 +59,7 @@
     <string name="show_more">Show more</string>
     <string name="number_of_entries">%1$d entries</string>
     <string name="plus_placeholder">+%1$s</string>
+    <string name="minus_placeholder">-%1$s</string>
     <string name="type">Type</string>
     <string name="expense">Expense</string>
     <string name="income">Income</string>
