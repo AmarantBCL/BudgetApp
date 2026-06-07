@@ -103,7 +103,7 @@ class ExpensesFragment : Fragment() {
                 budgetAdapter.submitList(groupedList)
                 
                 val totalSum = filtered.filter { !it.isHidden }.sumOf { it.budget.amount.toDouble() }
-                val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.absoluteValue)
+                val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum)
                 
                 val resId = if (args.isIncome) Category.INCOME.rawIconRes else Category.OTHER.rawIconRes
                 binding.imgCategory.setImageResource(resId)
