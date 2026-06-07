@@ -21,6 +21,7 @@ import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_SIX_MONTHS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_YEARS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateEndPeriod
 import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateStartPeriod
@@ -192,7 +193,7 @@ class StatsViewModel @Inject constructor(
                             itemStart = sortKey
                             itemEnd = sortKey
                         }
-                        periodId <= PERIOD_LAST_TWO_WEEKS -> {
+                        periodId < PERIOD_LAST_TWO_WEEKS -> {
                             label = SimpleDateFormat("EEE", Locale.getDefault()).format(calendar.time)
                             sortKey = calendar.timeInMillis
 
@@ -213,9 +214,21 @@ class StatsViewModel @Inject constructor(
                             itemStart = sortKey
                             itemEnd = sortKey
                         }
-                        else -> {
+                        periodId < PERIOD_LAST_TWO_YEARS -> {
                             label = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
                             sortKey = calendar.get(Calendar.MONTH).toLong()
+
+                            val monthCal = calendar.clone() as Calendar
+                            monthCal.set(Calendar.DAY_OF_MONTH, 1)
+                            monthCal.set(Calendar.HOUR_OF_DAY, 0)
+                            itemStart = monthCal.timeInMillis
+                            monthCal.set(Calendar.DAY_OF_MONTH, monthCal.getActualMaximum(Calendar.DAY_OF_MONTH))
+                            monthCal.set(Calendar.HOUR_OF_DAY, 23)
+                            itemEnd = monthCal.timeInMillis
+                        }
+                        else -> {
+                            label = SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(calendar.time)
+                            sortKey = calendar.get(Calendar.YEAR).toLong() * 100 + calendar.get(Calendar.MONTH)
 
                             val monthCal = calendar.clone() as Calendar
                             monthCal.set(Calendar.DAY_OF_MONTH, 1)

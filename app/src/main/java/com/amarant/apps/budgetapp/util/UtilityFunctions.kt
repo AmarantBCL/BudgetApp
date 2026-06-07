@@ -59,9 +59,13 @@ object UtilityFunctions {
             PERIOD_LAST_WEEK -> getStartOfWeek() - 1000
             PERIOD_LAST_MONTH -> getStartOfMonth() - 1000
             else -> {
-                val dateInMillis = Calendar.getInstance().timeInMillis
-                val startDate = dateMillisToString(dateInMillis)
-                dateStringToMillis(startDate)
+                // Return end of today (23:59:59)
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY, 23)
+                calendar.set(Calendar.MINUTE, 59)
+                calendar.set(Calendar.SECOND, 59)
+                calendar.set(Calendar.MILLISECOND, 999)
+                calendar.timeInMillis
             }
         }
         return end

@@ -130,7 +130,7 @@ class StatsFragment : Fragment() {
     private fun initBarChart() {
         with(binding.barChart) {
             description.isEnabled = false
-            legend.isEnabled = true
+            legend.isEnabled = false
             legend.textColor = ContextCompat.getColor(requireContext(), R.color.primary_white)
             legend.verticalAlignment = com.github.mikephil.charting.components.Legend.LegendVerticalAlignment.TOP
             legend.horizontalAlignment = com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment.RIGHT
