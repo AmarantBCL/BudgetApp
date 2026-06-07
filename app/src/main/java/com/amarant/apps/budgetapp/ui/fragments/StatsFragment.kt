@@ -169,6 +169,21 @@ class StatsFragment : Fragment() {
         }
 
         statsViewModel.chartType.observe(viewLifecycleOwner) { type ->
+            // Clear selections when switching charts
+            binding.pieChart.highlightValue(null)
+            binding.barChart.highlightValue(null)
+            
+            // Reset labels to overall total
+            binding.lblTotal.setText(R.string.total)
+            val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+            if (totalSum > 0) {
+                binding.tvTotal.text = getString(R.string.plus_placeholder, formattedSum)
+                binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+            } else {
+                binding.tvTotal.text = formattedSum
+                binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            }
+
             // Update visibility of elements when chart type changes
             initVisibility(statsViewModel.isCurrentChartEmpty.value ?: false)
             
@@ -177,6 +192,12 @@ class StatsFragment : Fragment() {
         }
 
         statsViewModel.barChartEntries.observe(viewLifecycleOwner) { data ->
+            // Clear selection and reset header when data changes (e.g. filter/category toggle)
+            binding.barChart.highlightValue(null)
+            if (statsViewModel.chartType.value == ChartType.BAR) {
+                binding.lblTotal.setText(R.string.total)
+            }
+
             if (data.labels.isEmpty()) {
                 binding.barChart.data = null
                 binding.barChart.invalidate()
@@ -232,6 +253,13 @@ class StatsFragment : Fragment() {
 
         statsViewModel.pieChartEntries.observe(viewLifecycleOwner) { reports ->
             totalSum = getTotalSum(reports)
+
+            // Clear selection and reset header when data changes
+            binding.pieChart.highlightValue(null)
+            if (statsViewModel.chartType.value == ChartType.PIE) {
+                binding.lblTotal.setText(R.string.total)
+            }
+
             val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             if (totalSum > 0) {
                 binding.tvTotal.text = getString(R.string.plus_placeholder, formattedSum)
