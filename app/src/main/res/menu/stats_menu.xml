@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_toggle_chart"
-        android:icon="@drawable/ic_pie_chart"
         android:title="Toggle Chart"
         app:showAsAction="always"
         app:iconTint="@color/light_gray" />

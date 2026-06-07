@@ -41,6 +41,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlin.math.absoluteValue
+import androidx.core.view.get
 
 
 class StatsFragment : Fragment() {
@@ -88,6 +89,9 @@ class StatsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.stats_menu, menu)
+        val current = statsViewModel.chartType.value ?: ChartType.PIE
+        val next = if (current == ChartType.PIE) ChartType.BAR else ChartType.PIE
+        menu[0].setIcon(if (next == ChartType.PIE) R.drawable.ic_pie_chart else R.drawable.ic_bar_chart)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -98,7 +102,7 @@ class StatsFragment : Fragment() {
                 statsViewModel.setChartType(next)
                 
                 // Toggle the icon
-                item.setIcon(if (next == ChartType.PIE) R.drawable.ic_pie_chart else R.drawable.ic_trend)
+                item.setIcon(if (next == ChartType.PIE) R.drawable.ic_bar_chart else R.drawable.ic_pie_chart)
                 true
             }
             R.id.action_settings -> {
@@ -190,6 +194,10 @@ class StatsFragment : Fragment() {
             val dataSet = BarDataSet(entries, dataLabel)
             dataSet.color = color
             dataSet.setDrawValues(false)
+            
+            // Highlight styling
+            dataSet.highLightColor = ContextCompat.getColor(requireContext(), R.color.primary_white)
+            dataSet.highLightAlpha = 40 // Subdued white "glow"
             
             // Apple-style Gradient: Full color at top, same color with 40% alpha at bottom
             val startColor = color
@@ -323,8 +331,56 @@ class StatsFragment : Fragment() {
             override fun onValueSelected(e: Entry, h: Highlight) {
                 initSelectedSection(e as PieEntry)
             }
+            override fun onNothingSelected() {}
+        })
+
+        binding.barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry, h: Highlight) {
+                // Display the value and label for the selected bar
+                val data = statsViewModel.barChartEntries.value ?: return
+                val index = e.x.toInt()
+                if (index >= 0 && index < data.labels.size) {
+                    val label = data.labels[index]
+                    val value = e.y
+                    
+//                    binding.tvCategory.text = label
+                    binding.lblTotal.text = label
+                    binding.imgIcon.visibility = View.GONE // Hide icon for bar selection
+//                    binding.tvCategory.visibility = View.VISIBLE
+//                    binding.lblTotal.visibility = View.VISIBLE
+//                    binding.tvSum.visibility = View.VISIBLE
+//                    binding.tvTotal.visibility = View.VISIBLE
+                    binding.tvPercent.visibility = View.GONE // No percentage for bar selection
+                    
+                    if (isIncome) {
+//                        binding.tvSum.text = getString(R.string.plus_placeholder, NumberUtils.formatNumberWithThousandsSeparator(value.toDouble()))
+                        binding.tvTotal.text = getString(R.string.plus_placeholder, NumberUtils.formatNumberWithThousandsSeparator(value.toDouble()))
+//                        binding.tvSum.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                        binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                    } else {
+//                        binding.tvSum.text = NumberUtils.formatNumberWithThousandsSeparator(value.toDouble() * -1.0)
+                        binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(value.toDouble() * -1.0)
+//                        binding.tvSum.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                    }
+                }
+            }
 
             override fun onNothingSelected() {
+                // Return to showing nothing or the main total
+                if (statsViewModel.chartType.value == ChartType.BAR) {
+//                    binding.tvCategory.visibility = View.GONE
+//                    binding.tvSum.visibility = View.GONE
+                      binding.lblTotal.setText(R.string.total)
+                        val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
+                        if (totalSum > 0) {
+                            binding.tvTotal.text = getString(R.string.plus_placeholder, formattedSum)
+                            binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                        } else {
+                            binding.tvTotal.text = formattedSum
+                            binding.tvTotal.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        }
+                }
             }
         })
         binding.chipPeriod.setOnClickListener {

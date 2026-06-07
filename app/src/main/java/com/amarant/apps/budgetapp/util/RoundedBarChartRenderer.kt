@@ -88,4 +88,46 @@ class RoundedBarChartRenderer(
             j += 4
         }
     }
+
+    override fun drawHighlighted(c: Canvas, indices: Array<out com.github.mikephil.charting.highlight.Highlight>) {
+        val barData = mChart.barData
+        
+        for (high in indices) {
+            val set = barData.getDataSetByIndex(high.dataSetIndex)
+            if (set == null || !set.isHighlightEnabled) continue
+
+            val e = set.getEntryForXValue(high.x, high.y)
+            if (!isInBoundsX(e, set)) continue
+
+            val trans = mChart.getTransformer(set.axisDependency)
+            
+            mHighlightPaint.color = set.highLightColor
+            mHighlightPaint.alpha = set.highLightAlpha
+
+            val buffer = mBarBuffers[high.dataSetIndex]
+            buffer.setPhases(mAnimator.phaseX, mAnimator.phaseY)
+            buffer.setDataSet(high.dataSetIndex)
+            buffer.setInverted(mChart.isInverted(set.axisDependency))
+            buffer.setBarWidth(mChart.barData.barWidth)
+
+            buffer.feed(set)
+            trans.pointValuesToPixel(buffer.buffer)
+
+            val j = high.x.toInt() * 4
+            if (j >= 0 && j < buffer.size()) {
+                val left = buffer.buffer[j]
+                val top = buffer.buffer[j + 1]
+                val right = buffer.buffer[j + 2]
+                val bottom = buffer.buffer[j + 3]
+
+                val path = Path()
+                path.addRoundRect(
+                    RectF(left, top, right, bottom),
+                    floatArrayOf(radius, radius, radius, radius, 0f, 0f, 0f, 0f),
+                    Path.Direction.CW
+                )
+                c.drawPath(path, mHighlightPaint)
+            }
+        }
+    }
 }
