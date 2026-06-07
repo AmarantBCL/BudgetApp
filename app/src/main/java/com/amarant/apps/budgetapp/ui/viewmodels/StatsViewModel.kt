@@ -67,6 +67,21 @@ class StatsViewModel @Inject constructor(
         }
     }
 
+    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
+        return budgetEntries.map { budgets ->
+            val groupedList = mutableListOf<ReportsItem>()
+            budgets.filter { it.budget.category == category }
+                .groupBy { it.budget.date }
+                .forEach { (date, items) ->
+                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+                    items.reversed().forEach { budgetUI ->
+                        groupedList.add(ReportsItem.Entry(budgetUI))
+                    }
+                }
+            groupedList
+        }
+    }
+
     fun setReportsBetweenDates(startDate: Long, endDate: Long) {
         _dateRange.value = Pair(startDate, endDate)
     }
@@ -97,18 +112,13 @@ class StatsViewModel @Inject constructor(
         }
     }
 
-    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
-        return budgetEntries.map { budgets ->
-            val groupedList = mutableListOf<ReportsItem>()
-            budgets.filter { it.budget.category == category }
-                .groupBy { it.budget.date }
-                .forEach { (date, items) ->
-                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-                    items.reversed().forEach { budgetUI ->
-                        groupedList.add(ReportsItem.Entry(budgetUI))
-                    }
+    fun getBudgetEntriesBetweenDates(startDate: Long, endDate: Long, category: Category): LiveData<List<BudgetUI>> {
+        return budgetRepository.getBudgetEntriesBetweenDates(startDate, endDate, category).switchMap { budgets ->
+            selectedIds.map { selected ->
+                budgets.map { budget ->
+                    BudgetUI(budget, isHidden = budget.id in selected)
                 }
-            groupedList
+            }
         }
     }
 
@@ -174,7 +184,7 @@ class StatsViewModel @Inject constructor(
                     val sortKey: Long
                     val itemStart: Long
                     val itemEnd: Long
-                    
+
                     when {
                         periodId <= PERIOD_LAST_TWO_DAYS -> {
                             label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
@@ -185,7 +195,7 @@ class StatsViewModel @Inject constructor(
                         periodId <= PERIOD_LAST_TWO_WEEKS -> {
                             label = SimpleDateFormat("EEE", Locale.getDefault()).format(calendar.time)
                             sortKey = calendar.timeInMillis
-                            
+
                             val dayCal = calendar.clone() as Calendar
                             dayCal.set(Calendar.HOUR_OF_DAY, 0)
                             dayCal.set(Calendar.MINUTE, 0)
@@ -206,7 +216,7 @@ class StatsViewModel @Inject constructor(
                         else -> {
                             label = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
                             sortKey = calendar.get(Calendar.MONTH).toLong()
-                            
+
                             val monthCal = calendar.clone() as Calendar
                             monthCal.set(Calendar.DAY_OF_MONTH, 1)
                             monthCal.set(Calendar.HOUR_OF_DAY, 0)

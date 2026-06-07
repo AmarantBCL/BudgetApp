@@ -33,12 +33,12 @@ class BarChartItemAdapter : ListAdapter<BarChartItem, BarChartItemAdapter.ViewHo
                 // Reusing the same layout, but adapting for time periods
                 imgCategory.setImageResource(R.drawable.ic_period)
                 imgCategory.imageTintList = ContextCompat.getColorStateList(context, R.color.accent_purple)
-                
+
                 tvCategory.text = item.label
-                
+
                 val entriesText = context.resources.getQuantityString(R.plurals.entries_count, item.entries, item.entries)
                 tvEntries.text = entriesText
-                
+
                 val formattedAmount = NumberUtils.formatNumberWithThousandsSeparator(item.amount.toDouble())
                 if (isIncome) {
                     tvAmount.text = context.getString(R.string.plus_placeholder, formattedAmount)
@@ -47,10 +47,10 @@ class BarChartItemAdapter : ListAdapter<BarChartItem, BarChartItemAdapter.ViewHo
                     tvAmount.text = context.getString(R.string.minus_placeholder, NumberUtils.formatNumberWithThousandsSeparator(item.amount.toDouble().absoluteValue))
                     tvAmount.setTextColor(ContextCompat.getColor(context, R.color.negative_red))
                 }
-                
+
                 // Percent doesn't really apply here as much as categories, but we can hide it or keep it
                 tvPercent.visibility = android.view.View.GONE
-                
+
                 root.setOnClickListener {
                     onBarChartItemClickListener?.invoke(item)
                 }

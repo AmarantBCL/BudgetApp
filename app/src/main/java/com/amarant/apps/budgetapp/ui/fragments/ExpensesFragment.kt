@@ -25,6 +25,7 @@ import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.util.DateUtils
+import kotlin.math.absoluteValue
 
 class ExpensesFragment : Fragment() {
 
@@ -85,11 +86,12 @@ class ExpensesFragment : Fragment() {
         val isFilteredByDate = startDate != 0L && endDate != 0L
 
         if (isFilteredByDate) {
-            statsViewModel.budgetRepository.getBudgetEntriesBetweenDates(startDate, endDate, args.category).observe(viewLifecycleOwner) { budgets ->
+            statsViewModel.getBudgetEntriesBetweenDates(startDate, endDate, args.category).observe(viewLifecycleOwner) { budgets ->
                 val type = if (args.isIncome) ReportType.INCOME else ReportType.EXPENSE
+                
                 val filtered = budgets.filter { 
-                    if (type == ReportType.INCOME) it.amount > 0 else it.amount < 0
-                }.map { BudgetUI(it, isHidden = false) }
+                    if (type == ReportType.INCOME) it.budget.amount > 0 else it.budget.amount < 0
+                }
 
                 val groupedList = mutableListOf<ReportsItem>()
                 filtered.groupBy { it.budget.date }.forEach { (date, items) ->
@@ -100,8 +102,8 @@ class ExpensesFragment : Fragment() {
                 }
                 budgetAdapter.submitList(groupedList)
                 
-                val totalSum = filtered.sumOf { it.budget.amount.toDouble() }
-                val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum)
+                val totalSum = filtered.filter { !it.isHidden }.sumOf { it.budget.amount.toDouble() }
+                val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.absoluteValue)
                 
                 val resId = if (args.isIncome) Category.INCOME.rawIconRes else Category.OTHER.rawIconRes
                 binding.imgCategory.setImageResource(resId)
@@ -112,7 +114,7 @@ class ExpensesFragment : Fragment() {
                 }
                 
                 initActionBar(args.title ?: args.category.getLocalizedName(requireContext()))
-                setHiddenViews(filtered.isEmpty())
+                setHiddenViews(filtered.any { it.isHidden })
             }
         } else {
             statsViewModel.getExpensesByCategory(args.category).observe(viewLifecycleOwner) { reports ->
