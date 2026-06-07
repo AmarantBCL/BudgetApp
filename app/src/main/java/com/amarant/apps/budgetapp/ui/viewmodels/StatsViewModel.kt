@@ -16,21 +16,104 @@ import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.repository.BudgetRepository
 import com.amarant.apps.budgetapp.util.DateUtils
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_SIX_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_DAYS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_MONTHS
+import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_LAST_TWO_WEEKS
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_THIS_MONTH
 import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateEndPeriod
 import com.amarant.apps.budgetapp.util.UtilityFunctions.calculateStartPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.abs
 import kotlin.collections.contains
 import kotlin.text.category
 import kotlin.text.toFloat
 import kotlin.text.toInt
 import kotlin.times
 
+enum class ChartType {
+    PIE, BAR
+}
+
+data class BarChartData(
+    val labels: List<String>,
+    val incomeValues: List<Float>,
+    val expenseValues: List<Float>
+)
+
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository
 ) : ViewModel() {
+
+    private val _chartType = MutableLiveData(ChartType.PIE)
+    val chartType: LiveData<ChartType>
+        get() = _chartType
+
+    fun setChartType(type: ChartType) {
+        _chartType.value = type
+    }
+
+    fun changeDateRange(position: Int, isPeriodOnly: Boolean = false) {
+        if (isPeriodOnly) {
+            _period.value = position
+        } else {
+            val start = calculateStartPeriod(position)
+            val end = calculateEndPeriod(position)
+            setReportsBetweenDates(start, end)
+            _period.value = position
+        }
+    }
+
+    fun setReportsBetweenDates(startDate: Long, endDate: Long) {
+        _dateRange.value = Pair(startDate, endDate)
+    }
+
+    fun setCustomRangeDisplayedText(text: String) {
+        _customRangeText.value = text
+    }
+
+    fun setType(type: ReportType) {
+        _reportType.value = type
+    }
+
+    fun toggleCategorySelection(category: Category) {
+        val current = hiddenCategories.value ?: emptySet()
+        hiddenCategories.value = if (current.contains(category)) {
+            current - category
+        } else {
+            current + category
+        }
+    }
+
+    fun toggleBudgetSelection(id: Int) {
+        val current = selectedIds.value ?: emptySet()
+        selectedIds.value = if (current.contains(id)) {
+            current - id
+        } else {
+            current + id
+        }
+    }
+
+    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
+        return budgetEntries.map { budgets ->
+            val groupedList = mutableListOf<ReportsItem>()
+            budgets.filter { it.budget.category == category }
+                .groupBy { it.budget.date }
+                .forEach { (date, items) ->
+                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
+                    items.reversed().forEach { budgetUI ->
+                        groupedList.add(ReportsItem.Entry(budgetUI))
+                    }
+                }
+            groupedList
+        }
+    }
+
 
     private val _dateRange = MutableLiveData(Pair(
         calculateStartPeriod(DEFAULT_PERIOD),
@@ -55,121 +138,102 @@ class StatsViewModel @Inject constructor(
 
     private val hiddenCategories = MutableLiveData<Set<Category>>(emptySet())
 
+    val budgetEntries: LiveData<List<BudgetUI>> = dateRange.switchMap { range ->
+        budgetRepository.getBudgetEntriesBetweenDates(range.first, range.second, Category.ALL).switchMap { budgets ->
+            reportType.switchMap { type ->
+                selectedIds.map { selected ->
+                    val filtered = when (type) {
+                        ReportType.ALL -> budgets
+                        ReportType.INCOME -> budgets.filter { it.amount > 0 }
+                        ReportType.EXPENSE -> budgets.filter { it.amount < 0 }
+                    }
+                    filtered.map { budget ->
+                        BudgetUI(budget, isHidden = budget.id in selected)
+                    }
+                }
+            }
+        }
+    }
+
+    val pieChartEntries: LiveData<List<BudgetUI>> = hiddenCategories.switchMap { hiddenSet ->
+        budgetEntries.map { budgets ->
+            budgets.filter { !hiddenSet.contains(it.budget.category) }
+        }
+    }
+
+    val barChartEntries: LiveData<BarChartData> = budgetEntries.switchMap { budgets ->
+        period.map { periodId ->
+            val calendar = Calendar.getInstance()
+            val groupedData = mutableMapOf<String, Float>()
+            val keySortMap = mutableMapOf<String, Long>()
+
+            budgets.forEach { item ->
+                calendar.timeInMillis = item.budget.date.toLong()
+                val label: String
+                val sortKey: Long
+                
+                when {
+                    periodId <= PERIOD_LAST_TWO_DAYS -> {
+                        label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
+                        sortKey = item.budget.date.toLong()
+                    }
+                    periodId <= PERIOD_LAST_TWO_WEEKS -> {
+                        label = SimpleDateFormat("EEE", Locale.getDefault()).format(calendar.time)
+                        sortKey = calendar.timeInMillis
+                    }
+                    periodId <= PERIOD_LAST_TWO_MONTHS -> {
+                        label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
+                        sortKey = item.budget.date.toLong()
+                    }
+                    else -> {
+                        label = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
+                        sortKey = calendar.get(Calendar.MONTH).toLong()
+                    }
+                }
+
+                val current = groupedData.getOrDefault(label, 0f)
+                groupedData[label] = current + abs(item.budget.amount)
+                
+                if (!keySortMap.containsKey(label) || sortKey < keySortMap[label]!!) {
+                    keySortMap[label] = sortKey
+                }
+            }
+
+            val sortedLabels = groupedData.keys.sortedBy { keySortMap[it] }
+            BarChartData(
+                sortedLabels,
+                sortedLabels.map { groupedData[it] ?: 0f },
+                emptyList()
+            )
+        }
+    }
+
+
+    val isCurrentChartEmpty = MediatorLiveData<Boolean>().apply {
+        fun update() {
+            val type = _chartType.value ?: ChartType.PIE
+            val pieEmpty = pieChartEntries.value.isNullOrEmpty()
+            val barEmpty = barChartEntries.value?.labels.isNullOrEmpty()
+            value = if (type == ChartType.PIE) pieEmpty else barEmpty
+        }
+        addSource(_chartType) { update() }
+        addSource(pieChartEntries) { update() }
+        addSource(barChartEntries) { update() }
+    }
+
     val categoryExpenses = hiddenCategories.switchMap { hiddenSet ->
-        getBudgetEntriesBetweenDates().map { budgets ->
+        budgetEntries.map { budgets ->
             val list = mutableListOf<CategoryExpense>()
             val totalSum = budgets.sumOf { it.budget.amount.toInt() }
             budgets.groupBy { it.budget.category }.forEach { (category, items) ->
                 val amount = items.sumOf { it.budget.amount.toInt() }.toFloat()
                 val isHidden = hiddenSet.contains(category)
-                list.add(
-                    CategoryExpense(
-                        category,
-                        items.size,
-                        amount,
-                        amount / totalSum * 100.0,
-                        isHidden
-                    )
-                )
+                list.add(CategoryExpense(category, items.size, amount, amount / totalSum * 100.0, isHidden))
             }
             list.sortedBy { it.amount }
         }
     }
 
-    fun getBudgetEntriesBetweenDates(): LiveData<List<BudgetUI>> {
-        val result = MediatorLiveData<List<BudgetUI>>()
-        val dbSource = dateRange.switchMap { range ->
-//            appliedFilter.switchMap { filter ->
-//                searchQuery.switchMap { query ->
-                    budgetRepository.getBudgetEntriesBetweenDates(range.first, range.second, Category.ALL)
-//                }
-//            }
-        }
-        fun update(budgets: List<Budget>?, selected: Set<Int>?, type: ReportType?) {
-//        fun update(budgets: List<Budget>?, selected: Set<Int>?, categories: Set<Category>?, type: ReportType?) {
-            if (budgets != null && selected != null && type != null) {
-//            if (budgets != null && selected != null && categories != null && type != null) {
-                val filtered = when (type) {
-                    ReportType.ALL -> budgets
-                    ReportType.INCOME -> budgets.filter { it.amount > 0 }
-                    ReportType.EXPENSE -> budgets.filter { it.amount < 0 }
-                }
-                result.value = filtered.map { budget ->
-//                result.value = filtered.filter { !categories.contains(it.category) }.map { budget ->
-                    BudgetUI(budget, isHidden = budget.id in selected)
-                }
-            }
-        }
-        result.addSource(dbSource) { budgets -> update(budgets, selectedIds.value, reportType.value) }
-        result.addSource(selectedIds) { selected -> update(dbSource.value, selected, reportType.value) }
-        result.addSource(reportType) { type -> update(dbSource.value, selectedIds.value, type) }
-//        result.addSource(hiddenCategories) { categories -> update(dbSource.value, selectedIds.value, categories, reportType.value) }
-        return result
-    }
-
-    fun getPieChartEntries(): LiveData<List<BudgetUI>> {
-        return hiddenCategories.switchMap { categories ->
-            getBudgetEntriesBetweenDates().map { budgets ->
-                budgets.filter { !categories.contains(it.budget.category) }
-            }
-        }
-    }
-
-    fun getExpensesByCategory(category: Category): LiveData<List<ReportsItem>> {
-        return getBudgetEntriesBetweenDates().map { reports ->
-            val groupedList = mutableListOf<ReportsItem>()
-            reports.filter { it.budget.category == category }// && it.budget.creditOrDebit == "Debit" }
-                .groupBy { it.budget.date }
-                .forEach { (date, items) ->
-                    groupedList.add(ReportsItem.DateHeader(DateUtils.getFormattedDate(date.toLong())))
-                    items.reversed().forEach { budgetUI ->
-                        groupedList.add(ReportsItem.Entry(budgetUI))
-                    }
-                }
-            groupedList
-        }
-    }
-
-    fun setReportsBetweenDates(startDate: Long, endDate: Long) {
-        _dateRange.value = Pair(startDate, endDate)
-    }
-
-    fun toggleBudgetSelection(id: Int) {
-        val current = selectedIds.value ?: emptySet()
-        selectedIds.value = if (current.contains(id)) {
-            current - id
-        } else {
-            current + id
-        }
-    }
-
-    fun toggleCategorySelection(category: Category) {
-        val current = hiddenCategories.value ?: emptySet()
-        hiddenCategories.value = if (current.contains(category)) {
-            current - category
-        } else {
-            current + category
-        }
-    }
-
-    fun changeDateRange(position: Int, isPeriodOnly: Boolean = false) {
-        if (isPeriodOnly) {
-            _period.value = position
-        } else {
-            val start = calculateStartPeriod(position)
-            val end = calculateEndPeriod(position)
-            setReportsBetweenDates(start, end)
-            _period.value = position
-        }
-    }
-
-    fun setCustomRangeDisplayedText(text: String) {
-        _customRangeText.value = text
-    }
-
-    fun setType(type: ReportType) {
-        _reportType.value = type
-    }
 
     private companion object {
         private const val DEFAULT_PERIOD = PERIOD_THIS_MONTH

@@ -5,6 +5,9 @@ import android.R.attr.text
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -22,16 +25,23 @@ import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
+import com.amarant.apps.budgetapp.ui.viewmodels.ChartType
 import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
 import com.amarant.apps.budgetapp.util.NumberUtils
 import com.amarant.apps.budgetapp.util.PeriodUtils.PERIOD_SHOW_ALL
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlin.math.absoluteValue
+
 
 class StatsFragment : Fragment() {
 
@@ -47,6 +57,12 @@ class StatsFragment : Fragment() {
     private var totalSum = 0
     private var isIncome = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,17 +74,43 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initPieChart()
+        initBarChart()
         initRecyclerView()
         observeViewModel()
         setClickListeners()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.stats_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_toggle_chart -> {
+                val current = statsViewModel.chartType.value ?: ChartType.PIE
+                val next = if (current == ChartType.PIE) ChartType.BAR else ChartType.PIE
+                statsViewModel.setChartType(next)
+                
+                // Toggle the icon
+                item.setIcon(if (next == ChartType.PIE) R.drawable.ic_pie_chart else R.drawable.ic_trend)
+                true
+            }
+            R.id.action_settings -> {
+                findNavController().navigate(StatsFragmentDirections.actionGlobalProfileFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun initPieChart() {
+
         with(binding.pieChart) {
             setNoDataText("")
             isRotationEnabled = false
@@ -81,9 +123,106 @@ class StatsFragment : Fragment() {
         }
     }
 
+    private fun initBarChart() {
+        with(binding.barChart) {
+            description.isEnabled = false
+            legend.isEnabled = true
+            legend.textColor = ContextCompat.getColor(requireContext(), R.color.primary_white)
+            legend.verticalAlignment = com.github.mikephil.charting.components.Legend.LegendVerticalAlignment.TOP
+            legend.horizontalAlignment = com.github.mikephil.charting.components.Legend.LegendHorizontalAlignment.RIGHT
+            
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.setDrawGridLines(false)
+            xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.primary_white)
+            xAxis.granularity = 1f
+            xAxis.labelRotationAngle = 0f // Make it horizontal as requested
+            xAxis.setDrawAxisLine(false)
+            
+            axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.primary_white)
+            axisLeft.setDrawGridLines(true)
+            axisLeft.gridColor = ContextCompat.getColor(requireContext(), R.color.divider_color)
+            axisLeft.setDrawAxisLine(false)
+            axisRight.isEnabled = false
+            
+            setNoDataText(getString(R.string.no_entries_for_this_period))
+            setNoDataTextColor(ContextCompat.getColor(requireContext(), R.color.light_gray))
+            
+            setTouchEnabled(true)
+            setPinchZoom(false)
+            setDrawBarShadow(false)
+            setDrawGridBackground(false)
+            setScaleEnabled(false)
+            
+            // Note: Rounded corners require custom renderer which we'll skip for now 
+            // if it causes compile issues, but we'll try to apply it if successful.
+        }
+    }
+
+
     private fun observeViewModel() {
-        statsViewModel.getPieChartEntries().observe(viewLifecycleOwner) { reports ->
-//        statsViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
+        statsViewModel.isCurrentChartEmpty.observe(viewLifecycleOwner) { isEmpty ->
+            initVisibility(isEmpty)
+        }
+
+        statsViewModel.chartType.observe(viewLifecycleOwner) { type ->
+            // Update visibility of elements when chart type changes
+            initVisibility(statsViewModel.isCurrentChartEmpty.value ?: false)
+            
+            // Restore Type chip visibility for all modes
+            binding.chipType.visibility = View.VISIBLE
+        }
+
+        statsViewModel.barChartEntries.observe(viewLifecycleOwner) { data ->
+            if (data.labels.isEmpty()) {
+                binding.barChart.data = null
+                binding.barChart.invalidate()
+                return@observe
+            }
+
+            // Map values to entries (ViewModel now only sends the relevant values based on filter)
+            val entries = data.incomeValues.mapIndexed { index, value -> BarEntry(index.toFloat(), value) }
+
+            val type = statsViewModel.reportType.value ?: ReportType.EXPENSE
+            val colorRes = if (type == ReportType.INCOME) R.color.positive_green else R.color.negative_red
+            val color = ContextCompat.getColor(requireContext(), colorRes)
+            
+            val dataLabel = if (type == ReportType.INCOME) getString(R.string.income) else getString(R.string.expense)
+            val dataSet = BarDataSet(entries, dataLabel)
+            dataSet.color = color
+            dataSet.setDrawValues(false)
+            
+            // Apple-style Gradient: Full color at top, same color with 40% alpha at bottom
+            val startColor = color
+            val endColor = (color and 0x00FFFFFF) or 0x66000000 // 40% alpha
+
+            dataSet.setGradientColor(startColor, endColor)
+
+            val barData = BarData(dataSet)
+            barData.barWidth = 0.5f // Elegant bar thickness
+            
+            binding.barChart.data = barData
+            
+            // X-axis horizontal and clean
+            binding.barChart.xAxis.valueFormatter = IndexAxisValueFormatter(data.labels)
+            binding.barChart.xAxis.axisMinimum = -0.5f
+            binding.barChart.xAxis.axisMaximum = data.labels.size.toFloat() - 0.5f
+            binding.barChart.xAxis.setCenterAxisLabels(false)
+            binding.barChart.xAxis.granularity = 1f
+            
+            // Apply Rounded Tops Renderer
+            try {
+                binding.barChart.renderer = com.amarant.apps.budgetapp.util.RoundedBarChartRenderer(
+                    binding.barChart, binding.barChart.animator, binding.barChart.viewPortHandler, 25f
+                )
+            } catch (e: Exception) {
+                // Stay on default if renderer has issues
+            }
+
+            binding.barChart.invalidate()
+            binding.barChart.animateY(500)
+        }
+
+        statsViewModel.pieChartEntries.observe(viewLifecycleOwner) { reports ->
             totalSum = getTotalSum(reports)
             val formattedSum = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
             if (totalSum > 0) {
@@ -95,11 +234,7 @@ class StatsFragment : Fragment() {
             }
             initDataSet(prepareDataSet(reports))
         }
-//        budgetViewModel.getBudgetEntriesBetweenDates().observe(viewLifecycleOwner) { reports ->
-//            totalSum = getTotalSum(reports)
-//            binding.tvTotal.text = NumberUtils.formatNumberWithThousandsSeparator(totalSum.toDouble())
-//            initDataSet(prepareDataSet(reports))
-//        }
+
         statsViewModel.categoryExpenses.observe(viewLifecycleOwner) {
             categoryExpenseAdapter.submitList(it)
         }
@@ -220,18 +355,26 @@ class StatsFragment : Fragment() {
     }
 
     private fun initVisibility(isEntriesEmpty: Boolean) {
+        val isPie = statsViewModel.chartType.value == ChartType.PIE
         binding.lblTotal.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
         binding.tvTotal.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
         binding.llNoEntries.visibility = if (isEntriesEmpty) View.VISIBLE else View.GONE
-        binding.lblCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-        binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-//        binding.chipGroupFilters.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-        binding.pieChart.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-        binding.imgIcon.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-        binding.tvCategory.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-        binding.tvSum.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
-        binding.tvPercent.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        
+        // Categories list visibility
+        binding.lblCategoryExpenses.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+        binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+
+        binding.pieChart.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+        binding.barChart.visibility = if (isEntriesEmpty || isPie) View.GONE else View.VISIBLE
+        
+        // Pie-specific selection details
+        binding.imgIcon.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+        binding.tvCategory.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+        binding.tvSum.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+        binding.tvPercent.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
     }
+
+
 
     private fun getTotalSum(reports: List<BudgetUI>): Int {
         return reports//.filter { it.budget.creditOrDebit == "Debit" }
