@@ -416,9 +416,9 @@ class StatsFragment : Fragment() {
         binding.tvTotal.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
         binding.llNoEntries.visibility = if (isEntriesEmpty) View.VISIBLE else View.GONE
         
-        // Categories list visibility
-        binding.lblCategoryExpenses.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
-        binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
+        // Categories list visibility - ALWAYS VISIBLE if there is data
+        binding.lblCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
+        binding.recyclerCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
 
         binding.pieChart.visibility = if (isEntriesEmpty || !isPie) View.GONE else View.VISIBLE
         binding.barChart.visibility = if (isEntriesEmpty || isPie) View.GONE else View.VISIBLE

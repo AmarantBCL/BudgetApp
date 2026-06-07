@@ -161,50 +161,52 @@ class StatsViewModel @Inject constructor(
         }
     }
 
-    val barChartEntries: LiveData<BarChartData> = budgetEntries.switchMap { budgets ->
-        period.map { periodId ->
-            val calendar = Calendar.getInstance()
-            val groupedData = mutableMapOf<String, Float>()
-            val keySortMap = mutableMapOf<String, Long>()
+    val barChartEntries: LiveData<BarChartData> = hiddenCategories.switchMap { hiddenSet ->
+        budgetEntries.switchMap { budgets ->
+            period.map { periodId ->
+                val calendar = Calendar.getInstance()
+                val groupedData = mutableMapOf<String, Float>()
+                val keySortMap = mutableMapOf<String, Long>()
 
-            budgets.forEach { item ->
-                calendar.timeInMillis = item.budget.date.toLong()
-                val label: String
-                val sortKey: Long
-                
-                when {
-                    periodId <= PERIOD_LAST_TWO_DAYS -> {
-                        label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
-                        sortKey = item.budget.date.toLong()
+                budgets.filter { !hiddenSet.contains(it.budget.category) }.forEach { item ->
+                    calendar.timeInMillis = item.budget.date.toLong()
+                    val label: String
+                    val sortKey: Long
+                    
+                    when {
+                        periodId <= PERIOD_LAST_TWO_DAYS -> {
+                            label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
+                            sortKey = item.budget.date.toLong()
+                        }
+                        periodId <= PERIOD_LAST_TWO_WEEKS -> {
+                            label = SimpleDateFormat("EEE", Locale.getDefault()).format(calendar.time)
+                            sortKey = calendar.timeInMillis
+                        }
+                        periodId <= PERIOD_LAST_TWO_MONTHS -> {
+                            label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
+                            sortKey = item.budget.date.toLong()
+                        }
+                        else -> {
+                            label = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
+                            sortKey = calendar.get(Calendar.MONTH).toLong()
+                        }
                     }
-                    periodId <= PERIOD_LAST_TWO_WEEKS -> {
-                        label = SimpleDateFormat("EEE", Locale.getDefault()).format(calendar.time)
-                        sortKey = calendar.timeInMillis
-                    }
-                    periodId <= PERIOD_LAST_TWO_MONTHS -> {
-                        label = SimpleDateFormat("dd MMM", Locale.getDefault()).format(calendar.time)
-                        sortKey = item.budget.date.toLong()
-                    }
-                    else -> {
-                        label = SimpleDateFormat("MMM", Locale.getDefault()).format(calendar.time)
-                        sortKey = calendar.get(Calendar.MONTH).toLong()
+
+                    val current = groupedData.getOrDefault(label, 0f)
+                    groupedData[label] = current + abs(item.budget.amount)
+                    
+                    if (!keySortMap.containsKey(label) || sortKey < keySortMap[label]!!) {
+                        keySortMap[label] = sortKey
                     }
                 }
 
-                val current = groupedData.getOrDefault(label, 0f)
-                groupedData[label] = current + abs(item.budget.amount)
-                
-                if (!keySortMap.containsKey(label) || sortKey < keySortMap[label]!!) {
-                    keySortMap[label] = sortKey
-                }
+                val sortedLabels = groupedData.keys.sortedBy { keySortMap[it] }
+                BarChartData(
+                    sortedLabels,
+                    sortedLabels.map { groupedData[it] ?: 0f },
+                    emptyList()
+                )
             }
-
-            val sortedLabels = groupedData.keys.sortedBy { keySortMap[it] }
-            BarChartData(
-                sortedLabels,
-                sortedLabels.map { groupedData[it] ?: 0f },
-                emptyList()
-            )
         }
     }
 
