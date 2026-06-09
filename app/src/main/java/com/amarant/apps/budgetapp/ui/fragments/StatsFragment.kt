@@ -471,11 +471,15 @@ class StatsFragment : Fragment() {
         binding.lblCategoryExpenses.visibility = if (isEntriesEmpty) View.GONE else View.VISIBLE
         
         if (isPie) {
-            binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
+            if (binding.recyclerCategoryExpenses.adapter != categoryExpenseAdapter) {
+                binding.recyclerCategoryExpenses.adapter = categoryExpenseAdapter
+            }
             binding.lblCategoryExpenses.text = getString(R.string.category_expenses)
             binding.lblCategoryExpenses.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expenses, 0, 0, 0)
         } else {
-            binding.recyclerCategoryExpenses.adapter = barChartItemAdapter
+            if (binding.recyclerCategoryExpenses.adapter != barChartItemAdapter) {
+                binding.recyclerCategoryExpenses.adapter = barChartItemAdapter
+            }
             binding.lblCategoryExpenses.text = getString(R.string.period)
             binding.lblCategoryExpenses.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_period, 0, 0, 0)
         }
