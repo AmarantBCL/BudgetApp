@@ -181,4 +181,10 @@
     <string name="save_changes">Save Changes</string>
     <string name="savings_goal">Savings Goal:</string>
     <string name="not_set">Not Set</string>
+    <string name="pin_lock_disabled">PIN Lock disabled</string>
+    <string name="export_feature_coming_soon">Export feature coming soon!</string>
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="changes_saved_successfully">Changes saved successfully</string>
+    <string name="version_1_0_0">Version 1.0</string>
+    <string name="version_placeholder">Version %1$s</string>
 </resources>

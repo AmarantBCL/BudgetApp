@@ -19,6 +19,7 @@ import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_NAME
 import com.amarant.apps.budgetapp.util.Constants.PREFERENCE_PIN_VALUE_KEY
 import com.amarant.apps.budgetapp.util.MessageUtils
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.core.content.edit
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -67,8 +68,9 @@ class ProfileFragment : Fragment() {
                 if (isChecked) {
                     findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToPinFragment(isSettingPin = true))
                 } else {
-                    sharedPrefs.edit().remove(PREFERENCE_PIN_VALUE_KEY).apply()
-                    MessageUtils.showSnackbarMessage(binding.root, "PIN Lock disabled", getString(R.string.hide))
+                    sharedPrefs.edit { remove(PREFERENCE_PIN_VALUE_KEY) }
+                    MessageUtils.showSnackbarMessage(binding.root,
+                        getString(R.string.pin_lock_disabled), getString(R.string.hide))
                 }
             }
         }
@@ -100,12 +102,13 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnPrivacyPolicy.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com")) // TODO: Replace with real URL
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://amarantbcl.github.io/tracksy-privacy/")) // TODO: Replace with real URL
             startActivity(browserIntent)
         }
 
         binding.btnExportData.setOnClickListener {
-            MessageUtils.showSnackbarMessage(binding.root, "Export feature coming soon!", getString(R.string.hide))
+            MessageUtils.showSnackbarMessage(binding.root,
+                getString(R.string.export_feature_coming_soon), getString(R.string.hide))
         }
     }
 
@@ -118,7 +121,7 @@ class ProfileFragment : Fragment() {
         val hideDecimal = binding.switchDecimal.isChecked
 
         if (name.isEmpty()) {
-            binding.tilName.error = "Name cannot be empty"
+            binding.tilName.error = getString(R.string.name_cannot_be_empty)
             return
         }
 
@@ -132,7 +135,8 @@ class ProfileFragment : Fragment() {
                 hideDecimal = hideDecimal
             )
             profileViewModel.insertProfileData(updatedProfile)
-            MessageUtils.showSnackbarMessage(binding.root, "Changes saved successfully", getString(R.string.hide))
+            MessageUtils.showSnackbarMessage(binding.root,
+                getString(R.string.changes_saved_successfully), getString(R.string.hide))
             findNavController().popBackStack()
         }
     }
@@ -140,9 +144,9 @@ class ProfileFragment : Fragment() {
     private fun displayAppVersion() {
         try {
             val pInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
-            binding.tvVersion.text = "Version ${pInfo.versionName}"
+            binding.tvVersion.text = getString(R.string.version_placeholder, pInfo.versionName)
         } catch (e: Exception) {
-            binding.tvVersion.text = "Version 1.0.0"
+            binding.tvVersion.text = getString(R.string.version_1_0_0)
         }
     }
 

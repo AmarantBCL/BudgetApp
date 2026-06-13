@@ -182,4 +182,10 @@
     <string name="save_changes">Сохр. изменения</string>
     <string name="savings_goal">Цель накоплений:</string>
     <string name="not_set">Не установлено</string>
+    <string name="pin_lock_disabled">PIN блокировка отключена</string>
+    <string name="export_feature_coming_soon">Функция экспорта появится позже!</string>
+    <string name="name_cannot_be_empty">Имя не может быть пустым</string>
+    <string name="changes_saved_successfully">Изменения успешно сохранены</string>
+    <string name="version_1_0_0">Версия 1.0</string>
+    <string name="version_placeholder">Версия %1$s</string>
 </resources>
