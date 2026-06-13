@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +39,6 @@ class AddEntryFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentAddEntryBinding == null")
 
     private val entryViewModel: EntryViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by viewModels()
     private val budgetViewModel: BudgetViewModel by viewModels()
     private val historyViewModel: HistoryViewModel by viewModels()
 
@@ -128,10 +126,6 @@ class AddEntryFragment : Fragment() {
             val category = entryViewModel.getSelectedCategoryName()
             selectedCategory = category
             binding.tvSelectedCategory.text = category.getLocalizedName(requireContext())
-//            historyViewModel.switchHistoryCategory(CATEGORY_MAPPING[categoryName] ?: 0)
-        }
-        entryViewModel.selectedCategories.observe(viewLifecycleOwner) {
-//            Log.d("WTF", "Cats: $it") // TODO Continue with selected categories
         }
     }
 
@@ -187,7 +181,6 @@ class AddEntryFragment : Fragment() {
     private fun submitEntry(wasEntrySubmitted: Boolean, purpose: String, message: String) {
         if (wasEntrySubmitted) {
             saveHistory(purpose)
-            updateCurrentBalance()
             MessageUtils.showSnackbarMessage(
                 binding.btnAddEntry,
                 message,
@@ -203,11 +196,6 @@ class AddEntryFragment : Fragment() {
         }
     }
 
-    private fun updateCurrentBalance() {
-        val revisedCurrentBalance = "0" // TODO Temp
-        profileViewModel.updateCurrentBalance(revisedBalance = revisedCurrentBalance.toFloat())
-    }
-
     private fun saveHistory(purpose: String) {
         historyViewModel.addHistory(
             HistoryItem(
@@ -221,11 +209,6 @@ class AddEntryFragment : Fragment() {
 
     private fun readHistory() {
         historyViewModel.getAllHistory().observe(viewLifecycleOwner) { history ->
-//            val adapter = ArrayAdapter(
-//                requireContext(),
-//                android.R.layout.simple_dropdown_item_1line,
-//                history.map { it.entry }
-//            )
             historyAdapter = HistoryAdapter(
                 requireContext(),
                 history.map { it.entry }.toMutableList(),
@@ -239,9 +222,6 @@ class AddEntryFragment : Fragment() {
 
     fun deleteFromHistory(itemToDelete: String) {
         historyViewModel.deleteFromHistory(itemToDelete)
-//        binding.editName.showDropDown()
         binding.editName.setText("")
-//        historyAdapter.notifyDataSetChanged()
-//        binding.editName.setAdapter(historyAdapter)
     }
 }

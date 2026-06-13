@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.entities
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import com.amarant.apps.budgetapp.R
@@ -49,7 +48,6 @@ enum class Category(
     fun getLocalizedName(context: Context): String {
         val array = context.resources.getStringArray(R.array.categories)
         val index = this.ordinal
-//        Log.e("WTF", this.toString())
         return array[index]
     }
 

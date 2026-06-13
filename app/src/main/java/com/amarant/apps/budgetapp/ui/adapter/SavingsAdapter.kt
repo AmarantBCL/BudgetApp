@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.adapter
 
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ class SavingsAdapter : ListAdapter<Saving, SavingsAdapter.SavingViewHolder>(Savi
         val currentSum = formatNumberWithThousandsSeparator(item.saved.toDouble())
         val targetSum = formatNumberWithThousandsSeparator(item.target.toDouble())
         val percent = item.saved / item.target * 100.0
-//        Log.d("WTF", "Percent: $percent")
         val currencySymbol = item.currency.first()
         val toGo = formatNumberWithThousandsSeparator((item.target - item.saved).toDouble())
         val currentTimestamp = System.currentTimeMillis()

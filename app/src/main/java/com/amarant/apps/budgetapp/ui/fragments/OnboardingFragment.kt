@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,11 +106,5 @@ class OnboardingFragment : Fragment() {
         onboardingViewModel.isNextButtonEnabled.observe(viewLifecycleOwner) {
             binding.btnNext.isEnabled = it
         }
-        onboardingViewModel.tempProfile.observe(viewLifecycleOwner) {
-//            Log.e("WTF", "$it")
-        }
-//        onboardingViewModel.selectedCategories.observe(viewLifecycleOwner) {
-//            Log.d("WTF", "Cats: $it")
-//        }
     }
 }

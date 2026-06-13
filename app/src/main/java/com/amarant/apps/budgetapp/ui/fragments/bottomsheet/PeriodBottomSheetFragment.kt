@@ -2,7 +2,6 @@ package com.amarant.apps.budgetapp.ui.fragments.bottomsheet
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -145,11 +144,8 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
             binding.tvSelectedPeriod.text = selectedOption
         }
         binding.btnApplyFilters.setOnClickListener {
-//            Log.d("WTF", "start: $customStartDate, end: $customEndDate")
             if (selectedPeriod == CUSTOM_DATE_RANGE_ID) {
-//                val defaultText = resources.getStringArray(R.array.periods)[CUSTOM_DATE_RANGE_ID]
                 if (!isCustomDateSet) {
-//                if (customRangeText.isEmpty() || customRangeText == defaultText) {
                     MessageUtils.showSnackbarMessage(
                         binding.root,
                         getString(R.string.select_range),
@@ -157,12 +153,6 @@ class PeriodBottomSheetFragment : BottomSheetDialogFragment() {
                     )
                     return@setOnClickListener
                 }
-//                budgetViewModel.changeDateRange(selectedPeriod, isPeriodOnly = true)
-//                budgetViewModel.setReportsBetweenDates(customStartDate, customEndDate)
-//                budgetViewModel.setCustomRangeDisplayedText(customRangeText)
-            } else {
-//                budgetViewModel.changeDateRange(selectedPeriod)
-//                budgetViewModel.setCustomRangeDisplayedText("")
             }
             periodSelectionListener?.onPeriodSelected(selectedPeriod, customStartDate, customEndDate, customRangeText)
             dialog?.dismiss()
