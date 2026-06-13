@@ -19,7 +19,7 @@
         android:id="@+id/tv_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No history yet"
+        android:text="@string/no_history_yet"
         android:textAppearance="@style/Text.Secondary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

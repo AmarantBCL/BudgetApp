@@ -188,4 +188,11 @@
     <string name="changes_saved_successfully">Изменения успешно сохранены</string>
     <string name="version_1_0_0">Версия 1.0</string>
     <string name="version_placeholder">Версия %1$s</string>
+    <string name="previous">Назад</string>
+    <string name="next">Далее</string>
+    <string name="onboarding_step_placeholder">Шаг %1$d из %2$d</string>
+    <string name="starting_date">Дата начала</string>
+    <string name="no_history_yet">История пуста</string>
+    <string name="new_budget">Новый бюджет</string>
+    <string name="create_budget">Создать бюджет</string>
 </resources>

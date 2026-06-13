@@ -11,10 +11,6 @@
         android:label="@string/calendar"
         tools:layout="@layout/fragment_calendar">
         <action
-            android:id="@+id/action_calendarFragment_to_budgetEntryFragment"
-            app:destination="@id/budgetEntryFragment"
-            app:popUpTo="@id/calendarFragment" />
-        <action
             android:id="@+id/action_calendarFragment_to_pinFragment"
             app:destination="@id/pinFragment"
             app:popUpTo="@id/calendarFragment" />
@@ -32,17 +28,6 @@
             app:exitAnim="@anim/fragment_slide_out"
             app:popEnterAnim="@anim/fragment_slide_pop_enter"
             app:popExitAnim="@anim/fragment_slide_pop_exit" />
-    </fragment>
-    <fragment
-        android:id="@+id/budgetEntryFragment"
-        android:name="com.amarant.apps.budgetapp.ui.fragments.BudgetEntryFragment"
-        android:label="Add entry"
-        tools:layout="@layout/fragment_budget_entry">
-        <argument
-            android:name="selectedDate"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

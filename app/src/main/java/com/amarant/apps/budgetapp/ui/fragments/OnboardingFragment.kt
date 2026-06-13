@@ -56,7 +56,7 @@ class OnboardingFragment : Fragment() {
         binding.viewPagerOnboard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 binding.btnPrevious.isEnabled = position > 0
-                binding.tvStep.text = "Step ${position + 1} of 4"
+                binding.tvStep.text = getString(R.string.onboarding_step_placeholder, position + 1, onboardingAdapter.itemCount)
                 binding.pbarStep.setProgress(position + 1, true)
                 when(position) {
                     1 -> onboardingViewModel.updateNextButtonState()

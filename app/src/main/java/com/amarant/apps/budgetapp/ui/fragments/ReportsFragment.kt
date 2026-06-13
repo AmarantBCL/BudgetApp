@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -218,13 +217,6 @@ class ReportsFragment : Fragment() {
                 binding.chipPeriod.text = it
             }
         }
-//        budgetViewModel.sorting.observe(viewLifecycleOwner) {
-//            val sortArr = resources.getStringArray(R.array.sorting)
-//            binding.chipSort.text = sortArr[it.field.ordinal]
-//            val iconRes = if (it.order == SortOrder.DESC) R.drawable.ic_desc else R.drawable.ic_asc
-//            val drawable = ContextCompat.getDrawable(requireContext(), iconRes)
-//            binding.chipSort.closeIcon = drawable
-//        }
         budgetViewModel.reportType.observe(viewLifecycleOwner) {
             val allReportTypes = resources.getStringArray(R.array.report_types)
             binding.chipType.text = allReportTypes[it.ordinal]
@@ -302,16 +294,6 @@ class ReportsFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-//        binding.spinnerDateRange.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                budgetViewModel.changeDateRange(position)
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//            }
-//        }
-//        binding.spinnerDateRange.setSelection(PERIOD_THIS_MONTH)
         binding.chipFilter.setOnClickListener {
             val bottomSheet = FiltersBottomSheetFragment.newInstance()
             bottomSheet.show(requireActivity().supportFragmentManager, FiltersBottomSheetFragment.TAG)
@@ -332,10 +314,6 @@ class ReportsFragment : Fragment() {
             }
             bottomSheet.show(requireActivity().supportFragmentManager, PeriodBottomSheetFragment.TAG)
         }
-//        binding.chipSort.setOnClickListener {
-//            val bottomSheet = SortingBottomSheetFragment.newInstance()
-//            bottomSheet.show(requireActivity().supportFragmentManager, SortingBottomSheetFragment.TAG)
-//        }
         binding.chipType.setOnClickListener {
             val bottomSheet = ReportTypeBottomSheetFragment.newInstance(isStats = false)
             bottomSheet.reportTypeSelectionListener = object : ReportTypeBottomSheetFragment.ReportTypeSelectionListener {

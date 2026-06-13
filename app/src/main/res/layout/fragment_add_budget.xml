@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/large_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="Starting date"
+            android:text="@string/starting_date"
             android:textAppearance="@style/Text.Secondary.Bold"
             android:textSize="16sp"
             android:visibility="gone"

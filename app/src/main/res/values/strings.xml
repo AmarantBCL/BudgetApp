@@ -187,4 +187,11 @@
     <string name="changes_saved_successfully">Changes saved successfully</string>
     <string name="version_1_0_0">Version 1.0</string>
     <string name="version_placeholder">Version %1$s</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="onboarding_step_placeholder">Step %1$d of %2$d</string>
+    <string name="starting_date">Starting date</string>
+    <string name="no_history_yet">No history yet</string>
+    <string name="new_budget">New Budget</string>
+    <string name="create_budget">Create Budget</string>
 </resources>

@@ -82,4 +82,10 @@
         <item>Неделя</item>
         <item>Месяц</item>
     </string-array>
+
+    <string-array name="currency">
+        <item>$ USD</item>
+        <item>€ EUR</item>
+        <item>₴ ГРН</item>
+    </string-array>
 </resources>

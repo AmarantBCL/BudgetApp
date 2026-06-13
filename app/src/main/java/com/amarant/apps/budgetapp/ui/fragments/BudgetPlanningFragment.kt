@@ -1,7 +1,6 @@
 package com.amarant.apps.budgetapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -139,17 +138,6 @@ class BudgetPlanningFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-//        binding.btnAddBudget.setOnClickListener {
-//            showCreateBudgetDialog()
-//        }
-//        binding.btnCreateFirstBudget.setOnClickListener {
-//            showCreateBudgetDialog()
-//        }
-    }
-
-    private fun showCreateBudgetDialog() {
-        val bottomSheet = com.amarant.apps.budgetapp.ui.fragments.bottomsheet.CreateBudgetBottomSheetFragment()
-        bottomSheet.show(childFragmentManager, com.amarant.apps.budgetapp.ui.fragments.bottomsheet.CreateBudgetBottomSheetFragment.TAG)
     }
 
     override fun onDestroyView() {
