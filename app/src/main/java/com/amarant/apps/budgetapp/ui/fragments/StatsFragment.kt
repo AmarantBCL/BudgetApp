@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.amarant.apps.budgetapp.entities.BudgetUI
 import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.ui.MainActivity
+import com.amarant.apps.budgetapp.ui.adapter.BarChartItemAdapter
 import com.amarant.apps.budgetapp.ui.adapter.CategoryExpenseAdapter
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.PeriodBottomSheetFragment
 import com.amarant.apps.budgetapp.ui.fragments.bottomsheet.ReportTypeBottomSheetFragment
@@ -39,9 +41,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import kotlin.math.absoluteValue
-import androidx.core.view.get
-import com.amarant.apps.budgetapp.ui.adapter.BarChartItemAdapter
-
 
 class StatsFragment : Fragment() {
 
@@ -49,7 +48,6 @@ class StatsFragment : Fragment() {
     private val binding: FragmentStatsBinding
         get() = _binding ?: throw RuntimeException("FragmentStatsBinding == null")
 
-//    private val budgetViewModel: BudgetViewModel by activityViewModels()
     private val statsViewModel: StatsViewModel by activityViewModels()
 
     private lateinit var categoryExpenseAdapter: CategoryExpenseAdapter
@@ -161,7 +159,6 @@ class StatsFragment : Fragment() {
             // if it causes compile issues, but we'll try to apply it if successful.
         }
     }
-
 
     private fun observeViewModel() {
         statsViewModel.isCurrentChartEmpty.observe(viewLifecycleOwner) { isEmpty ->
@@ -278,9 +275,6 @@ class StatsFragment : Fragment() {
         statsViewModel.categoryExpenses.observe(viewLifecycleOwner) {
             categoryExpenseAdapter.submitList(it)
         }
-//        budgetViewModel.categoryExpenses.observe(viewLifecycleOwner) {
-//            categoryExpenseAdapter.submitList(it)
-//        }
         statsViewModel.period.observe(viewLifecycleOwner) {
             binding.chipPeriod.text = resources.getStringArray(R.array.periods)[it]
             if (it != PERIOD_SHOW_ALL) {
@@ -364,7 +358,7 @@ class StatsFragment : Fragment() {
             }
         }
 
-        barChartItemAdapter = com.amarant.apps.budgetapp.ui.adapter.BarChartItemAdapter()
+        barChartItemAdapter = BarChartItemAdapter()
         barChartItemAdapter.onBarChartItemClickListener = { item ->
             val action = StatsFragmentDirections.actionStatsFragmentToExpensesFragment(
                 category = Category.ALL,

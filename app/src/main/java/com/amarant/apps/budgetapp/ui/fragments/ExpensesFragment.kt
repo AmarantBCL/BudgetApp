@@ -15,17 +15,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amarant.apps.budgetapp.R
 import com.amarant.apps.budgetapp.databinding.FragmentExpensesBinding
+import com.amarant.apps.budgetapp.entities.Category
+import com.amarant.apps.budgetapp.entities.ReportType
 import com.amarant.apps.budgetapp.entities.ReportsItem
 import com.amarant.apps.budgetapp.ui.MainActivity
 import com.amarant.apps.budgetapp.ui.adapter.ReportsAdapter
 import com.amarant.apps.budgetapp.ui.adapter.decorations.CustomDividerDecoration
 import com.amarant.apps.budgetapp.ui.viewmodels.StatsViewModel
-import com.amarant.apps.budgetapp.util.NumberUtils
-import com.amarant.apps.budgetapp.entities.ReportType
-import com.amarant.apps.budgetapp.entities.BudgetUI
-import com.amarant.apps.budgetapp.entities.Category
 import com.amarant.apps.budgetapp.util.DateUtils
-import kotlin.math.absoluteValue
+import com.amarant.apps.budgetapp.util.NumberUtils
 
 class ExpensesFragment : Fragment() {
 
@@ -107,10 +105,12 @@ class ExpensesFragment : Fragment() {
                 
                 val resId = if (args.isIncome) Category.INCOME.rawIconRes else Category.OTHER.rawIconRes
                 binding.imgCategory.setImageResource(resId)
-                
                 if (totalSum != 0.0) {
                     binding.tvAmount.text = if (args.isIncome) getString(R.string.plus_placeholder, formattedSum) else formattedSum
                     binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), if (args.isIncome) R.color.positive_green else R.color.negative_red))
+                } else {
+                    binding.tvAmount.text = formattedSum
+                    binding.tvAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
                 }
                 
                 initActionBar(args.title ?: args.category.getLocalizedName(requireContext()))
