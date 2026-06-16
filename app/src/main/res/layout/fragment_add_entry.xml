@@ -120,7 +120,7 @@
                 android:drawablePadding="@dimen/regular_margin"
                 android:drawableTint="@color/secondary_gray"
                 android:hint="@string/amount"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLength="12"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"

@@ -209,11 +209,11 @@ class BudgetViewModel @Inject constructor(
     fun validateAndAddEntries(isDebit: Boolean, amount: String, purpose: String, date: Long, category: Category): Boolean {
         val bankName = ""
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
-        val amountAsInt = amount.toIntOrNull()
+        val amountAsInt = amount.toFloatOrNull()
         return if (amountAsInt == null || purpose.isEmpty()) {
             false
         } else {
-            var amountToInsert = amountAsInt.toFloat()
+            var amountToInsert = amountAsInt
             if (debitOrCredit == Constants.DEBIT) {
                 amountToInsert *= -1
             }
@@ -231,11 +231,11 @@ class BudgetViewModel @Inject constructor(
 
     fun validateAndEditEntries(id: Int, isDebit: Boolean, amount: String, purpose: String, category: Category): Boolean {
         val debitOrCredit = if (isDebit) Constants.DEBIT else Constants.CREDIT
-        val amountAsInt = amount.toIntOrNull()
+        val amountAsInt = amount.toFloatOrNull()
         return if (amountAsInt == null || purpose.isEmpty()) {
             false
         } else {
-            var amountToInsert = amountAsInt.toFloat()
+            var amountToInsert = amountAsInt
             if (debitOrCredit == Constants.DEBIT) {
                 amountToInsert *= -1
             }

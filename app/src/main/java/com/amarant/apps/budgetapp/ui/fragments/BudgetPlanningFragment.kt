@@ -48,7 +48,6 @@ class BudgetPlanningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeViewModel()
-        setupClickListeners()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -135,9 +134,6 @@ class BudgetPlanningFragment : Fragment() {
                 progressOverall.progress = summary.overallProgress.toInt()
             }
         }
-    }
-
-    private fun setupClickListeners() {
     }
 
     override fun onDestroyView() {
