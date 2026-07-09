@@ -47,6 +47,10 @@ interface BudgetDao {
             "AND date BETWEEN :startDate AND :endDate GROUP BY category ORDER BY amount ASC")
     fun getSpendingsByCategory(startDate: Long, endDate: Long): LiveData<List<BudgetCategoryDetails>>
 
+    @Query("SELECT category, SUM(amount) AS amount FROM budget WHERE creditOrDebit = 'Debit' " +
+            "AND date BETWEEN :startDate AND :endDate GROUP BY category ORDER BY amount ASC")
+    suspend fun getSpendingsByCategorySync(startDate: Long, endDate: Long): List<BudgetCategoryDetails>
+
     @Query("""
         SELECT category, COUNT(*) AS entries_count
         FROM budget

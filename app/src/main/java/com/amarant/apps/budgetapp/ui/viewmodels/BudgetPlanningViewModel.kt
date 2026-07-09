@@ -26,6 +26,7 @@ class BudgetPlanningViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val budgets = repository.getAllBudgets()
+    private val archivingBudgets = mutableSetOf<Int>()
     
     // Check and Archive logic on initialization
     init {
@@ -38,10 +39,19 @@ class BudgetPlanningViewModel @Inject constructor(
         // For simplicity, we'll do it here
     }
 
-    suspend fun archiveAndReset(budgetWithProgress: BudgetWithProgress) {
-        val budget = budgetWithProgress.budget
-        
-        // 1. Save to History
+    suspend fun archiveAndReset(budget: CategoryBudget) {
+        // 1. Calculate spent amount for the period that ended
+        val endOfPeriod = if (budget.period == "Monthly") {
+            UtilityFunctions.getStartOfMonth() - 1
+        } else {
+            UtilityFunctions.getStartOfWeek() - 1
+        }
+
+        val spent = repository.getSpendingsByCategorySync(budget.startDate, endOfPeriod)
+            .find { it.category == budget.category.dbName }?.amount?.toDouble() ?: 0.0
+        val absoluteSpent = abs(spent)
+
+        // 2. Save to History
         val periodName = if (budget.period == "Monthly") {
             // Using LLLL for stand-alone nominative month name
             val sdf = SimpleDateFormat("LLLL yyyy", Locale.getDefault())
@@ -55,14 +65,14 @@ class BudgetPlanningViewModel @Inject constructor(
         val history = BudgetHistory(
             category = budget.category,
             amountLimit = budget.amountLimit,
-            spentAmount = budgetWithProgress.spent,
+            spentAmount = absoluteSpent,
             periodType = budget.period,
             periodName = periodName,
             dateStamp = budget.startDate
         )
         repository.archiveBudget(history)
 
-        // 2. Reset or Delete
+        // 3. Reset or Delete
         if (budget.isRecursive) {
             val newStartDate = if (budget.period == "Monthly") {
                 UtilityFunctions.getStartOfMonth()
@@ -89,7 +99,6 @@ class BudgetPlanningViewModel @Inject constructor(
             val monthly = monthlyExpenses.value ?: emptyList()
             val weekly = weeklyExpenses.value ?: emptyList()
             
-            val now = System.currentTimeMillis()
             val startOfMonth = UtilityFunctions.getStartOfMonth()
             val startOfWeek = UtilityFunctions.getStartOfWeek()
 
@@ -116,8 +125,12 @@ class BudgetPlanningViewModel @Inject constructor(
                 )
 
                 // If period ended, we trigger archive in background
-                if (periodEnded) {
-                    viewModelScope.launch { archiveAndReset(item) }
+                if (periodEnded && !archivingBudgets.contains(budget.id)) {
+                    archivingBudgets.add(budget.id)
+                    viewModelScope.launch {
+                        archiveAndReset(budget)
+                        archivingBudgets.remove(budget.id)
+                    }
                 }
 
                 item

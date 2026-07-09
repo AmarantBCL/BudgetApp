@@ -23,6 +23,9 @@ class BudgetPlanningRepository @Inject constructor(
     fun getSpendingsByCategory(startDate: Long, endDate: Long): LiveData<List<BudgetCategoryDetails>> =
         expenseDao.getSpendingsByCategory(startDate, endDate)
 
+    suspend fun getSpendingsByCategorySync(startDate: Long, endDate: Long): List<BudgetCategoryDetails> =
+        expenseDao.getSpendingsByCategorySync(startDate, endDate)
+
     suspend fun archiveBudget(history: BudgetHistory) = budgetHistoryDao.insertHistory(history)
 
     fun getBudgetHistory(): LiveData<List<BudgetHistory>> = budgetHistoryDao.getAllHistory()
